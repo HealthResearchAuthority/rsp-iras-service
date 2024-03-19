@@ -32,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\WebApi\Rsp.WeatherService.WebApi\Rsp.WeatherService.WebApi.csproj" />
+    <ProjectReference Include="..\..\..\src\WebApi\Rsp.IrasService.WebApi\Rsp.IrasService.WebApi.csproj" />
   </ItemGroup>
 
 </Project>

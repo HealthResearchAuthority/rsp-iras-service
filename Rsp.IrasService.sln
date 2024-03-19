@@ -7,33 +7,33 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E2141DB8-AD1
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApi", "WebApi", "{0CE9D26C-B312-4106-9BBA-C2A2C7BC3C2D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rsp.WeatherService.WebApi", "src\WebApi\Rsp.WeatherService.WebApi\Rsp.WeatherService.WebApi.csproj", "{5AA58CF5-D213-4867-BC0B-BDB983EBCE1A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rsp.IrasService.WebApi", "src\WebApi\Rsp.IrasService.WebApi\Rsp.IrasService.WebApi.csproj", "{5AA58CF5-D213-4867-BC0B-BDB983EBCE1A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{D3B3409B-5870-453A-9629-5442D9C112C0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rsp.WeatherService.Domain", "src\Domain\Rsp.WeatherService.Domain\Rsp.WeatherService.Domain.csproj", "{AC21A1CE-9A8A-409E-812E-70F3B986A444}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rsp.IrasService.Domain", "src\Domain\Rsp.IrasService.Domain\Rsp.IrasService.Domain.csproj", "{AC21A1CE-9A8A-409E-812E-70F3B986A444}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{A16906DA-8F7C-454E-88A1-C146F6D898F4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rsp.WeatherService.Application", "src\Application\Rsp.WeatherService.Application\Rsp.WeatherService.Application.csproj", "{B2CC715F-2ADB-4F9B-AB14-A7D661DB8615}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rsp.IrasService.Application", "src\Application\Rsp.IrasService.Application\Rsp.IrasService.Application.csproj", "{B2CC715F-2ADB-4F9B-AB14-A7D661DB8615}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{AD4B2B78-09C1-4142-8857-E93670B671B2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rsp.WeatherService.Infrastructure", "src\Infrastructure\Rsp.WeatherService.Infrastructure\Rsp.WeatherService.Infrastructure.csproj", "{2A2825A6-E50C-4746-8334-EDCAC11F9FC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rsp.IrasService.Infrastructure", "src\Infrastructure\Rsp.IrasService.Infrastructure\Rsp.IrasService.Infrastructure.csproj", "{2A2825A6-E50C-4746-8334-EDCAC11F9FC4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{F241002C-8F15-4C1B-832D-2C26D75FA96F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rsp.WeatherService.Services", "src\Services\Rsp.WeatherService.Services\Rsp.WeatherService.Services.csproj", "{D9DD7CB6-572E-48BF-AE08-82C5D7D46743}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rsp.IrasService.Services", "src\Services\Rsp.IrasService.Services\Rsp.IrasService.Services.csproj", "{D9DD7CB6-572E-48BF-AE08-82C5D7D46743}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{8FCA535F-9C4C-4158-9490-6C59B938E5C0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{75C1B9D5-B905-4BB4-AD48-9F1EC67C3B3E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rsp.WeatherService.UnitTests", "tests\UnitTests\Rsp.WeatherService.UnitTests\Rsp.WeatherService.UnitTests.csproj", "{4442BB7D-9C3F-442A-90E9-638DFC8D55DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rsp.IrasService.UnitTests", "tests\UnitTests\Rsp.IrasService.UnitTests\Rsp.IrasService.UnitTests.csproj", "{4442BB7D-9C3F-442A-90E9-638DFC8D55DA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTests", "IntegrationTests", "{D8A75F15-6B20-40C8-BFB5-424D6D841DD7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rsp.WeatherService.IntegrationTests", "tests\IntegrationTests\Rsp.WeatherService.IntegrationTests\Rsp.WeatherService.IntegrationTests.csproj", "{AA79C58A-4D68-421D-BBC3-44597F35582C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rsp.IrasService.IntegrationTests", "tests\IntegrationTests\Rsp.IrasService.IntegrationTests\Rsp.IrasService.IntegrationTests.csproj", "{AA79C58A-4D68-421D-BBC3-44597F35582C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{48F7A857-5064-4B1E-93F8-B87027A4CB31}"
 	ProjectSection(SolutionItems) = preProject

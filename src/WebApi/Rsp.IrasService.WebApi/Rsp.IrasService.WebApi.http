@@ -1,0 +1,12 @@
+@baseUrl = http://localhost:5067
+
+GET {{baseUrl}}/categories/apps
+###
+
+GET {{baseUrl}}/categories/projects
+###
+
+POST {{baseUrl}}/categories/apps?category=App1
+###
+
+POST {{baseUrl}}/categories/projects?category=Project1
