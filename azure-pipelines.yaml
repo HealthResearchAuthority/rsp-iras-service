@@ -56,3 +56,4 @@ stages:
   - template: jobs/build.yaml@library
     parameters:
       run_github_security_scan: ${{ parameters.run_github_security_scan }}
+      browser: ${{ parameters.browser }}
