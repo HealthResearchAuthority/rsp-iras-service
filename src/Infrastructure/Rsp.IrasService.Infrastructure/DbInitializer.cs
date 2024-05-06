@@ -1,4 +1,4 @@
-﻿using Rsp.IrasService.Domain.Models;
+﻿using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Infrastructure
 {
@@ -20,21 +20,18 @@ namespace Rsp.IrasService.Infrastructure
                     Location=Location.England,
                     StartDate=DateTime.Now,
                     ApplicationCategories=["Application category 1", "Application category 2"],
-                    ProjectCategories=["Project category 1", "Project category 2"]
+                    ProjectCategory="Project category 1"
                 },
                 new IrasApplication {
                     Title="Example 2",
                     Location=Location.Scotland,
                     StartDate=DateTime.Now,
                     ApplicationCategories=["Application category 1", "Application category 2"],
-                    ProjectCategories=["Project category 1", "Project category 2"]
+                    ProjectCategory="Project category 2"
                 }
             };
 
-            foreach (var application in irasApplications )
-            {
-                context.IrasApplications.Add(application);
-            }
+            context.IrasApplications.AddRange(irasApplications);
             context.SaveChanges();
         }
     }

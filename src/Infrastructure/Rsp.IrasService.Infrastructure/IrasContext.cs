@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Rsp.IrasService.Domain.Models;
+using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Infrastructure
 {
     public class IrasContext : DbContext
     {
-        public IrasContext(DbContextOptions<IrasContext> options) : base(options) 
+        public IrasContext(DbContextOptions<IrasContext> options) : base(options)
         {
         }
 
