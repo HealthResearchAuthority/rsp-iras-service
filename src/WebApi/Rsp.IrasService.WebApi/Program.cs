@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 // Add services to the container.
 services.AddHealthChecks();
-services.AddDbContext<IrasContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+services.AddDbContext<IrasContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("IrasServiceDatabaseConnection")));
 services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 services.AddEndpointsApiExplorer();
