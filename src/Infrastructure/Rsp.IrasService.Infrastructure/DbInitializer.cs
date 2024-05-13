@@ -1,4 +1,5 @@
 ﻿using Rsp.IrasService.Domain.Entities;
+using Rsp.IrasService.Domain.Enums;
 
 namespace Rsp.IrasService.Infrastructure
 {
