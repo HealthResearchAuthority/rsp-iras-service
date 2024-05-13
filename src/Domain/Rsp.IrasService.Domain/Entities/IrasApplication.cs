@@ -1,10 +1,7 @@
-﻿namespace Rsp.IrasService.Domain.Entities
-{
-    public enum Location
-    {
-        England, Scotland, Wales, NorthernIreland
-    }
+﻿using Rsp.IrasService.Domain.Enums;
 
+namespace Rsp.IrasService.Domain.Entities
+{
     public class IrasApplication
     {
         /// <summary>

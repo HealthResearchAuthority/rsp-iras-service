@@ -31,6 +31,7 @@ services.AddSwaggerGen(options =>
 
 // add the categories service to the DI container
 services.AddTransient<ICategoriesService, CategoriesService>();
+services.AddTransient<IApplicationsService, ApplicationsService>();
 
 var app = builder.Build();
 
