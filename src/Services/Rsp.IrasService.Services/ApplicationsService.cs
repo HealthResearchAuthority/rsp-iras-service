@@ -1,14 +1,22 @@
-﻿using Rsp.IrasService.Application.Contracts;
+﻿using Mapster;
+using Rsp.IrasService.Application.Contracts;
+using Rsp.IrasService.Application.DTOs;
 using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Services;
 
-public class ApplicationsService : IApplicationsService
+public class ApplicationsService(IApplicationRepository applicationRepository) : IApplicationsService
 {
-    public Task CreateApplication(IrasApplication irasApplication)
+    public async Task<CreateApplicationResponse> CreateApplication(CreateApplicationRequest irasApplicationRequest)
     {
+        // map from CreateApplicationRequest -> IrasApplication
+
+        var irasApplication = irasApplicationRequest.Adapt<IrasApplication>();
+
         // create application
-        return Task.CompletedTask;
+        var irasApp = await applicationRepository.CreateApplication(irasApplication);
+
+        return irasApp.Adapt<CreateApplicationResponse>();
     }
 
     public Task<IrasApplication> GetApplication(int applicationId)

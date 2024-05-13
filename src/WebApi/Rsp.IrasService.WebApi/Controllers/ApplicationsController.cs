@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Application.Contracts;
+using Rsp.IrasService.Application.DTOs;
 using Rsp.IrasService.Domain.Entities;
 using Rsp.IrasService.Infrastructure;
 
@@ -27,24 +28,21 @@ public class ApplicationsController(ILogger<CategoriesController> logger, IAppli
     {
         logger.LogInformation("Getting all applications");
 
-        return irasContext.IrasApplications.AsEnumerable();
+        return await Task.FromResult(irasContext.IrasApplications.AsEnumerable());
     }
 
     [HttpPost()]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IrasApplication> CreateApplication(IrasApplication irasApplication)
+    public async Task<CreateApplicationResponse> CreateApplication(CreateApplicationRequest irasApplication)
     {
         logger.LogInformation("Creating IRAS application");
 
-        var entity = irasContext.IrasApplications.Add(irasApplication);
-        await irasContext.SaveChangesAsync();
-
-        return entity.Entity;
+        return await applicationsService.CreateApplication(irasApplication);
     }
 
     [HttpPost("update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task UpdateApplication(int id, IrasApplication irasApplication)
+    public async Task UpdateApplication(int id, CreateApplicationRequest irasApplication)
     {
         logger.LogInformation("Update IRAS application with ID: {id}", id);
 
