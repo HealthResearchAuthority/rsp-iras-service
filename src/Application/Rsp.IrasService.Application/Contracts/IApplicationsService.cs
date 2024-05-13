@@ -1,4 +1,5 @@
-﻿using Rsp.IrasService.Domain.Entities;
+﻿using Rsp.IrasService.Application.DTOs;
+using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Application.Contracts;
 
@@ -11,7 +12,7 @@ public interface IApplicationsService
     /// Adds a new application to the database
     /// </summary>
     /// <param name="irasApplication">The application values</param>
-    Task CreateApplication(IrasApplication irasApplication);
+    Task<CreateApplicationResponse> CreateApplication(CreateApplicationRequest irasApplication);
 
     /// <summary>
     /// Returns an application
