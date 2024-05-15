@@ -1,6 +1,6 @@
 ﻿using Rsp.IrasService.Domain.Entities;
 
-namespace Rsp.IrasService.Application.Contracts;
+namespace Rsp.IrasService.Application.Repositories;
 
 public interface IApplicationRepository
 {
@@ -9,4 +9,10 @@ public interface IApplicationRepository
     /// </summary>
     /// <param name="irasApplication">The application values</param>
     Task<IrasApplication> CreateApplication(IrasApplication irasApplication);
+
+    Task<IrasApplication> GetApplication(int applicationId);
+
+    Task<IEnumerable<IrasApplication>> GetApplications();
+
+    Task<IrasApplication> UpdateApplication(int applicationId, IrasApplication irasApplication);
 }

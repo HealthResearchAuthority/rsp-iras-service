@@ -1,8 +1,10 @@
 using System.Reflection;
 using Microsoft.OpenApi.Models;
 using Rsp.IrasService.Application.Contracts;
+using Rsp.IrasService.Application.Repositories;
 using Rsp.IrasService.Services;
 using Rsp.IrasService.Infrastructure;
+using Rsp.IrasService.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,6 +34,7 @@ services.AddSwaggerGen(options =>
 // add the categories service to the DI container
 services.AddTransient<ICategoriesService, CategoriesService>();
 services.AddTransient<IApplicationsService, ApplicationsService>();
+services.AddTransient<IApplicationRepository, ApplicationRepository>();
 
 var app = builder.Build();
 

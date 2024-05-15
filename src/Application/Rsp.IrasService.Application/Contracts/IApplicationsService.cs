@@ -1,4 +1,5 @@
 ﻿using Rsp.IrasService.Application.DTOs;
+using Rsp.IrasService.Application.Responses;
 using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Application.Contracts;
@@ -15,17 +16,20 @@ public interface IApplicationsService
     Task<CreateApplicationResponse> CreateApplication(CreateApplicationRequest irasApplication);
 
     /// <summary>
-    /// Returns an application
+    /// Returns a single application
     /// </summary>
     /// <param name="applicationId">Id of the application</param>
-    Task<IrasApplication> GetApplication(int applicationId);
+    Task<GetApplicationResponse> GetApplication(int applicationId);
 
-    Task<IEnumerable<IrasApplication>> GetApplications();
+    /// <summary>
+    /// Returns all applications
+    /// </summary>
+    Task<IEnumerable<GetApplicationResponse>> GetApplications();
 
     /// <summary>
     /// Updates the values of an application
     /// </summary>
     /// <param name="applicationId">Id of the application</param>
     /// <param name="irasApplication">The application values</param>
-    Task UpdateApplication(int applicationId, IrasApplication irasApplication);
+    Task<CreateApplicationResponse> UpdateApplication(int applicationId, CreateApplicationRequest irasApplication);
 }
