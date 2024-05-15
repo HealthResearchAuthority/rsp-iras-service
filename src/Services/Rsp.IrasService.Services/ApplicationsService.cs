@@ -1,6 +1,8 @@
 ﻿using Mapster;
 using Rsp.IrasService.Application.Contracts;
 using Rsp.IrasService.Application.DTOs;
+using Rsp.IrasService.Application.Repositories;
+using Rsp.IrasService.Application.Responses;
 using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Services;
@@ -9,30 +11,33 @@ public class ApplicationsService(IApplicationRepository applicationRepository) :
 {
     public async Task<CreateApplicationResponse> CreateApplication(CreateApplicationRequest irasApplicationRequest)
     {
-        // map from CreateApplicationRequest -> IrasApplication
+        var mappedIrasAppReq = irasApplicationRequest.Adapt<IrasApplication>();
 
-        var irasApplication = irasApplicationRequest.Adapt<IrasApplication>();
+        var irasAppFromDb = await applicationRepository.CreateApplication(mappedIrasAppReq);
 
-        // create application
-        var irasApp = await applicationRepository.CreateApplication(irasApplication);
-
-        return irasApp.Adapt<CreateApplicationResponse>();
+        return irasAppFromDb.Adapt<CreateApplicationResponse>();
     }
 
-    public Task<IrasApplication> GetApplication(int applicationId)
+    public async Task<GetApplicationResponse> GetApplication(int applicationId)
     {
-        // get application
-        return Task.FromResult(new IrasApplication { });
+        var irasAppFromDb = await applicationRepository.GetApplication(applicationId);
+
+        return irasAppFromDb.Adapt<GetApplicationResponse>();
     }
 
-    public Task<IEnumerable<IrasApplication>> GetApplications()
+    public async Task<IEnumerable<GetApplicationResponse>> GetApplications()
     {
-        return Task.FromResult(new IrasApplication[] { }.AsEnumerable());
+        var applicationsFromDb = await applicationRepository.GetApplications();
+
+        return applicationsFromDb.Adapt<IEnumerable<GetApplicationResponse>>();
     }
 
-    public Task UpdateApplication(int applicationId, IrasApplication irasApplication)
+    public async Task<CreateApplicationResponse> UpdateApplication(int applicationId, CreateApplicationRequest irasApplicationRequest)
     {
-        //update application
-        return Task.CompletedTask;
+        var mappedIrasAppReq = irasApplicationRequest.Adapt<IrasApplication>();
+
+        var updatedIrasAppFromDb = await applicationRepository.UpdateApplication(applicationId, mappedIrasAppReq);
+
+        return updatedIrasAppFromDb.Adapt<CreateApplicationResponse>();
     }
 }

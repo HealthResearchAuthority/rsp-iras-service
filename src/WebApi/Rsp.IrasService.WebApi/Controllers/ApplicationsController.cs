@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Application.Contracts;
 using Rsp.IrasService.Application.DTOs;
+using Rsp.IrasService.Application.Responses;
 using Rsp.IrasService.Domain.Entities;
 using Rsp.IrasService.Infrastructure;
 
@@ -9,54 +10,43 @@ namespace Rsp.IrasService.WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ApplicationsController(ILogger<CategoriesController> logger, IApplicationsService applicationsService, IrasContext irasContext) : ControllerBase
+public class ApplicationsController(ILogger<ApplicationsController> logger, IApplicationsService applicationsService) : ControllerBase
 {
     [HttpGet()]
     [Produces<IrasApplication>]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IrasApplication?> GetApplication(int id)
+    public async Task<GetApplicationResponse> GetApplication(int id)
     {
         logger.LogInformation("Getting application with ID = {id}", id);
 
-        return await irasContext.IrasApplications.FirstOrDefaultAsync(record => record.Id == id);
+        return await applicationsService.GetApplication(id);
     }
 
     [HttpGet("all")]
     [Produces<IEnumerable<IrasApplication>>]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IEnumerable<IrasApplication>> GetApplications()
+    public async Task<IEnumerable<GetApplicationResponse>> GetApplications()
     {
         logger.LogInformation("Getting all applications");
 
-        return await Task.FromResult(irasContext.IrasApplications.AsEnumerable());
+        return await applicationsService.GetApplications();
     }
 
     [HttpPost()]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<CreateApplicationResponse> CreateApplication(CreateApplicationRequest irasApplication)
+    public async Task<CreateApplicationResponse> CreateApplication(CreateApplicationRequest irasApplicationRequest)
     {
         logger.LogInformation("Creating IRAS application");
 
-        return await applicationsService.CreateApplication(irasApplication);
+        return await applicationsService.CreateApplication(irasApplicationRequest);
     }
 
     [HttpPost("update")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task UpdateApplication(int id, CreateApplicationRequest irasApplication)
+    public async Task<CreateApplicationResponse> UpdateApplication(int id, CreateApplicationRequest irasApplicationRequest)
     {
         logger.LogInformation("Update IRAS application with ID: {id}", id);
 
-        var application = irasContext.IrasApplications.FirstOrDefault(record => record.Id == id);
-
-        if (application != null)
-        {
-            application.Title = irasApplication.Title;
-            application.Location = irasApplication.Location;
-            application.StartDate = irasApplication.StartDate;
-            application.ApplicationCategories = irasApplication.ApplicationCategories;
-            application.ProjectCategory = irasApplication.ProjectCategory;
-
-            await irasContext.SaveChangesAsync();
-        }
+        return await applicationsService.UpdateApplication(id, irasApplicationRequest);
     }
 }
