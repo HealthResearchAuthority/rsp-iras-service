@@ -1,10 +1,13 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Rsp.IrasService.Application.Contracts;
 
 namespace Rsp.IrasService.WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class CategoriesController(ILogger<CategoriesController> logger, ICategoriesService categoriesService) : ControllerBase
 {
     /// <summary>
@@ -12,7 +15,6 @@ public class CategoriesController(ILogger<CategoriesController> logger, ICategor
     /// </summary>
     [HttpGet("apps")]
     [Produces<IEnumerable<string>>]
-    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IEnumerable<string>> GetApplicationCategories()
     {
         logger.LogInformation("Getting Application Categories");
@@ -25,7 +27,6 @@ public class CategoriesController(ILogger<CategoriesController> logger, ICategor
     /// </summary>
     /// <param name="category">Application Category Name</param>
     [HttpPost("apps")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task AddApplicationCategory(string category)
     {
         logger.LogInformation("Adding Application Category");
@@ -38,7 +39,6 @@ public class CategoriesController(ILogger<CategoriesController> logger, ICategor
     /// </summary>
     [HttpGet("projects")]
     [Produces<IEnumerable<string>>]
-    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IEnumerable<string>> GetProjectCategories()
     {
         logger.LogInformation("Getting Project Categories");
@@ -51,7 +51,6 @@ public class CategoriesController(ILogger<CategoriesController> logger, ICategor
     /// </summary>
     /// <param name="category">Project Category Name</param>
     [HttpPost("projects")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task AddProjectCategory(string category)
     {
         logger.LogInformation("Adding Project Category");

@@ -1,0 +1,19 @@
+@baseUrl = http://localhost:5067
+@idgUrl = https://dev.id.nihr.ac.uk/oauth2/authorize
+@authToken = Bearer REPLACE_ME_WITH_JWT_FOR_TESTING_BUT_DONT_COMMIT
+@clientId = PROVIDE_CLIENT_ID_BUT_DONT_COMMIT
+
+GET {{baseUrl}}/categories/apps
+Authorization: {{authToken}}
+###
+
+GET {{baseUrl}}/categories/projects
+Authorization: {{authToken}}
+###
+
+POST {{baseUrl}}/categories/apps?category=App1
+Authorization: {{authToken}}
+###
+
+POST {{baseUrl}}/categories/projects?category=Project1
+Authorization: {{authToken}}

@@ -1,4 +1,4 @@
-﻿using Rsp.IrasService.Application.DTOs;
+﻿using Rsp.IrasService.Application.Requests;
 using Rsp.IrasService.Application.Responses;
 using Rsp.IrasService.Domain.Entities;
 

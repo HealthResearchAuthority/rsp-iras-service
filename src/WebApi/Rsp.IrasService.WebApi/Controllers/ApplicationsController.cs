@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Rsp.IrasService.Application.Contracts;
-using Rsp.IrasService.Application.DTOs;
+using Rsp.IrasService.Application.Requests;
 using Rsp.IrasService.Application.Responses;
 using Rsp.IrasService.Domain.Entities;
-using Rsp.IrasService.Infrastructure;
 
 namespace Rsp.IrasService.WebApi.Controllers;
 

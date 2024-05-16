@@ -1,6 +1,6 @@
 ﻿using Rsp.IrasService.Domain.Enums;
 
-namespace Rsp.IrasService.Application.DTOs;
+namespace Rsp.IrasService.Application.Requests;
 
 public class CreateApplicationRequest
 {
