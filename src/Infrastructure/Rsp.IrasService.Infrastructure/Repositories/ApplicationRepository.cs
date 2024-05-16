@@ -25,9 +25,9 @@ public class ApplicationRepository(IrasContext irasContext) : IApplicationReposi
         throw new NotImplementedException();
     }
 
-    public async Task<IEnumerable<IrasApplication>> GetApplications()
+    public Task<IEnumerable<IrasApplication>> GetApplications()
     {
-        return await Task.FromResult(irasContext.IrasApplications.AsEnumerable());
+        return Task.FromResult(irasContext.IrasApplications.AsEnumerable());
     }
 
     public async Task<IrasApplication> UpdateApplication(int applicationId, IrasApplication irasApplication)
