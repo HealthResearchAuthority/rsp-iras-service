@@ -7,6 +7,7 @@ using Rsp.IrasService.Configuration.Database;
 using Rsp.IrasService.Configuration.Dependencies;
 using Rsp.IrasService.Configuration.Swagger;
 using Rsp.IrasService.Extensions;
+using Rsp.Logging.Middlewares.CorrelationId;
 using Rsp.Logging.Middlewares.RequestTracing;
 using Serilog;
 
@@ -81,6 +82,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCorrelationId();
 
 app.UseRouting();
 
