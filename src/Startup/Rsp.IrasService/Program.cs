@@ -10,7 +10,7 @@ using Rsp.IrasService.Configuration.Swagger;
 using Rsp.IrasService.Extensions;
 using Rsp.Logging.Middlewares.CorrelationId;
 using Rsp.Logging.Middlewares.RequestTracing;
-using Serilog;
+using Rsp.ServiceDefaults;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,14 +19,10 @@ builder
     .Configuration
     .AddJsonFile("logsettings.json");
 
-builder
-    .Host
-    .UseSerilog
-    (
-        (host, logger) => logger
-            .ReadFrom.Configuration(host.Configuration)
-            .Enrich.WithCorrelationIdHeader()
-    );
+// this method is called by multiple projects
+// serilog settings has been moved here, as all projects
+// would need it
+builder.AddServiceDefaults();
 
 var services = builder.Services;
 var configuration = builder.Configuration;
@@ -75,9 +71,7 @@ services.AddSwagger();
 
 var app = builder.Build();
 
-app
-    .MapHealthChecks("/health")
-    .ShortCircuit();
+app.MapDefaultEndpoints();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

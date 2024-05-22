@@ -360,3 +360,9 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Don't include .vscode
+.vscode
+
+# Don't include .sonarlint
+.sonarlint
