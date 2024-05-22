@@ -1,6 +1,5 @@
 ﻿using Rsp.IrasService.Application.Requests;
 using Rsp.IrasService.Application.Responses;
-using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Application.Contracts;
 
