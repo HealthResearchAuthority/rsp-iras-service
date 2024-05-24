@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Rsp.IrasService.Application.Commands;
 using Rsp.IrasService.Application.Queries;
@@ -15,7 +14,6 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
 {
     [HttpGet()]
     [Produces<IrasApplication>]
-    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<GetApplicationResponse> GetApplication(int id)
     {
         var query = new GetApplicationQuery(id);
