@@ -25,7 +25,6 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
 
     [HttpGet("all")]
     [Produces<IEnumerable<IrasApplication>>]
-    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IEnumerable<GetApplicationResponse>> GetApplications()
     {
         var query = new GetApplicationsQuery();
@@ -34,7 +33,6 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost()]
-    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<CreateApplicationResponse> CreateApplication(CreateApplicationRequest createApplicationRequest)
     {
         var request = new CreateApplicationCommand(createApplicationRequest);
@@ -43,7 +41,6 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost("update")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<CreateApplicationResponse> UpdateApplication(int id, CreateApplicationRequest irasApplicationRequest)
     {
         var request = new UpdateApplicationCommand(id, irasApplicationRequest);

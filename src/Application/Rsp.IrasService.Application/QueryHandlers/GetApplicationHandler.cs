@@ -4,7 +4,7 @@ using Rsp.IrasService.Application.Contracts;
 using Rsp.IrasService.Application.Queries;
 using Rsp.IrasService.Application.Responses;
 
-namespace Rsp.IrasService.Application.Handlers;
+namespace Rsp.IrasService.Application.QueryHandlers;
 
 public class GetApplicationHandler(ILogger<GetApplicationHandler> logger, IApplicationsService applicationsService) : IRequestHandler<GetApplicationQuery, GetApplicationResponse>
 {

@@ -4,7 +4,7 @@ using Rsp.IrasService.Application.Commands;
 using Rsp.IrasService.Application.Contracts;
 using Rsp.IrasService.Application.Responses;
 
-namespace Rsp.IrasService.Application.Handlers;
+namespace Rsp.IrasService.Application.CommandHandlers;
 
 public class CreateApplicationHandler(ILogger<CreateApplicationHandler> logger, IApplicationsService applicationsService) : IRequestHandler<CreateApplicationCommand, CreateApplicationResponse>
 {

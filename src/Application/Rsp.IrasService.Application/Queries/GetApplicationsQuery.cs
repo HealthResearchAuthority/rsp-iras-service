@@ -3,6 +3,4 @@ using Rsp.IrasService.Application.Responses;
 
 namespace Rsp.IrasService.Application.Queries;
 
-public class GetApplicationsQuery : IRequest<IEnumerable<GetApplicationResponse>>
-{
-}
+public class GetApplicationsQuery : IRequest<IEnumerable<GetApplicationResponse>>;
