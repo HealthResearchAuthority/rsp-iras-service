@@ -10,7 +10,7 @@ public class GetApplicationHandler(ILogger<GetApplicationHandler> logger, IAppli
 {
     public async Task<GetApplicationResponse> Handle(GetApplicationQuery request, CancellationToken cancellationToken)
     {
-        logger.LogInformation("Getting application with ID = {id}", request.Id);
+        logger.LogInformation("Getting application with ID = {Id}", request.Id);
 
         return await applicationsService.GetApplication(request.Id);
     }

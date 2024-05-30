@@ -16,7 +16,8 @@ internal static class IrasApplicationData
                 Location = Location.England,
                 StartDate = DateTime.Now,
                 ApplicationCategories = ["Application category 1", "Application category 2"],
-                ProjectCategory = "Project category 1"
+                ProjectCategory = "Project category 1",
+                Status = "pending"
             },
             new()
             {
@@ -25,7 +26,8 @@ internal static class IrasApplicationData
                 Location = Location.Scotland,
                 StartDate = DateTime.Now,
                 ApplicationCategories = ["Application category 1", "Application category 2"],
-                ProjectCategory = "Project category 2"
+                ProjectCategory = "Project category 2",
+                Status = "approved"
             }
         ];
     }

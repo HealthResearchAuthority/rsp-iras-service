@@ -8,7 +8,7 @@ namespace Rsp.IrasService.Extensions;
 /// Define an extension method on WebApplication to support migrating and seeding the database
 /// </summary>
 [ExcludeFromCodeCoverage]
-public static class HostExtensions
+public static class WebApplicationExtensions
 {
     /// <summary>
     /// Migrates and seed the database.

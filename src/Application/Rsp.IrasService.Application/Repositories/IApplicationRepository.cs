@@ -1,4 +1,5 @@
-﻿using Rsp.IrasService.Domain.Entities;
+﻿using Ardalis.Specification;
+using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Application.Repositories;
 
@@ -13,18 +14,17 @@ public interface IApplicationRepository
     /// <summary>
     /// Return a single application from the database
     /// </summary>
-    /// <param name="applicationId">The application id</param>
-    Task<IrasApplication> GetApplication(int applicationId);
+    Task<IrasApplication> GetApplication(ISpecification<IrasApplication> specification);
 
     /// <summary>
-    /// Return all applications from the database
+    /// Return all or specified number applications from the database
     /// </summary>
-    Task<IEnumerable<IrasApplication>> GetApplications();
+    Task<IEnumerable<IrasApplication>> GetApplications(ISpecification<IrasApplication> specification);
 
     /// <summary>
     /// Update the values of an application in the database
     /// </summary>
-    /// <param name="irasApplication">The application values</param>
     /// <param name="applicationId">The application id</param>
+    /// <param name="irasApplication">The application values</param>
     Task<IrasApplication> UpdateApplication(int applicationId, IrasApplication irasApplication);
 }

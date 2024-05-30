@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Net.Http.Headers;
 using Rsp.IrasService.Application.AuthenticationHelpers;
+using Rsp.IrasService.Application.Authorization.Handlers;
 using Rsp.IrasService.Application.Settings;
 
 namespace Rsp.IrasService.Configuration.Auth;
@@ -23,7 +24,7 @@ public static class AuthConfiguration
     {
         ConfigureJwt(services, appSettings);
 
-        ConfigureAuthorization(services, []);
+        ConfigureAuthorization(services);
 
         return services;
     }
@@ -51,7 +52,6 @@ public static class AuthConfiguration
             },
             OnAuthenticationFailed = context =>
             {
-                // TODO: Add logging when authentication fails?
                 context.Fail(context.Exception);
 
                 return Task.CompletedTask;
@@ -66,16 +66,26 @@ public static class AuthConfiguration
             .AddJwtBearer(authOptions => JwtBearerConfiguration.Configure(authOptions, appSettings, events));
     }
 
-    private static void ConfigureAuthorization(IServiceCollection services, List<string> roles)
+    private static void ConfigureAuthorization(IServiceCollection services)
     {
-        var policy = new AuthorizationPolicyBuilder()
+        // amend the default policy so that
+        // it checks for email and role claim
+        // in addition to just an authenticated user
+        var defaultPolicy = new AuthorizationPolicyBuilder()
             .RequireAuthenticatedUser()
             .RequireClaim(ClaimTypes.Email)
-            .RequireClaim(ClaimTypes.NameIdentifier)
+            .RequireClaim(ClaimTypes.Role)
             .Build();
 
+        // set the default policy for [Authorize] attribute
+        // without a policy name
         services
             .AddAuthorizationBuilder()
-            .SetDefaultPolicy(policy);
+            .SetDefaultPolicy(defaultPolicy);
+
+        // add an authorization handler to handle the application access requirements
+        // for a reviewer. The requirement is linked to the the custom [ApplicationAccess]
+        // Authorize attribute.
+        services.AddSingleton<IAuthorizationHandler, ReviewerAccessRequirementHandler>();
     }
 }

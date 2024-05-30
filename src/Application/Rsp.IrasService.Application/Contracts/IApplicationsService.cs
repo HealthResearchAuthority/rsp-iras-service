@@ -11,8 +11,8 @@ public interface IApplicationsService
     /// <summary>
     /// Adds a new application to the database
     /// </summary>
-    /// <param name="irasApplication">The application values</param>
-    Task<CreateApplicationResponse> CreateApplication(CreateApplicationRequest irasApplication);
+    /// <param name="createApplicationRequest">The application values</param>
+    Task<CreateApplicationResponse> CreateApplication(CreateApplicationRequest createApplicationRequest);
 
     /// <summary>
     /// Returns a single application
@@ -21,14 +21,25 @@ public interface IApplicationsService
     Task<GetApplicationResponse> GetApplication(int applicationId);
 
     /// <summary>
+    /// Returns a single application with the specified status
+    /// </summary>
+    /// <param name="applicationId">Id of the application</param>
+    Task<GetApplicationResponse> GetApplication(int applicationId, string applicationStatus);
+
+    /// <summary>
     /// Returns all applications
     /// </summary>
     Task<IEnumerable<GetApplicationResponse>> GetApplications();
 
     /// <summary>
+    /// Returns all applications with specified status
+    /// </summary>
+    Task<IEnumerable<GetApplicationResponse>> GetApplications(string applicationStatus);
+
+    /// <summary>
     /// Updates the values of an application
     /// </summary>
     /// <param name="applicationId">Id of the application</param>
-    /// <param name="irasApplication">The application values</param>
-    Task<CreateApplicationResponse> UpdateApplication(int applicationId, CreateApplicationRequest irasApplication);
+    /// <param name="createApplicationRequest">The application values</param>
+    Task<CreateApplicationResponse> UpdateApplication(int applicationId, CreateApplicationRequest createApplicationRequest);
 }

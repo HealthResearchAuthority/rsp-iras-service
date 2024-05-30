@@ -2,7 +2,7 @@
 
 namespace Rsp.IrasService.Application.Responses;
 
-public class GetApplicationResponse
+public record GetApplicationResponse
 {
     /// <summary>
     /// The public key for the application database record
@@ -33,4 +33,9 @@ public class GetApplicationResponse
     /// The project category
     /// </summary>
     public string? ProjectCategory { get; set; }
+
+    /// <summary>
+    /// Application Status
+    /// </summary>
+    public string? Status { get; set; }
 }

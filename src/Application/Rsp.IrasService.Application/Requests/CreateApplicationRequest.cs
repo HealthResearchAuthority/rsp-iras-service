@@ -2,7 +2,7 @@
 
 namespace Rsp.IrasService.Application.Requests;
 
-public class CreateApplicationRequest
+public record CreateApplicationRequest
 {
     /// <summary>
     /// The public key for the application database record
@@ -33,4 +33,9 @@ public class CreateApplicationRequest
     /// The project category
     /// </summary>
     public string? ProjectCategory { get; set; }
+
+    /// <summary>
+    /// Application Status
+    /// </summary>
+    public string? Status { get; set; }
 }

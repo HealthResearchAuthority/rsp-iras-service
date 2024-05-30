@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Ardalis.Specification;
+using Ardalis.Specification.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Application.Repositories;
 using Rsp.IrasService.Domain.Entities;
 
@@ -15,9 +17,12 @@ public class ApplicationRepository(IrasContext irasContext) : IApplicationReposi
         return entity.Entity;
     }
 
-    public async Task<IrasApplication> GetApplication(int applicationId)
+    public async Task<IrasApplication> GetApplication(ISpecification<IrasApplication> specification)
     {
-        var entity = await irasContext.IrasApplications.FirstOrDefaultAsync(record => record.Id == applicationId);
+        var entity = await irasContext
+            .IrasApplications
+            .WithSpecification(specification)
+            .FirstOrDefaultAsync();
 
         if (entity != null) return entity;
 
@@ -25,14 +30,21 @@ public class ApplicationRepository(IrasContext irasContext) : IApplicationReposi
         throw new NotImplementedException();
     }
 
-    public Task<IEnumerable<IrasApplication>> GetApplications()
+    public Task<IEnumerable<IrasApplication>> GetApplications(ISpecification<IrasApplication> specification)
     {
-        return Task.FromResult(irasContext.IrasApplications.AsEnumerable());
+        var result = irasContext
+            .IrasApplications
+            .WithSpecification(specification)
+            .AsEnumerable();
+
+        return Task.FromResult(result);
     }
 
     public async Task<IrasApplication> UpdateApplication(int applicationId, IrasApplication irasApplication)
     {
-        var entity = irasContext.IrasApplications.FirstOrDefault(record => record.Id == applicationId);
+        var entity = await irasContext
+            .IrasApplications
+            .FirstOrDefaultAsync(record => record.Id == applicationId);
 
         if (entity != null)
         {
@@ -41,6 +53,7 @@ public class ApplicationRepository(IrasContext irasContext) : IApplicationReposi
             entity.StartDate = irasApplication.StartDate;
             entity.ApplicationCategories = irasApplication.ApplicationCategories;
             entity.ProjectCategory = irasApplication.ProjectCategory;
+            entity.Status = irasApplication.Status;
 
             await irasContext.SaveChangesAsync();
 

@@ -2,7 +2,7 @@
 
 namespace Rsp.IrasService.Domain.Entities
 {
-    public class IrasApplication
+    public record IrasApplication
     {
         /// <summary>
         /// The public key for the application database record
@@ -33,5 +33,10 @@ namespace Rsp.IrasService.Domain.Entities
         /// The project category
         /// </summary>
         public string? ProjectCategory { get; set; }
+
+        /// <summary>
+        /// Status of the Application
+        /// </summary>
+        public string? Status { get; set; }
     }
 }

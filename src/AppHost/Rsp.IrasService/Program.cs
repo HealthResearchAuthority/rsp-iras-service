@@ -1,6 +1,7 @@
 using System.Net.Mime;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Rsp.IrasService.Application.Settings;
 using Rsp.IrasService.Configuration.Auth;
 using Rsp.IrasService.Configuration.Database;
@@ -65,6 +66,8 @@ services
     });
 
 // add default health checks
+services.Configure<HealthCheckPublisherOptions>(options => options.Period = TimeSpan.FromSeconds(300));
+
 services.AddHealthChecks();
 
 // adds the Swagger for the Api Documentation
@@ -72,7 +75,9 @@ services.AddSwagger();
 
 var app = builder.Build();
 
-app.MapHealthChecks("/health");
+app
+    .MapHealthChecks("/health")
+    .ShortCircuit();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
