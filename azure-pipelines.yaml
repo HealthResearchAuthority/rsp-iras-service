@@ -83,6 +83,7 @@ stages:
       - template: jobs/deploy.yaml@library
         parameters:
           install_aspire: true
+          service_defaults_repo: service_defaults
   - stage: systemtest_auto
     jobs:
       #- template: jobs/deploy.yaml@library
