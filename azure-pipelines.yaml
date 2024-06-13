@@ -80,21 +80,10 @@ stages:
           sonar_project_name: rsp-iras-service
           install_aspire: true
           service_defaults_repo: service_defaults
+          
+      - template: jobs/deploy.yaml@library
 
-      #- template: jobs/deploy.yaml@library
-      - job:
-        displayName: Deploy to Dev
-        steps:
-          - task: AzureContainerApps@1
-            inputs:
-              acrName: 'crrspacaypvupdevuks.azurecr.io'
-              containerAppName: 'ca-simple-hello'
-              resourceGroup: 'rg-rsp-aca-spoke-dev-uks'
-              containerAppEnvironment: 'cae-rsp-aca-dev-uks'
-              ingress: 'internal'
-              azureSubscription: $(azureServiceConnection)
-              location: 'uksouth'
-              
+
   - stage: systemtest_auto
     jobs:
       #- template: jobs/deploy.yaml@library
