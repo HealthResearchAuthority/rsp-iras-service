@@ -85,16 +85,13 @@ stages:
       - job:
         displayName: Deploy to Dev
         steps:
-          - task: AzureContainerApps@1
-            inputs:
-              acrName: 'crrspacaypvupdevuks.azurecr.io'
-              containerAppName: 'ca-simple-hello'
-              resourceGroup: 'rg-rsp-aca-spoke-dev-uks'
-              containerAppEnvironment: 'cae-rsp-aca-dev-uks'
-              ingress: 'internal'
-              azureSubscription: $(azureServiceConnection)
-              location: 'uksouth'
-              appSourcePath: $(Build.SourcesDirectory)
+        - task: DotNetCoreCLI@2
+          displayName: 'Publish container'
+          inputs:
+            command: "publish"
+            projects: '$(solution)'
+            publishWebProjects: false
+            arguments: '-t:PublishContainer ContainerImageTags=$(Build.BuildId)'
               
   - stage: systemtest_auto
     jobs:
