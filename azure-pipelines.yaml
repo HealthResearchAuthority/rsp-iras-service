@@ -83,7 +83,7 @@ stages:
 
       #- template: jobs/deploy.yaml@library
       - job:
-        dependsOn: 
+        condition: succeeded()
         displayName: Deploy to Dev
         steps:
         - task: DotNetCoreCLI@2
