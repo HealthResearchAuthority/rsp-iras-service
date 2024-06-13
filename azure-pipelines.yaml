@@ -90,7 +90,7 @@ stages:
           displayName: 'Publish container'
           inputs:
             command: "publish"
-            projects: '$(solution)'
+            projects: '**/**/Rsp.IrasService.csproj'
             publishWebProjects: false
             arguments: '-t:PublishContainer'
             
