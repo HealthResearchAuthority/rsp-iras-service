@@ -85,6 +85,9 @@ stages:
       - job:
         displayName: Deploy to Dev
         steps:
+        - task: DockerInstaller@0
+          inputs:
+            dockerVersion: '17.09.0-ce'
         - task: DotNetCoreCLI@2
           displayName: 'Publish container'
           inputs:
