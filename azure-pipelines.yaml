@@ -86,6 +86,7 @@ stages:
         dependsOn: Build
         displayName: Deploy to Dev
         steps:
+        - checkout: service_defaults
         - task: DotNetCoreCLI@2
           displayName: 'Publish container'
           inputs:
