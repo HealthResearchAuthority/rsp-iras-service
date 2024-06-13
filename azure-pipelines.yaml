@@ -83,11 +83,9 @@ stages:
 
       #- template: jobs/deploy.yaml@library
       - job:
+        dependsOn: 
         displayName: Deploy to Dev
         steps:
-        - task: DockerInstaller@0
-          inputs:
-            dockerVersion: '17.09.0-ce'
         - task: DotNetCoreCLI@2
           displayName: 'Publish container'
           inputs:
@@ -95,7 +93,7 @@ stages:
             projects: '$(solution)'
             publishWebProjects: false
             arguments: '-t:PublishContainer'
-              
+            
   - stage: systemtest_auto
     jobs:
       #- template: jobs/deploy.yaml@library
