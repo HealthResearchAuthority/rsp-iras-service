@@ -94,6 +94,7 @@ stages:
               ingress: 'internal'
               azureSubscription: $(azureServiceConnection)
               location: 'uksouth'
+              appSourcePath: $(Build.SourcesDirectory)
               
   - stage: systemtest_auto
     jobs:
