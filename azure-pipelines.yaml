@@ -94,7 +94,7 @@ stages:
             command: "publish"
             projects: '$(solution)'
             publishWebProjects: false
-            arguments: "-t:PublishContainer ContainerImageTags='$(Build.BuildId)'"
+            arguments: '-t:PublishContainer'
               
   - stage: systemtest_auto
     jobs:
