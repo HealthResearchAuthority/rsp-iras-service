@@ -80,10 +80,7 @@ stages:
           sonar_project_name: rsp-iras-service
           install_aspire: true
           service_defaults_repo: service_defaults
-          
       - template: jobs/deploy.yaml@library
-
-
   - stage: systemtest_auto
     jobs:
       #- template: jobs/deploy.yaml@library
