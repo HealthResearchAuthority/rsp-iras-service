@@ -86,7 +86,9 @@ stages:
         dependsOn: Build
         displayName: Deploy to Dev
         steps:
+        - checkout: self
         - checkout: service_defaults
+        - bash: echo '$(System.DefaultWorkingDirectory)/rsp-iras-service/src/Startup/Rsp.IrasService/Rsp.IrasService.csproj'
         - task: DotNetCoreCLI@2
           displayName: 'Publish container'
           inputs:
