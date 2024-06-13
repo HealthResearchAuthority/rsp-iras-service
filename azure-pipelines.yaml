@@ -90,9 +90,10 @@ stages:
           displayName: 'Publish container'
           inputs:
             command: "publish"
-            projects: '**/**/Rsp.IrasService.csproj'
+            projects: '$(System.DefaultWorkingDirectory)/**/Rsp.IrasService.csproj'
             publishWebProjects: false
             arguments: '-t:PublishContainer'
+        
             
   - stage: systemtest_auto
     jobs:
