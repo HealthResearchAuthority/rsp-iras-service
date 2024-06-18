@@ -50,8 +50,6 @@ variables:
     value: "**/*.csproj"
   - name: buildConfiguration
     value: "Release"
-  - name: buildid
-    value: '$(Build.BuildId)'
 
 resources:
   repositories:
