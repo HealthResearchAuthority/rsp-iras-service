@@ -34,12 +34,6 @@ internal class Program
         var appSettingsSection = configuration.GetSection(nameof(AppSettings));
         var appSettings = appSettingsSection.Get<AppSettings>();
 
-        // Retrieve the connection string
-        string connectionString = builder.Configuration.GetConnectionString("AppConfig");
-
-        // Load configuration from Azure App Configuration
-        builder.Configuration.AddAzureAppConfiguration(connectionString);
-
         // adds sql server database context
         services.AddDatabase(configuration);
 
