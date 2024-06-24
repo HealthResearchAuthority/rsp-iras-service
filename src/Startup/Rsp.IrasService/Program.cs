@@ -12,97 +12,91 @@ using Rsp.Logging.Middlewares.CorrelationId;
 using Rsp.Logging.Middlewares.RequestTracing;
 using Rsp.ServiceDefaults;
 
-internal class Program
-{
-    private static async Task Main(string[] args)
+var builder = WebApplication.CreateBuilder(args);
+
+//Add logger
+builder
+    .Configuration
+    .AddJsonFile("logsettings.json");
+
+// this method is called by multiple projects
+// serilog settings has been moved here, as all projects
+// would need it
+builder.AddServiceDefaults();
+
+var services = builder.Services;
+var configuration = builder.Configuration;
+
+var appSettingsSection = configuration.GetSection(nameof(AppSettings));
+var appSettings = appSettingsSection.Get<AppSettings>();
+
+// adds sql server database context
+services.AddDatabase(configuration);
+
+// Add services to the container.
+services.AddServices();
+
+services.AddHttpContextAccessor();
+
+// routing configuration
+services.AddRouting(options => options.LowercaseUrls = true);
+
+// configures the authentication and authorization
+services.AddAuthenticationAndAuthorization(appSettings!);
+
+services
+    .AddControllers(options =>
     {
-        var builder = WebApplication.CreateBuilder(args);
+        options.Filters.Add(new ProducesAttribute(MediaTypeNames.Application.Json));
+        options.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status200OK));
+        options.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status400BadRequest));
+        options.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status403Forbidden));
+        options.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status500InternalServerError));
+        options.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status503ServiceUnavailable));
+    })
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+        options.JsonSerializerOptions.PropertyNamingPolicy = null;
+        options.JsonSerializerOptions.ReadCommentHandling = JsonCommentHandling.Skip;
+    });
 
-        //Add logger
-        builder
-            .Configuration
-            .AddJsonFile("logsettings.json");
+// add default health checks
+services.Configure<HealthCheckPublisherOptions>(options => options.Period = TimeSpan.FromSeconds(300));
 
-        // this method is called by multiple projects
-        // serilog settings has been moved here, as all projects
-        // would need it
-        builder.AddServiceDefaults();
+services.AddHealthChecks();
 
-        var services = builder.Services;
-        var configuration = builder.Configuration;
+// adds the Swagger for the Api Documentation
+services.AddSwagger();
 
-        var appSettingsSection = configuration.GetSection(nameof(AppSettings));
-        var appSettings = appSettingsSection.Get<AppSettings>();
+var app = builder.Build();
 
-        // adds sql server database context
-        services.AddDatabase(configuration);
+app.MapDefaultEndpoints();
 
-        // Add services to the container.
-        services.AddServices();
-
-        services.AddHttpContextAccessor();
-
-        // routing configuration
-        services.AddRouting(options => options.LowercaseUrls = true);
-
-        // configures the authentication and authorization
-        services.AddAuthenticationAndAuthorization(appSettings!);
-
-        services
-            .AddControllers(options =>
-            {
-                options.Filters.Add(new ProducesAttribute(MediaTypeNames.Application.Json));
-                options.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status200OK));
-                options.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status400BadRequest));
-                options.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status403Forbidden));
-                options.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status500InternalServerError));
-                options.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status503ServiceUnavailable));
-            })
-            .AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-                options.JsonSerializerOptions.PropertyNamingPolicy = null;
-                options.JsonSerializerOptions.ReadCommentHandling = JsonCommentHandling.Skip;
-            });
-
-        // add default health checks
-        services.Configure<HealthCheckPublisherOptions>(options => options.Period = TimeSpan.FromSeconds(300));
-
-        services.AddHealthChecks();
-
-        // adds the Swagger for the Api Documentation
-        services.AddSwagger();
-
-        var app = builder.Build();
-
-        app.MapDefaultEndpoints();
-
-        // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
-
-        app.UseHttpsRedirection();
-
-        app.UseCorrelationId();
-
-        app.UseRouting();
-
-        app.UseAuthentication();
-
-        // and sets the logging scope to include correlationId and username
-        // NOTE: Needs to be after UseAuthentication in the pipeline so it can extract the claims values
-        app.UseRequestTracing();
-
-        app.UseAuthorization();
-
-        app.MapControllers();
-
-        // run the database migration and seed the data
-        await app.MigrateAndSeedDatabaseAsync();
-
-        await app.RunAsync();
-    }
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+
+app.UseHttpsRedirection();
+
+app.UseCorrelationId();
+
+app.UseRouting();
+
+app.UseAuthentication();
+
+// and sets the logging scope to include correlationId and username
+// NOTE: Needs to be after UseAuthentication in the pipeline so it can extract the claims values
+app.UseRequestTracing();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+// run the database migration and seed the data
+await app.MigrateAndSeedDatabaseAsync();
+
+await app.RunAsync();
