@@ -26,4 +26,10 @@ public class ProbesController: ControllerBase
         return Ok();
     }
 
+    [HttpGet("startup")]
+    public IActionResult Startup()
+    {
+        return Ok();
+    }
+
 }
