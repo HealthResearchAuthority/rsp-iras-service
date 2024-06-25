@@ -11,6 +11,7 @@ using Rsp.IrasService.Extensions;
 using Rsp.Logging.Middlewares.CorrelationId;
 using Rsp.Logging.Middlewares.RequestTracing;
 using Rsp.ServiceDefaults;
+using Azure.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,18 @@ builder.AddServiceDefaults();
 var services = builder.Services;
 var configuration = builder.Configuration;
 
+if (!builder.Environment.IsDevelopment())
+{
+    var azureAppConfigSection = configuration.GetSection(nameof(AppSettings.AzureAppConfiguration));
+    var azureAppConfiguration = azureAppConfigSection.Get<AzureAppConfigurations>();
+
+    // Load configuration from Azure App Configuration
+    builder.Configuration.AddAzureAppConfiguration(options =>
+        options.Connect(
+            new Uri(azureAppConfiguration!.Endpoint),
+            new ManagedIdentityCredential(azureAppConfiguration.IdentityClientID)));
+}
+
 var appSettingsSection = configuration.GetSection(nameof(AppSettings));
 var appSettings = appSettingsSection.Get<AppSettings>();
 
@@ -35,7 +48,7 @@ services.AddDatabase(configuration);
 
 // Add services to the container.
 services.AddServices();
-
+    
 services.AddHttpContextAccessor();
 
 // routing configuration
@@ -70,7 +83,6 @@ services.AddHealthChecks();
 services.AddSwagger();
 
 var app = builder.Build();
-
 app.MapDefaultEndpoints();
 
 // Configure the HTTP request pipeline.
