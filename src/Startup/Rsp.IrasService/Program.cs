@@ -30,14 +30,14 @@ var configuration = builder.Configuration;
 
 if (!builder.Environment.IsDevelopment())
 {
-    var azureAppConfigSection = configuration.GetSection(nameof(AppSettings.AzureAppConfiguration));
-    var azureAppConfiguration = azureAppConfigSection.Get<AzureAppConfigurations>();
+    var azureAppConfigSection = configuration.GetSection(nameof(AppSettings));
+    var azureAppConfiguration = azureAppConfigSection.Get<AppSettings>();
 
     // Load configuration from Azure App Configuration
     builder.Configuration.AddAzureAppConfiguration(options =>
         options.Connect(
-            new Uri(azureAppConfiguration!.Endpoint),
-            new ManagedIdentityCredential(azureAppConfiguration.IdentityClientID)));
+            new Uri(azureAppConfiguration!.AzureAppConfiguration.Endpoint),
+            new ManagedIdentityCredential(azureAppConfiguration.AzureAppConfiguration.IdentityClientID)));
 }
 
 var appSettingsSection = configuration.GetSection(nameof(AppSettings));
