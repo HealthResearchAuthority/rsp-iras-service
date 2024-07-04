@@ -18,7 +18,8 @@ var builder = WebApplication.CreateBuilder(args);
 //Add logger
 builder
     .Configuration
-    .AddJsonFile("logsettings.json");
+    .AddJsonFile("logsettings.json")
+    .AddEnvironmentVariables();
 
 // this method is called by multiple projects
 // serilog settings has been moved here, as all projects
