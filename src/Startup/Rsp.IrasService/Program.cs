@@ -112,4 +112,4 @@ app.MapControllers();
 // run the database migration and seed the data
 await app.MigrateAndSeedDatabaseAsync();
 
-await app.RunAsync();
+// await app.RunAsync();
