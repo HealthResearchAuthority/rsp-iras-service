@@ -1,5 +1,6 @@
 using System.Net.Mime;
 using System.Text.Json;
+using Azure.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Rsp.IrasService.Application.Settings;
@@ -11,7 +12,6 @@ using Rsp.IrasService.Extensions;
 using Rsp.Logging.Middlewares.CorrelationId;
 using Rsp.Logging.Middlewares.RequestTracing;
 using Rsp.ServiceDefaults;
-using Azure.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,7 +49,7 @@ services.AddDatabase(configuration);
 
 // Add services to the container.
 services.AddServices();
-    
+
 services.AddHttpContextAccessor();
 
 // routing configuration
@@ -112,4 +112,4 @@ app.MapControllers();
 // run the database migration and seed the data
 await app.MigrateAndSeedDatabaseAsync();
 
-// await app.RunAsync();
+await app.RunAsync();
