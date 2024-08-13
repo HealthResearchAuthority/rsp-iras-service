@@ -47,5 +47,3 @@ dotnet build
 ```
 dotnet run --project .\src\WebApi\Rsp.IrasService.WebApi\
 ```
-
-Adding semver
