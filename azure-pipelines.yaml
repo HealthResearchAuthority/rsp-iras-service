@@ -50,6 +50,8 @@ variables:
     value: "**/*.csproj"
   - name: projectForContainerBuild
     value: "Rsp.IrasService.csproj"
+  - name: publishContainerName
+    value: "rsp-irasservice" 
   - name: acrContainerName
     value: "rsp-irasservice"
   - name: containerAppName
