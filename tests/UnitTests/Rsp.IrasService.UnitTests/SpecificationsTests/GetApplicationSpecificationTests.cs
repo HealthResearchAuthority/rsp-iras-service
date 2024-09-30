@@ -9,12 +9,12 @@ namespace Rsp.IrasService.UnitTests.SpecificationsTests
     public class GetApplicationSpecificationTests
     {
         [Theory, AutoData]
-        public void GetApplicationSpecification_ById_ReturnsCorrectSpecification(Generator<IrasApplication> generator)
+        public void GetApplicationSpecification_ById_ReturnsCorrectSpecification(Generator<ResearchApplication> generator)
         {
             // Arrange
             var applications = generator.Take(3).ToList();
 
-            var spec = new GetApplicationSpecification(applications[0].Id);
+            var spec = new GetApplicationSpecification(id: applications[0].ApplicationId);
 
             // Act
             var result = spec
@@ -23,11 +23,11 @@ namespace Rsp.IrasService.UnitTests.SpecificationsTests
 
             // Assert
             result.ShouldNotBeNull();
-            result.Id.ShouldBe(applications[0].Id);
+            result.ApplicationId.ShouldBe(applications[0].ApplicationId);
         }
 
         [Theory, InlineAutoData(5, 5), InlineAutoData(0, 10)]
-        public void GetApplicationSpecification_ByRecords_ReturnsCorrectSpecification(int records, int expected, Generator<IrasApplication> generator)
+        public void GetApplicationSpecification_ByRecords_ReturnsCorrectSpecification(int records, int expected, Generator<ResearchApplication> generator)
         {
             // Arrange
             var applications = generator.Take(10).ToList();
@@ -45,7 +45,7 @@ namespace Rsp.IrasService.UnitTests.SpecificationsTests
         }
 
         [Theory, AutoData]
-        public void GetApplicationSpecification_ByStatusAndId_ReturnsCorrectSpecification(Generator<IrasApplication> generator)
+        public void GetApplicationSpecification_ByStatusAndId_ReturnsCorrectSpecification(Generator<ResearchApplication> generator)
         {
             // Arrange
             var applications = generator.Take(10).ToList();
@@ -54,7 +54,7 @@ namespace Rsp.IrasService.UnitTests.SpecificationsTests
             applications[2].Status = "pending";
 
             // out of 10 records, it should return a single record
-            var spec = new GetApplicationSpecification("pending", applications[1].Id);
+            var spec = new GetApplicationSpecification("pending", applications[1].ApplicationId);
 
             // Act
             var result = spec
@@ -63,11 +63,11 @@ namespace Rsp.IrasService.UnitTests.SpecificationsTests
 
             // Assert
             result.Count.ShouldBe(1);
-            result[0].Id.ShouldBe(applications[1].Id);
+            result[0].ApplicationId.ShouldBe(applications[1].ApplicationId);
         }
 
         [Theory, InlineAutoData(5, 2), InlineAutoData(0, 2)]
-        public void GetApplicationSpecification_ByStatusAndRecords_ReturnsCorrectSpecification(int records, int expected, Generator<IrasApplication> generator)
+        public void GetApplicationSpecification_ByStatusAndRecords_ReturnsCorrectSpecification(int records, int expected, Generator<ResearchApplication> generator)
         {
             // Arrange
             var applications = generator.Take(10).ToList();

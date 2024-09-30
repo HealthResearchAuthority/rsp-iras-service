@@ -1,4 +1,4 @@
-﻿namespace Rsp.QuestionSetService.Application.Contracts.Services;
+﻿namespace Rsp.IrasService.Application.Contracts;
 
 public interface IResearchApplicationService
 {

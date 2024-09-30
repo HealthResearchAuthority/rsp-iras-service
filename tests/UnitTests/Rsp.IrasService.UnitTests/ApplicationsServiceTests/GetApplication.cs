@@ -35,7 +35,7 @@ public class GetApplication : TestServiceBase<ApplicationsService>
     /// <param name="records">Number of records to seed</param>
     /// <param name="generator">Test Data Generator</param>
     [Theory, InlineAutoData(5)]
-    public async Task Returns_Application_ById(int records, Generator<IrasApplication> generator)
+    public async Task Returns_Application_ById(int records, Generator<ResearchApplication> generator)
     {
         // Arrange
         Mocker.Use<IApplicationRepository>(_applicationRepository);
@@ -46,7 +46,7 @@ public class GetApplication : TestServiceBase<ApplicationsService>
         var applications = await SeedData(_context, generator, records);
 
         // get the random application id between 0 and 4
-        var applicationId = applications[Random.Shared.Next(0, 4)].Id;
+        var applicationId = applications[Random.Shared.Next(0, 4)].ApplicationId;
 
         // Act
         var irasApplication = await Sut.GetApplication(applicationId);
@@ -63,7 +63,7 @@ public class GetApplication : TestServiceBase<ApplicationsService>
     /// <param name="records">Number of records to seed</param>
     /// <param name="generator">Test Data Generator</param>
     [Theory, InlineAutoData(5)]
-    public async Task Returns_Application_ByIdAndStatus(int records, Generator<IrasApplication> generator)
+    public async Task Returns_Application_ByIdAndStatus(int records, Generator<ResearchApplication> generator)
     {
         // Arrange
         Mocker.Use<IApplicationRepository>(_applicationRepository);
@@ -74,7 +74,7 @@ public class GetApplication : TestServiceBase<ApplicationsService>
         var applications = await SeedData(_context, generator, records, true);
 
         // get the random application id between 0 and 4
-        var applicationId = applications[2].Id;
+        var applicationId = applications[2].ApplicationId;
 
         // Act
         var irasApplication = await Sut.GetApplication(applicationId, "pending");
@@ -90,7 +90,7 @@ public class GetApplication : TestServiceBase<ApplicationsService>
     /// </summary>
     /// <param name="generator">Test data generator</param>
     [Theory, InlineAutoData(5)]
-    public async Task ThrowsException_If_Id_DoesNotExist(int records, Generator<IrasApplication> generator)
+    public async Task ThrowsException_If_Id_DoesNotExist(int records, Generator<ResearchApplication> generator)
     {
         // Arrange
         Mocker.Use<IApplicationRepository>(_applicationRepository);
@@ -101,7 +101,7 @@ public class GetApplication : TestServiceBase<ApplicationsService>
         var applications = await SeedData(_context, generator, records);
 
         // get the id that won't exist
-        var applicationId = Random.Shared.Next(applications.Max(e => e.Id)) + 1;
+        var applicationId = DateTime.Now.ToString("HHmmssddMMyyyy");
 
         // Act/Assert
         await Should.ThrowAsync<NotImplementedException>(Sut.GetApplication(applicationId));

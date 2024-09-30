@@ -1,13 +1,11 @@
-﻿using Rsp.IrasService.Domain.Enums;
-
-namespace Rsp.IrasService.Application.Requests;
+﻿namespace Rsp.IrasService.Application.Requests;
 
 public record CreateApplicationRequest
 {
     /// <summary>
     /// The public key for the application database record
     /// </summary>
-    public int Id { get; set; }
+    public string Id { get; set; }
 
     /// <summary>
     /// The title of the project
@@ -17,7 +15,7 @@ public record CreateApplicationRequest
     /// <summary>
     /// The country of the UK where the lead NHS R&amp;D office for the project is located
     /// </summary>
-    public Location? Location { get; set; }
+    //public Location? Location { get; set; }
 
     /// <summary>
     /// The start date of the project

@@ -18,13 +18,13 @@ public interface IApplicationsService
     /// Returns a single application
     /// </summary>
     /// <param name="applicationId">Id of the application</param>
-    Task<GetApplicationResponse> GetApplication(int applicationId);
+    Task<GetApplicationResponse> GetApplication(string applicationId);
 
     /// <summary>
     /// Returns a single application with the specified status
     /// </summary>
     /// <param name="applicationId">Id of the application</param>
-    Task<GetApplicationResponse> GetApplication(int applicationId, string applicationStatus);
+    Task<GetApplicationResponse> GetApplication(string applicationId, string applicationStatus);
 
     /// <summary>
     /// Returns all applications
@@ -41,5 +41,5 @@ public interface IApplicationsService
     /// </summary>
     /// <param name="applicationId">Id of the application</param>
     /// <param name="createApplicationRequest">The application values</param>
-    Task<CreateApplicationResponse> UpdateApplication(int applicationId, CreateApplicationRequest createApplicationRequest);
+    Task<CreateApplicationResponse> UpdateApplication(string applicationId, CreateApplicationRequest createApplicationRequest);
 }

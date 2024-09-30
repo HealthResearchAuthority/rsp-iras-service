@@ -10,7 +10,7 @@ public class UpdateApplicationHandler(ILogger<UpdateApplicationHandler> logger, 
 {
     public async Task<CreateApplicationResponse> Handle(UpdateApplicationCommand request, CancellationToken cancellationToken)
     {
-        logger.LogInformation("Update IRAS application with ID: {id}", request.Id);
+        logger.LogInformation("Update IRAS application with ID: {Id}", request.Id);
 
         return await applicationsService.UpdateApplication(request.Id, request.CreateApplicationRequest);
     }

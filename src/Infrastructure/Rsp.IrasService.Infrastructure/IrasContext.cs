@@ -1,25 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Domain.Entities;
-using Rsp.IrasService.Infrastructure.SeedData;
+using Rsp.IrasService.Infrastructure.EntitiesConfiguration;
 
 namespace Rsp.IrasService.Infrastructure
 {
-    public class IrasContext : DbContext
+    public class IrasContext(DbContextOptions<IrasContext> options) : DbContext(options)
     {
-        public IrasContext(DbContextOptions<IrasContext> options) : base(options)
-        {
-        }
-
-        public DbSet<IrasApplication> IrasApplications { get; set; }
+        public DbSet<ResearchApplication> ResearchApplications { get; set; }
+        public DbSet<Respondent> Respondents { get; set; }
+        public DbSet<RespondentAnswer> RespondentAnswers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // seed the data as part of initial migration
-            modelBuilder
-                .Entity<IrasApplication>()
-                .HasData(IrasApplicationData.Seed());
+            modelBuilder.ApplyConfiguration(new ResearchApplicationConfiguration());
+            modelBuilder.ApplyConfiguration(new RespondentConfiguration());
+            modelBuilder.ApplyConfiguration(new RespondentAnswerConfiguration());
         }
     }
 }

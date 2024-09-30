@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Rsp.QuestionSetService.Domain.Entities;
+using Rsp.IrasService.Domain.Entities;
 
-namespace Rsp.QuestionSetService.Infrastructure.EntitiesConfiguration;
+namespace Rsp.IrasService.Infrastructure.EntitiesConfiguration;
 
 public class RespondentAnswerConfiguration : IEntityTypeConfiguration<RespondentAnswer>
 {

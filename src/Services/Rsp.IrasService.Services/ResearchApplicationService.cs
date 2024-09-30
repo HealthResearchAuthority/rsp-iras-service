@@ -1,8 +1,7 @@
-﻿using Rsp.QuestionSetService.Application.Contracts.Repositories;
-using Rsp.QuestionSetService.Application.Contracts.Services;
-using Rsp.QuestionSetService.Domain.Entities;
+﻿using Rsp.IrasService.Application.Contracts;
+using Rsp.IrasService.Domain.Entities;
 
-namespace Rsp.QuestionSetService.Services;
+namespace Rsp.IrasService.Services;
 
 public class ResearchApplicationService(IResearchApplicationRepository researchApplicationRepository) : IResearchApplicationService
 {

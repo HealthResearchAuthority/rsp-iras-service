@@ -33,7 +33,7 @@ public class GetApplications : TestServiceBase<ApplicationsService>
     /// </summary>
     /// <param name="generator">Test data generator</param>
     [Theory, InlineAutoData(5)]
-    public async Task Returns_AllApplications(int records, Generator<IrasApplication> generator)
+    public async Task Returns_AllApplications(int records, Generator<ResearchApplication> generator)
     {
         // Arrange
         Mocker.Use<IApplicationRepository>(_applicationRepository);
@@ -57,7 +57,7 @@ public class GetApplications : TestServiceBase<ApplicationsService>
     /// <param name="records">Number of records to seed</param>
     /// <param name="generator">Test data generator</param>
     [Theory, InlineAutoData(5, true, 2), InlineAutoData(5, false, 0)]
-    public async Task Returns_ApplicationByStatusOrEmpty(int records, bool updateStatus, int expected, Generator<IrasApplication> generator)
+    public async Task Returns_ApplicationByStatusOrEmpty(int records, bool updateStatus, int expected, Generator<ResearchApplication> generator)
     {
         // Arrange
         Mocker.Use<IApplicationRepository>(_applicationRepository);

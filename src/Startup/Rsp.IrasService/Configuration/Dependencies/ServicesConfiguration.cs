@@ -18,7 +18,6 @@ public static class ServicesConfiguration
     /// <param name="services"><see cref="IServiceCollection"/></param>
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
-        services.AddTransient<ICategoriesService, CategoriesService>();
         services.AddSingleton<ITokenHelper, TokenHelper>();
 
         services.AddTransient<IApplicationsService, ApplicationsService>();

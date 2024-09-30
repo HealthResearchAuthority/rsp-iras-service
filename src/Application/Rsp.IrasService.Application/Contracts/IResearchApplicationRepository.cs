@@ -1,6 +1,6 @@
-﻿using Rsp.QuestionSetService.Domain.Entities;
+﻿using Rsp.IrasService.Domain.Entities;
 
-namespace Rsp.QuestionSetService.Application.Contracts.Repositories;
+namespace Rsp.IrasService.Application.Contracts;
 
 public interface IResearchApplicationRepository
 {

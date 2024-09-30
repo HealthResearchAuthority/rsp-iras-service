@@ -18,7 +18,7 @@ internal static class TestData
     /// <param name="updateStatus">
     /// Indicates whether to update the pending status. If true, index 2 and 4 will be updated
     /// </param>
-    public static async Task<IList<IrasApplication>> SeedData(IrasContext context, Generator<IrasApplication> generator, int records, bool updateStatus = false)
+    public static async Task<IList<ResearchApplication>> SeedData(IrasContext context, Generator<ResearchApplication> generator, int records, bool updateStatus = false)
     {
         // seed data using bogus
         var applications = generator
@@ -32,7 +32,7 @@ internal static class TestData
             applications[4].Status = "pending";
         }
 
-        await context.IrasApplications.AddRangeAsync(applications);
+        await context.ResearchApplications.AddRangeAsync(applications);
 
         context.SaveChanges();
 

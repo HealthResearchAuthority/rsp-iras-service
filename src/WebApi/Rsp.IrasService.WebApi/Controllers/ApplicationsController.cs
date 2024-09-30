@@ -14,8 +14,8 @@ namespace Rsp.IrasService.WebApi.Controllers;
 public class ApplicationsController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
-    [Produces<IrasApplication>]
-    public async Task<GetApplicationResponse> GetApplication(int id)
+    [Produces<ResearchApplication>]
+    public async Task<GetApplicationResponse> GetApplication(string id)
     {
         var query = new GetApplicationQuery(id);
 
@@ -23,7 +23,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("all")]
-    [Produces<IEnumerable<IrasApplication>>]
+    [Produces<IEnumerable<ResearchApplication>>]
     public async Task<IEnumerable<GetApplicationResponse>> GetApplications()
     {
         var query = new GetApplicationsQuery();
@@ -40,7 +40,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost("update")]
-    public async Task<CreateApplicationResponse> UpdateApplication(int id, CreateApplicationRequest irasApplicationRequest)
+    public async Task<CreateApplicationResponse> UpdateApplication(string id, CreateApplicationRequest irasApplicationRequest)
     {
         var request = new UpdateApplicationCommand(id, irasApplicationRequest);
 
@@ -49,7 +49,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
 
     [HttpGet("{status}")]
     [ApplicationAccess]
-    public async Task<GetApplicationResponse> GetApplicationByStatus(int id, string status)
+    public async Task<GetApplicationResponse> GetApplicationByStatus(string id, string status)
     {
         var request = new GetApplicationWithStatusQuery(id)
         {

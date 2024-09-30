@@ -1,18 +1,10 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using Rsp.IrasService.Application.Authorization.Attributes;
-using Rsp.IrasService.Application.Commands;
-using Rsp.IrasService.Application.Queries;
-using Rsp.IrasService.Application.Requests;
-using Rsp.IrasService.Application.Responses;
-using Rsp.IrasService.Domain.Entities;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Rsp.IrasService.WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ProbesController: ControllerBase
+public class ProbesController : ControllerBase
 {
     [HttpGet("liveness")]
     public IActionResult Liveness()
@@ -31,5 +23,4 @@ public class ProbesController: ControllerBase
     {
         return Ok();
     }
-
 }
