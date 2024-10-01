@@ -15,9 +15,9 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
     [Produces<ResearchApplication>]
-    public async Task<ApplicationResponse> GetApplication(string id)
+    public async Task<ApplicationResponse> GetApplication(string applicationId)
     {
-        var query = new GetApplicationQuery(id);
+        var query = new GetApplicationQuery(applicationId);
 
         return await mediator.Send(query);
     }
@@ -49,9 +49,9 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
 
     [HttpGet("{status}")]
     [ApplicationAccess]
-    public async Task<ApplicationResponse> GetApplicationByStatus(string id, string status)
+    public async Task<ApplicationResponse> GetApplicationByStatus(string applicationId, string status)
     {
-        var request = new GetApplicationWithStatusQuery(id)
+        var request = new GetApplicationWithStatusQuery(applicationId)
         {
             ApplicationStatus = status
         };

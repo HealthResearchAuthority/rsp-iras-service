@@ -12,4 +12,6 @@ public class RespondentAnswer
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public string? Version { get; set; }
+    public Respondent? Respondent { get; set; }
+    public ResearchApplication? ResearchApplication { get; set; }
 }
