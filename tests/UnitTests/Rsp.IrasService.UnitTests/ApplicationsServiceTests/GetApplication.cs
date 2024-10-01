@@ -1,8 +1,8 @@
 ﻿using AutoFixture;
 using AutoFixture.Xunit2;
 using Microsoft.EntityFrameworkCore;
-using Rsp.IrasService.Application.Repositories;
-using Rsp.IrasService.Application.Responses;
+using Rsp.IrasService.Application.Contracts.Repositories;
+using Rsp.IrasService.Application.DTOS.Responses;
 using Rsp.IrasService.Domain.Entities;
 using Rsp.IrasService.Infrastructure;
 using Rsp.IrasService.Infrastructure.Repositories;
@@ -53,8 +53,8 @@ public class GetApplication : TestServiceBase<ApplicationsService>
 
         // Assert
         irasApplication.ShouldNotBeNull();
-        irasApplication.ShouldBeOfType<GetApplicationResponse>();
-        irasApplication.Id.ShouldBe(applicationId);
+        irasApplication.ShouldBeOfType<ApplicationResponse>();
+        irasApplication.ApplicationId.ShouldBe(applicationId);
     }
 
     /// <summary>
@@ -81,8 +81,8 @@ public class GetApplication : TestServiceBase<ApplicationsService>
 
         // Assert
         irasApplication.ShouldNotBeNull();
-        irasApplication.ShouldBeOfType<GetApplicationResponse>();
-        irasApplication.Id.ShouldBe(applicationId);
+        irasApplication.ShouldBeOfType<ApplicationResponse>();
+        irasApplication.ApplicationId.ShouldBe(applicationId);
     }
 
     /// <summary>
@@ -98,7 +98,7 @@ public class GetApplication : TestServiceBase<ApplicationsService>
         Sut = Mocker.CreateInstance<ApplicationsService>();
 
         // seed data using number of records to seed
-        var applications = await SeedData(_context, generator, records);
+        await SeedData(_context, generator, records);
 
         // get the id that won't exist
         var applicationId = DateTime.Now.ToString("HHmmssddMMyyyy");

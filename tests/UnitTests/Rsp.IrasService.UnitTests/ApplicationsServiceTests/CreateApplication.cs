@@ -1,8 +1,8 @@
 ﻿using AutoFixture.Xunit2;
 using Microsoft.EntityFrameworkCore;
-using Rsp.IrasService.Application.Repositories;
-using Rsp.IrasService.Application.Requests;
-using Rsp.IrasService.Application.Responses;
+using Rsp.IrasService.Application.Contracts.Repositories;
+using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.IrasService.Application.DTOS.Responses;
 using Rsp.IrasService.Infrastructure;
 using Rsp.IrasService.Infrastructure.Repositories;
 using Rsp.IrasService.Services;
@@ -33,7 +33,7 @@ public class CreateApplication : TestServiceBase<ApplicationsService>
     /// </summary>
     /// <param name="createApplicationRequest">Represents the model for new application request</param>
     [Theory, AutoData]
-    public async Task Returns_CreateApplicationResponse(CreateApplicationRequest createApplicationRequest)
+    public async Task Returns_CreateApplicationResponse(ApplicationRequest createApplicationRequest)
     {
         // Arrange
         Mocker.Use<IApplicationRepository>(_applicationRepository);
@@ -45,7 +45,7 @@ public class CreateApplication : TestServiceBase<ApplicationsService>
 
         // Assert
         irasApplication.ShouldNotBeNull();
-        irasApplication.ShouldBeOfType<CreateApplicationResponse>();
+        irasApplication.ShouldBeOfType<ApplicationResponse>();
         (await _context.ResearchApplications.CountAsync()).ShouldBe(1);
     }
 }

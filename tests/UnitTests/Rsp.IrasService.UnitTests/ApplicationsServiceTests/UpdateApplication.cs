@@ -1,9 +1,9 @@
 ﻿using AutoFixture;
 using AutoFixture.Xunit2;
 using Microsoft.EntityFrameworkCore;
-using Rsp.IrasService.Application.Repositories;
-using Rsp.IrasService.Application.Requests;
-using Rsp.IrasService.Application.Responses;
+using Rsp.IrasService.Application.Contracts.Repositories;
+using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.IrasService.Application.DTOS.Responses;
 using Rsp.IrasService.Domain.Entities;
 using Rsp.IrasService.Infrastructure;
 using Rsp.IrasService.Infrastructure.Repositories;
@@ -36,7 +36,7 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
     /// </summary>
     /// <param name="createApplicationRequest">Represents the model for application request</param>
     [Theory, InlineAutoData(1)]
-    public async Task Updates_And_Returns_CreateApplicationResponse(int records, Generator<ResearchApplication> generator, CreateApplicationRequest createApplicationRequest)
+    public async Task Updates_And_Returns_CreateApplicationResponse(int records, Generator<ResearchApplication> generator, ApplicationRequest createApplicationRequest)
     {
         // Arrange
         Mocker.Use<IApplicationRepository>(_applicationRepository);
@@ -46,20 +46,20 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
         // seed data with the number of records
         var applications = await SeedData(_context, generator, records);
 
-        createApplicationRequest.Id = applications[0].ApplicationId;
+        createApplicationRequest.ApplicationId = applications[0].ApplicationId;
+        createApplicationRequest.StartDate = applications[0].CreatedDate;
 
         // Act
-        var irasApplication = await Sut.UpdateApplication(createApplicationRequest.Id, createApplicationRequest);
+        var irasApplication = await Sut.UpdateApplication(createApplicationRequest);
 
         // Assert
         irasApplication.ShouldNotBeNull();
-        irasApplication.ShouldBeOfType<CreateApplicationResponse>();
+        irasApplication.ShouldBeOfType<ApplicationResponse>();
         irasApplication.ShouldSatisfyAllConditions
         (
-            app => app.Id.ShouldBe(createApplicationRequest.Id),
+            app => app.ApplicationId.ShouldBe(createApplicationRequest.ApplicationId),
             app => app.Title.ShouldBe(createApplicationRequest.Title),
-            //app => app.Location.ShouldBe(createApplicationRequest.Location),
-            app => app.StartDate.ShouldBe(createApplicationRequest.StartDate),
+            app => app.CreatedDate.ShouldBe(createApplicationRequest.StartDate!.Value),
             app => app.Status.ShouldBe(createApplicationRequest.Status)
         );
     }
@@ -69,7 +69,7 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
     /// </summary>
     /// <param name="createApplicationRequest">Represents the model for new application request</param>
     [Theory, InlineAutoData(1)]
-    public async Task Throws_Exception_If_Id_DoesNotExist(int records, Generator<ResearchApplication> generator, CreateApplicationRequest createApplicationRequest)
+    public async Task Throws_Exception_If_Id_DoesNotExist(int records, Generator<ResearchApplication> generator, ApplicationRequest createApplicationRequest)
     {
         // Arrange
         Mocker.Use<IApplicationRepository>(_applicationRepository);
@@ -77,12 +77,12 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
         Sut = Mocker.CreateInstance<ApplicationsService>();
 
         // seed data with the number of records
-        var applications = await SeedData(_context, generator, records);
+        await SeedData(_context, generator, records);
 
         // get the id that won't exists
-        createApplicationRequest.Id = applications[0].ApplicationId + 1;
+        createApplicationRequest.ApplicationId = DateTime.Now.ToString("yyyyddMMHHmmss");
 
         // Act/Assert
-        await Should.ThrowAsync<NotImplementedException>(Sut.UpdateApplication(createApplicationRequest.Id, createApplicationRequest));
+        await Should.ThrowAsync<NotImplementedException>(Sut.UpdateApplication(createApplicationRequest));
     }
 }

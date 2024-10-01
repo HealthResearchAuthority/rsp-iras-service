@@ -3,7 +3,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Net.Http.Headers;
-using Rsp.IrasService.Application.AuthenticationHelpers;
+using Rsp.IrasService.Application.Authentication.Helpers;
 using Rsp.IrasService.Application.Authorization.Handlers;
 using Rsp.IrasService.Application.Settings;
 

@@ -1,7 +1,10 @@
 using System.Net.Mime;
 using System.Text.Json;
+using Azure.Identity;
+using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Rsp.IrasService.Application.Mappping;
 using Rsp.IrasService.Application.Settings;
 using Rsp.IrasService.Configuration.Auth;
 using Rsp.IrasService.Configuration.Database;
@@ -11,7 +14,6 @@ using Rsp.IrasService.Extensions;
 using Rsp.Logging.Middlewares.CorrelationId;
 using Rsp.Logging.Middlewares.RequestTracing;
 using Rsp.ServiceDefaults;
-using Azure.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,7 +51,7 @@ services.AddDatabase(configuration);
 
 // Add services to the container.
 services.AddServices();
-    
+
 services.AddHttpContextAccessor();
 
 // routing configuration
@@ -82,6 +84,11 @@ services.AddHealthChecks();
 
 // adds the Swagger for the Api Documentation
 services.AddSwagger();
+
+var config = TypeAdapterConfig.GlobalSettings;
+
+// register the mapping configuration
+config.Scan(typeof(MappingRegister).Assembly);
 
 var app = builder.Build();
 app.MapDefaultEndpoints();

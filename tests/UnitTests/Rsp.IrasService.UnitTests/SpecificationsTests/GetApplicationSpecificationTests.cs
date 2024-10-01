@@ -76,7 +76,7 @@ namespace Rsp.IrasService.UnitTests.SpecificationsTests
             applications[2].Status = "pending";
 
             // out of 10 records, it should return a expected records
-            var spec = new GetApplicationSpecification("pending", records: records);
+            var spec = new GetApplicationSpecification(status: "pending", records: records);
 
             // Act
             var result = spec

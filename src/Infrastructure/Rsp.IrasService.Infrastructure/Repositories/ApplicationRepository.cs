@@ -1,7 +1,7 @@
 ﻿using Ardalis.Specification;
 using Ardalis.Specification.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Rsp.IrasService.Application.Repositories;
+using Rsp.IrasService.Application.Contracts.Repositories;
 using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Infrastructure.Repositories;
@@ -40,19 +40,18 @@ public class ApplicationRepository(IrasContext irasContext) : IApplicationReposi
         return Task.FromResult(result);
     }
 
-    public async Task<ResearchApplication> UpdateApplication(string applicationId, ResearchApplication irasApplication)
+    public async Task<ResearchApplication> UpdateApplication(ResearchApplication irasApplication)
     {
         var entity = await irasContext
             .ResearchApplications
-            .FirstOrDefaultAsync(record => record.ApplicationId == applicationId);
+            .FirstOrDefaultAsync(record => record.ApplicationId == irasApplication.ApplicationId);
 
         if (entity != null)
         {
             entity.Title = irasApplication.Title;
-            //entity.Location = irasApplication.Location;
-            //entity.StartDate = irasApplication.StartDate;
-            //entity.ApplicationCategories = irasApplication.ApplicationCategories;
-            //entity.ProjectCategory = irasApplication.ProjectCategory;
+            entity.Description = irasApplication.Description;
+            entity.UpdatedDate = irasApplication.UpdatedDate;
+            entity.CreatedDate = irasApplication.CreatedDate;
             entity.Status = irasApplication.Status;
 
             await irasContext.SaveChangesAsync();

@@ -1,10 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Rsp.IrasService.Application.Authorization.Attributes;
-using Rsp.IrasService.Application.Commands;
-using Rsp.IrasService.Application.Queries;
-using Rsp.IrasService.Application.Requests;
-using Rsp.IrasService.Application.Responses;
+using Rsp.IrasService.Application.CQRS.Commands;
+using Rsp.IrasService.Application.CQRS.Queries;
+using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.IrasService.Application.DTOS.Responses;
 using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.WebApi.Controllers;
@@ -15,7 +15,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
     [Produces<ResearchApplication>]
-    public async Task<GetApplicationResponse> GetApplication(string id)
+    public async Task<ApplicationResponse> GetApplication(string id)
     {
         var query = new GetApplicationQuery(id);
 
@@ -24,7 +24,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
 
     [HttpGet("all")]
     [Produces<IEnumerable<ResearchApplication>>]
-    public async Task<IEnumerable<GetApplicationResponse>> GetApplications()
+    public async Task<IEnumerable<ApplicationResponse>> GetApplications()
     {
         var query = new GetApplicationsQuery();
 
@@ -32,24 +32,24 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
-    public async Task<CreateApplicationResponse> CreateApplication(CreateApplicationRequest createApplicationRequest)
+    public async Task<ApplicationResponse> CreateApplication(ApplicationRequest applicationRequest)
     {
-        var request = new CreateApplicationCommand(createApplicationRequest);
+        var request = new CreateApplicationCommand(applicationRequest);
 
         return await mediator.Send(request);
     }
 
     [HttpPost("update")]
-    public async Task<CreateApplicationResponse> UpdateApplication(string id, CreateApplicationRequest irasApplicationRequest)
+    public async Task<ApplicationResponse> UpdateApplication(ApplicationRequest applicationRequest)
     {
-        var request = new UpdateApplicationCommand(id, irasApplicationRequest);
+        var request = new UpdateApplicationCommand(applicationRequest);
 
         return await mediator.Send(request);
     }
 
     [HttpGet("{status}")]
     [ApplicationAccess]
-    public async Task<GetApplicationResponse> GetApplicationByStatus(string id, string status)
+    public async Task<ApplicationResponse> GetApplicationByStatus(string id, string status)
     {
         var request = new GetApplicationWithStatusQuery(id)
         {
@@ -61,7 +61,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
 
     [HttpGet("{status}/all")]
     [ApplicationAccess]
-    public async Task<IEnumerable<GetApplicationResponse>> GetApplicationsByStatus(string status)
+    public async Task<IEnumerable<ApplicationResponse>> GetApplicationsByStatus(string status)
     {
         var request = new GetApplicationsWithStatusQuery
         {

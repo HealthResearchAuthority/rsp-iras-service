@@ -34,7 +34,7 @@ internal static class TestData
 
         await context.ResearchApplications.AddRangeAsync(applications);
 
-        context.SaveChanges();
+        await context.SaveChangesAsync();
 
         return applications;
     }

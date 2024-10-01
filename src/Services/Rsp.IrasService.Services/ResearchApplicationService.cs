@@ -1,4 +1,5 @@
-﻿using Rsp.IrasService.Application.Contracts;
+﻿using Rsp.IrasService.Application.Contracts.Repositories;
+using Rsp.IrasService.Application.Contracts.Services;
 using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Services;

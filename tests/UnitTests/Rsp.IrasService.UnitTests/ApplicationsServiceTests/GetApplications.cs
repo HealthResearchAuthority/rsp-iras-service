@@ -1,7 +1,7 @@
 ﻿using AutoFixture;
 using AutoFixture.Xunit2;
 using Microsoft.EntityFrameworkCore;
-using Rsp.IrasService.Application.Repositories;
+using Rsp.IrasService.Application.Contracts.Repositories;
 using Rsp.IrasService.Domain.Entities;
 using Rsp.IrasService.Infrastructure;
 using Rsp.IrasService.Infrastructure.Repositories;

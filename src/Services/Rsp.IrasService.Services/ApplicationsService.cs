@@ -1,8 +1,8 @@
 ﻿using Mapster;
-using Rsp.IrasService.Application.Contracts;
-using Rsp.IrasService.Application.Repositories;
-using Rsp.IrasService.Application.Requests;
-using Rsp.IrasService.Application.Responses;
+using Rsp.IrasService.Application.Contracts.Repositories;
+using Rsp.IrasService.Application.Contracts.Services;
+using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.IrasService.Application.DTOS.Responses;
 using Rsp.IrasService.Application.Specifications;
 using Rsp.IrasService.Domain.Entities;
 
@@ -10,57 +10,57 @@ namespace Rsp.IrasService.Services;
 
 public class ApplicationsService(IApplicationRepository applicationRepository) : IApplicationsService
 {
-    public async Task<CreateApplicationResponse> CreateApplication(CreateApplicationRequest createApplicationRequest)
+    public async Task<ApplicationResponse> CreateApplication(ApplicationRequest createApplicationRequest)
     {
         var irasApplication = createApplicationRequest.Adapt<ResearchApplication>();
 
         var irasAppFromDb = await applicationRepository.CreateApplication(irasApplication);
 
-        return irasAppFromDb.Adapt<CreateApplicationResponse>();
+        return irasAppFromDb.Adapt<ApplicationResponse>();
     }
 
-    public async Task<GetApplicationResponse> GetApplication(string applicationId)
+    public async Task<ApplicationResponse> GetApplication(string applicationId)
     {
         var specification = new GetApplicationSpecification(id: applicationId);
 
         var irasAppFromDb = await applicationRepository.GetApplication(specification);
 
-        return irasAppFromDb.Adapt<GetApplicationResponse>();
+        return irasAppFromDb.Adapt<ApplicationResponse>();
     }
 
-    public async Task<GetApplicationResponse> GetApplication(string applicationId, string applicationStatus)
+    public async Task<ApplicationResponse> GetApplication(string applicationId, string applicationStatus)
     {
         var specification = new GetApplicationSpecification(applicationStatus, applicationId);
 
         var irasAppFromDb = await applicationRepository.GetApplication(specification);
 
-        return irasAppFromDb.Adapt<GetApplicationResponse>();
+        return irasAppFromDb.Adapt<ApplicationResponse>();
     }
 
-    public async Task<IEnumerable<GetApplicationResponse>> GetApplications()
+    public async Task<IEnumerable<ApplicationResponse>> GetApplications()
     {
         var specification = new GetApplicationSpecification();
 
         var applicationsFromDb = await applicationRepository.GetApplications(specification);
 
-        return applicationsFromDb.Adapt<IEnumerable<GetApplicationResponse>>();
+        return applicationsFromDb.Adapt<IEnumerable<ApplicationResponse>>();
     }
 
-    public async Task<IEnumerable<GetApplicationResponse>> GetApplications(string applicationStatus)
+    public async Task<IEnumerable<ApplicationResponse>> GetApplications(string applicationStatus)
     {
         var specification = new GetApplicationSpecification(status: applicationStatus);
 
         var applicationsFromDb = await applicationRepository.GetApplications(specification);
 
-        return applicationsFromDb.Adapt<IEnumerable<GetApplicationResponse>>();
+        return applicationsFromDb.Adapt<IEnumerable<ApplicationResponse>>();
     }
 
-    public async Task<CreateApplicationResponse> UpdateApplication(string applicationId, CreateApplicationRequest createApplicationRequest)
+    public async Task<ApplicationResponse> UpdateApplication(ApplicationRequest applicationRequest)
     {
-        var mappedIrasAppReq = createApplicationRequest.Adapt<ResearchApplication>();
+        var mappedIrasAppReq = applicationRequest.Adapt<ResearchApplication>();
 
-        var updatedIrasAppFromDb = await applicationRepository.UpdateApplication(applicationId, mappedIrasAppReq);
+        var updatedIrasAppFromDb = await applicationRepository.UpdateApplication(mappedIrasAppReq);
 
-        return updatedIrasAppFromDb.Adapt<CreateApplicationResponse>();
+        return updatedIrasAppFromDb.Adapt<ApplicationResponse>();
     }
 }

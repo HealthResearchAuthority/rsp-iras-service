@@ -1,7 +1,7 @@
 ﻿using Rsp.IrasService.Application;
-using Rsp.IrasService.Application.AuthenticationHelpers;
-using Rsp.IrasService.Application.Contracts;
-using Rsp.IrasService.Application.Repositories;
+using Rsp.IrasService.Application.Authentication.Helpers;
+using Rsp.IrasService.Application.Contracts.Repositories;
+using Rsp.IrasService.Application.Contracts.Services;
 using Rsp.IrasService.Infrastructure.Repositories;
 using Rsp.IrasService.Services;
 
