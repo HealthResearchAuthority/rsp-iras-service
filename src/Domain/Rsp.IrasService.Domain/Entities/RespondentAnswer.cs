@@ -3,10 +3,10 @@
 public class RespondentAnswer
 {
     public string RespondentId { get; set; } = null!;
+    public string ApplicationId { get; set; } = null!;
     public string QuestionId { get; set; } = null!;
     public string Category { get; set; } = null!;
     public string Section { get; set; } = null!;
-    public string ApplicationId { get; set; } = null!;
     public string? Response { get; set; }
     public List<string> SelectedOptions { get; set; } = [];
     public DateTime? StartDate { get; set; }

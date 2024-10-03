@@ -10,4 +10,5 @@ public class Respondent
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public string? Version { get; set; }
+    public ICollection<ResearchApplication> ResearchApplications { get; set; } = [];
 }

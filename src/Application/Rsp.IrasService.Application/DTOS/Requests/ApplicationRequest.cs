@@ -3,6 +3,11 @@
 public record ApplicationRequest
 {
     /// <summary>
+    /// Respondent Id of the person applying for the application.
+    /// </summary>
+    public string RespondentId { get; set; } = null!;
+
+    /// <summary>
     /// The public key for the application database record
     /// </summary>
     public string ApplicationId { get; set; } = DateTime.Now.ToString("yyyyMMddHHmmss");

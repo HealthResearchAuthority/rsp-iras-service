@@ -14,7 +14,7 @@ public class RespondentAnswerConfiguration : IEntityTypeConfiguration<Respondent
             .HasOne(ra => ra.Respondent)
             .WithMany()
             .HasForeignKey(r => r.RespondentId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder
             .HasOne(ra => ra.ResearchApplication)
