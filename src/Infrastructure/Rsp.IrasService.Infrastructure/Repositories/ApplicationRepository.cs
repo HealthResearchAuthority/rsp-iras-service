@@ -10,6 +10,15 @@ public class ApplicationRepository(IrasContext irasContext) : IApplicationReposi
 {
     public async Task<ResearchApplication> CreateApplication(ResearchApplication irasApplication)
     {
+        var respondentEntity = await irasContext
+            .Respondents
+            .SingleOrDefaultAsync(r => r.RespondentId == irasApplication.Respondent.RespondentId);
+
+        if (respondentEntity != null)
+        {
+            irasContext.Entry(respondentEntity).State = EntityState.Unchanged;
+        }
+
         var entity = await irasContext.ResearchApplications.AddAsync(irasApplication);
 
         await irasContext.SaveChangesAsync();
@@ -52,6 +61,7 @@ public class ApplicationRepository(IrasContext irasContext) : IApplicationReposi
             entity.Description = irasApplication.Description;
             entity.UpdatedDate = irasApplication.UpdatedDate;
             entity.CreatedDate = irasApplication.CreatedDate;
+            entity.UpdatedBy = irasApplication.UpdatedBy;
             entity.Status = irasApplication.Status;
 
             await irasContext.SaveChangesAsync();

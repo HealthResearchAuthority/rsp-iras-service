@@ -13,6 +13,9 @@ public class ApplicationsService(IApplicationRepository applicationRepository) :
     public async Task<ApplicationResponse> CreateApplication(ApplicationRequest createApplicationRequest)
     {
         var irasApplication = createApplicationRequest.Adapt<ResearchApplication>();
+        var respondent = createApplicationRequest.Respondent.Adapt<Respondent>();
+
+        irasApplication.Respondent = respondent;
 
         var irasAppFromDb = await applicationRepository.CreateApplication(irasApplication);
 

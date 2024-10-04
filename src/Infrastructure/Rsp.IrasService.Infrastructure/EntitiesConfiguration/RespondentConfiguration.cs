@@ -9,11 +9,5 @@ public class RespondentConfiguration : IEntityTypeConfiguration<Respondent>
     public void Configure(EntityTypeBuilder<Respondent> builder)
     {
         builder.HasKey(r => r.RespondentId);
-
-        builder
-            .HasMany(ra => ra.ResearchApplications)
-            .WithOne(r => r.Respondent)
-            .HasForeignKey(r => r.RespondentId)
-            .OnDelete(DeleteBehavior.Cascade);
     }
 }

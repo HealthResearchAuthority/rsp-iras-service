@@ -14,6 +14,10 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                 name: "FK_RespondentAnswers_Respondents_RespondentId",
                 table: "RespondentAnswers");
 
+            migrationBuilder.DropForeignKey(
+                name: "FK_RespondentAnswers_ResearchApplications_ApplicationId",
+                table: "RespondentAnswers");
+
             migrationBuilder.AddColumn<string>(
                 name: "RespondentId",
                 table: "ResearchApplications",
@@ -40,6 +44,14 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                 column: "RespondentId",
                 principalTable: "Respondents",
                 principalColumn: "RespondentId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_RespondentAnswers_ResearchApplications_ApplicationId",
+                table: "RespondentAnswers",
+                column: "ApplicationId",
+                principalTable: "ResearchApplications",
+                principalColumn: "ApplicationId",
+                onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />
@@ -48,6 +60,10 @@ namespace Rsp.IrasService.Infrastructure.Migrations
             migrationBuilder.DropForeignKey(
                 name: "FK_ResearchApplications_Respondents_RespondentId",
                 table: "ResearchApplications");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_RespondentAnswers_ResearchApplications_ApplicationId",
+                table: "RespondentAnswers");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_RespondentAnswers_Respondents_RespondentId",
@@ -67,6 +83,14 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                 column: "RespondentId",
                 principalTable: "Respondents",
                 principalColumn: "RespondentId",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_RespondentAnswers_ResearchApplications_ApplicationId",
+                table: "RespondentAnswers",
+                column: "ApplicationId",
+                principalTable: "ResearchApplications",
+                principalColumn: "ApplicationId",
                 onDelete: ReferentialAction.Cascade);
         }
     }

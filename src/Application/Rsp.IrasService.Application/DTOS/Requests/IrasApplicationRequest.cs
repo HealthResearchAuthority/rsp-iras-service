@@ -1,11 +1,11 @@
 ﻿namespace Rsp.IrasService.Application.DTOS.Requests;
 
-public record ApplicationRequest
+public record IrasApplicationRequest
 {
     /// <summary>
-    /// The public key for the application database record
+    /// IRAS Project Id
     /// </summary>
-    public string ApplicationId { get; set; } = DateTime.Now.ToString("yyyyMMddHHmmss");
+    public string? ApplicationId { get; set; }
 
     /// <summary>
     /// The title of the project
@@ -25,7 +25,7 @@ public record ApplicationRequest
     /// <summary>
     /// Application Status
     /// </summary>
-    public string? Status { get; set; }
+    public string? Status { get; set; } = "created";
 
     /// <summary>
     /// User Id who initiated the application

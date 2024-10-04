@@ -25,6 +25,10 @@ public class MappingRegister : IRegister
             .NewConfig<ResearchApplication, ApplicationRequest>()
             .Map(dest => dest.StartDate, source => source.CreatedDate);
 
+        config
+            .NewConfig<RespondentDto, Respondent>()
+            .Map(dest => dest.Email, source => source.EmailAddress);
+
         //config
         //    .NewConfig<Condition, ConditionDto>();
 
