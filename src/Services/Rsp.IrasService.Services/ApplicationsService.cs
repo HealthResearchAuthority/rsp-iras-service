@@ -10,16 +10,14 @@ namespace Rsp.IrasService.Services;
 
 public class ApplicationsService(IApplicationRepository applicationRepository) : IApplicationsService
 {
-    public async Task<ApplicationResponse> CreateApplication(ApplicationRequest createApplicationRequest)
+    public async Task<ApplicationResponse> CreateApplication(ApplicationRequest applicationRequest)
     {
-        var irasApplication = createApplicationRequest.Adapt<ResearchApplication>();
-        var respondent = createApplicationRequest.Respondent.Adapt<Respondent>();
+        var irasApplication = applicationRequest.Adapt<ResearchApplication>();
+        var respondent = applicationRequest.Respondent.Adapt<Respondent>();
 
-        irasApplication.Respondent = respondent;
+        var createdApplication = await applicationRepository.CreateApplication(irasApplication, respondent);
 
-        var irasAppFromDb = await applicationRepository.CreateApplication(irasApplication);
-
-        return irasAppFromDb.Adapt<ApplicationResponse>();
+        return createdApplication.Adapt<ApplicationResponse>();
     }
 
     public async Task<ApplicationResponse> GetApplication(string applicationId)
@@ -60,10 +58,13 @@ public class ApplicationsService(IApplicationRepository applicationRepository) :
 
     public async Task<ApplicationResponse> UpdateApplication(ApplicationRequest applicationRequest)
     {
-        var mappedIrasAppReq = applicationRequest.Adapt<ResearchApplication>();
+        var irasApplication = applicationRequest.Adapt<ResearchApplication>();
+        var respondent = applicationRequest.Respondent.Adapt<Respondent>();
 
-        var updatedIrasAppFromDb = await applicationRepository.UpdateApplication(mappedIrasAppReq);
+        irasApplication.RespondentId = respondent.RespondentId;
 
-        return updatedIrasAppFromDb.Adapt<ApplicationResponse>();
+        var updatedApplication = await applicationRepository.UpdateApplication(irasApplication);
+
+        return updatedApplication.Adapt<ApplicationResponse>();
     }
 }

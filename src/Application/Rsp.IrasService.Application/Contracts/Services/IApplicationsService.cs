@@ -11,8 +11,8 @@ public interface IApplicationsService
     /// <summary>
     /// Adds a new application to the database
     /// </summary>
-    /// <param name="createApplicationRequest">The application values</param>
-    Task<ApplicationResponse> CreateApplication(ApplicationRequest createApplicationRequest);
+    /// <param name="applicationRequest">The application values</param>
+    Task<ApplicationResponse> CreateApplication(ApplicationRequest applicationRequest);
 
     /// <summary>
     /// Returns a single application

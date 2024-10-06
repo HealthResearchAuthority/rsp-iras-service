@@ -19,7 +19,8 @@ public class MappingRegister : IRegister
 
         config
             .NewConfig<ApplicationRequest, ResearchApplication>()
-            .Map(dest => dest.CreatedDate, source => source.StartDate);
+            .Map(dest => dest.CreatedDate, source => source.StartDate)
+            .Map(dest => dest.UpdatedDate, _ => DateTime.Now);
 
         config
             .NewConfig<ResearchApplication, ApplicationRequest>()
@@ -29,21 +30,22 @@ public class MappingRegister : IRegister
             .NewConfig<RespondentDto, Respondent>()
             .Map(dest => dest.Email, source => source.EmailAddress);
 
-        //config
-        //    .NewConfig<Condition, ConditionDto>();
+        config
+            .NewConfig<RespondentAnswerDto, RespondentAnswer>()
+            .Ignore(ra => ra.RespondentId)
+            .Ignore(ra => ra.ApplicationId)
+            .Map(dest => dest.Category, source => source.CategoryId)
+            .Map(dest => dest.Section, source => source.SectionId)
+            .Map(dest => dest.Response, source => source.AnswerText)
+            .Map(dest => dest.SelectedOptions, source => source.SelectedOption, source => !string.IsNullOrWhiteSpace(source.SelectedOption))
+            .Map(dest => dest.SelectedOptions, source => string.Join(',', source.Answers), source => source.Answers.Count > 0);
 
-        //config
-        //    .NewConfig<QuestionRule, RuleDto>();
-
-        //// Question to GetQuestionsResponse mappings
-        //config
-        //    .NewConfig<Question, QuestionDto>()
-        //    .MapToConstructor(true)
-        //    .Map(dest => dest.Category, source => source.QuestionCategoryId)
-        //    .Map(dest => dest.SectionId, source => source.QuestionSection.SectionId)
-        //    .Map(dest => dest.Section, source => source.QuestionSection.SectionName)
-        //    .Map(dest => dest.IsMandatory, _ => true, source => source.Conformance == "Mandatory")
-        //    .Map(dest => dest.IsOptional, _ => true, source => source.Conformance == "Optional")
-        //    .Map(dest => dest.Rules, source => source.QuestionRules);
+        config
+            .NewConfig<RespondentAnswer, RespondentAnswerDto>()
+            .Map(dest => dest.CategoryId, source => source.Category)
+            .Map(dest => dest.SectionId, source => source.Section)
+            .Map(dest => dest.AnswerText, source => source.Response)
+            .Map(dest => dest.SelectedOption, source => source.SelectedOptions, source => source.OptionType == "Single")
+            .Map(dest => dest.Answers, source => source.SelectedOptions!.Split(',', StringSplitOptions.RemoveEmptyEntries), source => source.OptionType == "Multiple");
     }
 }

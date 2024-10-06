@@ -1,31 +1,40 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
-#pragma warning disable S1192
 
 namespace Rsp.IrasService.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateRoleProperty : Migration
+    public partial class UpdateRespondentAnswer : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "Role",
-                table: "Respondents",
+                name: "SelectedOptions",
+                table: "RespondentAnswers",
                 type: "nvarchar(max)",
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(max)");
+
+            migrationBuilder.AddColumn<string>(
+                name: "OptionType",
+                table: "RespondentAnswers",
+                type: "nvarchar(max)",
+                nullable: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropColumn(
+                name: "OptionType",
+                table: "RespondentAnswers");
+
             migrationBuilder.AlterColumn<string>(
-                name: "Role",
-                table: "Respondents",
+                name: "SelectedOptions",
+                table: "RespondentAnswers",
                 type: "nvarchar(max)",
                 nullable: false,
                 defaultValue: "",
@@ -35,5 +44,3 @@ namespace Rsp.IrasService.Infrastructure.Migrations
         }
     }
 }
-
-#pragma warning restore S1192

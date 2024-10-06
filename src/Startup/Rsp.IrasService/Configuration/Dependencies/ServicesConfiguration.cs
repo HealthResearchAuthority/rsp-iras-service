@@ -22,6 +22,10 @@ public static class ServicesConfiguration
 
         services.AddTransient<IApplicationsService, ApplicationsService>();
         services.AddTransient<IApplicationRepository, ApplicationRepository>();
+
+        services.AddTransient<IRespondentService, RespondentService>();
+        services.AddTransient<IRespondentRepository, RespondentRepository>();
+
         services.AddMediatR(option => option.RegisterServicesFromAssemblyContaining<IApplication>());
 
         return services;

@@ -1,7 +1,7 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
+#pragma warning disable S1192
 
 namespace Rsp.IrasService.Infrastructure.Migrations
 {
@@ -25,10 +25,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ResearchApplications", x => x.ApplicationId);
-                });
+                constraints: table => table.PrimaryKey("PK_ResearchApplications", x => x.ApplicationId));
 
             migrationBuilder.CreateTable(
                 name: "Respondents",
@@ -43,10 +40,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Version = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Respondents", x => x.RespondentId);
-                });
+                constraints: table => table.PrimaryKey("PK_Respondents", x => x.RespondentId));
 
             migrationBuilder.CreateTable(
                 name: "RespondentAnswers",
@@ -100,3 +94,5 @@ namespace Rsp.IrasService.Infrastructure.Migrations
         }
     }
 }
+
+#pragma warning restore S1192

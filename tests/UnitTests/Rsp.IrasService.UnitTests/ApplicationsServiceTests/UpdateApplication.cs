@@ -69,7 +69,7 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
     /// </summary>
     /// <param name="createApplicationRequest">Represents the model for new application request</param>
     [Theory, InlineAutoData(1)]
-    public async Task Throws_Exception_If_Id_DoesNotExist(int records, Generator<ResearchApplication> generator, ApplicationRequest createApplicationRequest)
+    public async Task ReturnsNull_If_Id_DoesNotExist(int records, Generator<ResearchApplication> generator, ApplicationRequest createApplicationRequest)
     {
         // Arrange
         Mocker.Use<IApplicationRepository>(_applicationRepository);
@@ -83,6 +83,8 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
         createApplicationRequest.ApplicationId = DateTime.Now.ToString("yyyyddMMHHmmss");
 
         // Act/Assert
-        await Should.ThrowAsync<NotImplementedException>(Sut.UpdateApplication(createApplicationRequest));
+        var application = await Sut.UpdateApplication(createApplicationRequest);
+
+        application.ShouldBeNull();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
+#pragma warning disable S1192
 
 namespace Rsp.IrasService.Infrastructure.Migrations
 {
@@ -95,3 +96,5 @@ namespace Rsp.IrasService.Infrastructure.Migrations
         }
     }
 }
+
+#pragma warning restore S1192

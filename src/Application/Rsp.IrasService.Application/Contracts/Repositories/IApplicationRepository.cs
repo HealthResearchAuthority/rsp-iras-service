@@ -9,12 +9,12 @@ public interface IApplicationRepository
     /// Adds a new application to the database
     /// </summary>
     /// <param name="irasApplication">The application values</param>
-    Task<ResearchApplication> CreateApplication(ResearchApplication irasApplication);
+    Task<ResearchApplication> CreateApplication(ResearchApplication irasApplication, Respondent respondent);
 
     /// <summary>
     /// Return a single application from the database
     /// </summary>
-    Task<ResearchApplication> GetApplication(ISpecification<ResearchApplication> specification);
+    Task<ResearchApplication?> GetApplication(ISpecification<ResearchApplication> specification);
 
     /// <summary>
     /// Return all or specified number applications from the database
@@ -25,5 +25,5 @@ public interface IApplicationRepository
     /// Update the values of an application in the database
     /// </summary>
     /// <param name="irasApplication">The application values</param>
-    Task<ResearchApplication> UpdateApplication(ResearchApplication irasApplication);
+    Task<ResearchApplication?> UpdateApplication(ResearchApplication irasApplication);
 }

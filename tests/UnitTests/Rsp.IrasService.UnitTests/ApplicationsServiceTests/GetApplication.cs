@@ -90,7 +90,7 @@ public class GetApplication : TestServiceBase<ApplicationsService>
     /// </summary>
     /// <param name="generator">Test data generator</param>
     [Theory, InlineAutoData(5)]
-    public async Task ThrowsException_If_Id_DoesNotExist(int records, Generator<ResearchApplication> generator)
+    public async Task ReturnsNull_If_Id_DoesNotExist(int records, Generator<ResearchApplication> generator)
     {
         // Arrange
         Mocker.Use<IApplicationRepository>(_applicationRepository);
@@ -104,6 +104,8 @@ public class GetApplication : TestServiceBase<ApplicationsService>
         var applicationId = DateTime.Now.ToString("HHmmssddMMyyyy");
 
         // Act/Assert
-        await Should.ThrowAsync<NotImplementedException>(Sut.GetApplication(applicationId));
+        var application = await Sut.GetApplication(applicationId);
+
+        application.ShouldBeNull();
     }
 }

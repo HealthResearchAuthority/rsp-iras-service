@@ -1,12 +1,11 @@
-﻿using Rsp.IrasService.Domain.Entities;
+﻿using Ardalis.Specification;
+using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Application.Contracts.Repositories;
 
 public interface IRespondentRepository
 {
-    Task<Respondent> GetByIdAsync(int respondentId);
+    Task<IEnumerable<RespondentAnswer>> GetResponses(ISpecification<RespondentAnswer> specification);
 
-    Task AddAsync(Respondent respondent);
-
-    Task UpdateAsync(Respondent respondent);
+    Task SaveResponses(ISpecification<RespondentAnswer> specification, List<RespondentAnswer> respondentAnswers);
 }

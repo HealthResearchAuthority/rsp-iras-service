@@ -8,7 +8,8 @@ public class RespondentAnswer
     public string Category { get; set; } = null!;
     public string Section { get; set; } = null!;
     public string? Response { get; set; }
-    public List<string> SelectedOptions { get; set; } = [];
+    public string? OptionType { get; set; } = null!;
+    public string? SelectedOptions { get; set; }
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public string? Version { get; set; }

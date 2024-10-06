@@ -12,5 +12,4 @@ public class ResearchApplication
     public DateTime UpdatedDate { get; set; }
     public string CreatedBy { get; set; } = null!;
     public string UpdatedBy { get; set; } = null!;
-    public Respondent Respondent { get; set; } = null!;
 }
