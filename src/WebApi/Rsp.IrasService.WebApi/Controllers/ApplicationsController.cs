@@ -70,4 +70,15 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
 
         return await mediator.Send(request);
     }
+
+    [HttpGet("respondent/all")]
+    public async Task<IEnumerable<ApplicationResponse>> GetApplicationsByRespondent(string respondentId)
+    {
+        var request = new GetApplicationsWithRespondentQuery
+        {
+            RespondentId = respondentId
+        };
+
+        return await mediator.Send(request);
+    }
 }

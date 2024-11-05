@@ -56,6 +56,15 @@ public class ApplicationsService(IApplicationRepository applicationRepository) :
         return applicationsFromDb.Adapt<IEnumerable<ApplicationResponse>>();
     }
 
+    public async Task<IEnumerable<ApplicationResponse>> GetRespondentApplications(string respondentId)
+    {
+        var specification = new GetRespondentApplicationSpecification(respondentId: respondentId);
+
+        var applicationsFromDb = await applicationRepository.GetApplications(specification);
+
+        return applicationsFromDb.Adapt<IEnumerable<ApplicationResponse>>();
+    }
+
     public async Task<ApplicationResponse> UpdateApplication(ApplicationRequest applicationRequest)
     {
         var irasApplication = applicationRequest.Adapt<ResearchApplication>();

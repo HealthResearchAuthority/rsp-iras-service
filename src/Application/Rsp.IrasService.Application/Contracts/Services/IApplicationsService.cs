@@ -37,6 +37,11 @@ public interface IApplicationsService
     Task<IEnumerable<ApplicationResponse>> GetApplications(string applicationStatus);
 
     /// <summary>
+    /// Returns all applications for a specified respondent
+    /// </summary>
+    Task<IEnumerable<ApplicationResponse>> GetRespondentApplications(string respondentId);
+
+    /// <summary>
     /// Updates the values of an application
     /// </summary>
     /// <param name="applicationRequest">The application values</param>
