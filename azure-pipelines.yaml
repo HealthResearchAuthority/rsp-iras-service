@@ -102,7 +102,7 @@ stages:
   - stage: systemtest_auto
     jobs:
       - ${{ if eq(paramaters.env, 'systemtest_auto') }}:
-        - template: jobs/deploy.yaml@library
+        #- template: jobs/deploy.yaml@library
         - job:
           displayName: Deploy to SystemTest Auto
           steps:
