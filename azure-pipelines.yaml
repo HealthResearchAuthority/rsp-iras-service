@@ -80,48 +80,46 @@ resources:
 
 stages:
   - stage: dev
-    variables: 
-      - name: ContainerRegistryName
-        value: 'crrspshared2i2oqdevuks'
-      - name: AppServiceName
-        value: 'irasportal-dev'
-      - name: ApplicationResourceGroup
-        value: 'rg-rsp-applications-spoke-dev-uks'
-      - name: DeployEnvironment
-        value: 'dev'
-      - name: ServiceConnection
-        value: 'ARM Dev Connection New'
     jobs:
       - template: jobs/build.yaml@library
+        variables: 
+          - name: ContainerRegistryName
+            value: 'crrspshared2i2oqdevuks'
+          - name: AppServiceName
+            value: 'irasportal-dev'
+          - name: ApplicationResourceGroup
+            value: 'rg-rsp-applications-spoke-dev-uks'
+          - name: DeployEnvironment
+            value: 'dev'
+          - name: ServiceConnection
+            value: 'ARM Dev Connection New'
         parameters:
           run_github_security_scan: ${{ parameters.run_github_security_scan }}
           sonar_project_key: FutureIRAS_rsp-iras-service
           sonar_project_name: rsp-iras-service
           install_aspire: true
           service_defaults_repo: service_defaults
-          serviceConnection: ARM Dev Connection New
       - template: jobs/deploy.yaml@library
         parameters:
           install_aspire: true
           service_defaults_repo: service_defaults
   - stage: systemtest_auto
-    variables: 
-      - name: ContainerRegistryName
-        value: 'crrspsharedryefnautomationtestuks'
-      - name: AppServiceName
-        value: 'irasportal-automationtest'
-      - name: ApplicationResourceGroup
-        value: 'rg-rsp-applications-spoke-systemtestauto-uks'
-      - name: DeployEnvironment
-        value: 'System Test Auto'
-      - name: ServiceConnection
-        value: ''
     jobs:
       - template: jobs/deploy.yaml@library
         parameters:
           install_aspire: true
           service_defaults_repo: service_defaults
-
+        variables: 
+          - name: ContainerRegistryName
+            value: 'crrspsharedryefnautomationtestuks'
+          - name: AppServiceName
+            value: 'irasportal-automationtest'
+          - name: ApplicationResourceGroup
+            value: 'rg-rsp-applications-spoke-systemtestauto-uks'
+          - name: DeployEnvironment
+            value: 'System Test Auto'
+          - name: ServiceConnection
+            value: ''
       - ${{ if eq(variables.run_e2e_tests, 'true') }}:
         - template: jobs/e2e_tests.yaml@library
           parameters:
