@@ -89,8 +89,6 @@ stages:
         value: 'rg-rsp-applications-spoke-dev-uks'
       - name: DeployEnvironment
         value: 'dev'
-      - name: azureDevServiceConnection
-        value: 'ARM Dev Connection New'
     jobs:
       - template: jobs/build.yaml@library
         parameters:
@@ -100,9 +98,7 @@ stages:
           install_aspire: true
           service_defaults_repo: service_defaults
       - template: jobs/deploy.yaml@library
-        parameters:
-          install_aspire: true
-          service_defaults_repo: service_defaults
+        parameters: {install_aspire: true, service_defaults_repo: service_defaults, ServiceConnection: ARM Dev Connection New }
   - stage: systemtest_auto
     variables: 
       - name: ContainerRegistryName
