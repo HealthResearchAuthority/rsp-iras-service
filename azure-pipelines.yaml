@@ -40,7 +40,7 @@ parameters:
     default: 10
   - name: dev_service_connection
     type: string
-    default: 'ARM Dev Connection New'
+    default: ARMDevConnectionNew
 
 variables:
   - group: 'Test Automation'
