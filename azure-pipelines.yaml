@@ -87,6 +87,10 @@ stages:
         value: 'irasportal-dev'
       - name: ApplicationResourceGroup
         value: 'rg-rsp-applications-spoke-dev-uks'
+      - name: DeployEnvironment
+        value: 'dev'
+      - name: ServiceConnection
+        value: 'ARM Dev Connection New'
     jobs:
       - template: jobs/build.yaml@library
         parameters:
@@ -95,6 +99,7 @@ stages:
           sonar_project_name: rsp-iras-service
           install_aspire: true
           service_defaults_repo: service_defaults
+          serviceConnection: 'ARM Dev Connection New'
       - template: jobs/deploy.yaml@library
         parameters:
           install_aspire: true
@@ -107,6 +112,10 @@ stages:
         value: 'irasportal-automationtest'
       - name: ApplicationResourceGroup
         value: 'rg-rsp-applications-spoke-systemtestauto-uks'
+      - name: DeployEnvironment
+        value: 'System Test Auto'
+      - name: ServiceConnection
+        value: ''
     jobs:
       - template: jobs/deploy.yaml@library
         parameters:
