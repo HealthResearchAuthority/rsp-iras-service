@@ -89,7 +89,7 @@ stages:
         value: 'rg-rsp-applications-spoke-dev-uks'
       - name: DeployEnvironment
         value: 'dev'
-      - name: ServiceConnection
+      - name: azureDevServiceConnection
         value: 'ARM Dev Connection New'
     jobs:
       - template: jobs/build.yaml@library
