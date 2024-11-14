@@ -98,7 +98,7 @@ stages:
           install_aspire: true
           service_defaults_repo: service_defaults
       - template: jobs/deploy.yaml@library
-        parameters: {install_aspire: true, service_defaults_repo: service_defaults, ServiceConnection: ARM Dev Connection New }
+        parameters: {install_aspire: true, service_defaults_repo: service_defaults, ServiceConnection: azureDevServiceConnection }
   - stage: systemtest_auto
     variables: 
       - name: ContainerRegistryName
