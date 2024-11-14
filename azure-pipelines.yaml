@@ -101,13 +101,12 @@ stages:
           service_defaults_repo: service_defaults
   - stage: systemtest_auto
     jobs:
-      - ${{ if eq(paramaters.env, 'systemtest_auto') }}:
-        #- template: jobs/deploy.yaml@library
-        - job:
-          displayName: Deploy to SystemTest Auto
-          steps:
-          - script: |
-              echo 'deploying to systemtest_auto'
+      #- template: jobs/deploy.yaml@library
+      - job:
+        displayName: Deploy to SystemTest Auto
+        steps:
+        - script: |
+            echo 'deploying to systemtest_auto'
 
       - ${{ if eq(variables.run_e2e_tests, 'true') }}:
         - template: jobs/e2e_tests.yaml@library
