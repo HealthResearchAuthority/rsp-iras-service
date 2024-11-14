@@ -100,13 +100,18 @@ stages:
           install_aspire: true
           service_defaults_repo: service_defaults
   - stage: systemtest_auto
+    variables: 
+      - name: ContainerRegistryName
+        value: 'crrspsharedryefnautomationtestuks'
+      - name: AppServiceName
+        value: 'irasportal-automationtest'
+      - name: ApplicationResourceGroup
+        value: 'rg-rsp-applications-spoke-systemtestauto-uks'
     jobs:
-      #- template: jobs/deploy.yaml@library
-      - job:
-        displayName: Deploy to SystemTest Auto
-        steps:
-        - script: |
-            echo 'deploying to systemtest_auto'
+      - template: jobs/deploy.yaml@library
+        parameters:
+          install_aspire: true
+          service_defaults_repo: service_defaults
 
       - ${{ if eq(variables.run_e2e_tests, 'true') }}:
         - template: jobs/e2e_tests.yaml@library
