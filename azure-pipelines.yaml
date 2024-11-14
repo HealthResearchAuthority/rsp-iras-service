@@ -99,7 +99,7 @@ stages:
           sonar_project_name: rsp-iras-service
           install_aspire: true
           service_defaults_repo: service_defaults
-          serviceConnection: 'ARM Dev Connection New'
+          serviceConnection: ARM Dev Connection New
       - template: jobs/deploy.yaml@library
         parameters:
           install_aspire: true
