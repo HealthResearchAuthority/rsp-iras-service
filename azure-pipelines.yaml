@@ -114,7 +114,7 @@ stages:
       - name: DeployEnvironment
         value: 'System Test Auto'
       - name: ServiceConnection
-            value: ''
+        value: ''
     jobs:
       - template: jobs/deploy.yaml@library
         parameters:
