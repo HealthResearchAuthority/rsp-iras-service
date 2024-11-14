@@ -38,6 +38,9 @@ parameters:
     type: number
     displayName: Automated Tests Run Timeout
     default: 10
+  - name: dev_service_connection
+    type: string
+    default: 'ARM Dev Connection New'
 
 variables:
   - group: 'Test Automation'
@@ -98,7 +101,10 @@ stages:
           install_aspire: true
           service_defaults_repo: service_defaults
       - template: jobs/deploy.yaml@library
-        parameters: {install_aspire: true, service_defaults_repo: service_defaults, ServiceConnection: azureDevServiceConnection }
+        parameters:
+          install_aspire: true
+          service_defaults_repo: service_defaults
+          ServiceConnection: ${{ parameters.dev_service_connection }}
   - stage: systemtest_auto
     variables: 
       - name: ContainerRegistryName
