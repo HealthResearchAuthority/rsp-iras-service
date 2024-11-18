@@ -38,9 +38,6 @@ parameters:
     type: number
     displayName: Automated Tests Run Timeout
     default: 10
-  - name: dev_service_connection
-    type: string
-    default: ARMDevConnectionNew
 
 variables:
   - group: 'Test Automation'
@@ -60,6 +57,11 @@ variables:
     value: "irasservice"
   - name: buildConfiguration
     value: "Release"
+  - name: service_connection
+    ${{ if in(parameters.env, 'dev') }}:
+      value: "ARM Dev Connection New"
+    ${{ if in(parameters.env, 'systemtest_auto') }}:
+      value: "ARM Automated Test Connection"
 
 
 resources:
@@ -92,6 +94,8 @@ stages:
         value: 'rg-rsp-applications-spoke-dev-uks'
       - name: DeployEnvironment
         value: 'dev'
+    #condition: ${{ eq(parameters.env, 'dev') }}
+    condition: eq('${{ parameters.env }}', 'dev')
     jobs:
       - template: jobs/build.yaml@library
         parameters:
@@ -104,7 +108,6 @@ stages:
         parameters:
           install_aspire: true
           service_defaults_repo: service_defaults
-          ServiceConnection: ${{ parameters.dev_service_connection }}
   - stage: systemtest_auto
     variables: 
       - name: ContainerRegistryName
@@ -115,8 +118,7 @@ stages:
         value: 'rg-rsp-applications-spoke-systemtestauto-uks'
       - name: DeployEnvironment
         value: 'System Test Auto'
-      - name: ServiceConnection
-        value: ''
+    condition: eq('${{ parameters.env }}', 'systemtest_auto')
     jobs:
       - template: jobs/deploy.yaml@library
         parameters:
