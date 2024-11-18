@@ -1,6 +1,6 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Rsp.IrasService.Application.Authorization.Attributes;
 using Rsp.IrasService.Application.CQRS.Commands;
 using Rsp.IrasService.Application.CQRS.Queries;
 using Rsp.IrasService.Application.DTOS.Requests;
@@ -11,18 +11,47 @@ namespace Rsp.IrasService.WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class ApplicationsController(IMediator mediator) : ControllerBase
 {
-    [HttpGet]
+    /// <summary>
+    /// Returns a single application
+    /// </summary>
+    /// <param name="applicationId">Research Application Id</param>
+    [HttpGet("{applicationId}")]
     [Produces<ResearchApplication>]
-    public async Task<ApplicationResponse> GetApplication(string applicationId)
+    public async Task<ActionResult<ApplicationResponse>> GetApplication(string applicationId)
     {
-        var query = new GetApplicationQuery(applicationId);
+        var request = new GetApplicationQuery(applicationId);
 
-        return await mediator.Send(query);
+        var response = await mediator.Send(request);
+
+        return response == null ? NotFound() : Ok(response);
     }
 
-    [HttpGet("all")]
+    /// <summary>
+    /// Returns a single application
+    /// </summary>
+    /// <param name="applicationId">Research Application Id</param>
+    /// <param name="status">Research Application Status e.g. pending, created, approved</param>
+    [HttpGet("{applicationId}/{status}")]
+    [Produces<ResearchApplication>]
+    public async Task<ActionResult<ApplicationResponse>> GetApplication(string applicationId, string status)
+    {
+        var request = new GetApplicationWithStatusQuery(applicationId)
+        {
+            ApplicationStatus = status
+        };
+
+        var response = await mediator.Send(request);
+
+        return response == null ? NotFound() : Ok(response);
+    }
+
+    /// <summary>
+    /// Returns all applications or applications by status
+    /// </summary>
+    [HttpGet]
     [Produces<IEnumerable<ResearchApplication>>]
     public async Task<IEnumerable<ApplicationResponse>> GetApplications()
     {
@@ -31,6 +60,42 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
         return await mediator.Send(query);
     }
 
+    /// <summary>
+    /// Returns all applications by status
+    /// </summary>
+    /// <param name="status">Research Application Status</param>
+    [HttpGet("status")]
+    [Produces<IEnumerable<ResearchApplication>>]
+    public async Task<IEnumerable<ApplicationResponse>> GetApplicationsByStatus(string status)
+    {
+        var query = new GetApplicationsWithStatusQuery
+        {
+            ApplicationStatus = status
+        };
+
+        return await mediator.Send(query);
+    }
+
+    /// <summary>
+    /// Returns all applications for the respondent
+    /// </summary>
+    /// <param name="respondentId">Reasearch Application Respondent Id</param>
+    [HttpGet("respondent")]
+    [Produces<IEnumerable<ResearchApplication>>]
+    public async Task<IEnumerable<ApplicationResponse>> GetApplicationsByRespondent(string respondentId)
+    {
+        var request = new GetApplicationsWithRespondentQuery
+        {
+            RespondentId = respondentId
+        };
+
+        return await mediator.Send(request);
+    }
+
+    /// <summary>
+    /// Creates a research application
+    /// </summary>
+    /// <param name="applicationRequest">Reseaarch Application Request</param>
     [HttpPost]
     public async Task<ApplicationResponse> CreateApplication(ApplicationRequest applicationRequest)
     {
@@ -39,45 +104,14 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
         return await mediator.Send(request);
     }
 
-    [HttpPost("update")]
+    /// <summary>
+    /// Updates a research application
+    /// </summary>
+    /// <param name="applicationRequest">Research Application Request</param>
+    [HttpPut]
     public async Task<ApplicationResponse> UpdateApplication(ApplicationRequest applicationRequest)
     {
         var request = new UpdateApplicationCommand(applicationRequest);
-
-        return await mediator.Send(request);
-    }
-
-    [HttpGet("{status}")]
-    [ApplicationAccess]
-    public async Task<ApplicationResponse> GetApplicationByStatus(string applicationId, string status)
-    {
-        var request = new GetApplicationWithStatusQuery(applicationId)
-        {
-            ApplicationStatus = status
-        };
-
-        return await mediator.Send(request);
-    }
-
-    [HttpGet("{status}/all")]
-    [ApplicationAccess]
-    public async Task<IEnumerable<ApplicationResponse>> GetApplicationsByStatus(string status)
-    {
-        var request = new GetApplicationsWithStatusQuery
-        {
-            ApplicationStatus = status
-        };
-
-        return await mediator.Send(request);
-    }
-
-    [HttpGet("respondent/all")]
-    public async Task<IEnumerable<ApplicationResponse>> GetApplicationsByRespondent(string respondentId)
-    {
-        var request = new GetApplicationsWithRespondentQuery
-        {
-            RespondentId = respondentId
-        };
 
         return await mediator.Send(request);
     }
