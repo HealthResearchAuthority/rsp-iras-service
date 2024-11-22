@@ -3,6 +3,7 @@ using System.Text.Json;
 using Azure.Identity;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Rsp.IrasService.Application.Mappping;
 using Rsp.IrasService.Application.Settings;
@@ -37,10 +38,25 @@ if (!builder.Environment.IsDevelopment())
     var azureAppConfiguration = azureAppConfigSection.Get<AppSettings>();
 
     // Load configuration from Azure App Configuration
-    builder.Configuration.AddAzureAppConfiguration(options =>
-        options.Connect(
-            new Uri(azureAppConfiguration!.AzureAppConfiguration.Endpoint),
-            new ManagedIdentityCredential(azureAppConfiguration.AzureAppConfiguration.IdentityClientID)));
+    builder.Configuration.AddAzureAppConfiguration(
+        options =>
+        {
+            options.Connect
+            (
+                new Uri(azureAppConfiguration!.AzureAppConfiguration.Endpoint),
+                new ManagedIdentityCredential(azureAppConfiguration.AzureAppConfiguration.IdentityClientID)
+            )
+            .Select(KeyFilter.Any)
+            .Select(KeyFilter.Any, "service")
+            .ConfigureRefresh(refreshOptions =>
+                refreshOptions
+                .Register("AppSettings:Sentinel:IrasService", refreshAll: true)
+                .SetCacheExpiration(new TimeSpan(0, 0, 15))
+            );
+        }
+    );
+
+    services.AddAzureAppConfiguration();
 }
 
 var appSettingsSection = configuration.GetSection(nameof(AppSettings));
@@ -98,6 +114,10 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+else
+{
+    app.UseAzureAppConfiguration();
 }
 
 app.UseHttpsRedirection();
