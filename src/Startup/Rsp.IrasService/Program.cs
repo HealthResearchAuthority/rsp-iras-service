@@ -12,6 +12,7 @@ using Rsp.IrasService.Configuration.Database;
 using Rsp.IrasService.Configuration.Dependencies;
 using Rsp.IrasService.Configuration.Swagger;
 using Rsp.IrasService.Extensions;
+using Rsp.Logging.Extensions;
 using Rsp.Logging.Middlewares.CorrelationId;
 using Rsp.Logging.Middlewares.RequestTracing;
 using Rsp.ServiceDefaults;
@@ -107,6 +108,10 @@ var config = TypeAdapterConfig.GlobalSettings;
 config.Scan(typeof(MappingRegister).Assembly);
 
 var app = builder.Build();
+
+var logger = app.Services.GetRequiredService<ILogger<Program>>();
+logger.LogInformationHp("Initialised logger");
+
 app.MapDefaultEndpoints();
 
 // Configure the HTTP request pipeline.

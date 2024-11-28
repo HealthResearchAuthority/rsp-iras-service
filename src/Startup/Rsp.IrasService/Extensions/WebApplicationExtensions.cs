@@ -16,9 +16,21 @@ public static class WebApplicationExtensions
     /// <param name="app">The WebApplication instance</param>
     public static async Task MigrateAndSeedDatabaseAsync(this WebApplication app)
     {
-        using var scope = app.Services.CreateScope();
-        await using var context = scope.ServiceProvider.GetRequiredService<IrasContext>();
+        var logger = app.Services.GetRequiredService<ILogger<Program>>();
 
-        await context.Database.MigrateAsync();
+        logger.LogInformation("Performing Migrations");
+
+        try
+        {
+            using var scope = app.Services.CreateScope();
+
+            await using var context = scope.ServiceProvider.GetRequiredService<IrasContext>();
+
+            await context.Database.MigrateAsync();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError("ERR_FAILED_MIGRATIONS: {0} ", ex);
+        }
     }
 }

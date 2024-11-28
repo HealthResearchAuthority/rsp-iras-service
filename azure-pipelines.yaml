@@ -40,6 +40,7 @@ parameters:
     default: 10
 
 variables:
+  - group: 'IRASServiceContainerApp'
   - group: 'Test Automation'
   - name: vstsFeed
     value: "0e030eb0-cb72-4f42-b99a-26e6544271c3/0a3e0ad2-23b6-4e8b-ae12-cd6d01fe97e7"
@@ -49,12 +50,6 @@ variables:
     value: "**/*.csproj"
   - name: projectForContainerBuild
     value: "Rsp.IrasService.csproj"
-  - name: publishContainerName
-    value: "rsp-irasservice" 
-  - name: acrContainerName
-    value: "rsp-irasservice"
-  - name: containerAppName
-    value: "irasservice"
   - name: buildConfiguration
     value: "Release"
   - name: service_connection
@@ -86,15 +81,7 @@ resources:
 stages:
   - stage: dev
     variables: 
-      - name: ContainerRegistryName
-        value: 'crrspshared2i2oqdevuks'
-      - name: AppServiceName
-        value: 'irasportal-dev'
-      - name: ApplicationResourceGroup
-        value: 'rg-rsp-applications-spoke-dev-uks'
-      - name: DeployEnvironment
-        value: 'dev'
-    #condition: ${{ eq(parameters.env, 'dev') }}
+    - group: 'DevelopmentEnvironment'
     condition: eq('${{ parameters.env }}', 'dev')
     jobs:
       - template: jobs/build.yaml@library
@@ -110,14 +97,7 @@ stages:
           service_defaults_repo: service_defaults
   - stage: systemtest_auto
     variables: 
-      - name: ContainerRegistryName
-        value: 'crrspsharedryefnautomationtestuks'
-      - name: AppServiceName
-        value: 'irasportal-automationtest'
-      - name: ApplicationResourceGroup
-        value: 'rg-rsp-applications-spoke-systemtestauto-uks'
-      - name: DeployEnvironment
-        value: 'System Test Auto'
+    - group: 'STAutoEnvironment'
     condition: eq('${{ parameters.env }}', 'systemtest_auto')
     jobs:
       - template: jobs/deploy.yaml@library
@@ -134,7 +114,9 @@ stages:
       - ${{ if eq(variables.run_api_tests, 'true') }}:
         - template: jobs/api_tests.yaml@library
           parameters:
+            browser: ${{ parameters.browser }}
             repo: api_tests
+            tests_run_timeout: ${{ parameters.tests_run_timeout }}
 
   - stage: systemtest_manual
     jobs:
