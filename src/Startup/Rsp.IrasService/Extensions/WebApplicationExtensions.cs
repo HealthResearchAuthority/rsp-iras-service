@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Infrastructure;
+using Rsp.Logging.Extensions;
 
 namespace Rsp.IrasService.Extensions;
 
@@ -18,19 +19,21 @@ public static class WebApplicationExtensions
     {
         var logger = app.Services.GetRequiredService<ILogger<Program>>();
 
-        logger.LogInformation("Performing Migrations");
-
         try
         {
+            logger.LogInformation("Performing Migrations");
+
             using var scope = app.Services.CreateScope();
 
             await using var context = scope.ServiceProvider.GetRequiredService<IrasContext>();
 
             await context.Database.MigrateAsync();
+
+            logger.LogAsInformation("Migrations Completed");
         }
         catch (Exception ex)
         {
-            logger.LogError("ERR_FAILED_MIGRATIONS: {0} ", ex);
+            logger.LogAsError("ERR_FAILED_MIGRATIONS", "Database Migration failed", ex);
         }
     }
 }

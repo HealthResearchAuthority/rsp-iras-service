@@ -54,7 +54,7 @@ public static class SwaggerConfiguration
                 Description = "Categories API for managing application and project categories",
             });
 
-            // using System.Reflection;
+            // using System.Reflection
             var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
         });

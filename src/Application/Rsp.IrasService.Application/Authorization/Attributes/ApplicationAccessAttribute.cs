@@ -8,6 +8,7 @@ namespace Rsp.IrasService.Application.Authorization.Attributes;
 /// Each authorization requirement is associated with an AuthorizationHandler for
 /// the requirement. Handlers are mutally exclusive, if one succeed, we ignore the other ones
 /// </summary>
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public class ApplicationAccessAttribute() : AuthorizeAttribute, IAuthorizationRequirementData
 {
     public IEnumerable<IAuthorizationRequirement> GetRequirements()

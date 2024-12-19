@@ -6,6 +6,7 @@ using Microsoft.Net.Http.Headers;
 using Rsp.IrasService.Application.Authentication.Helpers;
 using Rsp.IrasService.Application.Authorization.Handlers;
 using Rsp.IrasService.Application.Settings;
+using Rsp.Logging.Extensions;
 
 namespace Rsp.IrasService.Configuration.Auth;
 
@@ -52,11 +53,22 @@ public static class AuthConfiguration
             },
             OnAuthenticationFailed = context =>
             {
+                var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
+
+                logger.LogAsWarning("Authentication Failed");
+
                 context.Fail(context.Exception);
 
                 return Task.CompletedTask;
             },
-            OnTokenValidated = _ => Task.CompletedTask
+            OnTokenValidated = context =>
+            {
+                var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
+
+                logger.LogAsInformation("AuthToken Validated");
+
+                return Task.CompletedTask;
+            }
         };
 
         // Enable built-in authentication of Jwt bearer token
