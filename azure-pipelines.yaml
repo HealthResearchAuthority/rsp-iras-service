@@ -119,11 +119,21 @@ stages:
             tests_run_timeout: ${{ parameters.tests_run_timeout }}
 
   - stage: systemtest_manual
+    variables: 
+    - group: 'STManualEnvironment'
+    condition: eq('${{ parameters.env }}', 'systemtest_manual')
     jobs:
-    - job:
-      steps:
-      - script: |
-          echo 'env: system test manual'
+      - template: jobs/build.yaml@library
+        parameters:
+          run_github_security_scan: ${{ parameters.run_github_security_scan }}
+          sonar_project_key: FutureIRAS_rsp-iras-service
+          sonar_project_name: rsp-iras-service
+          install_aspire: true
+          service_defaults_repo: service_defaults
+      - template: jobs/deploy.yaml@library
+        parameters:
+          install_aspire: true
+          service_defaults_repo: service_defaults
 
   - stage: system_integration_test
     jobs:
