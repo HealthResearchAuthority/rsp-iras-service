@@ -57,6 +57,8 @@ variables:
       value: "ARM Dev Connection New"
     ${{ if in(parameters.env, 'systemtest_auto') }}:
       value: "ARM Automated Test Connection"
+    ${{ if in(parameters.env, 'systemtest_manual') }}:
+      value: "ARM Manual Test Connection"
 
 
 resources:
