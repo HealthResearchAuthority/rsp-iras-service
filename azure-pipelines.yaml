@@ -52,7 +52,7 @@ parameters:
     default: 10
 
 variables:
-- group: 'IRASServiceContainerApp'
+  - group: 'IRASServiceContainerApp'
   - group: 'Test Automation'
   - name: vstsFeed
     value: "0e030eb0-cb72-4f42-b99a-26e6544271c3/0a3e0ad2-23b6-4e8b-ae12-cd6d01fe97e7"
@@ -65,11 +65,13 @@ variables:
   - name: buildConfiguration
     value: "Release"
   - name: service_connection
-    ${{ if in(parameters.env, 'dev') }}:
+    value: ""
+  - ${{ if in(parameters.env, 'dev') }}:
+    - name: service_connection
       value: "ARM Dev Connection New"
-    ${{ if in(parameters.env, 'systemtest_auto') }}:
-      value: "ARM Automated Test Connection"  
-
+  - ${{ if in(parameters.env, 'systemtest_auto') }}:
+    - name: service_connection
+      value: "ARM Automated Test Connection"
 
 resources:
   repositories:
@@ -93,7 +95,7 @@ resources:
 stages:
   - stage: dev
     variables: 
-    - group: 'DevelopmentEnvironment'
+      - group: 'DevelopmentEnvironment'
     condition: eq('${{ parameters.env }}', 'dev') 
     jobs:
       - template: jobs/build.yaml@library
@@ -111,9 +113,10 @@ stages:
             depends_on: 'Build'
             install_aspire: true
             service_defaults_repo: service_defaults
+
   - stage: systemtest_auto
     variables: 
-    - group: 'STAutoEnvironment'
+      - group: 'STAutoEnvironment'
     condition: eq('${{ parameters.env }}', 'systemtest_auto')
     jobs:
       - template: jobs/deploy.yaml@library
@@ -136,35 +139,35 @@ stages:
 
   - stage: systemtest_manual
     jobs:
-    - job:
-      steps:
-      - script: |
-          echo 'env: system test manual'
+      - job:
+        steps:
+          - script: |
+              echo 'env: system test manual'
 
   - stage: system_integration_test
     jobs:
-    - job:
-      steps:
-      - script: |
-          echo 'env: system integration test'
+      - job:
+        steps:
+          - script: |
+              echo 'env: system integration test'
 
   - stage: uat
     jobs:
-    - job:
-      steps:
-      - script: |
-          echo 'env: uat'
+      - job:
+        steps:
+          - script: |
+              echo 'env: uat'
 
   - stage: pre_prod
     jobs:
-    - job:
-      steps:
-      - script: |
-          echo 'env: pre prod'
+      - job:
+        steps:
+          - script: |
+              echo 'env: pre prod'
 
   - stage: production
     jobs:
-    - job:
-      steps:
-      - script: |
-          echo 'env: production'
+      - job:
+        steps:
+          - script: |
+              echo 'env: production'
