@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 #pragma warning disable S1192
@@ -6,6 +7,7 @@
 namespace Rsp.IrasService.Infrastructure.Migrations
 {
     /// <inheritdoc />
+    [ExcludeFromCodeCoverage]
     public partial class CreateIrasDbSchema : Migration
     {
         /// <inheritdoc />

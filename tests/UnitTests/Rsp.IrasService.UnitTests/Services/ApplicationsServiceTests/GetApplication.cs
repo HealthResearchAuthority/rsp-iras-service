@@ -1,40 +1,29 @@
-﻿using AutoFixture;
-using AutoFixture.Xunit2;
-using Microsoft.EntityFrameworkCore;
-using Rsp.IrasService.Application.Contracts.Repositories;
-using Rsp.IrasService.Application.DTOS.Responses;
-using Rsp.IrasService.Domain.Entities;
-using Rsp.IrasService.Infrastructure;
-using Rsp.IrasService.Infrastructure.Repositories;
-using Rsp.IrasService.Services;
-using Shouldly;
-using static Rsp.IrasService.UnitTests.TestData;
-
-namespace Rsp.IrasService.UnitTests.ApplicationsServiceTests;
+﻿namespace Rsp.IrasService.UnitTests.Services.ApplicationsServiceTests;
 
 /// <summary>
-/// Covers the tests for GetApplication method
+///     Covers the tests for GetApplication method
 /// </summary>
 public class GetApplication : TestServiceBase<ApplicationsService>
 {
-    private readonly IrasContext _context;
     private readonly ApplicationRepository _applicationRepository;
+    private readonly IrasContext _context;
 
     public GetApplication()
     {
         var options = new DbContextOptionsBuilder<IrasContext>()
-            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString("N")).Options;
+            .UseInMemoryDatabase(Guid.NewGuid().ToString("N")).Options;
 
         _context = new IrasContext(options);
         _applicationRepository = new ApplicationRepository(_context);
     }
 
     /// <summary>
-    /// Tests that correct application is returned by Id
+    ///     Tests that correct application is returned by Id
     /// </summary>
     /// <param name="records">Number of records to seed</param>
     /// <param name="generator">Test Data Generator</param>
-    [Theory, InlineAutoData(5)]
+    [Theory]
+    [InlineAutoData(5)]
     public async Task Returns_Application_ById(int records, Generator<ResearchApplication> generator)
     {
         // Arrange
@@ -58,11 +47,12 @@ public class GetApplication : TestServiceBase<ApplicationsService>
     }
 
     /// <summary>
-    /// Tests that correct application is returned by Id
+    ///     Tests that correct application is returned by Id
     /// </summary>
     /// <param name="records">Number of records to seed</param>
     /// <param name="generator">Test Data Generator</param>
-    [Theory, InlineAutoData(5)]
+    [Theory]
+    [InlineAutoData(5)]
     public async Task Returns_Application_ByIdAndStatus(int records, Generator<ResearchApplication> generator)
     {
         // Arrange
@@ -86,10 +76,11 @@ public class GetApplication : TestServiceBase<ApplicationsService>
     }
 
     /// <summary>
-    /// Tests that exception is thrown if Id doesn't exist
+    ///     Tests that exception is thrown if Id doesn't exist
     /// </summary>
     /// <param name="generator">Test data generator</param>
-    [Theory, InlineAutoData(5)]
+    [Theory]
+    [InlineAutoData(5)]
     public async Task ReturnsNull_If_Id_DoesNotExist(int records, Generator<ResearchApplication> generator)
     {
         // Arrange

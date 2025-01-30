@@ -1,14 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.Net.Http.Headers;
-using Rsp.IrasService.Application.Authentication.Helpers;
-using Rsp.IrasService.Application.Authorization.Handlers;
-using Rsp.IrasService.Application.Settings;
-using Rsp.Logging.Extensions;
-
-namespace Rsp.IrasService.Configuration.Auth;
+﻿namespace Rsp.IrasService.Configuration.Auth;
 
 /// <summary>
 /// Authentication and Authorization configuration

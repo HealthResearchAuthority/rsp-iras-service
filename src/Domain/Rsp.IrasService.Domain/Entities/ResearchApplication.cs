@@ -1,5 +1,6 @@
 ﻿namespace Rsp.IrasService.Domain.Entities;
 
+[ExcludeFromCodeCoverage]
 public class ResearchApplication
 {
     public string ApplicationId { get; set; } = null!;

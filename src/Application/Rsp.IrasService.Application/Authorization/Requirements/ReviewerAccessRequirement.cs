@@ -7,6 +7,7 @@ namespace Rsp.IrasService.Application.Authorization.Requirements;
 /// - if user is in reviewer role
 /// - can query certain application statuses
 /// </summary>
+[ExcludeFromCodeCoverage]
 public class ReviewerAccessRequirement : IAuthorizationRequirement
 {
     /// <summary>

@@ -1,5 +1,6 @@
 ﻿namespace Rsp.IrasService.Application.Settings;
 
+[ExcludeFromCodeCoverage]
 public class AppSettings
 {
     /// <summary>

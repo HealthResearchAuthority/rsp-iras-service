@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace Rsp.IrasService.Application.Settings;
+﻿namespace Rsp.IrasService.Application.Settings;
 
 [ExcludeFromCodeCoverage]
 public class AuthSettings

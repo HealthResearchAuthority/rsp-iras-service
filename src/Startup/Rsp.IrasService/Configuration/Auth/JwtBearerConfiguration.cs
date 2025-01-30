@@ -1,10 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using NetDevPack.Security.JwtExtensions;
-using Rsp.IrasService.Application.Settings;
-
-namespace Rsp.IrasService.Configuration.Auth;
+﻿namespace Rsp.IrasService.Configuration.Auth;
 
 /// <summary>
 /// JwtBearer Configuration
