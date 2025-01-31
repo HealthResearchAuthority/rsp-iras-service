@@ -1,4 +1,8 @@
-﻿namespace Rsp.IrasService.UnitTests.Web.Controllers.ApplicationsControllerTests;
+﻿using Rsp.IrasService.Application.CQRS.Queries;
+using Rsp.IrasService.Application.DTOS.Responses;
+using Rsp.IrasService.WebApi.Controllers;
+
+namespace Rsp.IrasService.UnitTests.Web.Controllers.ApplicationsControllerTests;
 
 public class GetApplicationsByStatus : TestServiceBase
 {
@@ -24,8 +28,8 @@ public class GetApplicationsByStatus : TestServiceBase
         var result = await _controller.GetApplicationsByStatus(status);
 
         // Assert
-        Assert.NotNull(result);
-        Assert.Equal(mockResponse, result);
+        result.ShouldNotBeNull();
+        result.ShouldBe(mockResponse);
     }
 
     [Theory]
@@ -42,7 +46,7 @@ public class GetApplicationsByStatus : TestServiceBase
         var result = await _controller.GetApplicationsByStatus(status);
 
         // Assert
-        Assert.NotNull(result);
-        Assert.Empty(result);
+        result.ShouldNotBeNull();
+        result.ShouldBeEmpty();
     }
 }

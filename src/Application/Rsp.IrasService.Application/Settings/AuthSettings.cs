@@ -1,6 +1,5 @@
 ﻿namespace Rsp.IrasService.Application.Settings;
 
-[ExcludeFromCodeCoverage]
 public class AuthSettings
 {
     /// <summary>

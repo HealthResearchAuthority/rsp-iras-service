@@ -1,4 +1,12 @@
-﻿namespace Rsp.IrasService.UnitTests.Services.ApplicationsServiceTests;
+﻿using Microsoft.EntityFrameworkCore;
+using Rsp.IrasService.Application.Contracts.Repositories;
+using Rsp.IrasService.Application.DTOS.Responses;
+using Rsp.IrasService.Domain.Entities;
+using Rsp.IrasService.Infrastructure;
+using Rsp.IrasService.Infrastructure.Repositories;
+using Rsp.IrasService.Services;
+
+namespace Rsp.IrasService.UnitTests.Services.ApplicationsServiceTests;
 
 /// <summary>
 ///     Covers the tests for GetApplication method
@@ -32,7 +40,7 @@ public class GetApplication : TestServiceBase<ApplicationsService>
         Sut = Mocker.CreateInstance<ApplicationsService>();
 
         // seed data using number of records to seed
-        var applications = await SeedData(_context, generator, records);
+        var applications = await TestData.SeedData(_context, generator, records);
 
         // get the random application id between 0 and 4
         var applicationId = applications[Random.Shared.Next(0, 4)].ApplicationId;
@@ -61,7 +69,7 @@ public class GetApplication : TestServiceBase<ApplicationsService>
         Sut = Mocker.CreateInstance<ApplicationsService>();
 
         // seed the data using number of records to seed, some with pending status
-        var applications = await SeedData(_context, generator, records, true);
+        var applications = await TestData.SeedData(_context, generator, records, true);
 
         // get the random application id between 0 and 4
         var applicationId = applications[2].ApplicationId;
@@ -89,7 +97,7 @@ public class GetApplication : TestServiceBase<ApplicationsService>
         Sut = Mocker.CreateInstance<ApplicationsService>();
 
         // seed data using number of records to seed
-        await SeedData(_context, generator, records);
+        await TestData.SeedData(_context, generator, records);
 
         // get the id that won't exist
         var applicationId = DateTime.Now.ToString("HHmmssddMMyyyy");

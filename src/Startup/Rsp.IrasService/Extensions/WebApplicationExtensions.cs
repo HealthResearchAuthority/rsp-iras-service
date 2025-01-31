@@ -1,9 +1,12 @@
-﻿namespace Rsp.IrasService.Extensions;
+﻿using Microsoft.EntityFrameworkCore;
+using Rsp.IrasService.Infrastructure;
+using Rsp.Logging.Extensions;
+
+namespace Rsp.IrasService.Extensions;
 
 /// <summary>
 /// Define an extension method on WebApplication to support migrating and seeding the database
 /// </summary>
-[ExcludeFromCodeCoverage]
 public static class WebApplicationExtensions
 {
     /// <summary>

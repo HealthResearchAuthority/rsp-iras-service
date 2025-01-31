@@ -1,4 +1,9 @@
-﻿namespace Rsp.IrasService.UnitTests.Application.CQRS.Handlers.QueryHandlers;
+﻿using Rsp.IrasService.Application.Contracts.Services;
+using Rsp.IrasService.Application.CQRS.Handlers.QueryHandlers;
+using Rsp.IrasService.Application.CQRS.Queries;
+using Rsp.IrasService.Application.DTOS.Responses;
+
+namespace Rsp.IrasService.UnitTests.Application.CQRS.Handlers.QueryHandlers;
 
 public class GetApplicationsHandlerTests
 {
@@ -31,8 +36,9 @@ public class GetApplicationsHandlerTests
         var result = await _handler.Handle(query, CancellationToken.None);
 
         // Assert
-        Assert.NotNull(result);
-        Assert.Equal(expectedResponse.Count, result.Count());
+        result.ShouldNotBeNull();
+        result.Count().ShouldBe(expectedResponse.Count);
+
         _applicationsServiceMock.Verify(service => service.GetApplications(), Times.Once);
     }
 }

@@ -1,4 +1,12 @@
-﻿namespace Rsp.IrasService.UnitTests.Services.ApplicationsServiceTests;
+﻿using Microsoft.EntityFrameworkCore;
+using Rsp.IrasService.Application.Contracts.Repositories;
+using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.IrasService.Application.DTOS.Responses;
+using Rsp.IrasService.Infrastructure;
+using Rsp.IrasService.Infrastructure.Repositories;
+using Rsp.IrasService.Services;
+
+namespace Rsp.IrasService.UnitTests.Services.ApplicationsServiceTests;
 
 /// <summary>
 ///     Covers the tests for CreateApplication method

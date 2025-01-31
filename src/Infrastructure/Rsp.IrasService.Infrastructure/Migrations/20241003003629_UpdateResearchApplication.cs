@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Rsp.IrasService.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    [ExcludeFromCodeCoverage]
     public partial class UpdateResearchApplication : Migration
     {
         /// <inheritdoc />

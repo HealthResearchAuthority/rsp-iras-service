@@ -1,4 +1,7 @@
-﻿namespace Rsp.IrasService.UnitTests.Application.Authentication.Helpers.TokenHelper;
+﻿using Microsoft.Extensions.Primitives;
+using Microsoft.IdentityModel.Tokens;
+
+namespace Rsp.IrasService.UnitTests.Application.Authentication.Helpers.TokenHelper;
 
 public class BearerizeAuthToken
 {
@@ -11,7 +14,7 @@ public class BearerizeAuthToken
 
         // Act & Assert
         var exception = Assert.Throws<SecurityTokenException>(() => helper.BearerizeAuthToken(emptyToken));
-        Assert.Equal("Empty authorization token", exception.Message);
+        exception.Message.ShouldBe("Empty authorization token");
     }
 
     [Fact]
@@ -25,7 +28,7 @@ public class BearerizeAuthToken
         var result = helper.BearerizeAuthToken(tokenWithoutBearer);
 
         // Assert
-        Assert.Equal("Bearer some-token", result);
+        result.ShouldBe("Bearer some-token");
     }
 
     [Fact]
@@ -39,6 +42,6 @@ public class BearerizeAuthToken
         var result = helper.BearerizeAuthToken(tokenWithBearer);
 
         // Assert
-        Assert.Equal("Bearer some-token", result);
+        result.ShouldBe("Bearer some-token");
     }
 }

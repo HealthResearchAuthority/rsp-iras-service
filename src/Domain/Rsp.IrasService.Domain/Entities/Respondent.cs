@@ -1,6 +1,5 @@
 ﻿namespace Rsp.IrasService.Domain.Entities;
 
-[ExcludeFromCodeCoverage]
 public class Respondent
 {
     public string RespondentId { get; set; } = null!;

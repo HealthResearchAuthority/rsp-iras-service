@@ -1,9 +1,15 @@
-﻿namespace Rsp.IrasService.Configuration.Dependencies;
+﻿using Rsp.IrasService.Application;
+using Rsp.IrasService.Application.Authentication.Helpers;
+using Rsp.IrasService.Application.Contracts.Repositories;
+using Rsp.IrasService.Application.Contracts.Services;
+using Rsp.IrasService.Infrastructure.Repositories;
+using Rsp.IrasService.Services;
+
+namespace Rsp.IrasService.Configuration.Dependencies;
 
 /// <summary>
 ///  User Defined Services Configuration
 /// </summary>
-[ExcludeFromCodeCoverage]
 public static class ServicesConfiguration
 {
     /// <summary>

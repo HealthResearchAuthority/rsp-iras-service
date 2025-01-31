@@ -1,4 +1,11 @@
-﻿namespace Rsp.IrasService.UnitTests.Services.ApplicationsServiceTests;
+﻿using Microsoft.EntityFrameworkCore;
+using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.IrasService.Domain.Entities;
+using Rsp.IrasService.Infrastructure;
+using Rsp.IrasService.Infrastructure.Repositories;
+using Rsp.IrasService.Services;
+
+namespace Rsp.IrasService.UnitTests.Services.ApplicationsServiceTests;
 
 public class GetRespondentApplications : TestServiceBase<ApplicationsService>
 {

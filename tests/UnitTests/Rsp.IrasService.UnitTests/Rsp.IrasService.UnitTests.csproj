@@ -35,6 +35,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Using Include="AutoFixture" />
+		<Using Include="AutoFixture.Xunit2" />
+		<Using Include="Mapster" />
+		<Using Include="MediatR" />
+		<Using Include="Moq" />
+		<Using Include="Moq.AutoMock" />
+		<Using Include="Shouldly" />
 		<Using Include="Xunit" />
 	</ItemGroup>
 

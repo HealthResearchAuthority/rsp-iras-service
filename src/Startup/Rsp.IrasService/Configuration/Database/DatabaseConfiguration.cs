@@ -1,9 +1,11 @@
-﻿namespace Rsp.IrasService.Configuration.Database;
+﻿using Microsoft.EntityFrameworkCore;
+using Rsp.IrasService.Infrastructure;
+
+namespace Rsp.IrasService.Configuration.Database;
 
 /// <summary>
 /// Adds DbContext to the application
 /// </summary>
-[ExcludeFromCodeCoverage]
 public static class DatabaseConfiguration
 {
     /// <summary>

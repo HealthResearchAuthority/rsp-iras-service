@@ -1,4 +1,9 @@
-﻿namespace Rsp.IrasService.UnitTests.Web.Controllers.ApplicationsControllerTests;
+﻿using Microsoft.AspNetCore.Mvc;
+using Rsp.IrasService.Application.CQRS.Queries;
+using Rsp.IrasService.Application.DTOS.Responses;
+using Rsp.IrasService.WebApi.Controllers;
+
+namespace Rsp.IrasService.UnitTests.Web.Controllers.ApplicationsControllerTests;
 
 public class GetApplication : TestServiceBase
 {
@@ -24,9 +29,9 @@ public class GetApplication : TestServiceBase
         var result = await _controller.GetApplication(applicationId);
 
         // Assert
-        var okResult = Assert.IsType<OkObjectResult>(result.Result);
-        Assert.Equal(200, okResult.StatusCode);
-        Assert.Equal(mockResponse, okResult.Value);
+        var okResult = result.Result.ShouldBeOfType<OkObjectResult>();
+        okResult.StatusCode.ShouldBe(200);
+        okResult.Value.ShouldBe(mockResponse);
     }
 
     [Theory]
@@ -43,7 +48,7 @@ public class GetApplication : TestServiceBase
         var result = await _controller.GetApplication(applicationId);
 
         // Assert
-        Assert.IsType<NotFoundResult>(result.Result);
+        result.Result.ShouldBeOfType<NotFoundResult>();
     }
 
     [Theory]
@@ -63,9 +68,9 @@ public class GetApplication : TestServiceBase
         var result = await _controller.GetApplication(applicationId, status);
 
         // Assert
-        var okResult = Assert.IsType<OkObjectResult>(result.Result);
-        Assert.Equal(200, okResult.StatusCode);
-        Assert.Equal(mockResponse, okResult.Value);
+        var okResult = result.Result.ShouldBeOfType<OkObjectResult>();
+        okResult.StatusCode.ShouldBe(200);
+        okResult.Value.ShouldBe(mockResponse);
     }
 
     [Theory]
@@ -85,6 +90,6 @@ public class GetApplication : TestServiceBase
         var result = await _controller.GetApplication(applicationId, status);
 
         // Assert
-        Assert.IsType<NotFoundResult>(result.Result);
+        result.Result.ShouldBeOfType<NotFoundResult>();
     }
 }

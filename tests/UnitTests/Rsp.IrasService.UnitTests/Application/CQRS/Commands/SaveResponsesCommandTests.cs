@@ -1,4 +1,7 @@
-﻿namespace Rsp.IrasService.UnitTests.Application.CQRS.Commands
+﻿using Rsp.IrasService.Application.CQRS.Commands;
+using Rsp.IrasService.Application.DTOS.Requests;
+
+namespace Rsp.IrasService.UnitTests.Application.CQRS.Commands
 {
     namespace Rsp.IrasService.UnitTests.Application.CQRS.Commands
     {

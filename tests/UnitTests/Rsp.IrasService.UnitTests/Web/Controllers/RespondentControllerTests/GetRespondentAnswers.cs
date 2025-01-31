@@ -1,4 +1,8 @@
-﻿namespace Rsp.IrasService.UnitTests.Web.Controllers.RespondentControllerTests;
+﻿using Rsp.IrasService.Application.CQRS.Queries;
+using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.IrasService.WebApi.Controllers;
+
+namespace Rsp.IrasService.UnitTests.Web.Controllers.RespondentControllerTests;
 
 public class GetRespondentAnswersTests : TestServiceBase
 {
@@ -24,7 +28,7 @@ public class GetRespondentAnswersTests : TestServiceBase
         var result = await _controller.GetRespondentAnswers(applicationId);
 
         // Assert
-        Assert.Equal(mockResponse, result);
+        result.ShouldBe(mockResponse);
         mockMediator.Verify(m => m.Send(It.Is<GetResponsesQuery>(q => q.ApplicationId == applicationId), default),
             Times.Once);
     }
@@ -45,7 +49,7 @@ public class GetRespondentAnswersTests : TestServiceBase
         var result = await _controller.GetRespondentAnswers(applicationId, categoryId);
 
         // Assert
-        Assert.Equal(mockResponse, result);
+        result.ShouldBe(mockResponse);
         mockMediator.Verify(
             m => m.Send(It.Is<GetResponsesQuery>(q => q.ApplicationId == applicationId && q.CategoryId == categoryId),
                 default), Times.Once);

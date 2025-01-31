@@ -1,4 +1,9 @@
-﻿namespace Rsp.IrasService.UnitTests.Web.Controllers.ApplicationsControllerTests;
+﻿using Rsp.IrasService.Application.CQRS.Commands;
+using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.IrasService.Application.DTOS.Responses;
+using Rsp.IrasService.WebApi.Controllers;
+
+namespace Rsp.IrasService.UnitTests.Web.Controllers.ApplicationsControllerTests;
 
 public class CreateApplication : TestServiceBase
 {
@@ -24,8 +29,8 @@ public class CreateApplication : TestServiceBase
         var result = await _controller.CreateApplication(request);
 
         // Assert
-        Assert.NotNull(result);
-        Assert.Equal(mockResponse, result);
+        result.ShouldNotBeNull();
+        result.ShouldBe(mockResponse);
         mockMediator.Verify(
             m => m.Send(It.Is<CreateApplicationCommand>(c => c.CreateApplicationRequest == request), default),
             Times.Once);

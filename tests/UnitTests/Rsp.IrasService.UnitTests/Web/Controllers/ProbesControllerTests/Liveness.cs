@@ -1,4 +1,7 @@
-﻿namespace Rsp.IrasService.UnitTests.Web.Controllers.ProbesControllerTests;
+﻿using Microsoft.AspNetCore.Mvc;
+using Rsp.IrasService.WebApi.Controllers;
+
+namespace Rsp.IrasService.UnitTests.Web.Controllers.ProbesControllerTests;
 
 public class Liveness
 {
@@ -12,7 +15,7 @@ public class Liveness
         var result = controller.Liveness();
 
         // Assert
-        var okResult = Assert.IsType<OkResult>(result);
-        Assert.Equal(200, okResult.StatusCode);
+        var okResult = result.ShouldBeOfType<OkResult>();
+        okResult.StatusCode.ShouldBe(200);
     }
 }

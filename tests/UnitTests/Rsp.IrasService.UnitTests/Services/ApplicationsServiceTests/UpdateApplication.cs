@@ -1,4 +1,13 @@
-﻿namespace Rsp.IrasService.UnitTests.Services.ApplicationsServiceTests;
+﻿using Microsoft.EntityFrameworkCore;
+using Rsp.IrasService.Application.Contracts.Repositories;
+using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.IrasService.Application.DTOS.Responses;
+using Rsp.IrasService.Domain.Entities;
+using Rsp.IrasService.Infrastructure;
+using Rsp.IrasService.Infrastructure.Repositories;
+using Rsp.IrasService.Services;
+
+namespace Rsp.IrasService.UnitTests.Services.ApplicationsServiceTests;
 
 /// <summary>
 ///     Covers the tests for UpdateApplication method
@@ -32,7 +41,7 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
         Sut = Mocker.CreateInstance<ApplicationsService>();
 
         // seed data with the number of records
-        var applications = await SeedData(_context, generator, records);
+        var applications = await TestData.SeedData(_context, generator, records);
 
         createApplicationRequest.ApplicationId = applications[0].ApplicationId;
         createApplicationRequest.StartDate = applications[0].CreatedDate;
@@ -67,7 +76,7 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
         Sut = Mocker.CreateInstance<ApplicationsService>();
 
         // seed data with the number of records
-        await SeedData(_context, generator, records);
+        await TestData.SeedData(_context, generator, records);
 
         // get the id that won't exists
         createApplicationRequest.ApplicationId = DateTime.Now.ToString("yyyyddMMHHmmss");

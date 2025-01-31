@@ -1,6 +1,5 @@
 ﻿namespace Rsp.IrasService.Application.DTOS.Requests;
 
-[ExcludeFromCodeCoverage]
 public record RespondentAnswersRequest
 {
     /// <summary>

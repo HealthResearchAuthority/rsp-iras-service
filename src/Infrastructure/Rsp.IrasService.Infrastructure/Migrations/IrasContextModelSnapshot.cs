@@ -11,7 +11,6 @@ using Rsp.IrasService.Infrastructure;
 
 namespace Rsp.IrasService.Infrastructure.Migrations
 {
-    [ExcludeFromCodeCoverage]
     [DbContext(typeof(IrasContext))]
     partial class IrasContextModelSnapshot : ModelSnapshot
     {

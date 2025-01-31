@@ -1,4 +1,11 @@
-﻿namespace Rsp.IrasService.UnitTests.Services.ApplicationsServiceTests;
+﻿using Microsoft.EntityFrameworkCore;
+using Rsp.IrasService.Application.Contracts.Repositories;
+using Rsp.IrasService.Domain.Entities;
+using Rsp.IrasService.Infrastructure;
+using Rsp.IrasService.Infrastructure.Repositories;
+using Rsp.IrasService.Services;
+
+namespace Rsp.IrasService.UnitTests.Services.ApplicationsServiceTests;
 
 /// <summary>
 ///     Covers the tests for GetApplications method
@@ -31,7 +38,7 @@ public class GetApplications : TestServiceBase<ApplicationsService>
         Sut = Mocker.CreateInstance<ApplicationsService>();
 
         // seed data using number of records to seed
-        await SeedData(_context, generator, records);
+        await TestData.SeedData(_context, generator, records);
 
         // Act
         var applications = await Sut.GetApplications();
@@ -58,7 +65,7 @@ public class GetApplications : TestServiceBase<ApplicationsService>
         Sut = Mocker.CreateInstance<ApplicationsService>();
 
         // seed the data using number of records to seed, some with pending status
-        await SeedData(_context, generator, records, updateStatus);
+        await TestData.SeedData(_context, generator, records, updateStatus);
 
         // Act
         var applications = await Sut.GetApplications("pending");

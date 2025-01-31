@@ -1,4 +1,7 @@
-﻿namespace Rsp.IrasService.UnitTests.Application.Specifications;
+﻿using Rsp.IrasService.Application.Specifications;
+using Rsp.IrasService.Domain.Entities;
+
+namespace Rsp.IrasService.UnitTests.Application.Specifications;
 
 public class GetRespondentApplicationSpecificationTests
 {

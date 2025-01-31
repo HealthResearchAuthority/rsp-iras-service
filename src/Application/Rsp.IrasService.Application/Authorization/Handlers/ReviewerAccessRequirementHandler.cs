@@ -11,7 +11,6 @@ namespace Rsp.IrasService.Application.Authorization.Handlers;
 /// <summary>
 /// Authorization handler to validate if user is a reviewer and can query the statuses
 /// </summary>
-[ExcludeFromCodeCoverage]
 public class ReviewerAccessRequirementHandler(ILogger<ReviewerAccessRequirementHandler> logger) : AuthorizationHandler<ReviewerAccessRequirement>
 {
     /// <summary>

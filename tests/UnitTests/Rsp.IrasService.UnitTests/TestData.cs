@@ -1,9 +1,12 @@
-﻿namespace Rsp.IrasService.UnitTests;
+﻿using Rsp.IrasService.Domain.Entities;
+using Rsp.IrasService.Infrastructure;
+
+namespace Rsp.IrasService.UnitTests;
 
 /// <summary>
 ///     Data seeding class
 /// </summary>
-internal static class TestData
+public static class TestData
 {
     /// <summary>
     ///     Seeds the data with specified number of records

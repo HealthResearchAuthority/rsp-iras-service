@@ -1,4 +1,8 @@
-﻿namespace Rsp.IrasService.UnitTests.Application.CQRS.Commands;
+﻿using Rsp.IrasService.Application.CQRS.Commands;
+using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.IrasService.Application.DTOS.Responses;
+
+namespace Rsp.IrasService.UnitTests.Application.CQRS.Commands;
 
 public class CreateApplicationCommandTests
 {
@@ -35,9 +39,9 @@ public class CreateApplicationCommandTests
         var result = await _mediatorMock.Object.Send(command, CancellationToken.None);
 
         // Assert
-        Assert.NotNull(result);
-        Assert.Equal(expectedResponse.ApplicationId, result.ApplicationId);
-        Assert.Equal(expectedResponse.Status, result.Status);
+        result.ShouldNotBeNull();
+        result.ApplicationId.ShouldBe(expectedResponse.ApplicationId);
+        result.Status.ShouldBe(expectedResponse.Status);
 
         _mediatorMock.Verify(m => m.Send(command, It.IsAny<CancellationToken>()), Times.Once);
     }
