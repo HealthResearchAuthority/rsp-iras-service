@@ -73,6 +73,7 @@ variables:
     - name: service_connection
       value: "ARM Automated Test Connection"
     ${{ if in(parameters.env, 'systemtest_manual') }}:
+    - name: service_connection
       value: "ARM Manual Test Connection"
 
 resources:
