@@ -65,14 +65,13 @@ variables:
   - name: buildConfiguration
     value: "Release"
   - name: service_connection
-    value: ""
   - ${{ if in(parameters.env, 'dev') }}:
     - name: service_connection
       value: "ARM Dev Connection New"
   - ${{ if in(parameters.env, 'systemtest_auto') }}:
     - name: service_connection
       value: "ARM Automated Test Connection"
-    ${{ if in(parameters.env, 'systemtest_manual') }}:
+  - ${{ if in(parameters.env, 'systemtest_manual') }}:
     - name: service_connection
       value: "ARM Manual Test Connection"
 
