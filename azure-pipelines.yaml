@@ -22,10 +22,22 @@ parameters:
     displayName: DevOps Library Branch
     type: string
     default: main
+  - name: servicedefaults_library_branch
+    displayName: Service Defaults Library Branch
+    type: string
+    default: main
   - name: run_github_security_scan
     displayName: Run GitHub Advanced Security Scan
     type: boolean
     default: true
+  - name: run_sonarcloud_analysis
+    displayName: Run Sonar Cloud Analysis
+    type: boolean
+    default: true
+  - name: skip_deployment
+    displayName: Skip Deployment
+    type: boolean
+    default: false
   - name: browser
     displayName: Select a Browser
     type: string
@@ -53,13 +65,15 @@ variables:
   - name: buildConfiguration
     value: "Release"
   - name: service_connection
-    ${{ if in(parameters.env, 'dev') }}:
+    value: ""
+  - ${{ if in(parameters.env, 'dev') }}:
+    - name: service_connection
       value: "ARM Dev Connection New"
-    ${{ if in(parameters.env, 'systemtest_auto') }}:
+  - ${{ if in(parameters.env, 'systemtest_auto') }}:
+    - name: service_connection
       value: "ARM Automated Test Connection"
     ${{ if in(parameters.env, 'systemtest_manual') }}:
       value: "ARM Manual Test Connection"
-
 
 resources:
   repositories:
@@ -78,28 +92,33 @@ resources:
     - repository: service_defaults
       type: git
       name: 'Research Systems Programme/rsp-service-defaults'
-      ref: main
+      ref: ${{ parameters.servicedefaults_library_branch }}
 
 stages:
   - stage: dev
     variables: 
-    - group: 'DevelopmentEnvironment'
-    condition: eq('${{ parameters.env }}', 'dev')
+      - group: 'DevelopmentEnvironment'
+    condition: eq('${{ parameters.env }}', 'dev') 
     jobs:
       - template: jobs/build.yaml@library
         parameters:
           run_github_security_scan: ${{ parameters.run_github_security_scan }}
           sonar_project_key: FutureIRAS_rsp-iras-service
           sonar_project_name: rsp-iras-service
+          run_sonarcloud_analysis: ${{ parameters.run_sonarcloud_analysis }}
           install_aspire: true
           service_defaults_repo: service_defaults
-      - template: jobs/deploy.yaml@library
-        parameters:
-          install_aspire: true
-          service_defaults_repo: service_defaults
+
+      - ${{ if eq(parameters.skip_deployment, false) }}:
+        - template: jobs/deploy.yaml@library
+          parameters:
+            depends_on: 'Build'
+            install_aspire: true
+            service_defaults_repo: service_defaults
+
   - stage: systemtest_auto
     variables: 
-    - group: 'STAutoEnvironment'
+      - group: 'STAutoEnvironment'
     condition: eq('${{ parameters.env }}', 'systemtest_auto')
     jobs:
       - template: jobs/deploy.yaml@library
@@ -112,7 +131,7 @@ stages:
             browser: ${{ parameters.browser }}
             repo: e2e_tests
             tests_run_timeout: ${{ parameters.tests_run_timeout }}
-      
+
       - ${{ if eq(variables.run_api_tests, 'true') }}:
         - template: jobs/api_tests.yaml@library
           parameters:
@@ -132,28 +151,28 @@ stages:
 
   - stage: system_integration_test
     jobs:
-    - job:
-      steps:
-      - script: |
-          echo 'env: system integration test'
+      - job:
+        steps:
+          - script: |
+              echo 'env: system integration test'
 
   - stage: uat
     jobs:
-    - job:
-      steps:
-      - script: |
-          echo 'env: uat'
+      - job:
+        steps:
+          - script: |
+              echo 'env: uat'
 
   - stage: pre_prod
     jobs:
-    - job:
-      steps:
-      - script: |
-          echo 'env: pre prod'
+      - job:
+        steps:
+          - script: |
+              echo 'env: pre prod'
 
   - stage: production
     jobs:
-    - job:
-      steps:
-      - script: |
-          echo 'env: production'
+      - job:
+        steps:
+          - script: |
+              echo 'env: production'

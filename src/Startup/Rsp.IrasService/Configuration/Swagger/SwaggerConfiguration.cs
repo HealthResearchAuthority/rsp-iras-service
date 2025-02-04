@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
+﻿using System.Reflection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 
@@ -8,7 +7,6 @@ namespace Rsp.IrasService.Configuration.Swagger;
 /// <summary>
 /// Swagger configuration
 /// </summary>
-[ExcludeFromCodeCoverage]
 public static class SwaggerConfiguration
 {
     /// <summary>

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Net.Http.Headers;
@@ -13,7 +12,6 @@ namespace Rsp.IrasService.Configuration.Auth;
 /// <summary>
 /// Authentication and Authorization configuration
 /// </summary>
-[ExcludeFromCodeCoverage]
 public static class AuthConfiguration
 {
     /// <summary>

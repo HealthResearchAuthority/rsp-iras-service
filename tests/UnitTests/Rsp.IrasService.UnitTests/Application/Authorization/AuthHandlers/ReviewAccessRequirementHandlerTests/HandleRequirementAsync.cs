@@ -4,12 +4,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
-using Moq;
 using Rsp.IrasService.Application.Authorization.Handlers;
 using Rsp.IrasService.Application.Authorization.Requirements;
-using Shouldly;
 
-namespace Rsp.IrasService.UnitTests.Authorization.AuthHandlers.ReviewAccessRequirementHandlerTests;
+namespace Rsp.IrasService.UnitTests.Application.Authorization.AuthHandlers.ReviewAccessRequirementHandlerTests;
 
 public class HandleRequirementAsync : TestServiceBase
 {
@@ -84,8 +82,8 @@ public class HandleRequirementAsync : TestServiceBase
         var identity = new ClaimsIdentity
         (
             [
-                new(ClaimTypes.Role, "admin"),
-                new(ClaimTypes.Role, "user")
+                new Claim(ClaimTypes.Role, "admin"),
+                new Claim(ClaimTypes.Role, "user")
             ],
             "any"
         );
@@ -124,8 +122,8 @@ public class HandleRequirementAsync : TestServiceBase
         var identity = new ClaimsIdentity
         (
             [
-                new(ClaimTypes.Role, "reviewer"),
-                new(ClaimTypes.Role, "user")
+                new Claim(ClaimTypes.Role, "reviewer"),
+                new Claim(ClaimTypes.Role, "user")
             ],
             "any"
         );
@@ -164,8 +162,8 @@ public class HandleRequirementAsync : TestServiceBase
         var identity = new ClaimsIdentity
         (
             [
-                new(ClaimTypes.Role, "reviewer"),
-                new(ClaimTypes.Role, "user")
+                new Claim(ClaimTypes.Role, "reviewer"),
+                new Claim(ClaimTypes.Role, "user")
             ],
             "any"
         );
