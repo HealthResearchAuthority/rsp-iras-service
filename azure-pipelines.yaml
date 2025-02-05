@@ -1,4 +1,4 @@
-name: $(Build.DefinitionName)_$(Build.SourceBranchName)_$(date:yyyyMMdd)$(rev:.r)
+lname: $(Build.DefinitionName)_$(Build.SourceBranchName)_$(date:yyyyMMdd)$(rev:.r)
 
 pool:
   vmImage: "Ubuntu-latest"
@@ -87,8 +87,9 @@ resources:
       name: 'Research Systems Programme/rsp-iras-api-tests'
       ref: main
     - repository: service_defaults
-      type: git
-      name: 'Research Systems Programme/rsp-service-defaults'
+      type: github
+      name: 'HealthResearchAuthority/rsp-service-defaults'
+      endpoint: AzureDevOpsToGitHubConnection
       ref: ${{ parameters.servicedefaults_library_branch }}
 
 stages:
