@@ -101,7 +101,7 @@ stages:
       - template: jobs/build.yaml@library
         parameters:
           run_github_security_scan: ${{ parameters.run_github_security_scan }}
-          sonar_project_key: FutureIRAS_rsp-iras-service
+          sonar_project_key: HealthResearchAuthority_rsp-iras-service
           sonar_project_name: rsp-iras-service
           run_sonarcloud_analysis: ${{ parameters.run_sonarcloud_analysis }}
           install_aspire: true
