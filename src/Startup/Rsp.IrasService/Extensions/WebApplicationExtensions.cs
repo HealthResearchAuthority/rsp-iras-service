@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Rsp.IrasService.Infrastructure;
 using Rsp.Logging.Extensions;
 
@@ -24,7 +25,6 @@ public static class WebApplicationExtensions
             using var scope = app.Services.CreateScope();
 
             await using var context = scope.ServiceProvider.GetRequiredService<IrasContext>();
-
             await context.Database.MigrateAsync();
 
             logger.LogAsInformation("Migrations Completed");
