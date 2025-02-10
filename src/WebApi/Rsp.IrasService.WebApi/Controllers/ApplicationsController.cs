@@ -1,19 +1,35 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Rsp.IrasService.Application.Contracts;
 using Rsp.IrasService.Application.CQRS.Commands;
 using Rsp.IrasService.Application.CQRS.Queries;
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.DTOS.Responses;
 using Rsp.IrasService.Domain.Entities;
+using Rsp.IrasService.Domain.Entities.Notifications;
 
 namespace Rsp.IrasService.WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-[Authorize]
-public class ApplicationsController(IMediator mediator) : ControllerBase
+//[Authorize]
+public class ApplicationsController(IMediator mediator, IEmailMessageQueueService queue) : ControllerBase
 {
+    [HttpGet("testqueue")]
+    public async Task TestQueue()
+    {
+        var message = new EmailNotificationMessage()
+        {
+            EmailTemplateId = "templateId",
+            EventName = "Test",
+            EventType = 4,
+            RecipientAdresses = new List<string> { "me@me.com" }
+        };
+
+        await queue.SendMessageAsync(message);
+    }
+
     /// <summary>
     /// Returns a single application
     /// </summary>
