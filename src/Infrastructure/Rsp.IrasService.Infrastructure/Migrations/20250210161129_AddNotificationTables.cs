@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Rsp.IrasService.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class createNotificationTables : Migration
+    public partial class AddNotificationTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,9 +15,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                 name: "EventTypes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NotificationType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     EventName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false)
@@ -28,30 +26,30 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EmailTemplated",
+                name: "EmailTemplates",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TemplateId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EventTypeId = table.Column<int>(type: "int", nullable: false),
+                    EventTypeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmailTemplated", x => x.Id);
+                    table.PrimaryKey("PK_EmailTemplates", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EmailTemplated_EventTypes_EventTypeId",
+                        name: "FK_EmailTemplates_EventTypes_EventTypeId",
                         column: x => x.EventTypeId,
                         principalTable: "EventTypes",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmailTemplated_EventTypeId",
-                table: "EmailTemplated",
+                name: "IX_EmailTemplates_EventTypeId",
+                table: "EmailTemplates",
                 column: "EventTypeId");
         }
 
@@ -59,7 +57,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "EmailTemplated");
+                name: "EmailTemplates");
 
             migrationBuilder.DropTable(
                 name: "EventTypes");
