@@ -9,6 +9,8 @@ namespace Rsp.IrasService.Infrastructure
         public DbSet<ResearchApplication> ResearchApplications { get; set; }
         public DbSet<Respondent> Respondents { get; set; }
         public DbSet<RespondentAnswer> RespondentAnswers { get; set; }
+        public DbSet<EventType> EventTypes { get; set; }
+        public DbSet<EmailTemplate> EmailTemplates { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -17,6 +19,8 @@ namespace Rsp.IrasService.Infrastructure
             modelBuilder.ApplyConfiguration(new ResearchApplicationConfiguration());
             modelBuilder.ApplyConfiguration(new RespondentConfiguration());
             modelBuilder.ApplyConfiguration(new RespondentAnswerConfiguration());
+            modelBuilder.ApplyConfiguration(new EventTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new EmailTemplateConfiguration());
         }
     }
 }
