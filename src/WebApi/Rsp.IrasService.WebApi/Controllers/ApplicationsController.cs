@@ -14,20 +14,20 @@ namespace Rsp.IrasService.WebApi.Controllers;
 [ApiController]
 [Route("[controller]")]
 //[Authorize]
-public class ApplicationsController(IMediator mediator, IEmailMessageQueueService queue) : ControllerBase
+public class ApplicationsController(IMediator mediator) : ControllerBase
 {
     [HttpGet("testqueue")]
     public async Task TestQueue()
     {
-        var message = new EmailNotificationMessage()
+        var message = new EmailNotificationRequest()
         {
             EmailTemplateId = "templateId",
             EventName = "Test",
             EventType = 4,
             RecipientAdresses = new List<string> { "me@me.com" }
         };
-
-        await queue.SendMessageAsync(message);
+        var command = new SendEmailNotificationCommand(message);
+        await mediator.Send(command);
     }
 
     /// <summary>

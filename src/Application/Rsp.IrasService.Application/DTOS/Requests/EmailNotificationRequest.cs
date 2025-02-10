@@ -1,6 +1,6 @@
 ﻿namespace Rsp.IrasService.Domain.Entities.Notifications
 {    
-    public class EmailNotificationMessage : INotificationMessage
+    public class EmailNotificationRequest : INotificationMessage
     {
         public int EventType { get; set; }
         public string EventName { get; set; } = null!;

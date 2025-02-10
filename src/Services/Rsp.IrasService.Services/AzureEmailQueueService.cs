@@ -41,6 +41,7 @@ namespace Rsp.IrasService.Services
             catch (Exception ex)
             {
                 _logger.LogAsError("SERVER_ERROR", "Error sending message to Azure Service Bus.", ex);
+                throw;
             }
         }
     }
