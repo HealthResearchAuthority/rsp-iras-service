@@ -5,7 +5,7 @@
         public int Id { get; set; }
         public string TemplateId { get; set; } = null!;
         public string Name { get; set; } = null!;
-        public int EventTypeId { get; set; }
+        public string EventTypeId { get; set; } = null!;
         public DateTime CreatedAt { get; set; }
         public string CreatedBy { get; set; } = null!;
 
