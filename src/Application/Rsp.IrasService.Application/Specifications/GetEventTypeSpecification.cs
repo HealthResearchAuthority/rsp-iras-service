@@ -6,7 +6,7 @@ namespace Rsp.IrasService.Application.Specifications
     public class GetEventTypeSpecification : Specification<EventType>
     {
 
-        public GetEventTypeSpecification(int eventTypeId)
+        public GetEventTypeSpecification(string eventTypeId)
         {
             Query.AsNoTracking()
                 .Where(x => x.Id == eventTypeId);

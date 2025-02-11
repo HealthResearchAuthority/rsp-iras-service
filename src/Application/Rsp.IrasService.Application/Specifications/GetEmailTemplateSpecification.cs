@@ -11,7 +11,7 @@ namespace Rsp.IrasService.Application.Specifications
     public class GetEmailTemplateSpecification : Specification<EmailTemplate>
     {
 
-        public GetEmailTemplateSpecification(int eventTypeId)
+        public GetEmailTemplateSpecification(string eventTypeId)
         {
             Query.AsNoTracking()
                 .Where(x => x.EventTypeId == eventTypeId);

@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using Rsp.IrasService.Application.Constants;
 using Rsp.IrasService.Application.Contracts;
 using Rsp.IrasService.Application.CQRS.Commands;
 using Rsp.IrasService.Application.CQRS.Queries;
@@ -15,21 +17,7 @@ namespace Rsp.IrasService.WebApi.Controllers;
 [Route("[controller]")]
 //[Authorize]
 public class ApplicationsController(IMediator mediator) : ControllerBase
-{
-    [HttpGet("testqueue")]
-    public async Task TestQueue()
-    {
-        var message = new EmailNotificationRequest()
-        {
-            EmailTemplateId = "templateId",
-            EventName = "Test",
-            EventType = 4,
-            RecipientAdresses = new List<string> { "me@me.com" }
-        };
-        var command = new SendEmailNotificationCommand(message);
-        await mediator.Send(command);
-    }
-
+{ 
     /// <summary>
     /// Returns a single application
     /// </summary>
@@ -116,7 +104,6 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     public async Task<ApplicationResponse> CreateApplication(ApplicationRequest applicationRequest)
     {
         var request = new CreateApplicationCommand(applicationRequest);
-
         return await mediator.Send(request);
     }
 
