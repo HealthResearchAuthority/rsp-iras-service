@@ -8,7 +8,7 @@
         /// <summary>
         /// List of recipient email addresses 
         /// </summary>
-        public IList<string> RecipientAdresses { get; set; } = null!;
+        public string RecipientAdress { get; set; } = null!;
         /// <summary>
         /// Personalisation data for any placeholder fields in the email template 
         /// </summary>
