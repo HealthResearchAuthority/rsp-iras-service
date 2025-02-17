@@ -27,7 +27,7 @@ public static class ServicesConfiguration
         services.AddTransient<IRespondentService, RespondentService>();
         services.AddTransient<IRespondentRepository, RespondentRepository>();
         services.AddTransient<IEmailNotificationService, EmailNotificationService>();
-        services.AddTransient<IEmailMessageQueueService, AzureEmailQueueService>();
+        services.AddTransient<IMessageQueueService, AzureMessageQueueService>();
         services.AddTransient<IEventTypeService, EventTypeService>();
         services.AddTransient<IEmailTemplateService, EmailTemplateService>();
         services.AddTransient<IEmailTemplateRepository, EmailTemplateRepository>();

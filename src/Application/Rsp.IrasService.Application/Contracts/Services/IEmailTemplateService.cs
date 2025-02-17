@@ -1,9 +1,7 @@
 ﻿using Rsp.IrasService.Domain.Entities;
 
-namespace Rsp.IrasService.Application.Contracts.Services
+namespace Rsp.IrasService.Application.Contracts.Services;
+public interface IEmailTemplateService
 {
-    public interface IEmailTemplateService
-    {
-        Task<EmailTemplate> GetEmailTemplateForEventType(string eventTypeId);
-    }
+    Task<EmailTemplate> GetEmailTemplateForEventType(string eventTypeId);
 }

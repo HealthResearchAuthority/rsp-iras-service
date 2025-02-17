@@ -3,12 +3,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Infrastructure.EntitiesConfiguration
+    ;
+public class EventTypeConfiguration : IEntityTypeConfiguration<EventType>
 {
-    public class EventTypeConfiguration : IEntityTypeConfiguration<EventType>
+    public void Configure(EntityTypeBuilder<EventType> builder)
     {
-        public void Configure(EntityTypeBuilder<EventType> builder)
-        {
-            builder.HasKey(e => e.Id);
-        }
+        builder.HasKey(e => e.Id);
     }
 }

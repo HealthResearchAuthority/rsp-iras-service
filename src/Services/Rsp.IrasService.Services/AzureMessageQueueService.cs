@@ -7,13 +7,13 @@ using Rsp.Logging.Extensions;
 
 namespace Rsp.IrasService.Services;
 
-public class AzureEmailQueueService : IEmailMessageQueueService
+public class AzureMessageQueueService : IMessageQueueService
 {
     private readonly string _connectionString;
     private readonly string _queueName;
-    private readonly ILogger<AzureEmailQueueService> _logger;
+    private readonly ILogger<AzureMessageQueueService> _logger;
 
-    public AzureEmailQueueService(IConfiguration configuration, ILogger<AzureEmailQueueService> logger)
+    public AzureMessageQueueService(IConfiguration configuration, ILogger<AzureMessageQueueService> logger)
     {
         _connectionString = configuration["AppSettings:AzureServiceBus:ConnectionString"];
         _queueName = configuration["AppSettings:AzureServiceBus:QueueName"];
@@ -37,7 +37,6 @@ public class AzureEmailQueueService : IEmailMessageQueueService
         await sender.SendMessagesAsync(inputMessages);
 
         _logger.LogAsInformation($"Message/s sent to queue: {_queueName}");
-
     }
 }
 

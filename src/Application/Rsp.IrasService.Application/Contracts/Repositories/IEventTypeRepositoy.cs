@@ -1,9 +1,7 @@
 ﻿using Rsp.IrasService.Domain.Entities;
 
-namespace Rsp.IrasService.Application.Contracts.Repositories
+namespace Rsp.IrasService.Application.Contracts.Repositories;
+public interface IEventTypeRepository
 {
-    public interface IEventTypeRepository
-    {
-        Task<EventType> GetById(string eventId);
-    }
+    Task<EventType> GetById(string eventId);
 }

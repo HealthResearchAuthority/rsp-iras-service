@@ -1,10 +1,8 @@
 ﻿
 using Rsp.IrasService.Domain.Entities;
 
-namespace Rsp.IrasService.Application.Contracts.Services
+namespace Rsp.IrasService.Application.Contracts.Services;
+public interface IEventTypeService
 {
-    public interface IEventTypeService
-    {
-        Task<EventType> GetById(string eventId);        
-    }
+    Task<EventType> GetById(string eventId);
 }

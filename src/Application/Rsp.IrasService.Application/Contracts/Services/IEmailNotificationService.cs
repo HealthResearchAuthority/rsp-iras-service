@@ -1,10 +1,7 @@
 ﻿using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Domain.Entities;
 
-namespace Rsp.IrasService.Application.Contracts.Services
+namespace Rsp.IrasService.Application.Contracts.Services;
+public interface IEmailNotificationService
 {
-    public interface IEmailNotificationService
-    {
-        Task<bool> SendEmail(SendEmailRequest requestData);
-    }
+    Task<bool> SendEmail(SendEmailRequest requestData);
 }

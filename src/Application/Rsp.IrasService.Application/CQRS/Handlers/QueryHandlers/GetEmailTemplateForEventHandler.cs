@@ -3,13 +3,11 @@ using Rsp.IrasService.Application.Contracts.Services;
 using Rsp.IrasService.Application.CQRS.Queries;
 using Rsp.IrasService.Domain.Entities;
 
-namespace Rsp.IrasService.Application.CQRS.Handlers.QueryHandlers
+namespace Rsp.IrasService.Application.CQRS.Handlers.QueryHandlers;
+public class GetEmailTemplateForEventHandler(IEmailTemplateService service) : IRequestHandler<GetEmailTemplateForEventQuery, EmailTemplate>
 {
-    public class GetEmailTemplateForEventHandler(IEmailTemplateService service) : IRequestHandler<GetEmailTemplateForEventQuery, EmailTemplate>
+    public Task<EmailTemplate> Handle(GetEmailTemplateForEventQuery request, CancellationToken cancellationToken)
     {
-        public Task<EmailTemplate> Handle(GetEmailTemplateForEventQuery request, CancellationToken cancellationToken)
-        {
-            return service.GetEmailTemplateForEventType(request.EventId);
-        }
+        return service.GetEmailTemplateForEventType(request.EventId);
     }
 }

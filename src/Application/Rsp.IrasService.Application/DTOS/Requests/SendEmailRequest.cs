@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Rsp.IrasService.Application.DTOS.Requests
+namespace Rsp.IrasService.Application.DTOS.Requests;
+public class SendEmailRequest
 {
-    public class SendEmailRequest
-    {
-        public string EventTypeId { get; set; } = null!;
-        public IEnumerable<string> EmailRecipients { get; set; } = Enumerable.Empty<string>();
-        public IDictionary<string, dynamic> Data { get; set; } = new Dictionary<string, dynamic>();
-    }
+    public string EventTypeId { get; set; } = null!;
+    public IEnumerable<string> EmailRecipients { get; set; } = Enumerable.Empty<string>();
+    public IDictionary<string, dynamic> Data { get; set; } = new Dictionary<string, dynamic>();
 }
