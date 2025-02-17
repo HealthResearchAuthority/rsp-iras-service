@@ -1,23 +1,22 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
 using Rsp.IrasService.Application.Constants;
-using Rsp.IrasService.Application.Contracts;
+using Rsp.IrasService.Application.Contracts.Services;
 using Rsp.IrasService.Application.CQRS.Commands;
 using Rsp.IrasService.Application.CQRS.Queries;
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.DTOS.Responses;
 using Rsp.IrasService.Domain.Entities;
-using Rsp.IrasService.Domain.Entities.Notifications;
+using Rsp.IrasService.Application.Contracts;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Rsp.IrasService.WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-//[Authorize]
-public class ApplicationsController(IMediator mediator) : ControllerBase
-{ 
+[Authorize]
+public class ApplicationsController(IMediator mediator, IEmailNotificationService emailService) : ControllerBase
+{
     /// <summary>
     /// Returns a single application
     /// </summary>
@@ -99,12 +98,14 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     /// <summary>
     /// Creates a research application
     /// </summary>
-    /// <param name="applicationRequest">Reseaarch Application Request</param>
+    /// <param name="applicationRequest">Research Application Request</param>
     [HttpPost]
     public async Task<ApplicationResponse> CreateApplication(ApplicationRequest applicationRequest)
     {
         var request = new CreateApplicationCommand(applicationRequest);
-        return await mediator.Send(request);
+        var newApplication = await mediator.Send(request);       
+
+        return newApplication;
     }
 
     /// <summary>

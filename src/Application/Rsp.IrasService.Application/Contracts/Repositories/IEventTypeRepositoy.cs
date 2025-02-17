@@ -2,10 +2,8 @@
 
 namespace Rsp.IrasService.Application.Contracts.Repositories
 {
-    public interface IEmailNotificationRepositoy
+    public interface IEventTypeRepository
     {
         Task<EventType> GetById(string eventId);
-
-        Task<IEnumerable<EmailTemplate>> GetEmailTemplatesForEventType(string eventTypeId);
     }
 }

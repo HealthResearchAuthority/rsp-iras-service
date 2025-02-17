@@ -1,9 +1,9 @@
-﻿using Rsp.IrasService.Domain.Entities.Notifications;
+﻿using Rsp.IrasService.Application.Contracts;
 
 namespace Rsp.IrasService.Application.Contracts
 {
     public interface IEmailMessageQueueService
     {
-        Task SendMessageAsync<T>(T message) where T : INotificationMessage;
+        Task SendMessageToQueueAsync<T>(IEnumerable<T> messages);
     }
 }

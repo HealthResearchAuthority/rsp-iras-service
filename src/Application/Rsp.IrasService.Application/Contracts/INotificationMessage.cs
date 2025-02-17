@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Rsp.IrasService.Domain.Entities.Notifications
+namespace Rsp.IrasService.Application.Contracts
 {
     public interface INotificationMessage
     {
