@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Infrastructure.EntitiesConfiguration;
+
 public class EmailTemplateConfiguration : IEntityTypeConfiguration<EmailTemplate>
 {
     public void Configure(EntityTypeBuilder<EmailTemplate> builder)

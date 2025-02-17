@@ -1,7 +1,9 @@
-﻿using Rsp.IrasService.Domain.Entities;
+﻿using Ardalis.Specification;
+using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Application.Contracts.Repositories;
+
 public interface IEventTypeRepository
 {
-    Task<EventType> GetById(string eventId);
+    Task<EventType?> GetById(ISpecification<EventType> specification);
 }

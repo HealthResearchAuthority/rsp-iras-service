@@ -1,7 +1,9 @@
-﻿using Rsp.IrasService.Domain.Entities;
+﻿using Ardalis.Specification;
+using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Application.Contracts.Repositories;
+
 public interface IEmailTemplateRepository
 {
-    Task<EmailTemplate> GetEmailTemplateForEventType(string eventTypeId);
+    Task<EmailTemplate?> GetEmailTemplateForEventType(ISpecification<EmailTemplate> specification);
 }

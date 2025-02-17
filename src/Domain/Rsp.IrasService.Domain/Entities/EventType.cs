@@ -1,4 +1,5 @@
 ﻿namespace Rsp.IrasService.Domain.Entities;
+
 public class EventType
 {
     public string Id { get; set; } = null!;

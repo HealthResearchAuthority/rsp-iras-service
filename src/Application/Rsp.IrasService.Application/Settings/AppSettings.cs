@@ -13,4 +13,6 @@ public class AppSettings
     public AuthSettings AuthSettings { get; set; } = null!;
 
     public AzureAppConfigurations AzureAppConfiguration { get; set; } = null!;
+
+    public AzureServiceBusSettings AzureServiceBusSettings { get; set; } = null!;
 }

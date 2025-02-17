@@ -4,8 +4,7 @@ using Rsp.IrasService.Application.DTOS.Responses;
 
 namespace Rsp.IrasService.Application.CQRS.Commands;
 
-public class SendEmailCommand(SendEmailRequest request) : IRequest<SendEmailResponse>
+public class SendEmailCommand(TriggerSendEmailRequest request) : IRequest<SendEmailResponse>
 {
-    public SendEmailRequest SendEmailRequest { get; set; } = request;
+    public TriggerSendEmailRequest SendEmailRequest { get; set; } = request;
 }
-

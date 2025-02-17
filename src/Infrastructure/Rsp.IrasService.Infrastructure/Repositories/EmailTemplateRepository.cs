@@ -1,15 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Ardalis.Specification;
+using Ardalis.Specification.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Application.Contracts.Repositories;
 using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Infrastructure.Repositories;
+
 public class EmailTemplateRepository(IrasContext db) : IEmailTemplateRepository
 {
-    public async Task<EmailTemplate> GetEmailTemplateForEventType(string eventTypeId)
+    public async Task<EmailTemplate?> GetEmailTemplateForEventType(ISpecification<EmailTemplate> specification)
     {
         return await db
-            .EmailTemplates
-            .FirstOrDefaultAsync(x => x.EventTypeId == eventTypeId);
+            .EmailTemplates.WithSpecification(specification)
+            .FirstOrDefaultAsync();
     }
 }
-

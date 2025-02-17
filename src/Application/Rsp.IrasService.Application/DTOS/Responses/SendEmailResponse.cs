@@ -4,4 +4,3 @@ public class SendEmailResponse
 {
     public bool IsSuccess { get; set; }
 }
-

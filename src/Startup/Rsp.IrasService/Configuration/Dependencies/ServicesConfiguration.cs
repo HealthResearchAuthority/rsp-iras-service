@@ -1,6 +1,5 @@
 ﻿using Rsp.IrasService.Application;
 using Rsp.IrasService.Application.Authentication.Helpers;
-using Rsp.IrasService.Application.Contracts;
 using Rsp.IrasService.Application.Contracts.Repositories;
 using Rsp.IrasService.Application.Contracts.Services;
 using Rsp.IrasService.Infrastructure.Repositories;
@@ -26,7 +25,7 @@ public static class ServicesConfiguration
 
         services.AddTransient<IRespondentService, RespondentService>();
         services.AddTransient<IRespondentRepository, RespondentRepository>();
-        services.AddTransient<IEmailNotificationService, EmailNotificationService>();
+        services.AddTransient<ITriggerEmailNotificationService, TriggerEmailNotificationService>();
         services.AddTransient<IMessageQueueService, AzureMessageQueueService>();
         services.AddTransient<IEventTypeService, EventTypeService>();
         services.AddTransient<IEmailTemplateService, EmailTemplateService>();
