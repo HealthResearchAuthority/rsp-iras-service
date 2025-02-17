@@ -33,7 +33,7 @@ parameters:
   - name: run_sonarcloud_analysis
     displayName: Run Sonar Cloud Analysis
     type: boolean
-    default: true
+    default: false
   - name: skip_deployment
     displayName: Skip Deployment
     type: boolean
