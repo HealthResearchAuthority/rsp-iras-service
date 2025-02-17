@@ -1,4 +1,5 @@
-﻿using Rsp.IrasService.Application;
+﻿using Azure.Messaging.ServiceBus;
+using Rsp.IrasService.Application;
 using Rsp.IrasService.Application.Authentication.Helpers;
 using Rsp.IrasService.Application.Contracts;
 using Rsp.IrasService.Application.Contracts.Repositories;
@@ -32,6 +33,13 @@ public static class ServicesConfiguration
         services.AddTransient<IEmailTemplateService, EmailTemplateService>();
         services.AddTransient<IEmailTemplateRepository, EmailTemplateRepository>();
         services.AddTransient<IEventTypeRepository, EventTypeRepository>();
+
+        services.AddSingleton<ServiceBusClient>(sp =>
+        {
+            var configuration = sp.GetRequiredService<IConfiguration>();
+            string connectionString = configuration["AppSettings:AzureServiceBus:ConnectionString"];
+            return new ServiceBusClient(connectionString);
+        });
 
         services.AddMediatR(option => option.RegisterServicesFromAssemblyContaining<IApplication>());
 
