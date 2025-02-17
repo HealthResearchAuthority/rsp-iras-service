@@ -15,7 +15,7 @@ namespace Rsp.IrasService.WebApi.Controllers;
 [ApiController]
 [Route("[controller]")]
 [Authorize]
-public class ApplicationsController(IMediator mediator, IEmailNotificationService emailService) : ControllerBase
+public class ApplicationsController(IMediator mediator) : ControllerBase
 {
     /// <summary>
     /// Returns a single application
