@@ -19,31 +19,25 @@ public class AzureEmailQueueService : IEmailMessageQueueService
         _queueName = configuration["AppSettings:AzureServiceBus:QueueName"];
         _logger = logger;
     }
+
     public async Task SendMessageToQueueAsync<T>(IEnumerable<T> messages)
     {
         await using var client = new ServiceBusClient(_connectionString);
         var sender = client.CreateSender(_queueName);
 
-        try
+        var inputMessages = new List<ServiceBusMessage>();
+        foreach (var message in messages)
         {
-            var inputMessages = new List<ServiceBusMessage>();
-            foreach (var message in messages)
-            {
-                string messageBody = JsonSerializer.Serialize(message);
-                var serviceBusMessage = new ServiceBusMessage(messageBody);
+            string messageBody = JsonSerializer.Serialize(message);
+            var serviceBusMessage = new ServiceBusMessage(messageBody);
 
-                inputMessages.Add(serviceBusMessage);
-            }
-            
-            await sender.SendMessagesAsync(inputMessages);
+            inputMessages.Add(serviceBusMessage);
+        }
 
-            _logger.LogAsInformation($"Message/s sent to queue: {_queueName}");
-        }
-        catch (Exception ex)
-        {
-            _logger.LogAsError("SERVER_ERROR", "Error sending message to Azure Service Bus.", ex);
-            throw;
-        }
+        await sender.SendMessagesAsync(inputMessages);
+
+        _logger.LogAsInformation($"Message/s sent to queue: {_queueName}");
+
     }
 }
 
