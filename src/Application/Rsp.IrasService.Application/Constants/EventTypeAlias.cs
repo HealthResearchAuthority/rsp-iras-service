@@ -2,7 +2,7 @@
 
 public static class EventTypeAlias
 {
-    public static string ApplicationCreated = "application_created_creator";
-    public static string ApplicationAmended = "application_amended";
-    public static string ApplicationApproved = "application_approved";
+    public static readonly string ApplicationCreated = "application_created_creator";
+    public static readonly string ApplicationAmended = "application_amended";
+    public static readonly string ApplicationApproved = "application_approved";
 }

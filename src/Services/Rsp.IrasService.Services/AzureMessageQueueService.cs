@@ -9,7 +9,7 @@ namespace Rsp.IrasService.Services;
 
 public class AzureMessageQueueService : IMessageQueueService
 {
-    private readonly string _queueName;
+    private readonly string? _queueName;
     private readonly ILogger<AzureMessageQueueService> _logger;
     private readonly ServiceBusClient _client;
 

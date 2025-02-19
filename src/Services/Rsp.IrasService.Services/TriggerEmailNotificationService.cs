@@ -14,7 +14,6 @@ public class TriggerEmailNotificationService(
 
         if (template != null)
         {
-            //var request = new EmailNotificationQueueRequest();
             var messages = new List<EmailNotificationQueueMessage>();
 
             // create email notification message for each email recipient
