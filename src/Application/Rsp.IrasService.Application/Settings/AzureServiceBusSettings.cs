@@ -1,7 +1,6 @@
-﻿namespace Rsp.IrasService.Application.Settings
+﻿namespace Rsp.IrasService.Application.Settings;
+
+public class AzureServiceBusSettings
 {
-    public class AzureServiceBusSettings
-    {
-        public string QueueName { get; set; } = string.Empty;
-    }
+    public string QueueName { get; set; } = string.Empty;
 }

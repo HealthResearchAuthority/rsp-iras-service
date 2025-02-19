@@ -70,10 +70,8 @@ var appSettingsSection = configuration.GetSection(nameof(AppSettings));
 var appSettings = appSettingsSection.Get<AppSettings>();
 
 // register AppSettings as singleton
-if (appSettings != null)
-{
-    services.AddSingleton(appSettings);
-}
+
+services.AddSingleton(appSettings!);
 
 // adds sql server database context
 services.AddDatabase(configuration);

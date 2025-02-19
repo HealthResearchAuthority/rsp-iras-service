@@ -10,5 +10,5 @@ public class EmailTemplate
     public string CreatedBy { get; set; } = null!;
 
     // nabigation properties
-    public EventType EventType { get; set; }
+    public EventType EventType { get; set; } = null!;
 }
