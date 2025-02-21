@@ -49,8 +49,7 @@
 		<ProjectReference Include="..\..\..\src\Domain\Rsp.IrasService.Domain\Rsp.IrasService.Domain.csproj" />
 		<ProjectReference Include="..\..\..\src\Application\Rsp.IrasService.Application\Rsp.IrasService.Application.csproj" />
 		<ProjectReference Include="..\..\..\src\Services\Rsp.IrasService.Services\Rsp.IrasService.Services.csproj" />
-		<ProjectReference
-			Include="..\..\..\src\Infrastructure\Rsp.IrasService.Infrastructure\Rsp.IrasService.Infrastructure.csproj" />
+		<ProjectReference Include="..\..\..\src\Infrastructure\Rsp.IrasService.Infrastructure\Rsp.IrasService.Infrastructure.csproj" />
 		<ProjectReference Include="..\..\..\src\WebApi\Rsp.IrasService.WebApi\Rsp.IrasService.WebApi.csproj" />
 	</ItemGroup>
 

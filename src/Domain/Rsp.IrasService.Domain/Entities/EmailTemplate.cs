@@ -8,6 +8,8 @@ public class EmailTemplate
     public string EventTypeId { get; set; } = null!;
     public DateTime CreatedAt { get; set; }
     public string CreatedBy { get; set; } = null!;
+    public string? ModifiedBy { get; set; }
+    public DateTime? ModfifiedAt { get; set; } = null;
 
     // nabigation properties
     public EventType EventType { get; set; } = null!;
