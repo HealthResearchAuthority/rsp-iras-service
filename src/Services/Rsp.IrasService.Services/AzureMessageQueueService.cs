@@ -27,15 +27,18 @@ public class AzureMessageQueueService : IMessageQueueService
         await using (var sender = _client.CreateSender(_queueName))
         {
             var inputMessages = new List<ServiceBusMessage>();
-            foreach (var message in messages)
+            if (messages.Any())
             {
-                var messageBody = JsonSerializer.Serialize(message);
-                var serviceBusMessage = new ServiceBusMessage(messageBody);
+                foreach (var message in messages)
+                {
+                    var messageBody = JsonSerializer.Serialize(message);
+                    var serviceBusMessage = new ServiceBusMessage(messageBody);
 
-                inputMessages.Add(serviceBusMessage);
+                    inputMessages.Add(serviceBusMessage);
+                }
+
+                await sender.SendMessagesAsync(inputMessages);
             }
-
-            await sender.SendMessagesAsync(inputMessages);
         }
 
         var messageParameters = $"QueueName: {_queueName}";
