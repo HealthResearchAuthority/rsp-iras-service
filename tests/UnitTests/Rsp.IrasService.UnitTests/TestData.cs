@@ -38,4 +38,34 @@ public static class TestData
 
         return applications;
     }
+
+    public static async Task<IList<EmailTemplate>> SeedData(IrasContext context,
+        Generator<EmailTemplate> generator, int records)
+    {
+        // seed data using bogus
+        var templates = generator
+            .Take(records)
+            .ToList();
+
+        await context.EmailTemplates.AddRangeAsync(templates);
+
+        await context.SaveChangesAsync();
+
+        return templates;
+    }
+
+    public static async Task<IList<EventType>> SeedData(IrasContext context,
+        Generator<EventType> generator, int records)
+    {
+        // seed data using bogus
+        var items = generator
+            .Take(records)
+            .ToList();
+
+        await context.EventTypes.AddRangeAsync(items);
+
+        await context.SaveChangesAsync();
+
+        return items;
+    }
 }
