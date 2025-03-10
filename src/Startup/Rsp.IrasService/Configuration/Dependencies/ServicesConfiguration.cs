@@ -25,6 +25,12 @@ public static class ServicesConfiguration
 
         services.AddTransient<IRespondentService, RespondentService>();
         services.AddTransient<IRespondentRepository, RespondentRepository>();
+        services.AddTransient<ITriggerEmailNotificationService, TriggerEmailNotificationService>();
+        services.AddTransient<IMessageQueueService, AzureMessageQueueService>();
+        services.AddTransient<IEventTypeService, EventTypeService>();
+        services.AddTransient<IEmailTemplateService, EmailTemplateService>();
+        services.AddTransient<IEmailTemplateRepository, EmailTemplateRepository>();
+        services.AddTransient<IEventTypeRepository, EventTypeRepository>();
 
         services.AddMediatR(option => option.RegisterServicesFromAssemblyContaining<IApplication>());
 
