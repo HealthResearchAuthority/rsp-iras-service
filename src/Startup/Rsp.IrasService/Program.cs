@@ -3,6 +3,7 @@ using System.Text.Json;
 using Azure.Identity;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.FeatureManagement;
@@ -68,11 +69,22 @@ if (!builder.Environment.IsDevelopment())
 var appSettingsSection = configuration.GetSection(nameof(AppSettings));
 var appSettings = appSettingsSection.Get<AppSettings>();
 
+// register AppSettings as singleton
+
+services.AddSingleton(appSettings!);
+
 // adds sql server database context
 services.AddDatabase(configuration);
 
 // Add services to the container.
 services.AddServices();
+
+// register azure service bus client
+services.AddAzureClients(builder =>
+{
+    var connectionString = configuration.GetConnectionString("EmailNotificationServiceBus");
+    builder.AddServiceBusClient(connectionString: connectionString);
+});
 
 services.AddHttpContextAccessor();
 

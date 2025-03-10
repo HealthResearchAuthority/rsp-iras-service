@@ -1,11 +1,14 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Rsp.IrasService.Application.Constants;
+using Rsp.IrasService.Application.Contracts.Services;
 using Rsp.IrasService.Application.CQRS.Commands;
 using Rsp.IrasService.Application.CQRS.Queries;
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.DTOS.Responses;
 using Rsp.IrasService.Domain.Entities;
+using Rsp.IrasService.Application.Contracts;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Rsp.IrasService.WebApi.Controllers;
 
@@ -95,13 +98,14 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     /// <summary>
     /// Creates a research application
     /// </summary>
-    /// <param name="applicationRequest">Reseaarch Application Request</param>
+    /// <param name="applicationRequest">Research Application Request</param>
     [HttpPost]
     public async Task<ApplicationResponse> CreateApplication(ApplicationRequest applicationRequest)
     {
         var request = new CreateApplicationCommand(applicationRequest);
+        var newApplication = await mediator.Send(request);       
 
-        return await mediator.Send(request);
+        return newApplication;
     }
 
     /// <summary>
