@@ -2,7 +2,7 @@ version: 2
 updates:
   # Application project
   - package-ecosystem: "nuget"
-    directory: "/src/Application"
+    directory: "/"
     schedule:
       interval: "daily"
     commit-message:
