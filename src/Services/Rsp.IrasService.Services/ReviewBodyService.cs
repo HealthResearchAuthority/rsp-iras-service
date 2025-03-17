@@ -18,6 +18,14 @@ public class ReviewBodyService(IReviewBodyRepository reviewBodyRepository) : IRe
 
         return responses.Adapt<IEnumerable<ReviewBodyDto>>();
     }
+    public async Task<IEnumerable<ReviewBodyDto>> GetReviewBodies(Guid id)
+    {
+        var specification = new GetReviewBodySpecification(id: id);
+
+        var response = await reviewBodyRepository.GetReviewBodies(specification);
+
+        return response.Adapt<IEnumerable<ReviewBodyDto>>();
+    }
 
     public async Task<ReviewBodyDto> CreateReviewBody(ReviewBodyDto reviewBody)
     {

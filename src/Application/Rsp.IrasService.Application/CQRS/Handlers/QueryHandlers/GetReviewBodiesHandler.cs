@@ -11,6 +11,8 @@ public class GetReviewBodiesHandler(IReviewBodyService reviewBodyService)
     public async Task<IEnumerable<ReviewBodyDto>> Handle(GetReviewBodiesQuery request,
         CancellationToken cancellationToken)
     {
-        return await reviewBodyService.GetReviewBodies();
+        return !request.Id.HasValue ?
+            await reviewBodyService.GetReviewBodies() :
+            await reviewBodyService.GetReviewBodies(request.Id.Value);
     }
 }

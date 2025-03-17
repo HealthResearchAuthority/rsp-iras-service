@@ -14,15 +14,16 @@ public class ReviewBodyController(IMediator mediator) : ControllerBase
     /// <summary>
     ///     Returns all review bodies
     /// </summary>
-    [HttpGet("all")]
+    [HttpGet]
     [Produces<IEnumerable<ReviewBody>>]
-    public async Task<IEnumerable<ReviewBodyDto>> GetReviewBodies()
+    public async Task<IEnumerable<ReviewBodyDto>> GetReviewBodies(Guid? id = null)
     {
-        var query = new GetReviewBodiesQuery();
+        var query = id == null ? 
+            new GetReviewBodiesQuery() : 
+            new GetReviewBodiesQuery(id.Value);
 
         return await mediator.Send(query);
     }
-
 
     /// <summary>
     ///     Creates a review body

@@ -10,6 +10,7 @@ namespace Rsp.IrasService.Application.Contracts.Services;
 public interface IReviewBodyService : IInterceptable
 {
     Task<IEnumerable<ReviewBodyDto>> GetReviewBodies();
+    Task<IEnumerable<ReviewBodyDto>> GetReviewBodies(Guid id);
     Task<ReviewBodyDto> CreateReviewBody(ReviewBodyDto reviewBody);
     Task<ReviewBodyDto> UpdateReviewBody(ReviewBodyDto reviewBody);
     Task<ReviewBodyDto?> DisableReviewBody(Guid id);
