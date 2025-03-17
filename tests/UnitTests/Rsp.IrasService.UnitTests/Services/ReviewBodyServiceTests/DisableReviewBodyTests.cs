@@ -1,0 +1,45 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Rsp.IrasService.Application.Contracts.Repositories;
+using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.IrasService.Domain.Entities;
+using Rsp.IrasService.Infrastructure;
+using Rsp.IrasService.Infrastructure.Repositories;
+using Rsp.IrasService.Services;
+
+namespace Rsp.IrasService.UnitTests.Services.ReviewBodyServiceTests;
+
+public class DisableReviewBodyTests : TestServiceBase<ReviewBodyService>
+
+{
+    private readonly IrasContext _context;
+    private readonly ReviewBodyRepository _reviewBodyRepository;
+
+    public DisableReviewBodyTests()
+    {
+        var options = new DbContextOptionsBuilder<IrasContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString("N")).Options;
+
+        _context = new IrasContext(options);
+        _reviewBodyRepository = new ReviewBodyRepository(_context);
+    }
+
+    [Theory]
+    [AutoData]
+    public async Task Disable_ReviewBody_Correctly(int records, Generator<ReviewBody> generator)
+    {
+        // Arrange
+        Mocker.Use<IReviewBodyRepository>(_reviewBodyRepository);
+        Sut = Mocker.CreateInstance<ReviewBodyService>();
+
+        // Seed data using number of records to seed
+        await TestData.SeedData(_context, generator, records);
+        var reviewBodies = await Sut.GetReviewBodies();
+
+        // Act
+        var result = await Sut.DisableReviewBody(reviewBodies.First().Id);
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.ShouldBeOfType<ReviewBodyDto>();
+    }
+}
