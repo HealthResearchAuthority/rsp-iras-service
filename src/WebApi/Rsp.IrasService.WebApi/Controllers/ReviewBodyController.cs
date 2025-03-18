@@ -15,6 +15,7 @@ public class ReviewBodyController(IMediator mediator) : ControllerBase
     ///     Returns all review bodies
     /// </summary>
     [HttpGet]
+    [HttpGet("{id}")]
     [Produces<IEnumerable<ReviewBody>>]
     public async Task<IEnumerable<ReviewBodyDto>> GetReviewBodies(Guid? id = null)
     {
