@@ -5,8 +5,7 @@ namespace Rsp.IrasService.UnitTests.Application.Specifications;
 
 public class GetReviewBodySpecificationTests
 {
-    [Theory]
-    [AutoData]
+    [Theory, AutoData]
     public void GetRespondentApplicationSpecification_ById_ReturnsCorrectSpecification(
         Generator<ReviewBody> generator)
     {

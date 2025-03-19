@@ -30,8 +30,7 @@ namespace Rsp.IrasService.UnitTests.Services.ReviewBodyServiceTests
             _reviewBodyRepository = new ReviewBodyRepository(_context);
         }
 
-        [Theory]
-        [InlineAutoData(5)]
+        [Theory, InlineAutoData(5)]
         public async Task Returns_Correct_ReviewBodies(int records, Generator<ReviewBody> generator)
         {
             // Arrange

@@ -23,8 +23,7 @@ public class DisableReviewBodyTests : TestServiceBase<ReviewBodyService>
         _reviewBodyRepository = new ReviewBodyRepository(_context);
     }
 
-    [Theory]
-    [AutoData]
+    [Theory, AutoData]
     public async Task Disable_ReviewBody_Correctly(int records, Generator<ReviewBody> generator)
     {
         // Arrange

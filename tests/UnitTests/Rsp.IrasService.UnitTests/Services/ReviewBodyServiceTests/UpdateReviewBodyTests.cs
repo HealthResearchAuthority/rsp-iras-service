@@ -25,8 +25,7 @@ public class UpdateReviewBodyTests : TestServiceBase<ReviewBodyService>
         _reviewBodyRepository = new ReviewBodyRepository(_context);
     }
 
-    [Theory]
-    [AutoData]
+    [Theory, AutoData]
     public async Task Updates_ReviewBody_Correctly(int records, Generator<ReviewBody> generator)
     {
         // Arrange
