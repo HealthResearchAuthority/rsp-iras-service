@@ -6,7 +6,7 @@ public class ReviewBody
     public string OrganisationName { get; set; } = null!;
     public string EmailAddress { get; set; } = null!;
     public List<string> Countries { get; set; } = [];
-    public string Description { get; set; } = null!;
+    public string? Description { get; set; }
     public bool IsActive { get; set; } = true;
     public DateTime CreatedDate { get; set; }
     public DateTime UpdatedDate { get; set; }

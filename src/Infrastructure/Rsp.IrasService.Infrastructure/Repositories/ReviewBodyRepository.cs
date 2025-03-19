@@ -42,6 +42,8 @@ public class ReviewBodyRepository(IrasContext irasContext) : IReviewBodyReposito
         irasContext.Entry(reviewBodyEntity).Property(r => r.CreatedDate).IsModified = false;
         irasContext.Entry(reviewBodyEntity).Property(r => r.CreatedBy).IsModified = false;
 
+        reviewBodyEntity.UpdatedDate = DateTime.Now;
+
         await irasContext.SaveChangesAsync();
         return reviewBodyEntity;
     }
