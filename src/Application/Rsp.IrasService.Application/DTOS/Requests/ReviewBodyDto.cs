@@ -1,5 +1,8 @@
-﻿namespace Rsp.IrasService.Application.DTOS.Requests;
+﻿using System.Diagnostics.CodeAnalysis;
 
+namespace Rsp.IrasService.Application.DTOS.Requests;
+
+[ExcludeFromCodeCoverage]
 public class ReviewBodyDto
 {
     public Guid Id { get; set; }
