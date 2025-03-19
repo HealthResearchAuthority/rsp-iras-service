@@ -21,29 +21,29 @@ public static class SwaggerConfiguration
         services.AddSwaggerGen(options =>
         {
             //// add JWT Authentication
-            //var securityScheme = new OpenApiSecurityScheme
-            //{
-            //    Name = "JWT Authentication",
-            //    Description = "Enter JWT Bearer token **_only_**",
-            //    In = ParameterLocation.Header,
-            //    Type = SecuritySchemeType.Http,
-            //    Scheme = "bearer", // must be lower case
-            //    BearerFormat = "JWT",
-            //    Reference = new OpenApiReference
-            //    {
-            //        Id = JwtBearerDefaults.AuthenticationScheme,
-            //        Type = ReferenceType.SecurityScheme
-            //    }
-            //};
+            var securityScheme = new OpenApiSecurityScheme
+            {
+                Name = "JWT Authentication",
+                Description = "Enter JWT Bearer token **_only_**",
+                In = ParameterLocation.Header,
+                Type = SecuritySchemeType.Http,
+                Scheme = "bearer", // must be lower case
+                BearerFormat = "JWT",
+                Reference = new OpenApiReference
+                {
+                    Id = JwtBearerDefaults.AuthenticationScheme,
+                    Type = ReferenceType.SecurityScheme
+                }
+            };
 
-            //options.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);
-            //options.AddSecurityRequirement
-            //(
-            //    new()
-            //    {
-            //        {securityScheme, Array.Empty<string>()}
-            //    }
-            //);
+            options.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);
+            options.AddSecurityRequirement
+            (
+                new()
+                {
+                    {securityScheme, Array.Empty<string>()}
+                }
+            );
 
             options.SwaggerDoc("v1", new OpenApiInfo
             {

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Rsp.IrasService.Application.Contracts.Services;
+﻿using Rsp.IrasService.Application.Contracts.Services;
 using Rsp.IrasService.Application.CQRS.Handlers.QueryHandlers;
 using Rsp.IrasService.Application.CQRS.Queries;
 using Rsp.IrasService.Application.DTOS.Requests;

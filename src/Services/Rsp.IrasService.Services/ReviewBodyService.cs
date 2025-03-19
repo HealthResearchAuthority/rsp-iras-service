@@ -1,5 +1,4 @@
-﻿using Azure;
-using Mapster;
+﻿using Mapster;
 using Rsp.IrasService.Application.Contracts.Repositories;
 using Rsp.IrasService.Application.Contracts.Services;
 using Rsp.IrasService.Application.DTOS.Requests;
@@ -18,6 +17,7 @@ public class ReviewBodyService(IReviewBodyRepository reviewBodyRepository) : IRe
 
         return responses.Adapt<IEnumerable<ReviewBodyDto>>();
     }
+
     public async Task<IEnumerable<ReviewBodyDto>> GetReviewBodies(Guid id)
     {
         var specification = new GetReviewBodySpecification(id: id);
@@ -33,7 +33,6 @@ public class ReviewBodyService(IReviewBodyRepository reviewBodyRepository) : IRe
         var response = await reviewBodyRepository.CreateReviewBody(reviewBodyEntity);
         return response.Adapt<ReviewBodyDto>();
     }
-
 
     public async Task<ReviewBodyDto> UpdateReviewBody(ReviewBodyDto reviewBody)
     {

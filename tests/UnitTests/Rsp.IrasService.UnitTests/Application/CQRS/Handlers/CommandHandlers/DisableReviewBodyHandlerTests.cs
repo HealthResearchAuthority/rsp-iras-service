@@ -22,13 +22,6 @@ public class DisableReviewBodyHandlerTests
         // Arrange
         var guid = Guid.NewGuid();
 
-        var request = new ReviewBodyDto
-        {
-            Id = guid,
-            OrganisationName = "App-123",
-            Description = "Approved"
-        };
-
         var expectedResponse = new ReviewBodyDto
         {
             Id = guid,

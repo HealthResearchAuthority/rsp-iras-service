@@ -1,12 +1,10 @@
-﻿using AutoFixture;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Application.Contracts.Repositories;
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Domain.Entities;
 using Rsp.IrasService.Infrastructure;
 using Rsp.IrasService.Infrastructure.Repositories;
 using Rsp.IrasService.Services;
-using Xunit;
 
 namespace Rsp.IrasService.UnitTests.Services.ReviewBodyServiceTests;
 
