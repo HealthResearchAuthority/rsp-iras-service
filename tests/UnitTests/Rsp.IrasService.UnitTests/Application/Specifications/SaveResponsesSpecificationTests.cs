@@ -8,8 +8,7 @@ public class SaveResponsesSpecificationTests
     /// <summary>
     ///     Tests that SaveResponsesSpecification filters by ApplicationId and RespondentId correctly.
     /// </summary>
-    [Theory]
-    [AutoData]
+    [Theory, AutoData]
     public void SaveResponsesSpecification_ByApplicationIdAndRespondentId_ReturnsCorrectSpecification(
         Generator<RespondentAnswer> generator)
     {
@@ -33,8 +32,7 @@ public class SaveResponsesSpecificationTests
     /// <summary>
     ///     Tests that SaveResponsesSpecification returns an empty list when no matching responses exist.
     /// </summary>
-    [Theory]
-    [AutoData]
+    [Theory, AutoData]
     public void SaveResponsesSpecification_NoMatches_ReturnsEmptyList(Generator<RespondentAnswer> generator)
     {
         // Arrange

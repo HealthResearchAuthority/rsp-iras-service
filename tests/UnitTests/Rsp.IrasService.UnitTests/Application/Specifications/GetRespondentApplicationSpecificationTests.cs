@@ -8,8 +8,7 @@ public class GetRespondentApplicationSpecificationTests
     /// <summary>
     ///     Tests that GetRespondentApplicationSpecification filters by RespondentId and ApplicationId correctly.
     /// </summary>
-    [Theory]
-    [AutoData]
+    [Theory, AutoData]
     public void GetRespondentApplicationSpecification_ById_ReturnsCorrectSpecification(
         Generator<ResearchApplication> generator)
     {
@@ -34,8 +33,7 @@ public class GetRespondentApplicationSpecificationTests
     /// <summary>
     ///     Tests that GetRespondentApplicationSpecification filters by RespondentId correctly.
     /// </summary>
-    [Theory]
-    [AutoData]
+    [Theory, AutoData]
     public void GetRespondentApplicationSpecification_ByRespondentId_ReturnsCorrectSpecification(
         Generator<ResearchApplication> generator)
     {
@@ -58,9 +56,7 @@ public class GetRespondentApplicationSpecificationTests
     /// <summary>
     ///     Tests that GetRespondentApplicationSpecification filters by records count correctly.
     /// </summary>
-    [Theory]
-    [InlineAutoData(2)]
-    [InlineAutoData(0)]
+    [Theory, InlineAutoData(2), InlineAutoData(0)]
     public void GetRespondentApplicationSpecification_ByRecords_ReturnsCorrectCount(int records,
         Generator<ResearchApplication> generator)
     {
