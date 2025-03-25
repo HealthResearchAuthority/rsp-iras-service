@@ -60,4 +60,16 @@ public class ReviewBodyController(IMediator mediator) : ControllerBase
         var request = new DisableReviewBodyCommand(id);
         return await mediator.Send(request);
     }
+
+    /// <summary>
+    ///     Enable a review body
+    /// </summary>
+    /// <param name="reviewBodyDto">Research Body Dto</param>
+    [HttpPut("enable/{id}")]
+    public async Task<ReviewBodyDto?> Enable(Guid id)
+    {
+        var request = new EnableReviewBodyCommand(id);
+        return await mediator.Send(request);
+    }
+
 }
