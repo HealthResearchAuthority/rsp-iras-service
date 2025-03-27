@@ -5,8 +5,7 @@ namespace Rsp.IrasService.UnitTests.Application.Specifications;
 
 public class GetApplicationSpecificationTests
 {
-    [Theory]
-    [AutoData]
+    [Theory, AutoData]
     public void GetApplicationSpecification_ById_ReturnsCorrectSpecification(Generator<ResearchApplication> generator)
     {
         // Arrange
@@ -24,9 +23,7 @@ public class GetApplicationSpecificationTests
         result.ApplicationId.ShouldBe(applications[0].ApplicationId);
     }
 
-    [Theory]
-    [InlineAutoData(5, 5)]
-    [InlineAutoData(0, 10)]
+    [Theory, InlineAutoData(5, 5), InlineAutoData(0, 10)]
     public void GetApplicationSpecification_ByRecords_ReturnsCorrectSpecification(int records, int expected,
         Generator<ResearchApplication> generator)
     {
@@ -45,8 +42,7 @@ public class GetApplicationSpecificationTests
         result.ShouldBe(expected);
     }
 
-    [Theory]
-    [AutoData]
+    [Theory, AutoData]
     public void GetApplicationSpecification_ByStatusAndId_ReturnsCorrectSpecification(
         Generator<ResearchApplication> generator)
     {
@@ -69,9 +65,7 @@ public class GetApplicationSpecificationTests
         result[0].ApplicationId.ShouldBe(applications[1].ApplicationId);
     }
 
-    [Theory]
-    [InlineAutoData(5, 2)]
-    [InlineAutoData(0, 2)]
+    [Theory, InlineAutoData(5, 2), InlineAutoData(0, 2)]
     public void GetApplicationSpecification_ByStatusAndRecords_ReturnsCorrectSpecification(int records, int expected,
         Generator<ResearchApplication> generator)
     {

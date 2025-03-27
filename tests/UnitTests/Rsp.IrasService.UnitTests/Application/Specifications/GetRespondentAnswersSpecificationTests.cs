@@ -8,8 +8,7 @@ public class GetRespondentAnswersSpecificationTests
     /// <summary>
     ///     Tests that GetRespondentAnswersSpecification filters by ApplicationId and CategoryId correctly.
     /// </summary>
-    [Theory]
-    [AutoData]
+    [Theory, AutoData]
     public void GetRespondentAnswersSpecification_ByApplicationIdAndCategoryId_ReturnsCorrectSpecification(
         Generator<RespondentAnswer> generator)
     {
@@ -33,8 +32,7 @@ public class GetRespondentAnswersSpecificationTests
     /// <summary>
     ///     Tests that GetRespondentAnswersSpecification filters by ApplicationId correctly.
     /// </summary>
-    [Theory]
-    [AutoData]
+    [Theory, AutoData]
     public void GetRespondentAnswersSpecification_ByApplicationId_ReturnsCorrectSpecification(
         Generator<RespondentAnswer> generator)
     {
@@ -57,9 +55,7 @@ public class GetRespondentAnswersSpecificationTests
     /// <summary>
     ///     Tests that GetRespondentAnswersSpecification filters correctly based on different record counts.
     /// </summary>
-    [Theory]
-    [InlineAutoData(3)]
-    [InlineAutoData(0)]
+    [Theory, InlineAutoData(3), InlineAutoData(0)]
     public void GetRespondentAnswersSpecification_ByRecords_ReturnsCorrectCount(int records,
         Generator<RespondentAnswer> generator)
     {

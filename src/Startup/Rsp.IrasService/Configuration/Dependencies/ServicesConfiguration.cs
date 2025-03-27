@@ -31,6 +31,8 @@ public static class ServicesConfiguration
         services.AddTransient<IEmailTemplateService, EmailTemplateService>();
         services.AddTransient<IEmailTemplateRepository, EmailTemplateRepository>();
         services.AddTransient<IEventTypeRepository, EventTypeRepository>();
+        services.AddTransient<IReviewBodyService, ReviewBodyService>();
+        services.AddTransient<IReviewBodyRepository, ReviewBodyRepository>();
 
         services.AddMediatR(option => option.RegisterServicesFromAssemblyContaining<IApplication>());
 
