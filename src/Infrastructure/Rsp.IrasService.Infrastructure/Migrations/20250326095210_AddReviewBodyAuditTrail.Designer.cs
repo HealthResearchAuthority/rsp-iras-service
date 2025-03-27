@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rsp.IrasService.Infrastructure;
 
@@ -11,9 +12,11 @@ using Rsp.IrasService.Infrastructure;
 namespace Rsp.IrasService.Infrastructure.Migrations
 {
     [DbContext(typeof(IrasContext))]
-    partial class IrasContextModelSnapshot : ModelSnapshot
+    [Migration("20250326095210_AddReviewBodyAuditTrail")]
+    partial class AddReviewBodyAuditTrail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -262,16 +265,11 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("ReviewBodyId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("User")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ReviewBodyId");
 
                     b.ToTable("ReviewBodiesAuditTrail");
                 });
@@ -313,17 +311,6 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Navigation("ResearchApplication");
 
                     b.Navigation("Respondent");
-                });
-
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ReviewBodyAuditTrail", b =>
-                {
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ReviewBody", "ReviewBody")
-                        .WithMany()
-                        .HasForeignKey("ReviewBodyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ReviewBody");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.Respondent", b =>
