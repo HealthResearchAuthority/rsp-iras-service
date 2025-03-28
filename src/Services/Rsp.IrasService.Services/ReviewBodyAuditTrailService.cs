@@ -96,7 +96,7 @@ public class ReviewBodyAuditTrailService(IReviewBodyAuditTrailRepository repo) :
                     }
                 });
 
-                var compareDtosResult = new ObjectPropertyCompareHelper().Compare(dto, oldDto, compareConfig);
+                var compareDtosResult = ObjectPropertyCompareHelper.Compare(dto, oldDto, compareConfig);
 
                 if (!compareDtosResult.AreEqual)
                 {

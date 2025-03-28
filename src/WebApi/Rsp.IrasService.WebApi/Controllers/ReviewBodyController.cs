@@ -15,17 +15,8 @@ namespace Rsp.IrasService.WebApi.Controllers;
 [ApiController]
 [Route("[controller]")]
 [Authorize]
-public class ReviewBodyController : ControllerBase
+public class ReviewBodyController(IMediator mediator, IReviewBodyAuditTrailService auditService) : ControllerBase
 {
-    public IMediator mediator { get; set; }
-    public IReviewBodyAuditTrailService auditService { get; set; }
-
-    public ReviewBodyController(IMediator _mediator, IReviewBodyAuditTrailService _auditService)
-    {
-        mediator = _mediator;
-        auditService = _auditService;
-    }
-
     /// <summary>
     ///     Returns all review bodies
     /// </summary>
@@ -129,7 +120,7 @@ public class ReviewBodyController : ControllerBase
     }
 
     // gets the currently logged in user's email from the user claims
-    private string? UserEmail(ClaimsPrincipal user)
+    private static string? UserEmail(ClaimsPrincipal user)
     {
         return user?.Claims?.FirstOrDefault(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
     }

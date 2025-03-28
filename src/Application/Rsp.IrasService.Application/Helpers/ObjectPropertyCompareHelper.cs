@@ -2,9 +2,9 @@
 
 namespace Rsp.IrasService.Application.Helpers;
 
-public class ObjectPropertyCompareHelper
+public static class ObjectPropertyCompareHelper
 {
-    public ComparisonResult Compare<T>(T object1, T object2, CompareLogic? compareLogic = null)
+    public static ComparisonResult Compare<T>(T object1, T object2, CompareLogic? compareLogic = null)
     {
         var config = compareLogic == null ? new CompareLogic() : compareLogic;
 
