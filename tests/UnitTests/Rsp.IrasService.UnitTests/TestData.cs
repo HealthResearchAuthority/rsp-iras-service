@@ -83,4 +83,19 @@ public static class TestData
 
         return items;
     }
+
+    public static async Task<IList<ReviewBodyAuditTrail>> SeedData(IrasContext context,
+        Generator<ReviewBodyAuditTrail> generator, int records)
+    {
+        // seed data using bogus
+        var items = generator
+            .Take(records)
+            .ToList();
+
+        await context.ReviewBodiesAuditTrail.AddRangeAsync(items);
+
+        await context.SaveChangesAsync();
+
+        return items;
+    }
 }

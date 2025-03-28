@@ -1,15 +1,21 @@
-﻿using MediatR;
+﻿using System.Security.Claims;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Rsp.IrasService.Application.Constants;
+using Rsp.IrasService.Application.Contracts.Services;
 using Rsp.IrasService.Application.CQRS.Commands;
 using Rsp.IrasService.Application.CQRS.Queries;
 using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.IrasService.Application.DTOS.Responses;
 using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ReviewBodyController(IMediator mediator) : ControllerBase
+[Authorize]
+public class ReviewBodyController(IMediator mediator, IReviewBodyAuditTrailService auditService) : ControllerBase
 {
     /// <summary>
     ///     Returns all review bodies
@@ -19,8 +25,8 @@ public class ReviewBodyController(IMediator mediator) : ControllerBase
     [Produces<IEnumerable<ReviewBody>>]
     public async Task<IEnumerable<ReviewBodyDto>> GetReviewBodies(Guid? id = null)
     {
-        var query = id == null ? 
-            new GetReviewBodiesQuery() : 
+        var query = id == null ?
+            new GetReviewBodiesQuery() :
             new GetReviewBodiesQuery(id.Value);
 
         return await mediator.Send(query);
@@ -35,7 +41,18 @@ public class ReviewBodyController(IMediator mediator) : ControllerBase
         (ReviewBodyDto reviewBodyDto)
     {
         var request = new CreateReviewBodyCommand(reviewBodyDto);
-        return await mediator.Send(request);
+        var createReviewBodyResult = await mediator.Send(request);
+
+        // log audit trail
+        var userId = UserEmail(User);
+        var auditRecord = auditService.GenerateAuditTrailDtoFromReviewBody(
+            createReviewBodyResult,
+            userId!,
+            ReviewBodyAuditTrailActions.Create
+        );
+        var loggedAuditTrail = await auditService.LogRecords(auditRecord);
+
+        return createReviewBodyResult;
     }
 
     /// <summary>
@@ -46,8 +63,26 @@ public class ReviewBodyController(IMediator mediator) : ControllerBase
     public async Task<ReviewBodyDto> Update
         (ReviewBodyDto reviewBodyDto)
     {
+        // get current object
+        var currentReviewBodies = await mediator.Send(new GetReviewBodiesQuery(reviewBodyDto.Id));
+        var currentReviewBody = currentReviewBodies.FirstOrDefault();
+
         var request = new UpdateReviewBodyCommand(reviewBodyDto);
-        return await mediator.Send(request);
+        var updateReviewBodyResult = await mediator.Send(request);
+
+        // log audit trail
+        var userId = UserEmail(User);
+
+        var auditRecord = auditService.GenerateAuditTrailDtoFromReviewBody(
+            updateReviewBodyResult,
+            userId!,
+            ReviewBodyAuditTrailActions.Update,
+            currentReviewBody
+        );
+
+        var loggedAuditTrail = await auditService.LogRecords(auditRecord);
+
+        return updateReviewBodyResult;
     }
 
     /// <summary>
@@ -58,6 +93,35 @@ public class ReviewBodyController(IMediator mediator) : ControllerBase
     public async Task<ReviewBodyDto?> Disable(Guid id)
     {
         var request = new DisableReviewBodyCommand(id);
-        return await mediator.Send(request);
+        var disableReviewBodyResult = await mediator.Send(request);
+
+        // log audit trail
+        var userId = UserEmail(User);
+        if (disableReviewBodyResult != null)
+        {
+            var auditRecord = auditService.GenerateAuditTrailDtoFromReviewBody(
+                disableReviewBodyResult,
+                userId!,
+                ReviewBodyAuditTrailActions.Disable
+            );
+
+            var loggedAuditTrail = await auditService.LogRecords(auditRecord);
+        }
+
+        return disableReviewBodyResult;
+    }
+
+    [HttpGet("audittrail")]
+    public async Task<ReviewBodyAuditTrailResponse> GetAuditTrailForReviewBody(Guid id, int skip, int take)
+    {
+        var result = await auditService.GetAuditTrailForReviewBody(id, skip, take);
+
+        return result;
+    }
+
+    // gets the currently logged in user's email from the user claims
+    private static string? UserEmail(ClaimsPrincipal user)
+    {
+        return user?.Claims?.FirstOrDefault(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
     }
 }
