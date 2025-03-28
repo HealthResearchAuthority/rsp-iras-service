@@ -46,4 +46,10 @@ public class ReviewBodyService(IReviewBodyRepository reviewBodyRepository) : IRe
         var response = await reviewBodyRepository.DisableReviewBody(id);
         return response.Adapt<ReviewBodyDto?>();
     }
+
+    public async Task<ReviewBodyDto?> EnableReviewBody(Guid id)
+    {
+        var response = await reviewBodyRepository.EnableReviewBody(id);
+        return response.Adapt<ReviewBodyDto?>();
+    }
 }

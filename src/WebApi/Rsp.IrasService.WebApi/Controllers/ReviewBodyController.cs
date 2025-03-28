@@ -124,4 +124,31 @@ public class ReviewBodyController(IMediator mediator, IReviewBodyAuditTrailServi
     {
         return user?.Claims?.FirstOrDefault(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
     }
+
+    /// <summary>
+    ///     Enable a review body
+    /// </summary>
+    /// <param name="reviewBodyDto">Research Body Dto</param>
+    [HttpPut("enable/{id}")]
+    public async Task<ReviewBodyDto?> Enable(Guid id)
+    {
+        var request = new EnableReviewBodyCommand(id);
+        var enableReviewBodyResult = await mediator.Send(request);
+
+        // log audit trail
+        var userId = UserEmail(User);
+        if (enableReviewBodyResult != null)
+        {
+            var auditRecord = auditService.GenerateAuditTrailDtoFromReviewBody(
+                enableReviewBodyResult,
+                userId!,
+                ReviewBodyAuditTrailActions.Enable
+            );
+
+            var loggedAuditTrail = await auditService.LogRecords(auditRecord);
+        }
+
+        return enableReviewBodyResult;
+    }
+
 }
