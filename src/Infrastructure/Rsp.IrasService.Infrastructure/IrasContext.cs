@@ -12,6 +12,7 @@ namespace Rsp.IrasService.Infrastructure
         public DbSet<EventType> EventTypes { get; set; }
         public DbSet<EmailTemplate> EmailTemplates { get; set; }
         public DbSet<ReviewBody> ReviewBodies { get; set; }
+        public DbSet<ReviewBodyAuditTrail> ReviewBodiesAuditTrail { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -23,6 +24,7 @@ namespace Rsp.IrasService.Infrastructure
             modelBuilder.ApplyConfiguration(new EventTypeConfiguration());
             modelBuilder.ApplyConfiguration(new EmailTemplateConfiguration());
             modelBuilder.ApplyConfiguration(new ReviewBodyConfiguration());
+            modelBuilder.ApplyConfiguration(new ReviewBodyAuditTrailConfiguration());
         }
     }
 }
