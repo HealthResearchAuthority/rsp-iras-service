@@ -133,7 +133,22 @@ public class ReviewBodyController(IMediator mediator, IReviewBodyAuditTrailServi
     public async Task<ReviewBodyDto?> Enable(Guid id)
     {
         var request = new EnableReviewBodyCommand(id);
-        return await mediator.Send(request);
+        var enableReviewBodyResult = await mediator.Send(request);
+
+        // log audit trail
+        var userId = UserEmail(User);
+        if (enableReviewBodyResult != null)
+        {
+            var auditRecord = auditService.GenerateAuditTrailDtoFromReviewBody(
+                enableReviewBodyResult,
+                userId!,
+                ReviewBodyAuditTrailActions.Enable
+            );
+
+            var loggedAuditTrail = await auditService.LogRecords(auditRecord);
+        }
+
+        return enableReviewBodyResult;
     }
 
 }
