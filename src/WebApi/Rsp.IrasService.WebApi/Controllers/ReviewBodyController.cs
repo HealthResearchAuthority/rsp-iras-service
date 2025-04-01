@@ -119,12 +119,6 @@ public class ReviewBodyController(IMediator mediator, IReviewBodyAuditTrailServi
         return result;
     }
 
-    // gets the currently logged in user's email from the user claims
-    private static string? UserEmail(ClaimsPrincipal user)
-    {
-        return user?.Claims?.FirstOrDefault(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
-    }
-
     /// <summary>
     ///     Enable a review body
     /// </summary>
@@ -151,4 +145,11 @@ public class ReviewBodyController(IMediator mediator, IReviewBodyAuditTrailServi
         return enableReviewBodyResult;
     }
 
+    // gets the currently logged in user's email from the user claims
+    private static string? UserEmail(ClaimsPrincipal user)
+    {
+        return user?.Claims
+            ?.FirstOrDefault(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")
+            ?.Value;
+    }
 }
