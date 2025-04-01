@@ -69,7 +69,10 @@ public class ReviewBodyRepository(IrasContext irasContext) : IReviewBodyReposito
             .ReviewBodies
             .SingleOrDefaultAsync(r => r.Id == id);
 
-        if (reviewBodyEntity == null) return reviewBodyEntity;
+        if (reviewBodyEntity == null)
+        {
+             return reviewBodyEntity;
+        }
         reviewBodyEntity.IsActive = true;
         reviewBodyEntity.UpdatedDate = DateTime.Now;
         await irasContext.SaveChangesAsync();
