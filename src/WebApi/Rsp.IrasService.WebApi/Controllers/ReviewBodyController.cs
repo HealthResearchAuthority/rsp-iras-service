@@ -149,7 +149,7 @@ public class ReviewBodyController(IMediator mediator, IReviewBodyAuditTrailServi
     private static string? UserEmail(ClaimsPrincipal user)
     {
         return user?.Claims
-            ?.FirstOrDefault(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")
+            ?.FirstOrDefault(x => x.Type == ClaimTypes.Email)
             ?.Value;
     }
 }
