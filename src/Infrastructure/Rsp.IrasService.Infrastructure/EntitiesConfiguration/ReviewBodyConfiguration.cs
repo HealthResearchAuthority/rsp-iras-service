@@ -16,8 +16,5 @@ public class ReviewBodyConfiguration : IEntityTypeConfiguration<ReviewBody>
 
         builder.Property(rb => rb.EmailAddress)
             .IsRequired();
-
-        builder.Property(rb => rb.Description)
-            .HasMaxLength(250);
     }
 }
