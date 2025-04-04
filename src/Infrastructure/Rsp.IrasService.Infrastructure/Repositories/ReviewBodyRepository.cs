@@ -41,6 +41,7 @@ public class ReviewBodyRepository(IrasContext irasContext) : IReviewBodyReposito
         irasContext.Entry(reviewBodyEntity).Property(r => r.Id).IsModified = false;
         irasContext.Entry(reviewBodyEntity).Property(r => r.CreatedDate).IsModified = false;
         irasContext.Entry(reviewBodyEntity).Property(r => r.CreatedBy).IsModified = false;
+        irasContext.Entry(reviewBodyEntity).Property(r => r.IsActive).IsModified = false;
 
         reviewBodyEntity.UpdatedDate = DateTime.Now;
 
@@ -56,6 +57,24 @@ public class ReviewBodyRepository(IrasContext irasContext) : IReviewBodyReposito
 
         if (reviewBodyEntity == null) return reviewBodyEntity;
         reviewBodyEntity.IsActive = false;
+        reviewBodyEntity.UpdatedDate = DateTime.Now;
+        await irasContext.SaveChangesAsync();
+
+        return reviewBodyEntity;
+    }
+
+    public async Task<ReviewBody?> EnableReviewBody(Guid id)
+    {
+        var reviewBodyEntity = await irasContext
+            .ReviewBodies
+            .SingleOrDefaultAsync(r => r.Id == id);
+
+        if (reviewBodyEntity == null)
+        {
+             return reviewBodyEntity;
+        }
+        reviewBodyEntity.IsActive = true;
+        reviewBodyEntity.UpdatedDate = DateTime.Now;
         await irasContext.SaveChangesAsync();
 
         return reviewBodyEntity;
