@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rsp.IrasService.Infrastructure;
 
@@ -11,9 +12,11 @@ using Rsp.IrasService.Infrastructure;
 namespace Rsp.IrasService.Infrastructure.Migrations
 {
     [DbContext(typeof(IrasContext))]
-    partial class IrasContextModelSnapshot : ModelSnapshot
+    [Migration("20250409120227_IrasIdToResearchApplication")]
+    partial class IrasIdToResearchApplication
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -216,13 +219,11 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.PrimitiveCollection<string>("Countries")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -244,8 +245,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("UpdatedBy")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
