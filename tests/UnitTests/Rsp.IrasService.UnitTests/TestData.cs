@@ -92,7 +92,7 @@ public static class TestData
             .Take(records)
             .ToList();
 
-        await context.ReviewBodiesAuditTrail.AddRangeAsync(items);
+        await context.ReviewBodiesAuditTrails.AddRangeAsync(items);
 
         await context.SaveChangesAsync();
 
