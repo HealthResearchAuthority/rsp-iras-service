@@ -32,7 +32,7 @@ public class GetAuditTrailForReviewBody : TestServiceBase<ReviewBodyAuditTrailSe
         var testData = await TestData.SeedData(_context, generator, records);
 
         var id = testData.FirstOrDefault()!.ReviewBodyId;
-        var expectedData = _context.ReviewBodiesAuditTrail.Where(x => x.ReviewBodyId == id);
+        var expectedData = _context.ReviewBodiesAuditTrails.Where(x => x.ReviewBodyId == id);
 
         // Act
         var result = await Sut.GetAuditTrailForReviewBody(id, 0, 10);

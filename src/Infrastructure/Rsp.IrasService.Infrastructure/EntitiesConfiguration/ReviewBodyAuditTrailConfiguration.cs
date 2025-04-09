@@ -16,7 +16,8 @@ public class ReviewBodyAuditTrailConfiguration : IEntityTypeConfiguration<Review
 
         builder
             .Property(x => x.User)
-            .IsRequired();
+            .IsRequired()
+            .HasMaxLength(250);
 
         builder
             .Property(x => x.DateTimeStamp)

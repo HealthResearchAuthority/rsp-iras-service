@@ -11,13 +11,13 @@ public class ReviewBodyAuditTrailRepository(IrasContext irasContext) : IReviewBo
     public IEnumerable<ReviewBodyAuditTrail> GetForReviewBody(ISpecification<ReviewBodyAuditTrail> specification)
     {
         return irasContext
-            .ReviewBodiesAuditTrail
+            .ReviewBodiesAuditTrails
             .WithSpecification(specification);
     }
 
     public async Task<IEnumerable<ReviewBodyAuditTrail>> CreateAuditRecords(IEnumerable<ReviewBodyAuditTrail> reviewBodyAuditTrail)
     {
-        await irasContext.ReviewBodiesAuditTrail.AddRangeAsync(reviewBodyAuditTrail);
+        await irasContext.ReviewBodiesAuditTrails.AddRangeAsync(reviewBodyAuditTrail);
         await irasContext.SaveChangesAsync();
 
         return reviewBodyAuditTrail;
@@ -26,7 +26,7 @@ public class ReviewBodyAuditTrailRepository(IrasContext irasContext) : IReviewBo
     public async Task<int> GetTotalNumberOfRecordsForReviewBody(ISpecification<ReviewBodyAuditTrail> specification)
     {
         return await irasContext
-            .ReviewBodiesAuditTrail
+            .ReviewBodiesAuditTrails
             .WithSpecification(specification)
             .CountAsync();
     }
