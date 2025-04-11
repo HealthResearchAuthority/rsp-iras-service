@@ -1,8 +1,6 @@
-﻿using System.Security.Claims;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Rsp.IrasService.Application.Constants;
 using Rsp.IrasService.Application.Contracts.Services;
 using Rsp.IrasService.Application.CQRS.Commands;
 using Rsp.IrasService.Application.CQRS.Queries;
@@ -43,15 +41,6 @@ public class ReviewBodyController(IMediator mediator, IReviewBodyAuditTrailServi
         var request = new CreateReviewBodyCommand(reviewBodyDto);
         var createReviewBodyResult = await mediator.Send(request);
 
-        // log audit trail
-        var userId = UserEmail(User);
-        var auditRecord = auditService.GenerateAuditTrailDtoFromReviewBody(
-            createReviewBodyResult,
-            userId!,
-            ReviewBodyAuditTrailActions.Create
-        );
-        var loggedAuditTrail = await auditService.LogRecords(auditRecord);
-
         return createReviewBodyResult;
     }
 
@@ -63,24 +52,8 @@ public class ReviewBodyController(IMediator mediator, IReviewBodyAuditTrailServi
     public async Task<ReviewBodyDto> Update
         (ReviewBodyDto reviewBodyDto)
     {
-        // get current object
-        var currentReviewBodies = await mediator.Send(new GetReviewBodiesQuery(reviewBodyDto.Id));
-        var currentReviewBody = currentReviewBodies.FirstOrDefault();
-
         var request = new UpdateReviewBodyCommand(reviewBodyDto);
         var updateReviewBodyResult = await mediator.Send(request);
-
-        // log audit trail
-        var userId = UserEmail(User);
-
-        var auditRecord = auditService.GenerateAuditTrailDtoFromReviewBody(
-            updateReviewBodyResult,
-            userId!,
-            ReviewBodyAuditTrailActions.Update,
-            currentReviewBody
-        );
-
-        var loggedAuditTrail = await auditService.LogRecords(auditRecord);
 
         return updateReviewBodyResult;
     }
@@ -94,19 +67,6 @@ public class ReviewBodyController(IMediator mediator, IReviewBodyAuditTrailServi
     {
         var request = new DisableReviewBodyCommand(id);
         var disableReviewBodyResult = await mediator.Send(request);
-
-        // log audit trail
-        var userId = UserEmail(User);
-        if (disableReviewBodyResult != null)
-        {
-            var auditRecord = auditService.GenerateAuditTrailDtoFromReviewBody(
-                disableReviewBodyResult,
-                userId!,
-                ReviewBodyAuditTrailActions.Disable
-            );
-
-            var loggedAuditTrail = await auditService.LogRecords(auditRecord);
-        }
 
         return disableReviewBodyResult;
     }
@@ -129,27 +89,6 @@ public class ReviewBodyController(IMediator mediator, IReviewBodyAuditTrailServi
         var request = new EnableReviewBodyCommand(id);
         var enableReviewBodyResult = await mediator.Send(request);
 
-        // log audit trail
-        var userId = UserEmail(User);
-        if (enableReviewBodyResult != null)
-        {
-            var auditRecord = auditService.GenerateAuditTrailDtoFromReviewBody(
-                enableReviewBodyResult,
-                userId!,
-                ReviewBodyAuditTrailActions.Enable
-            );
-
-            var loggedAuditTrail = await auditService.LogRecords(auditRecord);
-        }
-
         return enableReviewBodyResult;
-    }
-
-    // gets the currently logged in user's email from the user claims
-    private static string? UserEmail(ClaimsPrincipal user)
-    {
-        return user?.Claims
-            ?.FirstOrDefault(x => x.Type == ClaimTypes.Email)
-            ?.Value;
     }
 }

@@ -71,7 +71,7 @@ public class ReviewBodyRepository(IrasContext irasContext) : IReviewBodyReposito
 
         if (reviewBodyEntity == null)
         {
-             return reviewBodyEntity;
+            return reviewBodyEntity;
         }
         reviewBodyEntity.IsActive = true;
         reviewBodyEntity.UpdatedDate = DateTime.Now;
