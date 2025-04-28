@@ -28,7 +28,7 @@ public class ReviewBodyConfiguration : IEntityTypeConfiguration<ReviewBody>
             .HasMaxLength(500);
 
         builder.HasMany(x => x.Users)
-            .WithOne(x => x.ReviewBody)
+            .WithOne()
             .HasForeignKey(x => x.ReviewBodyId);
     }
 }

@@ -15,9 +15,5 @@ public class ReviewBodyUsersConfiguration : IEntityTypeConfiguration<ReviewBodyU
 
         builder.Property(rb => rb.UserId)
         .IsRequired();
-
-        builder.HasOne(x => x.ReviewBody)
-            .WithMany(x => x.Users)
-            .HasForeignKey(x => x.ReviewBodyId);
     }
 }
