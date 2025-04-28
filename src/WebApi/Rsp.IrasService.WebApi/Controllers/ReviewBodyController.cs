@@ -91,4 +91,17 @@ public class ReviewBodyController(IMediator mediator, IReviewBodyAuditTrailServi
 
         return enableReviewBodyResult;
     }
+
+    /// <summary>
+    ///     Add a user to a review body
+    /// </summary>
+    /// <param name="reviewBodyUser">Review Body User Dto</param>
+    [HttpPost("adduser")]
+    public async Task<ReviewBodyUserDto> AddUser(ReviewBodyUserDto reviewBodyUser)
+    {
+        var request = new AddReviewBodyUserCommand(reviewBodyUser);
+        var adduser = await mediator.Send(request);
+
+        return adduser;
+    }
 }

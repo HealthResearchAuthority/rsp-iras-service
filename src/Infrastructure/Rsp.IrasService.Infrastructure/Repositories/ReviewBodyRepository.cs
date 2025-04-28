@@ -79,4 +79,13 @@ public class ReviewBodyRepository(IrasContext irasContext) : IReviewBodyReposito
 
         return reviewBodyEntity;
     }
+
+    public async Task<ReviewBodyUsers> AddUserToReviewBody(ReviewBodyUsers user)
+    {
+        var addedUser = await irasContext.ReviewBodyUsers.AddAsync(user);
+
+        await irasContext.SaveChangesAsync();
+
+        return addedUser.Entity;
+    }
 }

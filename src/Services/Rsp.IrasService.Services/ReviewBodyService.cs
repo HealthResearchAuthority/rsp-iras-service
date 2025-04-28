@@ -52,4 +52,11 @@ public class ReviewBodyService(IReviewBodyRepository reviewBodyRepository) : IRe
         var response = await reviewBodyRepository.EnableReviewBody(id);
         return response.Adapt<ReviewBodyDto?>();
     }
+
+    public async Task<ReviewBodyUserDto?> AddUserToReviewBody(ReviewBodyUserDto reviewBodyUser)
+    {
+        var reviewBodyUserEntity = reviewBodyUser.Adapt<ReviewBodyUsers>();
+        var responce = await reviewBodyRepository.AddUserToReviewBody(reviewBodyUserEntity);
+        return responce.Adapt<ReviewBodyUserDto?>();
+    }
 }
