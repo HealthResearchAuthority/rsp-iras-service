@@ -12,6 +12,7 @@ public class IrasContext(DbContextOptions<IrasContext> options) : DbContext(opti
     public DbSet<EventType> EventTypes { get; set; }
     public DbSet<EmailTemplate> EmailTemplates { get; set; }
     public DbSet<ReviewBody> ReviewBodies { get; set; }
+    public DbSet<ReviewBodyUsers> ReviewBodyUsers { get; set; }
     public DbSet<ReviewBodyAuditTrail> ReviewBodiesAuditTrails { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -25,5 +26,6 @@ public class IrasContext(DbContextOptions<IrasContext> options) : DbContext(opti
         modelBuilder.ApplyConfiguration(new EmailTemplateConfiguration());
         modelBuilder.ApplyConfiguration(new ReviewBodyConfiguration());
         modelBuilder.ApplyConfiguration(new ReviewBodyAuditTrailConfiguration());
+        modelBuilder.ApplyConfiguration(new ReviewBodyUsersConfiguration());
     }
 }

@@ -13,7 +13,9 @@ public class GetReviewBodySpecification : Specification<ReviewBody>
 
         if (id != null)
         {
-            builder.Where(rb => rb.Id == id);
+            builder
+                .Include(x => x.Users)
+                .Where(rb => rb.Id == id);
         }
     }
 }
