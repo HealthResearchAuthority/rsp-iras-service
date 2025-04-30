@@ -88,4 +88,18 @@ public class ReviewBodyRepository(IrasContext irasContext) : IReviewBodyReposito
 
         return addedUser.Entity;
     }
+
+    public async Task<ReviewBodyUsers?> RemoveUserFromReviewBody(Guid reviewBodyId, Guid userId)
+    {
+        var userToRemove = await irasContext.ReviewBodyUsers
+            .SingleOrDefaultAsync(r => r.ReviewBodyId == reviewBodyId && r.UserId == userId);
+
+        if (userToRemove == null) return null;
+
+        var removedUser = irasContext.ReviewBodyUsers.Remove(userToRemove);
+
+        await irasContext.SaveChangesAsync();
+
+        return removedUser.Entity;
+    }
 }
