@@ -16,4 +16,6 @@ public interface IReviewBodyRepository
     Task<ReviewBody?> EnableReviewBody(Guid id);
 
     Task<ReviewBodyUsers> AddUserToReviewBody(ReviewBodyUsers user);
+
+    Task<ReviewBodyUsers?> RemoveUserFromReviewBody(Guid reviewBodyId, Guid userId);
 }

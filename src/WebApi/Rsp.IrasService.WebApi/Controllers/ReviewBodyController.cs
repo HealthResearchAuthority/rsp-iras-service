@@ -61,7 +61,6 @@ public class ReviewBodyController(IMediator mediator, IReviewBodyAuditTrailServi
     /// <summary>
     ///     Disable a review body
     /// </summary>
-    /// <param name="reviewBodyDto">Research Body Dto</param>
     [HttpPut("disable/{id}")]
     public async Task<ReviewBodyDto?> Disable(Guid id)
     {
@@ -82,7 +81,6 @@ public class ReviewBodyController(IMediator mediator, IReviewBodyAuditTrailServi
     /// <summary>
     ///     Enable a review body
     /// </summary>
-    /// <param name="reviewBodyDto">Research Body Dto</param>
     [HttpPut("enable/{id}")]
     public async Task<ReviewBodyDto?> Enable(Guid id)
     {
@@ -103,5 +101,17 @@ public class ReviewBodyController(IMediator mediator, IReviewBodyAuditTrailServi
         var adduser = await mediator.Send(request);
 
         return adduser;
+    }
+
+    /// <summary>
+    ///     Remove a user from a review body
+    /// </summary>
+    [HttpPost("removeuser")]
+    public async Task<ReviewBodyUserDto?> RemoveUser(Guid reviewBodyId, Guid userId)
+    {
+        var request = new RemoveReviewBodyUserCommand(reviewBodyId, userId);
+        var removeuser = await mediator.Send(request);
+
+        return removeuser;
     }
 }
