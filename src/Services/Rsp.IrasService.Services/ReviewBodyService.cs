@@ -2,6 +2,7 @@
 using Rsp.IrasService.Application.Contracts.Repositories;
 using Rsp.IrasService.Application.Contracts.Services;
 using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.IrasService.Application.DTOS.Responses;
 using Rsp.IrasService.Application.Specifications;
 using Rsp.IrasService.Domain.Entities;
 
@@ -9,22 +10,29 @@ namespace Rsp.IrasService.Services;
 
 public class ReviewBodyService(IReviewBodyRepository reviewBodyRepository) : IReviewBodyService
 {
-    public async Task<IEnumerable<ReviewBodyDto>> GetReviewBodies()
+    public async Task<AllReviewBodiesResponse> GetReviewBodies(int pageNumber, int pageSize, string? searchQuery)
     {
-        var specification = new GetReviewBodySpecification();
+        var specification = new GetReviewBodiesSpecification(pageNumber, pageSize, searchQuery);
 
-        var responses = await reviewBodyRepository.GetReviewBodies(specification);
+        var rbResponses = await reviewBodyRepository.GetReviewBodies(specification);
+        var rbCount = await reviewBodyRepository.GetReviewBodyCount(searchQuery);
 
-        return responses.Adapt<IEnumerable<ReviewBodyDto>>();
+        var response = new AllReviewBodiesResponse
+        {
+            ReviewBodies = rbResponses.Select(x => x.Adapt<ReviewBodyDto>()),
+            TotalCount = rbCount
+        };
+
+        return response;
     }
 
-    public async Task<IEnumerable<ReviewBodyDto>> GetReviewBodies(Guid id)
+    public async Task<ReviewBodyDto> GetReviewBody(Guid id)
     {
         var specification = new GetReviewBodySpecification(id: id);
 
-        var response = await reviewBodyRepository.GetReviewBodies(specification);
+        var response = await reviewBodyRepository.GetReviewBody(specification);
 
-        return response.Adapt<IEnumerable<ReviewBodyDto>>();
+        return response.Adapt<ReviewBodyDto>();
     }
 
     public async Task<ReviewBodyDto> CreateReviewBody(ReviewBodyDto reviewBody)

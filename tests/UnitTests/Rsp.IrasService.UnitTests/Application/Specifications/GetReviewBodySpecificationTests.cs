@@ -12,7 +12,7 @@ public class GetReviewBodySpecificationTests
         // Arrange
         var applications = generator.Take(5).ToList();
 
-        var spec = new GetReviewBodySpecification();
+        var spec = new GetReviewBodiesSpecification(1, 10, null);
 
         // Act
         var result = spec

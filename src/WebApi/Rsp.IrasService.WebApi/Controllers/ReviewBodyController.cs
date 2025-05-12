@@ -18,14 +18,24 @@ public class ReviewBodyController(IMediator mediator, IReviewBodyAuditTrailServi
     /// <summary>
     ///     Returns all review bodies
     /// </summary>
+    [HttpGet("all")]
+    [Produces<AllReviewBodiesResponse>]
+    public async Task<AllReviewBodiesResponse> GetAllReviewBodies(int pageNumber, int pageSize, string? searchQuery = null)
+    {
+        var query = new GetReviewBodiesQuery(pageNumber, pageSize, searchQuery);
+
+        return await mediator.Send(query);
+    }
+
+    /// <summary>
+    ///     Returns review body by ID
+    /// </summary>
     [HttpGet]
     [HttpGet("{id}")]
-    [Produces<IEnumerable<ReviewBody>>]
-    public async Task<IEnumerable<ReviewBodyDto>> GetReviewBodies(Guid? id = null)
+    [Produces<ReviewBody>]
+    public async Task<ReviewBodyDto> GetReviewBody(Guid id)
     {
-        var query = id == null ?
-            new GetReviewBodiesQuery() :
-            new GetReviewBodiesQuery(id.Value);
+        var query = new GetReviewBodyQuery(id);
 
         return await mediator.Send(query);
     }

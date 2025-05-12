@@ -102,4 +102,29 @@ public class ReviewBodyRepository(IrasContext irasContext) : IReviewBodyReposito
 
         return removedUser.Entity;
     }
+
+    public async Task<ReviewBody?> GetReviewBody(ISpecification<ReviewBody> specification)
+    {
+        var result = await irasContext
+           .ReviewBodies
+           .WithSpecification(specification)
+           .FirstOrDefaultAsync();
+
+        return result;
+    }
+
+    public Task<int> GetReviewBodyCount(string? searchQuery = null)
+    {
+        if (!string.IsNullOrEmpty(searchQuery))
+        {
+            var splitQuery = searchQuery.Split(' ');
+
+            return irasContext.ReviewBodies.CountAsync(x =>
+                        splitQuery.Any(word =>
+                            x.OrganisationName.Contains(word)
+                            ));
+        }
+
+        return irasContext.ReviewBodies.CountAsync();
+    }
 }
