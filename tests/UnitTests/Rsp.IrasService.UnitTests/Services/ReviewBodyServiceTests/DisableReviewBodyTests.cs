@@ -32,10 +32,10 @@ public class DisableReviewBodyTests : TestServiceBase<ReviewBodyService>
 
         // Seed data using number of records to seed
         await TestData.SeedData(_context, generator, records);
-        var reviewBodies = await Sut.GetReviewBodies();
+        var reviewBodies = await Sut.GetReviewBodies(1, 100, null);
 
         // Act
-        var result = await Sut.DisableReviewBody(reviewBodies.First().Id);
+        var result = await Sut.DisableReviewBody(reviewBodies.ReviewBodies.First().Id);
 
         // Assert
         result.ShouldNotBeNull();

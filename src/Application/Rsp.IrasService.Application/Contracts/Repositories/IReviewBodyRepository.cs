@@ -7,6 +7,8 @@ public interface IReviewBodyRepository
 {
     Task<IEnumerable<ReviewBody>> GetReviewBodies(ISpecification<ReviewBody> specification);
 
+    Task<ReviewBody?> GetReviewBody(ISpecification<ReviewBody> specification);
+
     Task<ReviewBody> CreateReviewBody(ReviewBody reviewBody);
 
     Task<ReviewBody> UpdateReviewBody(ReviewBody reviewBody);
@@ -18,4 +20,6 @@ public interface IReviewBodyRepository
     Task<ReviewBodyUsers> AddUserToReviewBody(ReviewBodyUsers user);
 
     Task<ReviewBodyUsers?> RemoveUserFromReviewBody(Guid reviewBodyId, Guid userId);
+
+    Task<int> GetReviewBodyCount(string? searchQuery = null);
 }

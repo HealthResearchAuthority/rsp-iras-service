@@ -35,10 +35,10 @@ public class GetReviewBodiesTests : TestServiceBase<ReviewBodyService>
         await TestData.SeedData(_context, generator, records);
 
         // Act
-        var result = await Sut.GetReviewBodies();
+        var result = await Sut.GetReviewBodies(1, 100, null);
 
         // Assert
         result.ShouldNotBeNull();
-        result.Count().ShouldBe(records);
+        result.TotalCount.ShouldBe(records);
     }
 }

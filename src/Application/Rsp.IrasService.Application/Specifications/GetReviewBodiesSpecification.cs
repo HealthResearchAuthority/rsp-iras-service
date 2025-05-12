@@ -3,19 +3,26 @@ using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Application.Specifications;
 
-public class GetReviewBodySpecification : Specification<ReviewBody>
+public class GetReviewBodiesSpecification : Specification<ReviewBody>
 {
-    public GetReviewBodySpecification(Guid? id = null)
+    public GetReviewBodiesSpecification(int pageNumber, int pageSize, string? searchQuery)
     {
         var builder = Query
             .AsNoTracking()
             .AsSplitQuery();
 
-        if (id != null)
+        if (!string.IsNullOrEmpty(searchQuery))
         {
-            builder
-                .Include(x => x.Users)
-                .Where(rb => rb.Id == id);
+            var splitQuery = searchQuery.Split(' ');
+
+            builder = builder.Where(x =>
+                        splitQuery.Any(word =>
+                            x.OrganisationName.Contains(word)
+                            ));
         }
+
+        builder.OrderBy(x => x.OrganisationName)
+        .Skip((pageNumber - 1) * pageSize)
+        .Take(pageSize);
     }
 }

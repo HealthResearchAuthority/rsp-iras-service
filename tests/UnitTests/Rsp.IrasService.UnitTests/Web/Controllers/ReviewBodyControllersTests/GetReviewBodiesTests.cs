@@ -19,7 +19,7 @@ public class GetReviewBodiesTests : TestServiceBase
         var mockMediator = Mocker.GetMock<IMediator>();
 
         // Act
-        await _controller.GetReviewBodies();
+        await _controller.GetAllReviewBodies(1, 100, null);
 
         // Assert
         mockMediator.Verify(
