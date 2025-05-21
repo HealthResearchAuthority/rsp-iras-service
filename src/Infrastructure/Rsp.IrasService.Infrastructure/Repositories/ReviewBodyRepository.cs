@@ -22,7 +22,6 @@ public class ReviewBodyRepository(IrasContext irasContext) : IReviewBodyReposito
     {
         reviewBody.Id = Guid.NewGuid();
         reviewBody.CreatedDate = DateTime.Now;
-        reviewBody.UpdatedDate = DateTime.Now;
 
         await irasContext.ReviewBodies.AddAsync(reviewBody);
         await irasContext.SaveChangesAsync();
