@@ -12,7 +12,18 @@ public class AppSettings
     /// </summary>
     public AuthSettings AuthSettings { get; set; } = null!;
 
+    /// <summary>
+    /// Gets or sets Azure App Configuration settings
+    /// </summary>
     public AzureAppConfigurations AzureAppConfiguration { get; set; } = null!;
 
+    /// <summary>
+    /// Gets or sets Azure Service Bus settings
+    /// </summary>
     public AzureServiceBusSettings AzureServiceBusSettings { get; set; } = null!;
+
+    /// <summary>
+    /// Gets or sets OneLogin settings
+    /// </summary>
+    public OneLoginConfiguration OneLogin { get; set; } = null!;
 }

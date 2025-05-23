@@ -63,6 +63,7 @@ public class ApplicationRepository(IrasContext irasContext) : IApplicationReposi
         entity.CreatedDate = irasApplication.CreatedDate;
         entity.UpdatedBy = irasApplication.UpdatedBy;
         entity.Status = irasApplication.Status;
+        entity.IrasId = irasApplication.IrasId;
 
         await irasContext.SaveChangesAsync();
 

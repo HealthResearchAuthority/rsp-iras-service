@@ -5,7 +5,8 @@ using Rsp.IrasService.Application.DTOS.Responses;
 
 namespace Rsp.IrasService.Application.CQRS.Handlers.CommandHandlers;
 
-public class SendEmailCommandHandler(ITriggerEmailNotificationService service) : IRequestHandler<SendEmailCommand, SendEmailResponse>
+public class SendEmailCommandHandler(ITriggerEmailNotificationService service)
+    : IRequestHandler<SendEmailCommand, SendEmailResponse>
 {
     public async Task<SendEmailResponse> Handle(SendEmailCommand request, CancellationToken cancellationToken)
     {

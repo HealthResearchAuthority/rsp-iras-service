@@ -68,4 +68,49 @@ public static class TestData
 
         return items;
     }
+
+    public static async Task<IList<ReviewBody>> SeedData(IrasContext context,
+        Generator<ReviewBody> generator, int records)
+    {
+        // seed data using bogus
+        var items = generator
+            .Take(records)
+            .ToList();
+
+        await context.ReviewBodies.AddRangeAsync(items);
+
+        await context.SaveChangesAsync();
+
+        return items;
+    }
+
+    public static async Task<IList<ReviewBodyAuditTrail>> SeedData(IrasContext context,
+        Generator<ReviewBodyAuditTrail> generator, int records)
+    {
+        // seed data using bogus
+        var items = generator
+            .Take(records)
+            .ToList();
+
+        await context.ReviewBodiesAuditTrails.AddRangeAsync(items);
+
+        await context.SaveChangesAsync();
+
+        return items;
+    }
+
+    public static async Task<IList<ReviewBodyUsers>> SeedData(IrasContext context,
+        Generator<ReviewBodyUsers> generator, int records)
+    {
+        // seed data using bogus
+        var items = generator
+            .Take(records)
+            .ToList();
+
+        await context.ReviewBodyUsers.AddRangeAsync(items);
+
+        await context.SaveChangesAsync();
+
+        return items;
+    }
 }

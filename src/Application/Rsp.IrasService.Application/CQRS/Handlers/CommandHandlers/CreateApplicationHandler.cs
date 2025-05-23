@@ -5,7 +5,8 @@ using Rsp.IrasService.Application.DTOS.Responses;
 
 namespace Rsp.IrasService.Application.CQRS.Handlers.CommandHandlers;
 
-public class CreateApplicationHandler(IApplicationsService applicationsService) : IRequestHandler<CreateApplicationCommand, ApplicationResponse>
+public class CreateApplicationHandler(IApplicationsService applicationsService)
+    : IRequestHandler<CreateApplicationCommand, ApplicationResponse>
 {
     public async Task<ApplicationResponse> Handle(CreateApplicationCommand request, CancellationToken cancellationToken)
     {

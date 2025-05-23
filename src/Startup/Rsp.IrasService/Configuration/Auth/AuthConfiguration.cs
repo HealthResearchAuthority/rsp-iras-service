@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.FeatureManagement;
 using Microsoft.Net.Http.Headers;
 using Rsp.IrasService.Application.Authentication.Helpers;
 using Rsp.IrasService.Application.Authorization.Handlers;
@@ -18,17 +19,18 @@ public static class AuthConfiguration
     /// Adds the Authentication and Authorization to the service
     /// </summary>
     /// <param name="services"><see cref="IServiceCollection"/></param>
-    /// <param name="appSettings">Application Settinghs</param>
-    public static IServiceCollection AddAuthenticationAndAuthorization(this IServiceCollection services, AppSettings appSettings)
+    /// <param name="appSettings">Application Settings</param>
+    /// <param name="config"><see cref="IConfiguration"/></param>
+    public static IServiceCollection AddAuthenticationAndAuthorization(this IServiceCollection services, AppSettings appSettings, IConfiguration config)
     {
-        ConfigureJwt(services, appSettings);
+        ConfigureJwt(services, appSettings, config);
 
         ConfigureAuthorization(services);
 
         return services;
     }
 
-    private static void ConfigureJwt(IServiceCollection services, AppSettings appSettings)
+    private static void ConfigureJwt(IServiceCollection services, AppSettings appSettings, IConfiguration config)
     {
         var events = new JwtBearerEvents
         {
@@ -54,6 +56,7 @@ public static class AuthConfiguration
                 var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<Program>>();
 
                 logger.LogAsWarning("Authentication Failed");
+                logger.LogAsError("ERR_API_AUTH_FAILED", "API Authetication failed", context.Exception);
 
                 context.Fail(context.Exception);
 
@@ -69,11 +72,13 @@ public static class AuthConfiguration
             }
         };
 
+        var featureManager = new FeatureManager(new ConfigurationFeatureDefinitionProvider(config));
+
         // Enable built-in authentication of Jwt bearer token
         services
             .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             // using the scheme JwtBearerDefaults.AuthenticationScheme (Bearer)
-            .AddJwtBearer(authOptions => JwtBearerConfiguration.Configure(authOptions, appSettings, events));
+            .AddJwtBearer(async authOptions => await JwtBearerConfiguration.Configure(authOptions, appSettings, events, featureManager));
     }
 
     private static void ConfigureAuthorization(IServiceCollection services)

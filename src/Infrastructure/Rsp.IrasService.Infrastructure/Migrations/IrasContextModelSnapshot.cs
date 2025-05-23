@@ -99,6 +99,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("IrasId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -205,6 +208,97 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.ToTable("RespondentAnswers");
                 });
 
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ReviewBody", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.PrimitiveCollection<string>("Countries")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmailAddress")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("OrganisationName")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ReviewBodies");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ReviewBodyAuditTrail", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DateTimeStamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ReviewBodyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("User")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReviewBodyId");
+
+                    b.ToTable("ReviewBodiesAuditTrails");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ReviewBodyUsers", b =>
+                {
+                    b.Property<Guid>("ReviewBodyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ReviewBodyId", "UserId");
+
+                    b.ToTable("ReviewBodyUsers");
+                });
+
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.EmailTemplate", b =>
                 {
                     b.HasOne("Rsp.IrasService.Domain.Entities.EventType", "EventType")
@@ -244,9 +338,34 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Navigation("Respondent");
                 });
 
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ReviewBodyAuditTrail", b =>
+                {
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ReviewBody", "ReviewBody")
+                        .WithMany()
+                        .HasForeignKey("ReviewBodyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ReviewBody");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ReviewBodyUsers", b =>
+                {
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ReviewBody", null)
+                        .WithMany("Users")
+                        .HasForeignKey("ReviewBodyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.Respondent", b =>
                 {
                     b.Navigation("ResearchApplications");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ReviewBody", b =>
+                {
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

@@ -20,7 +20,7 @@ public static class SwaggerConfiguration
 
         services.AddSwaggerGen(options =>
         {
-            // add JWT Authentication
+            //// add JWT Authentication
             var securityScheme = new OpenApiSecurityScheme
             {
                 Name = "JWT Authentication",

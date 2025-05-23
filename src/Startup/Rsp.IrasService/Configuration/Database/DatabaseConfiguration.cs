@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Infrastructure;
+using Rsp.IrasService.Infrastructure.Interceptors;
 
 namespace Rsp.IrasService.Configuration.Database;
 
@@ -17,8 +18,9 @@ public static class DatabaseConfiguration
     {
         services.AddDbContext<IrasContext>
         (
-            options => options
+            (serviceProvider, options) => options
                 .UseSqlServer(configuration.GetConnectionString("IrasServiceDatabaseConnection"))
+                .AddInterceptors(serviceProvider.GetRequiredService<AuditTrailInterceptor>())
         );
 
         return services;
