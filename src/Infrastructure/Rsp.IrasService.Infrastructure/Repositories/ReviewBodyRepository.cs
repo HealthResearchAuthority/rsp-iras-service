@@ -22,7 +22,6 @@ public class ReviewBodyRepository(IrasContext irasContext) : IReviewBodyReposito
     {
         reviewBody.Id = Guid.NewGuid();
         reviewBody.CreatedDate = DateTime.Now;
-        reviewBody.UpdatedDate = DateTime.Now;
 
         await irasContext.ReviewBodies.AddAsync(reviewBody);
         await irasContext.SaveChangesAsync();
@@ -78,5 +77,53 @@ public class ReviewBodyRepository(IrasContext irasContext) : IReviewBodyReposito
         await irasContext.SaveChangesAsync();
 
         return reviewBodyEntity;
+    }
+
+    public async Task<ReviewBodyUsers> AddUserToReviewBody(ReviewBodyUsers user)
+    {
+        var addedUser = await irasContext.ReviewBodyUsers.AddAsync(user);
+
+        await irasContext.SaveChangesAsync();
+
+        return addedUser.Entity;
+    }
+
+    public async Task<ReviewBodyUsers?> RemoveUserFromReviewBody(Guid reviewBodyId, Guid userId)
+    {
+        var userToRemove = await irasContext.ReviewBodyUsers
+            .SingleOrDefaultAsync(r => r.ReviewBodyId == reviewBodyId && r.UserId == userId);
+
+        if (userToRemove == null) return null;
+
+        var removedUser = irasContext.ReviewBodyUsers.Remove(userToRemove);
+
+        await irasContext.SaveChangesAsync();
+
+        return removedUser.Entity;
+    }
+
+    public async Task<ReviewBody?> GetReviewBody(ISpecification<ReviewBody> specification)
+    {
+        var result = await irasContext
+           .ReviewBodies
+           .WithSpecification(specification)
+           .FirstOrDefaultAsync();
+
+        return result;
+    }
+
+    public Task<int> GetReviewBodyCount(string? searchQuery = null)
+    {
+        if (!string.IsNullOrEmpty(searchQuery))
+        {
+            var splitQuery = searchQuery.Split(' ');
+
+            return irasContext.ReviewBodies.CountAsync(x =>
+                        splitQuery.Any(word =>
+                            x.OrganisationName.Contains(word)
+                            ));
+        }
+
+        return irasContext.ReviewBodies.CountAsync();
     }
 }

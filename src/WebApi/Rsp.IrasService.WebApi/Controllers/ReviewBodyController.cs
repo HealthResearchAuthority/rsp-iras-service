@@ -18,14 +18,24 @@ public class ReviewBodyController(IMediator mediator, IReviewBodyAuditTrailServi
     /// <summary>
     ///     Returns all review bodies
     /// </summary>
+    [HttpGet("all")]
+    [Produces<AllReviewBodiesResponse>]
+    public async Task<AllReviewBodiesResponse> GetAllReviewBodies(int pageNumber, int pageSize, string? searchQuery = null)
+    {
+        var query = new GetReviewBodiesQuery(pageNumber, pageSize, searchQuery);
+
+        return await mediator.Send(query);
+    }
+
+    /// <summary>
+    ///     Returns review body by ID
+    /// </summary>
     [HttpGet]
     [HttpGet("{id}")]
-    [Produces<IEnumerable<ReviewBody>>]
-    public async Task<IEnumerable<ReviewBodyDto>> GetReviewBodies(Guid? id = null)
+    [Produces<ReviewBody>]
+    public async Task<ReviewBodyDto> GetReviewBody(Guid id)
     {
-        var query = id == null ?
-            new GetReviewBodiesQuery() :
-            new GetReviewBodiesQuery(id.Value);
+        var query = new GetReviewBodyQuery(id);
 
         return await mediator.Send(query);
     }
@@ -61,7 +71,6 @@ public class ReviewBodyController(IMediator mediator, IReviewBodyAuditTrailServi
     /// <summary>
     ///     Disable a review body
     /// </summary>
-    /// <param name="reviewBodyDto">Research Body Dto</param>
     [HttpPut("disable/{id}")]
     public async Task<ReviewBodyDto?> Disable(Guid id)
     {
@@ -82,7 +91,6 @@ public class ReviewBodyController(IMediator mediator, IReviewBodyAuditTrailServi
     /// <summary>
     ///     Enable a review body
     /// </summary>
-    /// <param name="reviewBodyDto">Research Body Dto</param>
     [HttpPut("enable/{id}")]
     public async Task<ReviewBodyDto?> Enable(Guid id)
     {
@@ -90,5 +98,30 @@ public class ReviewBodyController(IMediator mediator, IReviewBodyAuditTrailServi
         var enableReviewBodyResult = await mediator.Send(request);
 
         return enableReviewBodyResult;
+    }
+
+    /// <summary>
+    ///     Add a user to a review body
+    /// </summary>
+    /// <param name="reviewBodyUser">Review Body User Dto</param>
+    [HttpPost("adduser")]
+    public async Task<ReviewBodyUserDto> AddUser(ReviewBodyUserDto reviewBodyUser)
+    {
+        var request = new AddReviewBodyUserCommand(reviewBodyUser);
+        var adduser = await mediator.Send(request);
+
+        return adduser;
+    }
+
+    /// <summary>
+    ///     Remove a user from a review body
+    /// </summary>
+    [HttpPost("removeuser")]
+    public async Task<ReviewBodyUserDto?> RemoveUser(Guid reviewBodyId, Guid userId)
+    {
+        var request = new RemoveReviewBodyUserCommand(reviewBodyId, userId);
+        var removeuser = await mediator.Send(request);
+
+        return removeuser;
     }
 }

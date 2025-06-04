@@ -1,4 +1,5 @@
 ﻿using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.IrasService.Application.DTOS.Responses;
 using Rsp.Logging.Interceptors;
 
 namespace Rsp.IrasService.Application.Contracts.Services;
@@ -9,10 +10,19 @@ namespace Rsp.IrasService.Application.Contracts.Services;
 /// </summary>
 public interface IReviewBodyService : IInterceptable
 {
-    Task<IEnumerable<ReviewBodyDto>> GetReviewBodies();
-    Task<IEnumerable<ReviewBodyDto>> GetReviewBodies(Guid id);
+    Task<AllReviewBodiesResponse> GetReviewBodies(int pageNumber, int pageSize, string? searchQuery);
+
+    Task<ReviewBodyDto> GetReviewBody(Guid id);
+
     Task<ReviewBodyDto> CreateReviewBody(ReviewBodyDto reviewBody);
+
     Task<ReviewBodyDto> UpdateReviewBody(ReviewBodyDto reviewBody);
+
     Task<ReviewBodyDto?> DisableReviewBody(Guid id);
+
     Task<ReviewBodyDto?> EnableReviewBody(Guid id);
+
+    Task<ReviewBodyUserDto?> AddUserToReviewBody(ReviewBodyUserDto reviewBodyUser);
+
+    Task<ReviewBodyUserDto?> RemoveUserFromReviewBody(Guid reviewBodyId, Guid userId);
 }

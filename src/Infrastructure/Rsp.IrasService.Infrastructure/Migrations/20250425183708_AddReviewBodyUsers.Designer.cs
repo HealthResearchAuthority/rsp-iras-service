@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rsp.IrasService.Infrastructure;
 
@@ -11,9 +12,11 @@ using Rsp.IrasService.Infrastructure;
 namespace Rsp.IrasService.Infrastructure.Migrations
 {
     [DbContext(typeof(IrasContext))]
-    partial class IrasContextModelSnapshot : ModelSnapshot
+    [Migration("20250425183708_AddReviewBodyUsers")]
+    partial class AddReviewBodyUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -247,7 +250,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<DateTime?>("UpdatedDate")
+                    b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -285,16 +288,22 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ReviewBodyUsers", b =>
                 {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid>("ReviewBodyId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("DateAdded")
-                        .HasColumnType("datetime2");
+                    b.HasKey("Id");
 
-                    b.HasKey("ReviewBodyId", "UserId");
+                    b.HasIndex("ReviewBodyId");
 
                     b.ToTable("ReviewBodyUsers");
                 });
@@ -351,11 +360,13 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ReviewBodyUsers", b =>
                 {
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ReviewBody", null)
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ReviewBody", "ReviewBody")
                         .WithMany("Users")
                         .HasForeignKey("ReviewBodyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ReviewBody");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.Respondent", b =>

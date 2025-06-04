@@ -98,4 +98,19 @@ public static class TestData
 
         return items;
     }
+
+    public static async Task<IList<ReviewBodyUsers>> SeedData(IrasContext context,
+        Generator<ReviewBodyUsers> generator, int records)
+    {
+        // seed data using bogus
+        var items = generator
+            .Take(records)
+            .ToList();
+
+        await context.ReviewBodyUsers.AddRangeAsync(items);
+
+        await context.SaveChangesAsync();
+
+        return items;
+    }
 }

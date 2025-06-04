@@ -1,20 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Application.Contracts.Repositories;
 using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Domain.Entities;
 using Rsp.IrasService.Infrastructure;
 using Rsp.IrasService.Infrastructure.Repositories;
 using Rsp.IrasService.Services;
 
 namespace Rsp.IrasService.UnitTests.Services.ReviewBodyServiceTests;
 
-public class EnableReviewBodyTests : TestServiceBase<ReviewBodyService>
+public class AddReviewBodyUserTests : TestServiceBase<ReviewBodyService>
 
 {
     private readonly IrasContext _context;
     private readonly ReviewBodyRepository _reviewBodyRepository;
 
-    public EnableReviewBodyTests()
+    public AddReviewBodyUserTests()
     {
         var options = new DbContextOptionsBuilder<IrasContext>()
             .UseInMemoryDatabase(Guid.NewGuid().ToString("N")).Options;
@@ -23,22 +22,19 @@ public class EnableReviewBodyTests : TestServiceBase<ReviewBodyService>
         _reviewBodyRepository = new ReviewBodyRepository(_context);
     }
 
-    [Theory, AutoData]
-    public async Task Enable_ReviewBody_Correctly(int records, Generator<ReviewBody> generator)
+    [Theory]
+    [AutoData]
+    public async Task Creates_ReviewBody_Correctly(ReviewBodyUserDto reviewBodyUserDto)
     {
         // Arrange
         Mocker.Use<IReviewBodyRepository>(_reviewBodyRepository);
         Sut = Mocker.CreateInstance<ReviewBodyService>();
 
-        // Seed data using number of records to seed
-        await TestData.SeedData(_context, generator, records);
-        var reviewBodies = await Sut.GetReviewBodies(1, 100, null);
-
         // Act
-        var result = await Sut.EnableReviewBody(reviewBodies.ReviewBodies.First().Id);
+        var result = await Sut.AddUserToReviewBody(reviewBodyUserDto);
 
         // Assert
         result.ShouldNotBeNull();
-        result.ShouldBeOfType<ReviewBodyDto>();
+        result.ShouldBeOfType<ReviewBodyUserDto>();
     }
 }

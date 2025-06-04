@@ -3,43 +3,46 @@ using Rsp.IrasService.Application.CQRS.Handlers.QueryHandlers;
 using Rsp.IrasService.Application.CQRS.Queries;
 using Rsp.IrasService.Application.DTOS.Requests;
 
-namespace Rsp.IrasService.UnitTests.Application.CQRS.Handlers.QueryHandlers
+namespace Rsp.IrasService.UnitTests.Application.CQRS.Handlers.QueryHandlers;
+
+public class GetReviewBodiesHandlerTests
 {
-    public class GetReviewBodiesHandlerTests
+    private readonly Mock<IReviewBodyService> _reviewBodyServiceMock;
+    private readonly GetReviewBodiesHandler _handler;
+
+    public GetReviewBodiesHandlerTests()
     {
-        private readonly Mock<IReviewBodyService> _reviewBodyServiceMock;
-        private readonly GetReviewBodiesHandler _handler;
+        _reviewBodyServiceMock = new Mock<IReviewBodyService>();
+        _handler = new GetReviewBodiesHandler(_reviewBodyServiceMock.Object);
+    }
 
-        public GetReviewBodiesHandlerTests()
+    [Fact]
+    public async Task Handle_GetApplicationsQuery_ShouldReturnListOfApplications()
+    {
+        // Arrange
+        var expectedResponse = new IrasService.Application.DTOS.Responses.AllReviewBodiesResponse
         {
-            _reviewBodyServiceMock = new Mock<IReviewBodyService>();
-            _handler = new GetReviewBodiesHandler(_reviewBodyServiceMock.Object);
-        }
+            ReviewBodies = new List<ReviewBodyDto>
+                {
+                    new() { OrganisationName = "App-123", Description = "Approved" },
+                    new() { OrganisationName = "App-456", Description = "Pending" }
+                },
+            TotalCount = 2
+        };
 
-        [Fact]
-        public async Task Handle_GetApplicationsQuery_ShouldReturnListOfApplications()
-        {
-            // Arrange
-            var expectedResponse = new List<ReviewBodyDto>
-            {
-                new() { OrganisationName = "App-123", Description = "Approved" },
-                new() { OrganisationName = "App-456", Description = "Pending" }
-            };
+        var query = new GetReviewBodiesQuery(1, 100, null);
 
-            var query = new GetReviewBodiesQuery();
+        _reviewBodyServiceMock
+            .Setup(service => service.GetReviewBodies(1, 100, null))
+            .ReturnsAsync(expectedResponse);
 
-            _reviewBodyServiceMock
-                .Setup(service => service.GetReviewBodies())
-                .ReturnsAsync(expectedResponse);
+        // Act
+        var result = await _handler.Handle(query, CancellationToken.None);
 
-            // Act
-            var result = await _handler.Handle(query, CancellationToken.None);
+        // Assert
+        result.ShouldNotBeNull();
+        result.TotalCount.ShouldBe(expectedResponse.TotalCount);
 
-            // Assert
-            result.ShouldNotBeNull();
-            result.Count().ShouldBe(expectedResponse.Count);
-
-            _reviewBodyServiceMock.Verify(service => service.GetReviewBodies(), Times.Once);
-        }
+        _reviewBodyServiceMock.Verify(service => service.GetReviewBodies(1, 100, null), Times.Once);
     }
 }
