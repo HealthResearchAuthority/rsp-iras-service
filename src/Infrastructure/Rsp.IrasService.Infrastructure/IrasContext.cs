@@ -12,7 +12,7 @@ public class IrasContext(DbContextOptions<IrasContext> options) : DbContext(opti
     public DbSet<EventType> EventTypes { get; set; }
     public DbSet<EmailTemplate> EmailTemplates { get; set; }
     public DbSet<RegulatoryBody> RegulatoryBodies { get; set; }
-    public DbSet<ReviewBodyUsers> ReviewBodyUsers { get; set; }
+    public DbSet<RegulatoryBodyUsers> RegulatoryBodyUsers { get; set; }
     public DbSet<RegulatoryBodyAuditTrial> RegulatoryBodyAuditTrial { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -1,6 +1,6 @@
 ﻿namespace Rsp.IrasService.Domain.Entities;
 
-public class ReviewBodyUsers
+public class RegulatoryBodyUsers
 {
     public Guid RegulatoryBodiesId { get; set; }
     public Guid UserId { get; set; }

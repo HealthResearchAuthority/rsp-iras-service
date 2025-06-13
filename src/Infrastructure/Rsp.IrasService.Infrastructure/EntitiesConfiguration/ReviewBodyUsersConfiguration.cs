@@ -4,9 +4,9 @@ using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Infrastructure.EntitiesConfiguration;
 
-public class ReviewBodyUsersConfiguration : IEntityTypeConfiguration<ReviewBodyUsers>
+public class ReviewBodyUsersConfiguration : IEntityTypeConfiguration<RegulatoryBodyUsers>
 {
-    public void Configure(EntityTypeBuilder<ReviewBodyUsers> builder)
+    public void Configure(EntityTypeBuilder<RegulatoryBodyUsers> builder)
     {
         builder.HasKey(x => new { x.RegulatoryBodiesId, x.UserId });
 

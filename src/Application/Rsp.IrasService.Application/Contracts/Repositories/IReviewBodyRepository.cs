@@ -17,9 +17,9 @@ public interface IReviewBodyRepository
 
     Task<RegulatoryBody?> EnableReviewBody(Guid id);
 
-    Task<ReviewBodyUsers> AddUserToReviewBody(ReviewBodyUsers user);
+    Task<RegulatoryBodyUsers> AddUserToReviewBody(RegulatoryBodyUsers user);
 
-    Task<ReviewBodyUsers?> RemoveUserFromReviewBody(Guid reviewBodyId, Guid userId);
+    Task<RegulatoryBodyUsers?> RemoveUserFromReviewBody(Guid reviewBodyId, Guid userId);
 
     Task<int> GetReviewBodyCount(string? searchQuery = null);
 }

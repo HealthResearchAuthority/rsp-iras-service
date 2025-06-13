@@ -12,7 +12,7 @@ using Rsp.IrasService.Infrastructure;
 namespace Rsp.IrasService.Infrastructure.Migrations
 {
     [DbContext(typeof(IrasContext))]
-    [Migration("20250613093225_AlignWithBridgStandards")]
+    [Migration("20250613093925_AlignWithBridgStandards")]
     partial class AlignWithBridgStandards
     {
         /// <inheritdoc />
@@ -268,7 +268,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.ToTable("RegulatoryBodyAuditTrial");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ReviewBodyUsers", b =>
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.RegulatoryBodyUsers", b =>
                 {
                     b.Property<Guid>("RegulatoryBodiesId")
                         .HasColumnType("uniqueidentifier");
@@ -281,7 +281,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasKey("RegulatoryBodiesId", "UserId");
 
-                    b.ToTable("ReviewBodyUsers");
+                    b.ToTable("RegulatoryBodyUsers");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.EmailTemplate", b =>
@@ -334,7 +334,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Navigation("RegulatoryBody");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ReviewBodyUsers", b =>
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.RegulatoryBodyUsers", b =>
                 {
                     b.HasOne("Rsp.IrasService.Domain.Entities.RegulatoryBody", null)
                         .WithMany("Users")

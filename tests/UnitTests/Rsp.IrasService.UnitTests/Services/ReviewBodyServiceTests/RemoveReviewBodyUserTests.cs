@@ -11,7 +11,7 @@ public class RemoveReviewBodyUserTests : TestServiceBase<ReviewBodyService>
     public async Task RemoveUserFromReviewBody_ShouldReturnDto_WhenUserIsRemoved(Guid reviewBodyId, Guid userId)
     {
         // Arrange
-        var reviewBodyUser = new ReviewBodyUsers
+        var reviewBodyUser = new RegulatoryBodyUsers
         {
             RegulatoryBodiesId = reviewBodyId,
             UserId = userId,

@@ -11,15 +11,14 @@ namespace Rsp.IrasService.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_ReviewBodyUsers_ReviewBodies_ReviewBodyId",
-                table: "ReviewBodyUsers");
-
             migrationBuilder.DropTable(
                 name: "RespondentAnswers");
 
             migrationBuilder.DropTable(
                 name: "ReviewBodiesAuditTrails");
+
+            migrationBuilder.DropTable(
+                name: "ReviewBodyUsers");
 
             migrationBuilder.DropTable(
                 name: "ResearchApplications");
@@ -29,11 +28,6 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Respondents");
-
-            migrationBuilder.RenameColumn(
-                name: "ReviewBodyId",
-                table: "ReviewBodyUsers",
-                newName: "RegulatoryBodiesId");
 
             migrationBuilder.CreateTable(
                 name: "ProjectApplicationRespondents",
@@ -119,6 +113,25 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RegulatoryBodyUsers",
+                columns: table => new
+                {
+                    RegulatoryBodiesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DateAdded = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RegulatoryBodyUsers", x => new { x.RegulatoryBodiesId, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_RegulatoryBodyUsers_RegulatoryBodies_RegulatoryBodiesId",
+                        column: x => x.RegulatoryBodiesId,
+                        principalTable: "RegulatoryBodies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProjectApplicationRespondentAnswers",
                 columns: table => new
                 {
@@ -161,28 +174,19 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                 name: "IX_RegulatoryBodyAuditTrial_RegulatoryBodiesId",
                 table: "RegulatoryBodyAuditTrial",
                 column: "RegulatoryBodiesId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_ReviewBodyUsers_RegulatoryBodies_RegulatoryBodiesId",
-                table: "ReviewBodyUsers",
-                column: "RegulatoryBodiesId",
-                principalTable: "RegulatoryBodies",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_ReviewBodyUsers_RegulatoryBodies_RegulatoryBodiesId",
-                table: "ReviewBodyUsers");
-
             migrationBuilder.DropTable(
                 name: "ProjectApplicationRespondentAnswers");
 
             migrationBuilder.DropTable(
                 name: "RegulatoryBodyAuditTrial");
+
+            migrationBuilder.DropTable(
+                name: "RegulatoryBodyUsers");
 
             migrationBuilder.DropTable(
                 name: "ProjectApplications");
@@ -192,11 +196,6 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProjectApplicationRespondents");
-
-            migrationBuilder.RenameColumn(
-                name: "RegulatoryBodiesId",
-                table: "ReviewBodyUsers",
-                newName: "ReviewBodyId");
 
             migrationBuilder.CreateTable(
                 name: "Respondents",
@@ -285,6 +284,25 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ReviewBodyUsers",
+                columns: table => new
+                {
+                    ReviewBodyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DateAdded = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReviewBodyUsers", x => new { x.ReviewBodyId, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_ReviewBodyUsers_ReviewBodies_ReviewBodyId",
+                        column: x => x.ReviewBodyId,
+                        principalTable: "ReviewBodies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RespondentAnswers",
                 columns: table => new
                 {
@@ -330,14 +348,6 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                 name: "IX_ReviewBodiesAuditTrails_ReviewBodyId",
                 table: "ReviewBodiesAuditTrails",
                 column: "ReviewBodyId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_ReviewBodyUsers_ReviewBodies_ReviewBodyId",
-                table: "ReviewBodyUsers",
-                column: "ReviewBodyId",
-                principalTable: "ReviewBodies",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
         }
     }
 }

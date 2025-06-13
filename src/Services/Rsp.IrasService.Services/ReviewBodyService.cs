@@ -63,7 +63,7 @@ public class ReviewBodyService(IReviewBodyRepository reviewBodyRepository) : IRe
 
     public async Task<ReviewBodyUserDto?> AddUserToReviewBody(ReviewBodyUserDto reviewBodyUser)
     {
-        var reviewBodyUserEntity = reviewBodyUser.Adapt<ReviewBodyUsers>();
+        var reviewBodyUserEntity = reviewBodyUser.Adapt<RegulatoryBodyUsers>();
         var response = await reviewBodyRepository.AddUserToReviewBody(reviewBodyUserEntity);
         return response.Adapt<ReviewBodyUserDto?>();
     }
