@@ -91,7 +91,7 @@ public class ReviewBodyRepository(IrasContext irasContext) : IReviewBodyReposito
     public async Task<ReviewBodyUsers?> RemoveUserFromReviewBody(Guid reviewBodyId, Guid userId)
     {
         var userToRemove = await irasContext.ReviewBodyUsers
-            .SingleOrDefaultAsync(r => r.ReviewBodyId == reviewBodyId && r.UserId == userId);
+            .SingleOrDefaultAsync(r => r.RegulatoryBodiesId == reviewBodyId && r.UserId == userId);
 
         if (userToRemove == null) return null;
 

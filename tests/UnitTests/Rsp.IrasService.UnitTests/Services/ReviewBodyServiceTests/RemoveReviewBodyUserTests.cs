@@ -13,7 +13,7 @@ public class RemoveReviewBodyUserTests : TestServiceBase<ReviewBodyService>
         // Arrange
         var reviewBodyUser = new ReviewBodyUsers
         {
-            ReviewBodyId = reviewBodyId,
+            RegulatoryBodiesId = reviewBodyId,
             UserId = userId,
             DateAdded = DateTime.UtcNow,
         };

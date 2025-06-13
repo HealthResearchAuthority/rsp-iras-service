@@ -30,6 +30,11 @@ namespace Rsp.IrasService.Infrastructure.Migrations
             migrationBuilder.DropTable(
                 name: "Respondents");
 
+            migrationBuilder.RenameColumn(
+                name: "ReviewBodyId",
+                table: "ReviewBodyUsers",
+                newName: "RegulatoryBodiesId");
+
             migrationBuilder.CreateTable(
                 name: "ProjectApplicationRespondents",
                 columns: table => new
@@ -158,9 +163,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                 column: "RegulatoryBodiesId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_ReviewBodyUsers_RegulatoryBodies_ReviewBodyId",
+                name: "FK_ReviewBodyUsers_RegulatoryBodies_RegulatoryBodiesId",
                 table: "ReviewBodyUsers",
-                column: "ReviewBodyId",
+                column: "RegulatoryBodiesId",
                 principalTable: "RegulatoryBodies",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
@@ -170,7 +175,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_ReviewBodyUsers_RegulatoryBodies_ReviewBodyId",
+                name: "FK_ReviewBodyUsers_RegulatoryBodies_RegulatoryBodiesId",
                 table: "ReviewBodyUsers");
 
             migrationBuilder.DropTable(
@@ -187,6 +192,11 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProjectApplicationRespondents");
+
+            migrationBuilder.RenameColumn(
+                name: "RegulatoryBodiesId",
+                table: "ReviewBodyUsers",
+                newName: "ReviewBodyId");
 
             migrationBuilder.CreateTable(
                 name: "Respondents",

@@ -12,7 +12,7 @@ using Rsp.IrasService.Infrastructure;
 namespace Rsp.IrasService.Infrastructure.Migrations
 {
     [DbContext(typeof(IrasContext))]
-    [Migration("20250613084353_AlignWithBridgStandards")]
+    [Migration("20250613093225_AlignWithBridgStandards")]
     partial class AlignWithBridgStandards
     {
         /// <inheritdoc />
@@ -270,7 +270,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ReviewBodyUsers", b =>
                 {
-                    b.Property<Guid>("ReviewBodyId")
+                    b.Property<Guid>("RegulatoryBodiesId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UserId")
@@ -279,7 +279,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Property<DateTime>("DateAdded")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("ReviewBodyId", "UserId");
+                    b.HasKey("RegulatoryBodiesId", "UserId");
 
                     b.ToTable("ReviewBodyUsers");
                 });
@@ -338,7 +338,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                 {
                     b.HasOne("Rsp.IrasService.Domain.Entities.RegulatoryBody", null)
                         .WithMany("Users")
-                        .HasForeignKey("ReviewBodyId")
+                        .HasForeignKey("RegulatoryBodiesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
