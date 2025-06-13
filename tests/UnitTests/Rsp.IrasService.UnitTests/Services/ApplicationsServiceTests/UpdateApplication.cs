@@ -33,7 +33,7 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
     [Theory]
     [InlineAutoData(1)]
     public async Task Updates_And_Returns_CreateApplicationResponse(int records,
-        Generator<ResearchApplication> generator, ApplicationRequest createApplicationRequest)
+        Generator<ProjectApplication> generator, ApplicationRequest createApplicationRequest)
     {
         // Arrange
         Mocker.Use<IApplicationRepository>(_applicationRepository);
@@ -43,7 +43,7 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
         // seed data with the number of records
         var applications = await TestData.SeedData(_context, generator, records);
 
-        createApplicationRequest.ApplicationId = applications[0].ApplicationId;
+        createApplicationRequest.ProjectApplicationId = applications[0].ProjectApplicationId;
         createApplicationRequest.StartDate = applications[0].CreatedDate;
 
         // Act
@@ -54,7 +54,7 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
         irasApplication.ShouldBeOfType<ApplicationResponse>();
         irasApplication.ShouldSatisfyAllConditions
         (
-            app => app.ApplicationId.ShouldBe(createApplicationRequest.ApplicationId),
+            app => app.ProjectApplicationId.ShouldBe(createApplicationRequest.ProjectApplicationId),
             app => app.Title.ShouldBe(createApplicationRequest.Title),
             app => app.CreatedDate.ShouldBe(createApplicationRequest.StartDate!.Value),
             app => app.Status.ShouldBe(createApplicationRequest.Status)
@@ -67,7 +67,7 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
     /// <param name="createApplicationRequest">Represents the model for new application request</param>
     [Theory]
     [InlineAutoData(1)]
-    public async Task ReturnsNull_If_Id_DoesNotExist(int records, Generator<ResearchApplication> generator,
+    public async Task ReturnsNull_If_Id_DoesNotExist(int records, Generator<ProjectApplication> generator,
         ApplicationRequest createApplicationRequest)
     {
         // Arrange
@@ -79,7 +79,7 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
         await TestData.SeedData(_context, generator, records);
 
         // get the id that won't exists
-        createApplicationRequest.ApplicationId = DateTime.Now.ToString("yyyyddMMHHmmss");
+        createApplicationRequest.ProjectApplicationId = DateTime.Now.ToString("yyyyddMMHHmmss");
 
         // Act/Assert
         var application = await Sut.UpdateApplication(createApplicationRequest);
@@ -99,25 +99,25 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
 
         var applicationRequest = new ApplicationRequest
         {
-            ApplicationId = Guid.NewGuid().ToString(),
-            Respondent = new RespondentDto { RespondentId = fixedRespondentId },
+            ProjectApplicationId = Guid.NewGuid().ToString(),
+            Respondent = new RespondentDto { ProjectApplicationRespondentId = fixedRespondentId },
             CreatedBy = "CreatedBy",
             Description = "Description",
             Title = "Title",
             UpdatedBy = "UpdatedBy"
         };
 
-        var existingApplication = new ResearchApplication
+        var existingApplication = new ProjectApplication
         {
-            ApplicationId = applicationRequest.ApplicationId,
-            RespondentId = fixedRespondentId,
+            ProjectApplicationId = applicationRequest.ProjectApplicationId,
+            ProjectApplicationRespondentId = fixedRespondentId,
             CreatedBy = applicationRequest.CreatedBy,
             Description = applicationRequest.Description,
             Title = applicationRequest.Title,
             UpdatedBy = applicationRequest.UpdatedBy
         };
 
-        await _context.ResearchApplications.AddAsync(existingApplication);
+        await _context.ProjectApplications.AddAsync(existingApplication);
         await _context.SaveChangesAsync();
 
         // Ensure EF Core is tracking the entity
@@ -131,13 +131,13 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
         updatedApplication.ShouldBeOfType<ApplicationResponse>();
 
         // Reload entity from database to ensure the update was persisted
-        var dbApplication = await _context.ResearchApplications
+        var dbApplication = await _context.ProjectApplications
             .AsNoTracking()
-            .FirstOrDefaultAsync(a => a.ApplicationId == existingApplication.ApplicationId);
+            .FirstOrDefaultAsync(a => a.ProjectApplicationId == existingApplication.ProjectApplicationId);
 
         dbApplication.ShouldNotBeNull();
-        dbApplication.RespondentId.ShouldBe(fixedRespondentId);
+        dbApplication.ProjectApplicationRespondentId.ShouldBe(fixedRespondentId);
 
-        (await _context.ResearchApplications.CountAsync()).ShouldBe(1);
+        (await _context.ProjectApplications.CountAsync()).ShouldBe(1);
     }
 }

@@ -3,7 +3,7 @@ using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Application.Specifications;
 
-public class GetRespondentAnswersSpecification : Specification<RespondentAnswer>
+public class GetRespondentAnswersSpecification : Specification<ProjectApplicationRespondentAnswer>
 {
     /// <summary>
     /// Defines a specification to return all records for the applicationId and categoryId
@@ -14,7 +14,7 @@ public class GetRespondentAnswersSpecification : Specification<RespondentAnswer>
     {
         Query
             .AsNoTracking()
-            .Where(entity => entity.ApplicationId == applicationId && entity.Category == categoryId);
+            .Where(entity => entity.ProjectApplicationId == applicationId && entity.Category == categoryId);
     }
 
     /// <summary>
@@ -25,6 +25,6 @@ public class GetRespondentAnswersSpecification : Specification<RespondentAnswer>
     {
         Query
             .AsNoTracking()
-            .Where(entity => entity.ApplicationId == applicationId);
+            .Where(entity => entity.ProjectApplicationId == applicationId);
     }
 }

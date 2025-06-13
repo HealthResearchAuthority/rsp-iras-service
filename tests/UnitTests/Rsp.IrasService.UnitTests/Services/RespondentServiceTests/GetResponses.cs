@@ -32,29 +32,29 @@ public class GetResponses : TestServiceBase<RespondentService>
         var fixedApplicationId = "ApplicationId-123";
         var fixedRespondentId = "RespondentId-123"; // Explicitly setting RespondentId
 
-        var respondentAnswers = new List<RespondentAnswer>
+        var respondentAnswers = new List<ProjectApplicationRespondentAnswer>
         {
             new()
             {
-                ApplicationId = fixedApplicationId, RespondentId = fixedRespondentId, QuestionId = "Q1",
+                ProjectApplicationId = fixedApplicationId, ProjectApplicationRespondentId = fixedRespondentId, QuestionId = "Q1",
                 Category = "Category-1", Section = "Section-1", Response = "Answer1", OptionType = "Single",
                 SelectedOptions = "OptionA"
             },
             new()
             {
-                ApplicationId = fixedApplicationId, RespondentId = fixedRespondentId, QuestionId = "Q2",
+                ProjectApplicationId = fixedApplicationId, ProjectApplicationRespondentId = fixedRespondentId, QuestionId = "Q2",
                 Category = "Category-2", Section = "Section-2", Response = "Answer2", OptionType = "Multiple",
                 SelectedOptions = "OptionB,OptionC"
             },
             new()
             {
-                ApplicationId = "OtherApplication", RespondentId = "OtherRespondent", QuestionId = "Q3",
+                ProjectApplicationId = "OtherApplication", ProjectApplicationRespondentId = "OtherRespondent", QuestionId = "Q3",
                 Category = "Category-1", Section = "Section-3", Response = "Answer3", OptionType = "Single",
                 SelectedOptions = "OptionD"
             } // Should be filtered out
         };
 
-        await _context.RespondentAnswers.AddRangeAsync(respondentAnswers);
+        await _context.ProjectApplicationRespondentAnswers.AddRangeAsync(respondentAnswers);
         await _context.SaveChangesAsync();
 
         // Act
@@ -78,29 +78,29 @@ public class GetResponses : TestServiceBase<RespondentService>
         var fixedRespondentId = "RespondentId-123"; // Explicitly setting RespondentId
         var fixedCategoryId = "Category-1";
 
-        var respondentAnswers = new List<RespondentAnswer>
+        var respondentAnswers = new List<ProjectApplicationRespondentAnswer>
         {
             new()
             {
-                ApplicationId = fixedApplicationId, RespondentId = fixedRespondentId, QuestionId = "Q1",
+                ProjectApplicationId = fixedApplicationId, ProjectApplicationRespondentId = fixedRespondentId, QuestionId = "Q1",
                 Category = fixedCategoryId, Section = "Section-1", Response = "Answer1", OptionType = "Single",
                 SelectedOptions = "OptionA"
             },
             new()
             {
-                ApplicationId = fixedApplicationId, RespondentId = fixedRespondentId, QuestionId = "Q2",
+                ProjectApplicationId = fixedApplicationId, ProjectApplicationRespondentId = fixedRespondentId, QuestionId = "Q2",
                 Category = "Category-2", Section = "Section-2", Response = "Answer2", OptionType = "Multiple",
                 SelectedOptions = "OptionB,OptionC"
             }, // Should be filtered out
             new()
             {
-                ApplicationId = fixedApplicationId, RespondentId = fixedRespondentId, QuestionId = "Q3",
+                ProjectApplicationId = fixedApplicationId, ProjectApplicationRespondentId = fixedRespondentId, QuestionId = "Q3",
                 Category = fixedCategoryId, Section = "Section-3", Response = "Answer3", OptionType = "Single",
                 SelectedOptions = "OptionD"
             }
         };
 
-        await _context.RespondentAnswers.AddRangeAsync(respondentAnswers);
+        await _context.ProjectApplicationRespondentAnswers.AddRangeAsync(respondentAnswers);
         await _context.SaveChangesAsync();
 
         // Act

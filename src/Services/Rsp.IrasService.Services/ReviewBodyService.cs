@@ -37,14 +37,14 @@ public class ReviewBodyService(IReviewBodyRepository reviewBodyRepository) : IRe
 
     public async Task<ReviewBodyDto> CreateReviewBody(ReviewBodyDto reviewBody)
     {
-        var reviewBodyEntity = reviewBody.Adapt<ReviewBody>();
+        var reviewBodyEntity = reviewBody.Adapt<RegulatoryBody>();
         var response = await reviewBodyRepository.CreateReviewBody(reviewBodyEntity);
         return response.Adapt<ReviewBodyDto>();
     }
 
     public async Task<ReviewBodyDto> UpdateReviewBody(ReviewBodyDto reviewBody)
     {
-        var reviewBodyEntity = reviewBody.Adapt<ReviewBody>();
+        var reviewBodyEntity = reviewBody.Adapt<RegulatoryBody>();
         var response = await reviewBodyRepository.UpdateReviewBody(reviewBodyEntity);
         return response.Adapt<ReviewBodyDto>();
     }

@@ -23,7 +23,7 @@ public class GetApplicationsWithStatusHandlerTests
         var status = "Approved";
         var expectedResponse = new List<ApplicationResponse>
         {
-            new() { ApplicationId = "App-123", Status = status }
+            new() { ProjectApplicationId = "App-123", Status = status }
         };
 
         var query = new GetApplicationsWithStatusQuery { ApplicationStatus = status };

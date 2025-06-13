@@ -7,5 +7,5 @@ public interface IAuditTrailHandler
 {
     public bool CanHandle(object entity);
 
-    public IEnumerable<ReviewBodyAuditTrail> GenerateAuditTrails(EntityEntry entry, string systemAdminEmail);
+    public IEnumerable<RegulatoryBodyAuditTrial> GenerateAuditTrails(EntityEntry entry, string systemAdminEmail);
 }

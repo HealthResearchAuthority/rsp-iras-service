@@ -11,16 +11,16 @@ public class RespondentService(IRespondentRepository respondentRepository) : IRe
 {
     public async Task SaveResponses(RespondentAnswersRequest respondentAnswersRequest)
     {
-        var respondentAnswers = new List<RespondentAnswer>();
+        var respondentAnswers = new List<ProjectApplicationRespondentAnswer>();
 
         var applicationId = respondentAnswersRequest.ApplicationId;
         var respondentId = respondentAnswersRequest.RespondentId;
 
         foreach (var answer in respondentAnswersRequest.RespondentAnswers)
         {
-            var respondentAnswer = answer.Adapt<RespondentAnswer>();
-            respondentAnswer.ApplicationId = applicationId;
-            respondentAnswer.RespondentId = respondentId;
+            var respondentAnswer = answer.Adapt<ProjectApplicationRespondentAnswer>();
+            respondentAnswer.ProjectApplicationId = applicationId;
+            respondentAnswer.ProjectApplicationRespondentId = respondentId;
 
             respondentAnswers.Add(respondentAnswer);
         }

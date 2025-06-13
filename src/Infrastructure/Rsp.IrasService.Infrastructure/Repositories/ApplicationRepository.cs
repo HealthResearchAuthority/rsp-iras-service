@@ -8,49 +8,49 @@ namespace Rsp.IrasService.Infrastructure.Repositories;
 
 public class ApplicationRepository(IrasContext irasContext) : IApplicationRepository
 {
-    public async Task<ResearchApplication> CreateApplication(ResearchApplication irasApplication, Respondent respondent)
+    public async Task<ProjectApplication> CreateApplication(ProjectApplication irasApplication, ProjectApplicationRespondent respondent)
     {
         var respondentEntity = await irasContext
-            .Respondents
-            .SingleOrDefaultAsync(r => r.RespondentId == respondent.RespondentId);
+            .ProjectApplicationRespondents
+            .SingleOrDefaultAsync(r => r.ProjectApplicationRespondentId == respondent.ProjectApplicationRespondentId);
 
         if (respondentEntity == null)
         {
-            await irasContext.Respondents.AddAsync(respondent);
+            await irasContext.ProjectApplicationRespondents.AddAsync(respondent);
         }
 
-        irasApplication.RespondentId = respondent.RespondentId;
+        irasApplication.ProjectApplicationRespondentId = respondent.ProjectApplicationRespondentId;
 
-        var entity = await irasContext.ResearchApplications.AddAsync(irasApplication);
+        var entity = await irasContext.ProjectApplications.AddAsync(irasApplication);
 
         await irasContext.SaveChangesAsync();
 
         return entity.Entity;
     }
 
-    public async Task<ResearchApplication?> GetApplication(ISpecification<ResearchApplication> specification)
+    public async Task<ProjectApplication?> GetApplication(ISpecification<ProjectApplication> specification)
     {
         return await irasContext
-            .ResearchApplications
+            .ProjectApplications
             .WithSpecification(specification)
             .FirstOrDefaultAsync();
     }
 
-    public Task<IEnumerable<ResearchApplication>> GetApplications(ISpecification<ResearchApplication> specification)
+    public Task<IEnumerable<ProjectApplication>> GetApplications(ISpecification<ProjectApplication> specification)
     {
         var result = irasContext
-            .ResearchApplications
+            .ProjectApplications
             .WithSpecification(specification)
             .AsEnumerable();
 
         return Task.FromResult(result);
     }
 
-    public async Task<ResearchApplication?> UpdateApplication(ResearchApplication irasApplication)
+    public async Task<ProjectApplication?> UpdateApplication(ProjectApplication irasApplication)
     {
         var entity = await irasContext
-            .ResearchApplications
-            .FirstOrDefaultAsync(record => record.ApplicationId == irasApplication.ApplicationId);
+            .ProjectApplications
+            .FirstOrDefaultAsync(record => record.ProjectApplicationId == irasApplication.ProjectApplicationId);
 
         if (entity == null)
         {

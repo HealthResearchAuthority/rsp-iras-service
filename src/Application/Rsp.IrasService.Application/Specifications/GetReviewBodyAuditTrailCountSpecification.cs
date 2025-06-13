@@ -3,7 +3,7 @@ using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Application.Specifications;
 
-public class GetReviewBodyAuditTrailCountSpecification : Specification<ReviewBodyAuditTrail>
+public class GetReviewBodyAuditTrailCountSpecification : Specification<RegulatoryBodyAuditTrial>
 {
     public GetReviewBodyAuditTrailCountSpecification(Guid id)
     {
@@ -12,6 +12,6 @@ public class GetReviewBodyAuditTrailCountSpecification : Specification<ReviewBod
             .AsSplitQuery();
 
         builder
-            .Where(a => a.ReviewBodyId == id);
+            .Where(a => a.RegulatoryBodiesId == id);
     }
 }

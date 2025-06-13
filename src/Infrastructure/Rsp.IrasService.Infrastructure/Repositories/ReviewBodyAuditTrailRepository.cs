@@ -8,17 +8,17 @@ namespace Rsp.IrasService.Infrastructure.Repositories;
 
 public class ReviewBodyAuditTrailRepository(IrasContext irasContext) : IReviewBodyAuditTrailRepository
 {
-    public IEnumerable<ReviewBodyAuditTrail> GetForReviewBody(ISpecification<ReviewBodyAuditTrail> specification)
+    public IEnumerable<RegulatoryBodyAuditTrial> GetForReviewBody(ISpecification<RegulatoryBodyAuditTrial> specification)
     {
         return irasContext
-            .ReviewBodiesAuditTrails
+            .RegulatoryBodyAuditTrial
             .WithSpecification(specification);
     }
 
-    public async Task<int> GetTotalNumberOfRecordsForReviewBody(ISpecification<ReviewBodyAuditTrail> specification)
+    public async Task<int> GetTotalNumberOfRecordsForReviewBody(ISpecification<RegulatoryBodyAuditTrial> specification)
     {
         return await irasContext
-            .ReviewBodiesAuditTrails
+            .RegulatoryBodyAuditTrial
             .WithSpecification(specification)
             .CountAsync();
     }

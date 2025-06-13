@@ -23,7 +23,7 @@ public class UpdateApplicationHandlerTests
         // Arrange
         var request = new ApplicationRequest
         {
-            ApplicationId = "App-123",
+            ProjectApplicationId = "App-123",
             Title = "Updated Project",
             Description = "Updated project description",
             UpdatedBy = "User-456",
@@ -32,7 +32,7 @@ public class UpdateApplicationHandlerTests
 
         var expectedResponse = new ApplicationResponse
         {
-            ApplicationId = "App-123",
+            ProjectApplicationId = "App-123",
             Status = "Updated Successfully"
         };
 
@@ -47,7 +47,7 @@ public class UpdateApplicationHandlerTests
 
         // Assert
         result.ShouldNotBeNull();
-        result.ApplicationId.ShouldBe(expectedResponse.ApplicationId);
+        result.ProjectApplicationId.ShouldBe(expectedResponse.ProjectApplicationId);
         result.Status.ShouldBe(expectedResponse.Status);
 
         _applicationsServiceMock.Verify(service => service.UpdateApplication(request), Times.Once);

@@ -5,7 +5,7 @@ namespace Rsp.IrasService.Application.Contracts.Repositories;
 
 public interface IRespondentRepository
 {
-    Task<IEnumerable<RespondentAnswer>> GetResponses(ISpecification<RespondentAnswer> specification);
+    Task<IEnumerable<ProjectApplicationRespondentAnswer>> GetResponses(ISpecification<ProjectApplicationRespondentAnswer> specification);
 
-    Task SaveResponses(ISpecification<RespondentAnswer> specification, List<RespondentAnswer> respondentAnswers);
+    Task SaveResponses(ISpecification<ProjectApplicationRespondentAnswer> specification, List<ProjectApplicationRespondentAnswer> respondentAnswers);
 }

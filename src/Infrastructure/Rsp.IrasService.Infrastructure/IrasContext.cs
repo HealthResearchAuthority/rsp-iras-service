@@ -6,26 +6,26 @@ namespace Rsp.IrasService.Infrastructure;
 
 public class IrasContext(DbContextOptions<IrasContext> options) : DbContext(options)
 {
-    public DbSet<ResearchApplication> ResearchApplications { get; set; }
-    public DbSet<Respondent> Respondents { get; set; }
-    public DbSet<RespondentAnswer> RespondentAnswers { get; set; }
+    public DbSet<ProjectApplication> ProjectApplications { get; set; }
+    public DbSet<ProjectApplicationRespondent> ProjectApplicationRespondents { get; set; }
+    public DbSet<ProjectApplicationRespondentAnswer> ProjectApplicationRespondentAnswers { get; set; }
     public DbSet<EventType> EventTypes { get; set; }
     public DbSet<EmailTemplate> EmailTemplates { get; set; }
-    public DbSet<ReviewBody> ReviewBodies { get; set; }
+    public DbSet<RegulatoryBody> RegulatoryBodies { get; set; }
     public DbSet<ReviewBodyUsers> ReviewBodyUsers { get; set; }
-    public DbSet<ReviewBodyAuditTrail> ReviewBodiesAuditTrails { get; set; }
+    public DbSet<RegulatoryBodyAuditTrial> RegulatoryBodyAuditTrial { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.ApplyConfiguration(new ResearchApplicationConfiguration());
-        modelBuilder.ApplyConfiguration(new RespondentConfiguration());
-        modelBuilder.ApplyConfiguration(new RespondentAnswerConfiguration());
+        modelBuilder.ApplyConfiguration(new ProjectApplicationConfiguration());
+        modelBuilder.ApplyConfiguration(new ProjectApplicationRespondentConfiguration());
+        modelBuilder.ApplyConfiguration(new ProjectApplicationRespondentAnswerConfiguration());
         modelBuilder.ApplyConfiguration(new EventTypeConfiguration());
         modelBuilder.ApplyConfiguration(new EmailTemplateConfiguration());
-        modelBuilder.ApplyConfiguration(new ReviewBodyConfiguration());
-        modelBuilder.ApplyConfiguration(new ReviewBodyAuditTrailConfiguration());
+        modelBuilder.ApplyConfiguration(new RegulatoryBodyConfiguration());
+        modelBuilder.ApplyConfiguration(new RegulatoryBodyAuditTrialConfiguration());
         modelBuilder.ApplyConfiguration(new ReviewBodyUsersConfiguration());
     }
 }

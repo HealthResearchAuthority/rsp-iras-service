@@ -23,7 +23,7 @@ public class GetApplicationsWithRespondentHandlerTests
         var respondentId = "R-123";
         var expectedResponse = new List<ApplicationResponse>
         {
-            new() { ApplicationId = "App-123", Status = "Approved" }
+            new() { ProjectApplicationId = "App-123", Status = "Approved" }
         };
 
         var query = new GetApplicationsWithRespondentQuery { RespondentId = respondentId };

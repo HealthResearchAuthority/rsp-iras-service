@@ -44,6 +44,6 @@ public class CreateApplication : TestServiceBase<ApplicationsService>
         // Assert
         irasApplication.ShouldNotBeNull();
         irasApplication.ShouldBeOfType<ApplicationResponse>();
-        (await _context.ResearchApplications.CountAsync()).ShouldBe(1);
+        (await _context.ProjectApplications.CountAsync()).ShouldBe(1);
     }
 }

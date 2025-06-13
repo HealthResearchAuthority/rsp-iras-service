@@ -8,30 +8,30 @@ namespace Rsp.IrasService.Infrastructure.Repositories;
 
 public class ReviewBodyRepository(IrasContext irasContext) : IReviewBodyRepository
 {
-    public Task<IEnumerable<ReviewBody>> GetReviewBodies(ISpecification<ReviewBody> specification)
+    public Task<IEnumerable<RegulatoryBody>> GetReviewBodies(ISpecification<RegulatoryBody> specification)
     {
         var result = irasContext
-            .ReviewBodies
+            .RegulatoryBodies
             .WithSpecification(specification)
             .AsEnumerable();
 
         return Task.FromResult(result);
     }
 
-    public async Task<ReviewBody> CreateReviewBody(ReviewBody reviewBody)
+    public async Task<RegulatoryBody> CreateReviewBody(RegulatoryBody reviewBody)
     {
         reviewBody.Id = Guid.NewGuid();
         reviewBody.CreatedDate = DateTime.Now;
 
-        await irasContext.ReviewBodies.AddAsync(reviewBody);
+        await irasContext.RegulatoryBodies.AddAsync(reviewBody);
         await irasContext.SaveChangesAsync();
         return reviewBody;
     }
 
-    public async Task<ReviewBody> UpdateReviewBody(ReviewBody reviewBody)
+    public async Task<RegulatoryBody> UpdateReviewBody(RegulatoryBody reviewBody)
     {
         var reviewBodyEntity = await irasContext
-            .ReviewBodies
+            .RegulatoryBodies
             .SingleOrDefaultAsync(r => r.Id == reviewBody.Id);
 
         if (reviewBodyEntity == null) return await CreateReviewBody(reviewBody);
@@ -48,10 +48,10 @@ public class ReviewBodyRepository(IrasContext irasContext) : IReviewBodyReposito
         return reviewBodyEntity;
     }
 
-    public async Task<ReviewBody?> DisableReviewBody(Guid id)
+    public async Task<RegulatoryBody?> DisableReviewBody(Guid id)
     {
         var reviewBodyEntity = await irasContext
-            .ReviewBodies
+            .RegulatoryBodies
             .SingleOrDefaultAsync(r => r.Id == id);
 
         if (reviewBodyEntity == null) return reviewBodyEntity;
@@ -62,10 +62,10 @@ public class ReviewBodyRepository(IrasContext irasContext) : IReviewBodyReposito
         return reviewBodyEntity;
     }
 
-    public async Task<ReviewBody?> EnableReviewBody(Guid id)
+    public async Task<RegulatoryBody?> EnableReviewBody(Guid id)
     {
         var reviewBodyEntity = await irasContext
-            .ReviewBodies
+            .RegulatoryBodies
             .SingleOrDefaultAsync(r => r.Id == id);
 
         if (reviewBodyEntity == null)
@@ -102,10 +102,10 @@ public class ReviewBodyRepository(IrasContext irasContext) : IReviewBodyReposito
         return removedUser.Entity;
     }
 
-    public async Task<ReviewBody?> GetReviewBody(ISpecification<ReviewBody> specification)
+    public async Task<RegulatoryBody?> GetReviewBody(ISpecification<RegulatoryBody> specification)
     {
         var result = await irasContext
-           .ReviewBodies
+           .RegulatoryBodies
            .WithSpecification(specification)
            .FirstOrDefaultAsync();
 
@@ -118,12 +118,12 @@ public class ReviewBodyRepository(IrasContext irasContext) : IReviewBodyReposito
         {
             var splitQuery = searchQuery.Split(' ');
 
-            return irasContext.ReviewBodies.CountAsync(x =>
+            return irasContext.RegulatoryBodies.CountAsync(x =>
                         splitQuery.Any(word =>
-                            x.OrganisationName.Contains(word)
+                            x.RegulatoryBodyName.Contains(word)
                             ));
         }
 
-        return irasContext.ReviewBodies.CountAsync();
+        return irasContext.RegulatoryBodies.CountAsync();
     }
 }

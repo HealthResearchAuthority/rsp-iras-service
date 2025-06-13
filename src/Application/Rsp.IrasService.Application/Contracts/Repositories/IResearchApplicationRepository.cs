@@ -4,9 +4,9 @@ namespace Rsp.IrasService.Application.Contracts.Repositories;
 
 public interface IResearchApplicationRepository
 {
-    Task<ResearchApplication> GetByIdAsync(int applicationId);
+    Task<ProjectApplication> GetByIdAsync(int applicationId);
 
-    Task AddAsync(ResearchApplication researchApplication);
+    Task AddAsync(ProjectApplication researchApplication);
 
-    Task UpdateAsync(ResearchApplication researchApplication);
+    Task UpdateAsync(ProjectApplication researchApplication);
 }

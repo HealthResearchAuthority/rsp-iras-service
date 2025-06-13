@@ -17,8 +17,8 @@ public static class TestData
     /// <param name="updateStatus">
     ///     Indicates whether to update the pending status. If true, index 2 and 4 will be updated
     /// </param>
-    public static async Task<IList<ResearchApplication>> SeedData(IrasContext context,
-        Generator<ResearchApplication> generator, int records, bool updateStatus = false)
+    public static async Task<IList<ProjectApplication>> SeedData(IrasContext context,
+        Generator<ProjectApplication> generator, int records, bool updateStatus = false)
     {
         // seed data using bogus
         var applications = generator
@@ -32,7 +32,7 @@ public static class TestData
             applications[4].Status = "pending";
         }
 
-        await context.ResearchApplications.AddRangeAsync(applications);
+        await context.ProjectApplications.AddRangeAsync(applications);
 
         await context.SaveChangesAsync();
 
@@ -69,30 +69,30 @@ public static class TestData
         return items;
     }
 
-    public static async Task<IList<ReviewBody>> SeedData(IrasContext context,
-        Generator<ReviewBody> generator, int records)
+    public static async Task<IList<RegulatoryBody>> SeedData(IrasContext context,
+        Generator<RegulatoryBody> generator, int records)
     {
         // seed data using bogus
         var items = generator
             .Take(records)
             .ToList();
 
-        await context.ReviewBodies.AddRangeAsync(items);
+        await context.RegulatoryBodies.AddRangeAsync(items);
 
         await context.SaveChangesAsync();
 
         return items;
     }
 
-    public static async Task<IList<ReviewBodyAuditTrail>> SeedData(IrasContext context,
-        Generator<ReviewBodyAuditTrail> generator, int records)
+    public static async Task<IList<RegulatoryBodyAuditTrial>> SeedData(IrasContext context,
+        Generator<RegulatoryBodyAuditTrial> generator, int records)
     {
         // seed data using bogus
         var items = generator
             .Take(records)
             .ToList();
 
-        await context.ReviewBodiesAuditTrails.AddRangeAsync(items);
+        await context.RegulatoryBodyAuditTrial.AddRangeAsync(items);
 
         await context.SaveChangesAsync();
 

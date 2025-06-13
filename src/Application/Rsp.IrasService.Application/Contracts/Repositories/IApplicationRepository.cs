@@ -9,21 +9,21 @@ public interface IApplicationRepository
     /// Adds a new application to the database
     /// </summary>
     /// <param name="irasApplication">The application values</param>
-    Task<ResearchApplication> CreateApplication(ResearchApplication irasApplication, Respondent respondent);
+    Task<ProjectApplication> CreateApplication(ProjectApplication irasApplication, ProjectApplicationRespondent respondent);
 
     /// <summary>
     /// Return a single application from the database
     /// </summary>
-    Task<ResearchApplication?> GetApplication(ISpecification<ResearchApplication> specification);
+    Task<ProjectApplication?> GetApplication(ISpecification<ProjectApplication> specification);
 
     /// <summary>
     /// Return all or specified number applications from the database
     /// </summary>
-    Task<IEnumerable<ResearchApplication>> GetApplications(ISpecification<ResearchApplication> specification);
+    Task<IEnumerable<ProjectApplication>> GetApplications(ISpecification<ProjectApplication> specification);
 
     /// <summary>
     /// Update the values of an application in the database
     /// </summary>
     /// <param name="irasApplication">The application values</param>
-    Task<ResearchApplication?> UpdateApplication(ResearchApplication irasApplication);
+    Task<ProjectApplication?> UpdateApplication(ProjectApplication irasApplication);
 }

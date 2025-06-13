@@ -12,8 +12,8 @@ public class ApplicationsService(IApplicationRepository applicationRepository) :
 {
     public async Task<ApplicationResponse> CreateApplication(ApplicationRequest applicationRequest)
     {
-        var irasApplication = applicationRequest.Adapt<ResearchApplication>();
-        var respondent = applicationRequest.Respondent.Adapt<Respondent>();
+        var irasApplication = applicationRequest.Adapt<ProjectApplication>();
+        var respondent = applicationRequest.Respondent.Adapt<ProjectApplicationRespondent>();
 
         var createdApplication = await applicationRepository.CreateApplication(irasApplication, respondent);
 
@@ -67,10 +67,10 @@ public class ApplicationsService(IApplicationRepository applicationRepository) :
 
     public async Task<ApplicationResponse> UpdateApplication(ApplicationRequest applicationRequest)
     {
-        var irasApplication = applicationRequest.Adapt<ResearchApplication>();
-        var respondent = applicationRequest.Respondent.Adapt<Respondent>();
+        var irasApplication = applicationRequest.Adapt<ProjectApplication>();
+        var respondent = applicationRequest.Respondent.Adapt<ProjectApplicationRespondent>();
 
-        irasApplication.RespondentId = respondent.RespondentId;
+        irasApplication.ProjectApplicationRespondentId = respondent.ProjectApplicationRespondentId;
 
         var updatedApplication = await applicationRepository.UpdateApplication(irasApplication);
 

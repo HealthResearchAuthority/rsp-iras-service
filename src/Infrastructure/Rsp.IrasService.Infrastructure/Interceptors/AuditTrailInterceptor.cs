@@ -32,7 +32,7 @@ public class AuditTrailInterceptor(IAuditTrailDetailsService auditTrailDetailsSe
 
         var systemAdminEmail = auditTrailDetailsService.GetEmailFromHttpContext();
 
-        var auditTrailRecords = new List<ReviewBodyAuditTrail>();
+        var auditTrailRecords = new List<RegulatoryBodyAuditTrial>();
 
         foreach (var entry in auditableEntries)
         {
@@ -46,7 +46,7 @@ public class AuditTrailInterceptor(IAuditTrailDetailsService auditTrailDetailsSe
             }
         }
 
-        await dbContext.ReviewBodiesAuditTrails.AddRangeAsync(auditTrailRecords, cancellationToken);
+        await dbContext.RegulatoryBodyAuditTrial.AddRangeAsync(auditTrailRecords, cancellationToken);
 
         return await new ValueTask<InterceptionResult<int>>(result);
     }

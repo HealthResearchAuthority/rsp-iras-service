@@ -22,7 +22,7 @@ public class GetAuditTrailForReviewBody : TestServiceBase<ReviewBodyAuditTrailSe
     }
 
     [Theory, InlineAutoData(10)]
-    public async Task Returns_Correct_AuditTrails(int records, Generator<ReviewBodyAuditTrail> generator)
+    public async Task Returns_Correct_AuditTrails(int records, Generator<RegulatoryBodyAuditTrial> generator)
     {
         // Arrange
         Mocker.Use<IReviewBodyAuditTrailRepository>(_repo);
@@ -31,8 +31,8 @@ public class GetAuditTrailForReviewBody : TestServiceBase<ReviewBodyAuditTrailSe
         // Seed data using number of records to seed
         var testData = await TestData.SeedData(_context, generator, records);
 
-        var id = testData.FirstOrDefault()!.ReviewBodyId;
-        var expectedData = _context.ReviewBodiesAuditTrails.Where(x => x.ReviewBodyId == id);
+        var id = testData.FirstOrDefault()!.RegulatoryBodiesId;
+        var expectedData = _context.RegulatoryBodyAuditTrial.Where(x => x.RegulatoryBodiesId == id);
 
         // Act
         var result = await Sut.GetAuditTrailForReviewBody(id, 0, 10);

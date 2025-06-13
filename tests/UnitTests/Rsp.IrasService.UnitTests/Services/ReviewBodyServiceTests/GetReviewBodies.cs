@@ -25,7 +25,7 @@ public class GetReviewBodiesTests : TestServiceBase<ReviewBodyService>
     }
 
     [Theory, InlineAutoData(5)]
-    public async Task Returns_Correct_ReviewBodies(int records, Generator<ReviewBody> generator)
+    public async Task Returns_Correct_ReviewBodies(int records, Generator<RegulatoryBody> generator)
     {
         // Arrange
         Mocker.Use<IReviewBodyRepository>(_reviewBodyRepository);

@@ -32,7 +32,7 @@ public class GetApplication : TestServiceBase<ApplicationsService>
     /// <param name="generator">Test Data Generator</param>
     [Theory]
     [InlineAutoData(5)]
-    public async Task Returns_Application_ById(int records, Generator<ResearchApplication> generator)
+    public async Task Returns_Application_ById(int records, Generator<ProjectApplication> generator)
     {
         // Arrange
         Mocker.Use<IApplicationRepository>(_applicationRepository);
@@ -43,7 +43,7 @@ public class GetApplication : TestServiceBase<ApplicationsService>
         var applications = await TestData.SeedData(_context, generator, records);
 
         // get the random application id between 0 and 4
-        var applicationId = applications[Random.Shared.Next(0, 4)].ApplicationId;
+        var applicationId = applications[Random.Shared.Next(0, 4)].ProjectApplicationId;
 
         // Act
         var irasApplication = await Sut.GetApplication(applicationId);
@@ -51,7 +51,7 @@ public class GetApplication : TestServiceBase<ApplicationsService>
         // Assert
         irasApplication.ShouldNotBeNull();
         irasApplication.ShouldBeOfType<ApplicationResponse>();
-        irasApplication.ApplicationId.ShouldBe(applicationId);
+        irasApplication.ProjectApplicationId.ShouldBe(applicationId);
     }
 
     /// <summary>
@@ -61,7 +61,7 @@ public class GetApplication : TestServiceBase<ApplicationsService>
     /// <param name="generator">Test Data Generator</param>
     [Theory]
     [InlineAutoData(5)]
-    public async Task Returns_Application_ByIdAndStatus(int records, Generator<ResearchApplication> generator)
+    public async Task Returns_Application_ByIdAndStatus(int records, Generator<ProjectApplication> generator)
     {
         // Arrange
         Mocker.Use<IApplicationRepository>(_applicationRepository);
@@ -72,7 +72,7 @@ public class GetApplication : TestServiceBase<ApplicationsService>
         var applications = await TestData.SeedData(_context, generator, records, true);
 
         // get the random application id between 0 and 4
-        var applicationId = applications[2].ApplicationId;
+        var applicationId = applications[2].ProjectApplicationId;
 
         // Act
         var irasApplication = await Sut.GetApplication(applicationId, "pending");
@@ -80,7 +80,7 @@ public class GetApplication : TestServiceBase<ApplicationsService>
         // Assert
         irasApplication.ShouldNotBeNull();
         irasApplication.ShouldBeOfType<ApplicationResponse>();
-        irasApplication.ApplicationId.ShouldBe(applicationId);
+        irasApplication.ProjectApplicationId.ShouldBe(applicationId);
     }
 
     /// <summary>
@@ -89,7 +89,7 @@ public class GetApplication : TestServiceBase<ApplicationsService>
     /// <param name="generator">Test data generator</param>
     [Theory]
     [InlineAutoData(5)]
-    public async Task ReturnsNull_If_Id_DoesNotExist(int records, Generator<ResearchApplication> generator)
+    public async Task ReturnsNull_If_Id_DoesNotExist(int records, Generator<ProjectApplication> generator)
     {
         // Arrange
         Mocker.Use<IApplicationRepository>(_applicationRepository);

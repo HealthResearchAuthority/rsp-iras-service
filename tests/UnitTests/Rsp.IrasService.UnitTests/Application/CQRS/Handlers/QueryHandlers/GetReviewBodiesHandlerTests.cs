@@ -24,8 +24,8 @@ public class GetReviewBodiesHandlerTests
         {
             ReviewBodies = new List<ReviewBodyDto>
                 {
-                    new() { OrganisationName = "App-123", Description = "Approved" },
-                    new() { OrganisationName = "App-456", Description = "Pending" }
+                    new() { RegulatoryBodyName = "App-123", Description = "Approved" },
+                    new() { RegulatoryBodyName = "App-456", Description = "Pending" }
                 },
             TotalCount = 2
         };

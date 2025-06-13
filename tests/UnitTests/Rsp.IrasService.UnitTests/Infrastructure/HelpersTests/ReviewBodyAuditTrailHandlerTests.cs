@@ -19,7 +19,7 @@ public class ReviewBodyAuditTrailHandlerTests
     public void CanHandle_ShouldReturnTrue_WhenEntityIsReviewBody()
     {
         // Arrange
-        var reviewBody = new ReviewBody();
+        var reviewBody = new RegulatoryBody();
 
         // Act
         var result = _handler.CanHandle(reviewBody);
@@ -45,7 +45,7 @@ public class ReviewBodyAuditTrailHandlerTests
     public void GenerateAuditTrails_ShouldReturnEmptyList_WhenEntityIsNotReviewBody()
     {
         // Arrange
-        var entity = new Respondent { RespondentId = "id" };
+        var entity = new ProjectApplicationRespondent { ProjectApplicationRespondentId = "id" };
         var systemAdminEmail = "adminEmail";
 
         var entityEntry = MockEntityEntry(entity);
@@ -62,7 +62,7 @@ public class ReviewBodyAuditTrailHandlerTests
     {
         // Arrange
         var id = Guid.NewGuid();
-        var reviewBody = new ReviewBody { Id = id, EmailAddress = "test@example.com", OrganisationName = "name" };
+        var reviewBody = new RegulatoryBody { Id = id, EmailAddress = "test@example.com", RegulatoryBodyName = "name" };
         var systemAdminEmail = "adminEmail";
 
         var entityEntry = MockEntityEntry(reviewBody);
@@ -73,7 +73,7 @@ public class ReviewBodyAuditTrailHandlerTests
         // Assert
         var auditTrail = Assert.Single(result);
         Assert.Equal("name was created", auditTrail.Description);
-        Assert.Equal(id, auditTrail.ReviewBodyId);
+        Assert.Equal(id, auditTrail.RegulatoryBodiesId);
         Assert.Equal(systemAdminEmail, auditTrail.User);
     }
 
@@ -82,8 +82,8 @@ public class ReviewBodyAuditTrailHandlerTests
     {
         // Arrange
         var id = Guid.NewGuid();
-        var reviewBody = new ReviewBody { Id = id, EmailAddress = "test@example.com", OrganisationName = "name", IsActive = false };
-        var modifiedReviewBody = new ReviewBody { Id = id, EmailAddress = "test@example.com", OrganisationName = "name", IsActive = true };
+        var reviewBody = new RegulatoryBody { Id = id, EmailAddress = "test@example.com", RegulatoryBodyName = "name", IsActive = false };
+        var modifiedReviewBody = new RegulatoryBody { Id = id, EmailAddress = "test@example.com", RegulatoryBodyName = "name", IsActive = true };
 
         var systemAdminEmail = "adminEmail";
 
@@ -95,7 +95,7 @@ public class ReviewBodyAuditTrailHandlerTests
         // Assert
         var auditTrail = Assert.Single(result);
         Assert.Equal("name was enabled", auditTrail.Description);
-        Assert.Equal(id, auditTrail.ReviewBodyId);
+        Assert.Equal(id, auditTrail.RegulatoryBodiesId);
         Assert.Equal(systemAdminEmail, auditTrail.User);
     }
 
@@ -104,8 +104,8 @@ public class ReviewBodyAuditTrailHandlerTests
     {
         // Arrange
         var id = Guid.NewGuid();
-        var reviewBody = new ReviewBody { Id = id, EmailAddress = "test@example.com", OrganisationName = "name" };
-        var modifiedReviewBody = new ReviewBody { Id = id, EmailAddress = "test@example.com", OrganisationName = "new name" };
+        var reviewBody = new RegulatoryBody { Id = id, EmailAddress = "test@example.com", RegulatoryBodyName = "name" };
+        var modifiedReviewBody = new RegulatoryBody { Id = id, EmailAddress = "test@example.com", RegulatoryBodyName = "new name" };
         var systemAdminEmail = "adminEmail";
 
         var entityEntry = MockEntityEntry(reviewBody, modifiedReviewBody);
@@ -115,8 +115,8 @@ public class ReviewBodyAuditTrailHandlerTests
 
         // Assert
         var auditTrail = Assert.Single(result);
-        Assert.Equal("OrganisationName was changed from name to new name", auditTrail.Description);
-        Assert.Equal(id, auditTrail.ReviewBodyId);
+        Assert.Equal("RegulatoryBodyName was changed from name to new name", auditTrail.Description);
+        Assert.Equal(id, auditTrail.RegulatoryBodiesId);
         Assert.Equal(systemAdminEmail, auditTrail.User);
     }
 
@@ -125,19 +125,19 @@ public class ReviewBodyAuditTrailHandlerTests
     {
         // Arrange
         var id = Guid.NewGuid();
-        var reviewBody = new ReviewBody
+        var reviewBody = new RegulatoryBody
         {
             Id = id,
             EmailAddress = "test@example.com",
-            OrganisationName = "name",
+            RegulatoryBodyName = "name",
             Countries = ["country1", "country2"],
             IsActive = false
         };
-        var modifiedReviewBody = new ReviewBody
+        var modifiedReviewBody = new RegulatoryBody
         {
             Id = id,
             EmailAddress = "test@example.com",
-            OrganisationName = "name",
+            RegulatoryBodyName = "name",
             Countries = ["country1"],
             IsActive = false
         };
@@ -151,7 +151,7 @@ public class ReviewBodyAuditTrailHandlerTests
         // Assert
         var auditTrail = Assert.Single(result);
         Assert.Equal("Countries was changed from country1, country2 to country1", auditTrail.Description);
-        Assert.Equal(id, auditTrail.ReviewBodyId);
+        Assert.Equal(id, auditTrail.RegulatoryBodiesId);
         Assert.Equal(systemAdminEmail, auditTrail.User);
     }
 
@@ -160,8 +160,8 @@ public class ReviewBodyAuditTrailHandlerTests
     {
         // Arrange
         var id = Guid.NewGuid();
-        var reviewBody = new ReviewBody { Id = id, EmailAddress = "test@example.com", OrganisationName = "name" };
-        var modifiedReviewBody = new ReviewBody { Id = id, EmailAddress = "test@example.com", OrganisationName = "name" };
+        var reviewBody = new RegulatoryBody { Id = id, EmailAddress = "test@example.com", RegulatoryBodyName = "name" };
+        var modifiedReviewBody = new RegulatoryBody { Id = id, EmailAddress = "test@example.com", RegulatoryBodyName = "name" };
         var systemAdminEmail = "adminEmail";
 
         var entityEntry = MockEntityEntry(reviewBody, modifiedReviewBody);

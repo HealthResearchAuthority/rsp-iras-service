@@ -4,13 +4,13 @@ using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Infrastructure.EntitiesConfiguration;
 
-public class ReviewBodyConfiguration : IEntityTypeConfiguration<ReviewBody>
+public class RegulatoryBodyConfiguration : IEntityTypeConfiguration<RegulatoryBody>
 {
-    public void Configure(EntityTypeBuilder<ReviewBody> builder)
+    public void Configure(EntityTypeBuilder<RegulatoryBody> builder)
     {
         builder.HasKey(rb => rb.Id);
 
-        builder.Property(rb => rb.OrganisationName)
+        builder.Property(rb => rb.RegulatoryBodyName)
             .IsRequired()
             .HasMaxLength(250);
 

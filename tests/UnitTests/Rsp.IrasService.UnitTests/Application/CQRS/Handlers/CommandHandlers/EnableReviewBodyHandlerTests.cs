@@ -25,7 +25,7 @@ public class EnableReviewBodyHandlerTests
         var expectedResponse = new ReviewBodyDto
         {
             Id = guid,
-            OrganisationName = "App-123",
+            RegulatoryBodyName = "App-123",
             Description = "Approved"
         };
 

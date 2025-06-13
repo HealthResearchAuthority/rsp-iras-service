@@ -7,10 +7,10 @@ namespace Rsp.IrasService.Infrastructure.Repositories;
 
 public class RespondentRepository(IrasContext irasContext) : IRespondentRepository
 {
-    public async Task SaveResponses(ISpecification<RespondentAnswer> specification, List<RespondentAnswer> respondentAnswers)
+    public async Task SaveResponses(ISpecification<ProjectApplicationRespondentAnswer> specification, List<ProjectApplicationRespondentAnswer> respondentAnswers)
     {
         var answers = irasContext
-            .RespondentAnswers
+            .ProjectApplicationRespondentAnswers
             .WithSpecification(specification);
 
         foreach (var answer in respondentAnswers)
@@ -24,7 +24,7 @@ public class RespondentRepository(IrasContext irasContext) : IRespondentReposito
                 if ((string.IsNullOrWhiteSpace(existingAnswer.OptionType) && string.IsNullOrWhiteSpace(answer.Response)) ||
                     (existingAnswer.OptionType is "Single" or "Multiple" && string.IsNullOrWhiteSpace(answer.SelectedOptions)))
                 {
-                    irasContext.RespondentAnswers.Remove(existingAnswer);
+                    irasContext.ProjectApplicationRespondentAnswers.Remove(existingAnswer);
                     continue;
                 }
 
@@ -41,16 +41,16 @@ public class RespondentRepository(IrasContext irasContext) : IRespondentReposito
                 continue;
             }
 
-            await irasContext.RespondentAnswers.AddAsync(answer);
+            await irasContext.ProjectApplicationRespondentAnswers.AddAsync(answer);
         }
 
         await irasContext.SaveChangesAsync();
     }
 
-    public Task<IEnumerable<RespondentAnswer>> GetResponses(ISpecification<RespondentAnswer> specification)
+    public Task<IEnumerable<ProjectApplicationRespondentAnswer>> GetResponses(ISpecification<ProjectApplicationRespondentAnswer> specification)
     {
         var result = irasContext
-           .RespondentAnswers
+           .ProjectApplicationRespondentAnswers
            .WithSpecification(specification)
            .AsEnumerable();
 

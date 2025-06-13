@@ -19,13 +19,13 @@ public class CreateApplicationCommandTests
         // Arrange
         var request = new ApplicationRequest
         {
-            ApplicationId = "Test-123",
+            ProjectApplicationId = "Test-123",
             Status = "Success"
         };
 
         var expectedResponse = new ApplicationResponse
         {
-            ApplicationId = "Test-123",
+            ProjectApplicationId = "Test-123",
             Status = "Success"
         };
 
@@ -40,7 +40,7 @@ public class CreateApplicationCommandTests
 
         // Assert
         result.ShouldNotBeNull();
-        result.ApplicationId.ShouldBe(expectedResponse.ApplicationId);
+        result.ProjectApplicationId.ShouldBe(expectedResponse.ProjectApplicationId);
         result.Status.ShouldBe(expectedResponse.Status);
 
         _mediatorMock.Verify(m => m.Send(command, It.IsAny<CancellationToken>()), Times.Once);

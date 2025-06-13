@@ -5,17 +5,17 @@ namespace Rsp.IrasService.Application.Contracts.Repositories;
 
 public interface IReviewBodyRepository
 {
-    Task<IEnumerable<ReviewBody>> GetReviewBodies(ISpecification<ReviewBody> specification);
+    Task<IEnumerable<RegulatoryBody>> GetReviewBodies(ISpecification<RegulatoryBody> specification);
 
-    Task<ReviewBody?> GetReviewBody(ISpecification<ReviewBody> specification);
+    Task<RegulatoryBody?> GetReviewBody(ISpecification<RegulatoryBody> specification);
 
-    Task<ReviewBody> CreateReviewBody(ReviewBody reviewBody);
+    Task<RegulatoryBody> CreateReviewBody(RegulatoryBody reviewBody);
 
-    Task<ReviewBody> UpdateReviewBody(ReviewBody reviewBody);
+    Task<RegulatoryBody> UpdateReviewBody(RegulatoryBody reviewBody);
 
-    Task<ReviewBody?> DisableReviewBody(Guid id);
+    Task<RegulatoryBody?> DisableReviewBody(Guid id);
 
-    Task<ReviewBody?> EnableReviewBody(Guid id);
+    Task<RegulatoryBody?> EnableReviewBody(Guid id);
 
     Task<ReviewBodyUsers> AddUserToReviewBody(ReviewBodyUsers user);
 

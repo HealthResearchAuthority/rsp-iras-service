@@ -24,7 +24,7 @@ public class DisableReviewBodyTests : TestServiceBase<ReviewBodyService>
     }
 
     [Theory, AutoData]
-    public async Task Disable_ReviewBody_Correctly(int records, Generator<ReviewBody> generator)
+    public async Task Disable_ReviewBody_Correctly(int records, Generator<RegulatoryBody> generator)
     {
         // Arrange
         Mocker.Use<IReviewBodyRepository>(_reviewBodyRepository);

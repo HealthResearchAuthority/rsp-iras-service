@@ -36,8 +36,8 @@ public class GetRespondentApplications : TestServiceBase<ApplicationsService>
         {
             new()
             {
-                ApplicationId = Guid.NewGuid().ToString(),
-                Respondent = new RespondentDto { RespondentId = fixedRespondentId },
+                ProjectApplicationId = Guid.NewGuid().ToString(),
+                Respondent = new RespondentDto { ProjectApplicationRespondentId = fixedRespondentId },
                 CreatedBy = "User1",
                 Description = "Description1",
                 Title = "Title1",
@@ -45,8 +45,8 @@ public class GetRespondentApplications : TestServiceBase<ApplicationsService>
             },
             new()
             {
-                ApplicationId = Guid.NewGuid().ToString(),
-                Respondent = new RespondentDto { RespondentId = fixedRespondentId },
+                ProjectApplicationId = Guid.NewGuid().ToString(),
+                Respondent = new RespondentDto { ProjectApplicationRespondentId = fixedRespondentId },
                 CreatedBy = "User2",
                 Description = "Description2",
                 Title = "Title2",
@@ -54,10 +54,10 @@ public class GetRespondentApplications : TestServiceBase<ApplicationsService>
             }
         };
 
-        var researchApplications = applicationRequests.Select(request => new ResearchApplication
+        var researchApplications = applicationRequests.Select(request => new ProjectApplication
         {
-            ApplicationId = request.ApplicationId,
-            RespondentId = request.Respondent.RespondentId,
+            ProjectApplicationId = request.ProjectApplicationId,
+            ProjectApplicationRespondentId = request.Respondent.ProjectApplicationRespondentId,
             CreatedBy = request.CreatedBy,
             Description = request.Description,
             Title = request.Title,
@@ -65,17 +65,17 @@ public class GetRespondentApplications : TestServiceBase<ApplicationsService>
         }).ToList();
 
         // Adding an application with a different RespondentId (should be filtered out)
-        researchApplications.Add(new ResearchApplication
+        researchApplications.Add(new ProjectApplication
         {
-            ApplicationId = Guid.NewGuid().ToString(),
-            RespondentId = "OtherRespondent",
+            ProjectApplicationId = Guid.NewGuid().ToString(),
+            ProjectApplicationRespondentId = "OtherRespondent",
             CreatedBy = "User3",
             Description = "Description3",
             Title = "Title3",
             UpdatedBy = "Updater3"
         });
 
-        await _context.ResearchApplications.AddRangeAsync(researchApplications);
+        await _context.ProjectApplications.AddRangeAsync(researchApplications);
         await _context.SaveChangesAsync();
 
         // Act
@@ -88,7 +88,7 @@ public class GetRespondentApplications : TestServiceBase<ApplicationsService>
         // Validate fields
         foreach (var application in result)
         {
-            var expectedApplication = applicationRequests.First(a => a.ApplicationId == application.ApplicationId);
+            var expectedApplication = applicationRequests.First(a => a.ProjectApplicationId == application.ProjectApplicationId);
             application.CreatedBy.ShouldBe(expectedApplication.CreatedBy);
             application.Description.ShouldBe(expectedApplication.Description);
             application.Title.ShouldBe(expectedApplication.Title);

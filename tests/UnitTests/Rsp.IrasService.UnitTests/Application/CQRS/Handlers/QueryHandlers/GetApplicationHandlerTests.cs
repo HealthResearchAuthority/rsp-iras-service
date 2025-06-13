@@ -24,7 +24,7 @@ public class GetApplicationHandlerTests
 
         var expectedResponse = new ApplicationResponse
         {
-            ApplicationId = applicationId,
+            ProjectApplicationId = applicationId,
             Title = "Sample Project",
             Description = "A sample project description",
             Status = "Approved"
@@ -41,7 +41,7 @@ public class GetApplicationHandlerTests
 
         // Assert
         result.ShouldNotBeNull();
-        result.ApplicationId.ShouldBe(expectedResponse.ApplicationId);
+        result.ProjectApplicationId.ShouldBe(expectedResponse.ProjectApplicationId);
         result.Title.ShouldBe(expectedResponse.Title);
         result.Description.ShouldBe(expectedResponse.Description);
         result.Status.ShouldBe(expectedResponse.Status);

@@ -18,22 +18,22 @@ public class MappingRegister : IRegister
         // need custom mapping or need different settings for mapping
 
         config
-            .NewConfig<ApplicationRequest, ResearchApplication>()
+            .NewConfig<ApplicationRequest, ProjectApplication>()
             .Map(dest => dest.CreatedDate, source => source.StartDate)
             .Map(dest => dest.UpdatedDate, _ => DateTime.Now);
 
         config
-            .NewConfig<ResearchApplication, ApplicationRequest>()
+            .NewConfig<ProjectApplication, ApplicationRequest>()
             .Map(dest => dest.StartDate, source => source.CreatedDate);
 
         config
-            .NewConfig<RespondentDto, Respondent>()
+            .NewConfig<RespondentDto, ProjectApplicationRespondent>()
             .Map(dest => dest.Email, source => source.EmailAddress);
 
         config
-            .NewConfig<RespondentAnswerDto, RespondentAnswer>()
-            .Ignore(ra => ra.RespondentId)
-            .Ignore(ra => ra.ApplicationId)
+            .NewConfig<RespondentAnswerDto, ProjectApplicationRespondentAnswer>()
+            .Ignore(ra => ra.ProjectApplicationRespondentId)
+            .Ignore(ra => ra.ProjectApplicationId)
             .Map(dest => dest.Category, source => source.CategoryId)
             .Map(dest => dest.Section, source => source.SectionId)
             .Map(dest => dest.Response, source => source.AnswerText)
@@ -41,7 +41,7 @@ public class MappingRegister : IRegister
             .Map(dest => dest.SelectedOptions, source => string.Join(',', source.Answers), source => source.Answers.Count > 0);
 
         config
-            .NewConfig<RespondentAnswer, RespondentAnswerDto>()
+            .NewConfig<ProjectApplicationRespondentAnswer, RespondentAnswerDto>()
             .Map(dest => dest.CategoryId, source => source.Category)
             .Map(dest => dest.SectionId, source => source.Section)
             .Map(dest => dest.AnswerText, source => source.Response)

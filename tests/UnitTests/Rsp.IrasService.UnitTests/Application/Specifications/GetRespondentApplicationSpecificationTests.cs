@@ -10,12 +10,12 @@ public class GetRespondentApplicationSpecificationTests
     /// </summary>
     [Theory, AutoData]
     public void GetRespondentApplicationSpecification_ById_ReturnsCorrectSpecification(
-        Generator<ResearchApplication> generator)
+        Generator<ProjectApplication> generator)
     {
         // Arrange
         var applications = generator.Take(5).ToList();
-        var respondentId = applications[0].RespondentId;
-        var applicationId = applications[0].ApplicationId;
+        var respondentId = applications[0].ProjectApplicationRespondentId;
+        var applicationId = applications[0].ProjectApplicationId;
 
         var spec = new GetRespondentApplicationSpecification(respondentId, applicationId);
 
@@ -26,8 +26,8 @@ public class GetRespondentApplicationSpecificationTests
 
         // Assert
         result.ShouldNotBeNull();
-        result.ApplicationId.ShouldBe(applicationId);
-        result.RespondentId.ShouldBe(respondentId);
+        result.ProjectApplicationId.ShouldBe(applicationId);
+        result.ProjectApplicationRespondentId.ShouldBe(respondentId);
     }
 
     /// <summary>
@@ -35,11 +35,11 @@ public class GetRespondentApplicationSpecificationTests
     /// </summary>
     [Theory, AutoData]
     public void GetRespondentApplicationSpecification_ByRespondentId_ReturnsCorrectSpecification(
-        Generator<ResearchApplication> generator)
+        Generator<ProjectApplication> generator)
     {
         // Arrange
         var applications = generator.Take(5).ToList();
-        var respondentId = applications[0].RespondentId;
+        var respondentId = applications[0].ProjectApplicationRespondentId;
 
         var spec = new GetRespondentApplicationSpecification(respondentId);
 
@@ -50,7 +50,7 @@ public class GetRespondentApplicationSpecificationTests
 
         // Assert
         result.ShouldNotBeNull();
-        result.ShouldAllBe(application => application.RespondentId == respondentId);
+        result.ShouldAllBe(application => application.ProjectApplicationRespondentId == respondentId);
     }
 
     /// <summary>
@@ -58,14 +58,14 @@ public class GetRespondentApplicationSpecificationTests
     /// </summary>
     [Theory, InlineAutoData(2), InlineAutoData(0)]
     public void GetRespondentApplicationSpecification_ByRecords_ReturnsCorrectCount(int records,
-        Generator<ResearchApplication> generator)
+        Generator<ProjectApplication> generator)
     {
         // Arrange
         var applications = generator.Take(5).ToList();
-        var respondentId = applications[0].RespondentId;
+        var respondentId = applications[0].ProjectApplicationRespondentId;
 
         // Ensure all test data has the same RespondentId
-        foreach (var application in applications) application.RespondentId = respondentId;
+        foreach (var application in applications) application.ProjectApplicationRespondentId = respondentId;
 
         var spec = new GetRespondentApplicationSpecification(respondentId, records: records);
 

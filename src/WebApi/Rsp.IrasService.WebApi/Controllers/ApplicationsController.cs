@@ -22,7 +22,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     /// </summary>
     /// <param name="applicationId">Research Application Id</param>
     [HttpGet("{applicationId}")]
-    [Produces<ResearchApplication>]
+    [Produces<ProjectApplication>]
     public async Task<ActionResult<ApplicationResponse>> GetApplication(string applicationId)
     {
         var request = new GetApplicationQuery(applicationId);
@@ -38,7 +38,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     /// <param name="applicationId">Research Application Id</param>
     /// <param name="status">Research Application Status e.g. pending, created, approved</param>
     [HttpGet("{applicationId}/{status}")]
-    [Produces<ResearchApplication>]
+    [Produces<ProjectApplication>]
     public async Task<ActionResult<ApplicationResponse>> GetApplication(string applicationId, string status)
     {
         var request = new GetApplicationWithStatusQuery(applicationId)
@@ -55,7 +55,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     /// Returns all applications or applications by status
     /// </summary>
     [HttpGet]
-    [Produces<IEnumerable<ResearchApplication>>]
+    [Produces<IEnumerable<ProjectApplication>>]
     public async Task<IEnumerable<ApplicationResponse>> GetApplications()
     {
         var query = new GetApplicationsQuery();
@@ -68,7 +68,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     /// </summary>
     /// <param name="status">Research Application Status</param>
     [HttpGet("status")]
-    [Produces<IEnumerable<ResearchApplication>>]
+    [Produces<IEnumerable<ProjectApplication>>]
     public async Task<IEnumerable<ApplicationResponse>> GetApplicationsByStatus(string status)
     {
         var query = new GetApplicationsWithStatusQuery
@@ -84,7 +84,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     /// </summary>
     /// <param name="respondentId">Reasearch Application Respondent Id</param>
     [HttpGet("respondent")]
-    [Produces<IEnumerable<ResearchApplication>>]
+    [Produces<IEnumerable<ProjectApplication>>]
     public async Task<IEnumerable<ApplicationResponse>> GetApplicationsByRespondent(string respondentId)
     {
         var request = new GetApplicationsWithRespondentQuery
