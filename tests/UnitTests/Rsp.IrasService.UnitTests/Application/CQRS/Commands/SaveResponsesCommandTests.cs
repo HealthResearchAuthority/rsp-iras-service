@@ -20,7 +20,7 @@ namespace Rsp.IrasService.UnitTests.Application.CQRS.Commands
                 // Arrange
                 var request = new RespondentAnswersRequest
                 {
-                    RespondentId = "R-123",
+                    ProjectApplicationRespondentId = "R-123",
                     RespondentAnswers = new List<RespondentAnswerDto>
                     {
                         new()

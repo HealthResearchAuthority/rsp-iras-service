@@ -13,8 +13,8 @@ public class RespondentService(IRespondentRepository respondentRepository) : IRe
     {
         var respondentAnswers = new List<ProjectApplicationRespondentAnswer>();
 
-        var applicationId = respondentAnswersRequest.ApplicationId;
-        var respondentId = respondentAnswersRequest.RespondentId;
+        var applicationId = respondentAnswersRequest.ProjectApplicationId;
+        var respondentId = respondentAnswersRequest.ProjectApplicationRespondentId;
 
         foreach (var answer in respondentAnswersRequest.RespondentAnswers)
         {

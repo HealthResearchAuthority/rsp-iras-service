@@ -34,8 +34,8 @@ public class SaveResponses : TestServiceBase<RespondentService>
 
         var respondentAnswersRequest = new RespondentAnswersRequest
         {
-            ApplicationId = fixedApplicationId,
-            RespondentId = fixedRespondentId,
+            ProjectApplicationId = fixedApplicationId,
+            ProjectApplicationRespondentId = fixedRespondentId,
             RespondentAnswers = new List<RespondentAnswerDto>
             {
                 new()
@@ -95,8 +95,8 @@ public class SaveResponses : TestServiceBase<RespondentService>
         var respondentService = new RespondentService(_respondentRepository);
         var respondentAnswersRequest = new RespondentAnswersRequest
         {
-            ApplicationId = "ApplicationId-123",
-            RespondentId = "RespondentId-123",
+            ProjectApplicationId = "ApplicationId-123",
+            ProjectApplicationRespondentId = "RespondentId-123",
             RespondentAnswers = new List<RespondentAnswerDto>() // Empty list
         };
 

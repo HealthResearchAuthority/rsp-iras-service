@@ -28,7 +28,7 @@ public class RemoveReviewBodyUserTests : TestServiceBase<ReviewBodyService>
         // Assert
         result.ShouldNotBeNull();
         result.ShouldBeOfType<ReviewBodyUserDto>();
-        result.ReviewBodyId.ShouldBe(reviewBodyId);
+        result.RegulatoryBodiesId.ShouldBe(reviewBodyId);
         result.UserId.ShouldBe(userId);
     }
 }
