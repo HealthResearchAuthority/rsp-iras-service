@@ -2,7 +2,7 @@
 
 public class ProjectApplication
 {
-    public string ProjectApplicationId { get; set; } = null!;
+    public string Id { get; set; } = null!;
     public string ProjectApplicationRespondentId { get; set; } = null!;
     public string Title { get; set; } = null!;
     public string Description { get; set; } = null!;

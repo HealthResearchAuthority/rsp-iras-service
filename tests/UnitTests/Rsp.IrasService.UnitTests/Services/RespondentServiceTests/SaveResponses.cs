@@ -35,7 +35,7 @@ public class SaveResponses : TestServiceBase<RespondentService>
         var respondentAnswersRequest = new RespondentAnswersRequest
         {
             ProjectApplicationId = fixedApplicationId,
-            ProjectApplicationRespondentId = fixedRespondentId,
+            Id = fixedRespondentId,
             RespondentAnswers = new List<RespondentAnswerDto>
             {
                 new()
@@ -74,7 +74,7 @@ public class SaveResponses : TestServiceBase<RespondentService>
             var expectedAnswer =
                 respondentAnswersRequest.RespondentAnswers.First(a => a.QuestionId == savedResponse.QuestionId);
             savedResponse.ProjectApplicationId.ShouldBe(fixedApplicationId);
-            savedResponse.ProjectApplicationRespondentId.ShouldBe(fixedRespondentId);
+            savedResponse.Id.ShouldBe(fixedRespondentId);
             savedResponse.QuestionId.ShouldBe(expectedAnswer.QuestionId);
             savedResponse.Category.ShouldBe(expectedAnswer.CategoryId);
             savedResponse.Section.ShouldBe(expectedAnswer.SectionId);
@@ -96,7 +96,7 @@ public class SaveResponses : TestServiceBase<RespondentService>
         var respondentAnswersRequest = new RespondentAnswersRequest
         {
             ProjectApplicationId = "ApplicationId-123",
-            ProjectApplicationRespondentId = "RespondentId-123",
+            Id = "RespondentId-123",
             RespondentAnswers = new List<RespondentAnswerDto>() // Empty list
         };
 

@@ -29,6 +29,6 @@ public class RegulatoryBodyConfiguration : IEntityTypeConfiguration<RegulatoryBo
 
         builder.HasMany(x => x.Users)
             .WithOne()
-            .HasForeignKey(x => x.RegulatoryBodiesId);
+            .HasForeignKey(x => x.Id);
     }
 }

@@ -2,7 +2,7 @@
 
 public class ProjectApplicationRespondent
 {
-    public string ProjectApplicationRespondentId { get; set; } = null!;
+    public string Id { get; set; } = null!;
     public string GivenName { get; set; } = null!;
     public string FamilyName { get; set; } = null!;
     public string Email { get; set; } = null!;

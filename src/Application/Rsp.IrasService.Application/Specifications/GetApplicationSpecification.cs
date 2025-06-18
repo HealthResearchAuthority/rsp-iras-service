@@ -14,7 +14,7 @@ public class GetApplicationSpecification : Specification<ProjectApplication>
     {
         Query
             .AsNoTracking()
-            .Where(entity => entity.ProjectApplicationId == id, id != null)
+            .Where(entity => entity.Id == id, id != null)
             .Skip(records, id == null && records == 0)
             .Take(records, id == null && records != 0);
     }
@@ -29,7 +29,7 @@ public class GetApplicationSpecification : Specification<ProjectApplication>
     {
         Query
             .AsNoTracking()
-            .Where(entity => entity.ProjectApplicationId == id && entity.Status == status, id != null)
+            .Where(entity => entity.Id == id && entity.Status == status, id != null)
             .Where(entity => entity.Status == status, id == null)
             .Skip(records, id == null && records == 0)
             .Take(records, id == null && records != 0);

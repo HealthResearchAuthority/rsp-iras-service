@@ -11,7 +11,7 @@ public class GetApplicationSpecificationTests
         // Arrange
         var applications = generator.Take(3).ToList();
 
-        var spec = new GetApplicationSpecification(id: applications[0].ProjectApplicationId);
+        var spec = new GetApplicationSpecification(id: applications[0].Id);
 
         // Act
         var result = spec
@@ -20,7 +20,7 @@ public class GetApplicationSpecificationTests
 
         // Assert
         result.ShouldNotBeNull();
-        result.ProjectApplicationId.ShouldBe(applications[0].ProjectApplicationId);
+        result.Id.ShouldBe(applications[0].Id);
     }
 
     [Theory, InlineAutoData(5, 5), InlineAutoData(0, 10)]
@@ -53,7 +53,7 @@ public class GetApplicationSpecificationTests
         applications[2].Status = "pending";
 
         // out of 10 records, it should return a single record
-        var spec = new GetApplicationSpecification("pending", applications[1].ProjectApplicationId);
+        var spec = new GetApplicationSpecification("pending", applications[1].Id);
 
         // Act
         var result = spec
@@ -62,7 +62,7 @@ public class GetApplicationSpecificationTests
 
         // Assert
         result.Count.ShouldBe(1);
-        result[0].ProjectApplicationId.ShouldBe(applications[1].ProjectApplicationId);
+        result[0].Id.ShouldBe(applications[1].Id);
     }
 
     [Theory, InlineAutoData(5, 2), InlineAutoData(0, 2)]

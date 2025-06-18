@@ -8,6 +8,6 @@ public class ProjectApplicationConfiguration : IEntityTypeConfiguration<ProjectA
 {
     public void Configure(EntityTypeBuilder<ProjectApplication> builder)
     {
-        builder.HasKey(ra => ra.ProjectApplicationId);
+        builder.HasKey(ra => ra.Id);
     }
 }

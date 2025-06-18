@@ -16,7 +16,7 @@ public class GetRespondentApplicationSpecification : Specification<ProjectApplic
     {
         Query
             .AsNoTracking()
-            .Where(entity => entity.ProjectApplicationId == id && entity.ProjectApplicationRespondentId == respondentId, id != null)
+            .Where(entity => entity.Id == id && entity.ProjectApplicationRespondentId == respondentId, id != null)
             .Where(entity => entity.ProjectApplicationRespondentId == respondentId, id == null)
             .Skip(records, id == null && records == 0)
             .Take(records, id == null && records != 0);

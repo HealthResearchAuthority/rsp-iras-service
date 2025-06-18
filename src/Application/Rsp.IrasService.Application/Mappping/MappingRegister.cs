@@ -32,7 +32,7 @@ public class MappingRegister : IRegister
 
         config
             .NewConfig<RespondentAnswerDto, ProjectApplicationRespondentAnswer>()
-            .Ignore(ra => ra.ProjectApplicationRespondentId)
+            .Ignore(ra => ra.Id)
             .Ignore(ra => ra.ProjectApplicationId)
             .Map(dest => dest.Category, source => source.CategoryId)
             .Map(dest => dest.Section, source => source.SectionId)

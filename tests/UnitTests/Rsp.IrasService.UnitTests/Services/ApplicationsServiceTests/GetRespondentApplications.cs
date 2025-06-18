@@ -36,8 +36,8 @@ public class GetRespondentApplications : TestServiceBase<ApplicationsService>
         {
             new()
             {
-                ProjectApplicationId = Guid.NewGuid().ToString(),
-                Respondent = new RespondentDto { ProjectApplicationRespondentId = fixedRespondentId },
+                Id = Guid.NewGuid().ToString(),
+                Respondent = new RespondentDto { Id = fixedRespondentId },
                 CreatedBy = "User1",
                 Description = "Description1",
                 Title = "Title1",
@@ -45,8 +45,8 @@ public class GetRespondentApplications : TestServiceBase<ApplicationsService>
             },
             new()
             {
-                ProjectApplicationId = Guid.NewGuid().ToString(),
-                Respondent = new RespondentDto { ProjectApplicationRespondentId = fixedRespondentId },
+                Id = Guid.NewGuid().ToString(),
+                Respondent = new RespondentDto { Id = fixedRespondentId },
                 CreatedBy = "User2",
                 Description = "Description2",
                 Title = "Title2",
@@ -56,8 +56,8 @@ public class GetRespondentApplications : TestServiceBase<ApplicationsService>
 
         var researchApplications = applicationRequests.Select(request => new ProjectApplication
         {
-            ProjectApplicationId = request.ProjectApplicationId,
-            ProjectApplicationRespondentId = request.Respondent.ProjectApplicationRespondentId,
+            Id = request.Id,
+            ProjectApplicationRespondentId = request.Respondent.Id,
             CreatedBy = request.CreatedBy,
             Description = request.Description,
             Title = request.Title,
@@ -67,7 +67,7 @@ public class GetRespondentApplications : TestServiceBase<ApplicationsService>
         // Adding an application with a different RespondentId (should be filtered out)
         researchApplications.Add(new ProjectApplication
         {
-            ProjectApplicationId = Guid.NewGuid().ToString(),
+            Id = Guid.NewGuid().ToString(),
             ProjectApplicationRespondentId = "OtherRespondent",
             CreatedBy = "User3",
             Description = "Description3",
@@ -88,7 +88,7 @@ public class GetRespondentApplications : TestServiceBase<ApplicationsService>
         // Validate fields
         foreach (var application in result)
         {
-            var expectedApplication = applicationRequests.First(a => a.ProjectApplicationId == application.ProjectApplicationId);
+            var expectedApplication = applicationRequests.First(a => a.Id == application.Id);
             application.CreatedBy.ShouldBe(expectedApplication.CreatedBy);
             application.Description.ShouldBe(expectedApplication.Description);
             application.Title.ShouldBe(expectedApplication.Title);

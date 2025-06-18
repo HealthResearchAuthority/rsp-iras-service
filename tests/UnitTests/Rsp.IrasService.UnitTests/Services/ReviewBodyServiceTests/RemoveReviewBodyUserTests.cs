@@ -13,7 +13,7 @@ public class RemoveReviewBodyUserTests : TestServiceBase<ReviewBodyService>
         // Arrange
         var reviewBodyUser = new RegulatoryBodyUsers
         {
-            RegulatoryBodiesId = reviewBodyId,
+            Id = reviewBodyId,
             UserId = userId,
             DateAdded = DateTime.UtcNow,
         };
@@ -28,7 +28,7 @@ public class RemoveReviewBodyUserTests : TestServiceBase<ReviewBodyService>
         // Assert
         result.ShouldNotBeNull();
         result.ShouldBeOfType<ReviewBodyUserDto>();
-        result.RegulatoryBodiesId.ShouldBe(reviewBodyId);
+        result.Id.ShouldBe(reviewBodyId);
         result.UserId.ShouldBe(userId);
     }
 }

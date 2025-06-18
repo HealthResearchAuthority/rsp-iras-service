@@ -70,7 +70,7 @@ public class ApplicationsService(IApplicationRepository applicationRepository) :
         var irasApplication = applicationRequest.Adapt<ProjectApplication>();
         var respondent = applicationRequest.Respondent.Adapt<ProjectApplicationRespondent>();
 
-        irasApplication.ProjectApplicationRespondentId = respondent.ProjectApplicationRespondentId;
+        irasApplication.ProjectApplicationRespondentId = respondent.Id;
 
         var updatedApplication = await applicationRepository.UpdateApplication(irasApplication);
 

@@ -5,7 +5,7 @@ public record RespondentAnswersRequest
     /// <summary>
     /// IRAS Project Id
     /// </summary>
-    public string ProjectApplicationRespondentId { get; set; } = null!;
+    public string Id { get; set; } = null!;
 
     /// <summary>
     /// Application Id

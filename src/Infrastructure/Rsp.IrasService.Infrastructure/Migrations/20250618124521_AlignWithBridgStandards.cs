@@ -33,7 +33,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                 name: "ProjectApplicationRespondents",
                 columns: table => new
                 {
-                    ProjectApplicationRespondentId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     GivenName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FamilyName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -41,7 +41,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProjectApplicationRespondents", x => x.ProjectApplicationRespondentId);
+                    table.PrimaryKey("PK_ProjectApplicationRespondents", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -68,7 +68,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                 name: "ProjectApplications",
                 columns: table => new
                 {
-                    ProjectApplicationId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProjectApplicationRespondentId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -82,12 +82,12 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProjectApplications", x => x.ProjectApplicationId);
+                    table.PrimaryKey("PK_ProjectApplications", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ProjectApplications_ProjectApplicationRespondents_ProjectApplicationRespondentId",
                         column: x => x.ProjectApplicationRespondentId,
                         principalTable: "ProjectApplicationRespondents",
-                        principalColumn: "ProjectApplicationRespondentId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -116,16 +116,16 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                 name: "RegulatoryBodyUsers",
                 columns: table => new
                 {
-                    RegulatoryBodiesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DateAdded = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RegulatoryBodyUsers", x => new { x.RegulatoryBodiesId, x.UserId });
+                    table.PrimaryKey("PK_RegulatoryBodyUsers", x => new { x.Id, x.UserId });
                     table.ForeignKey(
-                        name: "FK_RegulatoryBodyUsers_RegulatoryBodies_RegulatoryBodiesId",
-                        column: x => x.RegulatoryBodiesId,
+                        name: "FK_RegulatoryBodyUsers_RegulatoryBodies_Id",
+                        column: x => x.Id,
                         principalTable: "RegulatoryBodies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -135,7 +135,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                 name: "ProjectApplicationRespondentAnswers",
                 columns: table => new
                 {
-                    ProjectApplicationRespondentId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProjectApplicationId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     QuestionId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Category = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -146,17 +146,17 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProjectApplicationRespondentAnswers", x => new { x.ProjectApplicationRespondentId, x.QuestionId, x.ProjectApplicationId });
+                    table.PrimaryKey("PK_ProjectApplicationRespondentAnswers", x => new { x.Id, x.QuestionId, x.ProjectApplicationId });
                     table.ForeignKey(
-                        name: "FK_ProjectApplicationRespondentAnswers_ProjectApplicationRespondents_ProjectApplicationRespondentId",
-                        column: x => x.ProjectApplicationRespondentId,
+                        name: "FK_ProjectApplicationRespondentAnswers_ProjectApplicationRespondents_Id",
+                        column: x => x.Id,
                         principalTable: "ProjectApplicationRespondents",
-                        principalColumn: "ProjectApplicationRespondentId");
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_ProjectApplicationRespondentAnswers_ProjectApplications_ProjectApplicationId",
                         column: x => x.ProjectApplicationId,
                         principalTable: "ProjectApplications",
-                        principalColumn: "ProjectApplicationId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 

@@ -8,6 +8,6 @@ public class ProjectApplicationRespondentConfiguration : IEntityTypeConfiguratio
 {
     public void Configure(EntityTypeBuilder<ProjectApplicationRespondent> builder)
     {
-        builder.HasKey(r => r.ProjectApplicationRespondentId);
+        builder.HasKey(r => r.Id);
     }
 }

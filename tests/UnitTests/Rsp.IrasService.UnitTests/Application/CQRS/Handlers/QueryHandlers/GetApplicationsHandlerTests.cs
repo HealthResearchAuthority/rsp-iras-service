@@ -22,8 +22,8 @@ public class GetApplicationsHandlerTests
         // Arrange
         var expectedResponse = new List<ApplicationResponse>
         {
-            new() { ProjectApplicationId = "App-123", Status = "Approved" },
-            new() { ProjectApplicationId = "App-456", Status = "Pending" }
+            new() { Id = "App-123", Status = "Approved" },
+            new() { Id = "App-456", Status = "Pending" }
         };
 
         var query = new GetApplicationsQuery();

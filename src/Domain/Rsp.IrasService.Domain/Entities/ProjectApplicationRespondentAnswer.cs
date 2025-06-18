@@ -2,7 +2,7 @@
 
 public class ProjectApplicationRespondentAnswer
 {
-    public string ProjectApplicationRespondentId { get; set; } = null!;
+    public string Id { get; set; } = null!;
     public string ProjectApplicationId { get; set; } = null!;
     public string QuestionId { get; set; } = null!;
     public string Category { get; set; } = null!;

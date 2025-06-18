@@ -12,14 +12,14 @@ public class ApplicationRepository(IrasContext irasContext) : IApplicationReposi
     {
         var respondentEntity = await irasContext
             .ProjectApplicationRespondents
-            .SingleOrDefaultAsync(r => r.ProjectApplicationRespondentId == respondent.ProjectApplicationRespondentId);
+            .SingleOrDefaultAsync(r => r.Id == respondent.Id);
 
         if (respondentEntity == null)
         {
             await irasContext.ProjectApplicationRespondents.AddAsync(respondent);
         }
 
-        irasApplication.ProjectApplicationRespondentId = respondent.ProjectApplicationRespondentId;
+        irasApplication.ProjectApplicationRespondentId = respondent.Id;
 
         var entity = await irasContext.ProjectApplications.AddAsync(irasApplication);
 
@@ -50,7 +50,7 @@ public class ApplicationRepository(IrasContext irasContext) : IApplicationReposi
     {
         var entity = await irasContext
             .ProjectApplications
-            .FirstOrDefaultAsync(record => record.ProjectApplicationId == irasApplication.ProjectApplicationId);
+            .FirstOrDefaultAsync(record => record.Id == irasApplication.Id);
 
         if (entity == null)
         {

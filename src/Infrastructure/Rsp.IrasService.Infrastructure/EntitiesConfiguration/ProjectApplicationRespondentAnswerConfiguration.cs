@@ -8,12 +8,12 @@ public class ProjectApplicationRespondentAnswerConfiguration : IEntityTypeConfig
 {
     public void Configure(EntityTypeBuilder<ProjectApplicationRespondentAnswer> builder)
     {
-        builder.HasKey(ra => new { ra.ProjectApplicationRespondentId, ra.QuestionId, ra.ProjectApplicationId });
+        builder.HasKey(ra => new { ra.Id, ra.QuestionId, ra.ProjectApplicationId });
 
         builder
             .HasOne(ra => ra.ProjectApplicationRespondent)
             .WithMany()
-            .HasForeignKey(r => r.ProjectApplicationRespondentId)
+            .HasForeignKey(r => r.Id)
             .OnDelete(DeleteBehavior.NoAction);
 
         builder

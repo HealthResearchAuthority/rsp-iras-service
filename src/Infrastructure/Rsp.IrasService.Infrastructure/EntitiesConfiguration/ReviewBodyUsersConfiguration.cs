@@ -8,9 +8,9 @@ public class ReviewBodyUsersConfiguration : IEntityTypeConfiguration<RegulatoryB
 {
     public void Configure(EntityTypeBuilder<RegulatoryBodyUsers> builder)
     {
-        builder.HasKey(x => new { x.RegulatoryBodiesId, x.UserId });
+        builder.HasKey(x => new { x.Id, x.UserId });
 
-        builder.Property(rb => rb.RegulatoryBodiesId)
+        builder.Property(rb => rb.Id)
             .IsRequired();
 
         builder.Property(rb => rb.UserId)

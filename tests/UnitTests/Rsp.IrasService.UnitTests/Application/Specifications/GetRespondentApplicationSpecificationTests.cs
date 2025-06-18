@@ -15,7 +15,7 @@ public class GetRespondentApplicationSpecificationTests
         // Arrange
         var applications = generator.Take(5).ToList();
         var respondentId = applications[0].ProjectApplicationRespondentId;
-        var applicationId = applications[0].ProjectApplicationId;
+        var applicationId = applications[0].Id;
 
         var spec = new GetRespondentApplicationSpecification(respondentId, applicationId);
 
@@ -26,7 +26,7 @@ public class GetRespondentApplicationSpecificationTests
 
         // Assert
         result.ShouldNotBeNull();
-        result.ProjectApplicationId.ShouldBe(applicationId);
+        result.Id.ShouldBe(applicationId);
         result.ProjectApplicationRespondentId.ShouldBe(respondentId);
     }
 

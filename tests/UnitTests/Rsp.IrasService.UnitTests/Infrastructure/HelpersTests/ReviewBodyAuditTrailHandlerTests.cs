@@ -45,7 +45,7 @@ public class ReviewBodyAuditTrailHandlerTests
     public void GenerateAuditTrails_ShouldReturnEmptyList_WhenEntityIsNotReviewBody()
     {
         // Arrange
-        var entity = new ProjectApplicationRespondent { ProjectApplicationRespondentId = "id" };
+        var entity = new ProjectApplicationRespondent { Id = "id" };
         var systemAdminEmail = "adminEmail";
 
         var entityEntry = MockEntityEntry(entity);

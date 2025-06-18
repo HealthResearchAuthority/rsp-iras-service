@@ -85,7 +85,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectApplication", b =>
                 {
-                    b.Property<string>("ProjectApplicationId")
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CreatedBy")
@@ -123,7 +123,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("ProjectApplicationId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ProjectApplicationRespondentId");
 
@@ -132,7 +132,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectApplicationRespondent", b =>
                 {
-                    b.Property<string>("ProjectApplicationRespondentId")
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Email")
@@ -150,14 +150,14 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Property<string>("Role")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ProjectApplicationRespondentId");
+                    b.HasKey("Id");
 
                     b.ToTable("ProjectApplicationRespondents");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectApplicationRespondentAnswer", b =>
                 {
-                    b.Property<string>("ProjectApplicationRespondentId")
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("QuestionId")
@@ -183,7 +183,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Property<string>("SelectedOptions")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ProjectApplicationRespondentId", "QuestionId", "ProjectApplicationId");
+                    b.HasKey("Id", "QuestionId", "ProjectApplicationId");
 
                     b.HasIndex("ProjectApplicationId");
 
@@ -267,7 +267,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.RegulatoryBodyUsers", b =>
                 {
-                    b.Property<Guid>("RegulatoryBodiesId")
+                    b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UserId")
@@ -276,7 +276,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Property<DateTime>("DateAdded")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("RegulatoryBodiesId", "UserId");
+                    b.HasKey("Id", "UserId");
 
                     b.ToTable("RegulatoryBodyUsers");
                 });
@@ -303,16 +303,16 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectApplicationRespondentAnswer", b =>
                 {
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectApplicationRespondent", "ProjectApplicationRespondent")
+                        .WithMany()
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("Rsp.IrasService.Domain.Entities.ProjectApplication", "ProjectApplication")
                         .WithMany()
                         .HasForeignKey("ProjectApplicationId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectApplicationRespondent", "ProjectApplicationRespondent")
-                        .WithMany()
-                        .HasForeignKey("ProjectApplicationRespondentId")
-                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("ProjectApplication");
@@ -335,7 +335,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                 {
                     b.HasOne("Rsp.IrasService.Domain.Entities.RegulatoryBody", null)
                         .WithMany("Users")
-                        .HasForeignKey("RegulatoryBodiesId")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

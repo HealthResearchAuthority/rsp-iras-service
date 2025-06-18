@@ -43,7 +43,7 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
         // seed data with the number of records
         var applications = await TestData.SeedData(_context, generator, records);
 
-        createApplicationRequest.ProjectApplicationId = applications[0].ProjectApplicationId;
+        createApplicationRequest.Id = applications[0].Id;
         createApplicationRequest.StartDate = applications[0].CreatedDate;
 
         // Act
@@ -54,7 +54,7 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
         irasApplication.ShouldBeOfType<ApplicationResponse>();
         irasApplication.ShouldSatisfyAllConditions
         (
-            app => app.ProjectApplicationId.ShouldBe(createApplicationRequest.ProjectApplicationId),
+            app => app.Id.ShouldBe(createApplicationRequest.Id),
             app => app.Title.ShouldBe(createApplicationRequest.Title),
             app => app.CreatedDate.ShouldBe(createApplicationRequest.StartDate!.Value),
             app => app.Status.ShouldBe(createApplicationRequest.Status)
@@ -79,7 +79,7 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
         await TestData.SeedData(_context, generator, records);
 
         // get the id that won't exists
-        createApplicationRequest.ProjectApplicationId = DateTime.Now.ToString("yyyyddMMHHmmss");
+        createApplicationRequest.Id = DateTime.Now.ToString("yyyyddMMHHmmss");
 
         // Act/Assert
         var application = await Sut.UpdateApplication(createApplicationRequest);
@@ -99,8 +99,8 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
 
         var applicationRequest = new ApplicationRequest
         {
-            ProjectApplicationId = Guid.NewGuid().ToString(),
-            Respondent = new RespondentDto { ProjectApplicationRespondentId = fixedRespondentId },
+            Id = Guid.NewGuid().ToString(),
+            Respondent = new RespondentDto { Id = fixedRespondentId },
             CreatedBy = "CreatedBy",
             Description = "Description",
             Title = "Title",
@@ -109,7 +109,7 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
 
         var existingApplication = new ProjectApplication
         {
-            ProjectApplicationId = applicationRequest.ProjectApplicationId,
+            Id = applicationRequest.Id,
             ProjectApplicationRespondentId = fixedRespondentId,
             CreatedBy = applicationRequest.CreatedBy,
             Description = applicationRequest.Description,
@@ -133,7 +133,7 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
         // Reload entity from database to ensure the update was persisted
         var dbApplication = await _context.ProjectApplications
             .AsNoTracking()
-            .FirstOrDefaultAsync(a => a.ProjectApplicationId == existingApplication.ProjectApplicationId);
+            .FirstOrDefaultAsync(a => a.Id == existingApplication.Id);
 
         dbApplication.ShouldNotBeNull();
         dbApplication.ProjectApplicationRespondentId.ShouldBe(fixedRespondentId);

@@ -13,6 +13,6 @@ public class SaveResponsesSpecification : Specification<ProjectApplicationRespon
     public SaveResponsesSpecification(string applicationId, string respondentId)
     {
         Query
-            .Where(entity => entity.ProjectApplicationId == applicationId && entity.ProjectApplicationRespondentId == respondentId);
+            .Where(entity => entity.ProjectApplicationId == applicationId && entity.Id == respondentId);
     }
 }

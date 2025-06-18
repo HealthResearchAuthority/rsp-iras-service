@@ -36,19 +36,19 @@ public class GetResponses : TestServiceBase<RespondentService>
         {
             new()
             {
-                ProjectApplicationId = fixedApplicationId, ProjectApplicationRespondentId = fixedRespondentId, QuestionId = "Q1",
+                ProjectApplicationId = fixedApplicationId, Id = fixedRespondentId, QuestionId = "Q1",
                 Category = "Category-1", Section = "Section-1", Response = "Answer1", OptionType = "Single",
                 SelectedOptions = "OptionA"
             },
             new()
             {
-                ProjectApplicationId = fixedApplicationId, ProjectApplicationRespondentId = fixedRespondentId, QuestionId = "Q2",
+                ProjectApplicationId = fixedApplicationId, Id = fixedRespondentId, QuestionId = "Q2",
                 Category = "Category-2", Section = "Section-2", Response = "Answer2", OptionType = "Multiple",
                 SelectedOptions = "OptionB,OptionC"
             },
             new()
             {
-                ProjectApplicationId = "OtherApplication", ProjectApplicationRespondentId = "OtherRespondent", QuestionId = "Q3",
+                ProjectApplicationId = "OtherApplication", Id = "OtherRespondent", QuestionId = "Q3",
                 Category = "Category-1", Section = "Section-3", Response = "Answer3", OptionType = "Single",
                 SelectedOptions = "OptionD"
             } // Should be filtered out
@@ -82,19 +82,19 @@ public class GetResponses : TestServiceBase<RespondentService>
         {
             new()
             {
-                ProjectApplicationId = fixedApplicationId, ProjectApplicationRespondentId = fixedRespondentId, QuestionId = "Q1",
+                ProjectApplicationId = fixedApplicationId, Id = fixedRespondentId, QuestionId = "Q1",
                 Category = fixedCategoryId, Section = "Section-1", Response = "Answer1", OptionType = "Single",
                 SelectedOptions = "OptionA"
             },
             new()
             {
-                ProjectApplicationId = fixedApplicationId, ProjectApplicationRespondentId = fixedRespondentId, QuestionId = "Q2",
+                ProjectApplicationId = fixedApplicationId, Id = fixedRespondentId, QuestionId = "Q2",
                 Category = "Category-2", Section = "Section-2", Response = "Answer2", OptionType = "Multiple",
                 SelectedOptions = "OptionB,OptionC"
             }, // Should be filtered out
             new()
             {
-                ProjectApplicationId = fixedApplicationId, ProjectApplicationRespondentId = fixedRespondentId, QuestionId = "Q3",
+                ProjectApplicationId = fixedApplicationId, Id = fixedRespondentId, QuestionId = "Q3",
                 Category = fixedCategoryId, Section = "Section-3", Response = "Answer3", OptionType = "Single",
                 SelectedOptions = "OptionD"
             }

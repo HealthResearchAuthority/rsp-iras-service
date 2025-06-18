@@ -43,7 +43,7 @@ public class GetApplication : TestServiceBase<ApplicationsService>
         var applications = await TestData.SeedData(_context, generator, records);
 
         // get the random application id between 0 and 4
-        var applicationId = applications[Random.Shared.Next(0, 4)].ProjectApplicationId;
+        var applicationId = applications[Random.Shared.Next(0, 4)].Id;
 
         // Act
         var irasApplication = await Sut.GetApplication(applicationId);
@@ -51,7 +51,7 @@ public class GetApplication : TestServiceBase<ApplicationsService>
         // Assert
         irasApplication.ShouldNotBeNull();
         irasApplication.ShouldBeOfType<ApplicationResponse>();
-        irasApplication.ProjectApplicationId.ShouldBe(applicationId);
+        irasApplication.Id.ShouldBe(applicationId);
     }
 
     /// <summary>
@@ -72,7 +72,7 @@ public class GetApplication : TestServiceBase<ApplicationsService>
         var applications = await TestData.SeedData(_context, generator, records, true);
 
         // get the random application id between 0 and 4
-        var applicationId = applications[2].ProjectApplicationId;
+        var applicationId = applications[2].Id;
 
         // Act
         var irasApplication = await Sut.GetApplication(applicationId, "pending");
@@ -80,7 +80,7 @@ public class GetApplication : TestServiceBase<ApplicationsService>
         // Assert
         irasApplication.ShouldNotBeNull();
         irasApplication.ShouldBeOfType<ApplicationResponse>();
-        irasApplication.ProjectApplicationId.ShouldBe(applicationId);
+        irasApplication.Id.ShouldBe(applicationId);
     }
 
     /// <summary>
