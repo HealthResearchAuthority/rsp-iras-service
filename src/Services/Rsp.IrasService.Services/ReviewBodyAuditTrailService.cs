@@ -7,7 +7,7 @@ using Rsp.IrasService.Application.Specifications;
 
 namespace Rsp.IrasService.Services;
 
-public class ReviewBodyAuditTrailService(IReviewBodyAuditTrailRepository repo) : IReviewBodyAuditTrailService
+public class ReviewBodyAuditTrailService(IRegulatoryBodyAuditTrailRepository repo) : IReviewBodyAuditTrailService
 {
     public async Task<ReviewBodyAuditTrailResponse> GetAuditTrailForReviewBody(Guid id, int skip, int take)
     {

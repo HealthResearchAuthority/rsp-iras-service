@@ -27,7 +27,7 @@ public class CreateReviewBodyTests : TestServiceBase<ReviewBodyService>
     public async Task Creates_ReviewBody_Correctly(ReviewBodyDto reviewBodyDto)
     {
         // Arrange
-        Mocker.Use<IReviewBodyRepository>(_reviewBodyRepository);
+        Mocker.Use<IRegulatoryBodyRepository>(_reviewBodyRepository);
         Sut = Mocker.CreateInstance<ReviewBodyService>();
 
         // Act

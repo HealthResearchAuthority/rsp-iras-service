@@ -6,7 +6,7 @@ using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Infrastructure.Repositories;
 
-public class ReviewBodyRepository(IrasContext irasContext) : IReviewBodyRepository
+public class ReviewBodyRepository(IrasContext irasContext) : IRegulatoryBodyRepository
 {
     public Task<IEnumerable<RegulatoryBody>> GetReviewBodies(ISpecification<RegulatoryBody> specification)
     {

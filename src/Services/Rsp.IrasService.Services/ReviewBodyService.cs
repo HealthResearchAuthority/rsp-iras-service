@@ -8,7 +8,7 @@ using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Services;
 
-public class ReviewBodyService(IReviewBodyRepository reviewBodyRepository) : IReviewBodyService
+public class ReviewBodyService(IRegulatoryBodyRepository reviewBodyRepository) : IReviewBodyService
 {
     public async Task<AllReviewBodiesResponse> GetReviewBodies(int pageNumber, int pageSize, string? searchQuery)
     {

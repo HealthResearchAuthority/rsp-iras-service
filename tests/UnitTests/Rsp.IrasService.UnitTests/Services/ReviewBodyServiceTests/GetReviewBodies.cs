@@ -28,7 +28,7 @@ public class GetReviewBodiesTests : TestServiceBase<ReviewBodyService>
     public async Task Returns_Correct_ReviewBodies(int records, Generator<RegulatoryBody> generator)
     {
         // Arrange
-        Mocker.Use<IReviewBodyRepository>(_reviewBodyRepository);
+        Mocker.Use<IRegulatoryBodyRepository>(_reviewBodyRepository);
         Sut = Mocker.CreateInstance<ReviewBodyService>();
 
         // Seed data using number of records to seed

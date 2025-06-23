@@ -18,7 +18,7 @@ public class RemoveReviewBodyUserTests : TestServiceBase<ReviewBodyService>
             DateAdded = DateTime.UtcNow,
         };
 
-        Mocker.GetMock<IReviewBodyRepository>()
+        Mocker.GetMock<IRegulatoryBodyRepository>()
             .Setup(x => x.RemoveUserFromReviewBody(It.IsAny<Guid>(), It.IsAny<Guid>()))
             .ReturnsAsync(reviewBodyUser);
 

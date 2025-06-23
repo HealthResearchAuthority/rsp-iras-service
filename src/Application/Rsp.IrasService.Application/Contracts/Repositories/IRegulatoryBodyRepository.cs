@@ -3,7 +3,7 @@ using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Application.Contracts.Repositories;
 
-public interface IReviewBodyRepository
+public interface IRegulatoryBodyRepository
 {
     Task<IEnumerable<RegulatoryBody>> GetReviewBodies(ISpecification<RegulatoryBody> specification);
 

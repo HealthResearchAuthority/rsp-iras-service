@@ -34,8 +34,8 @@ public static class ServicesConfiguration
         services.AddTransient<IEmailTemplateRepository, EmailTemplateRepository>();
         services.AddTransient<IEventTypeRepository, EventTypeRepository>();
         services.AddTransient<IReviewBodyService, ReviewBodyService>();
-        services.AddTransient<IReviewBodyRepository, ReviewBodyRepository>();
-        services.AddTransient<IReviewBodyAuditTrailRepository, ReviewBodyAuditTrailRepository>();
+        services.AddTransient<IRegulatoryBodyRepository, ReviewBodyRepository>();
+        services.AddTransient<IRegulatoryBodyAuditTrailRepository, ReviewBodyAuditTrailRepository>();
         services.AddTransient<IReviewBodyAuditTrailService, ReviewBodyAuditTrailService>();
         services.AddTransient<IAuditTrailHandler, ReviewBodyAuditTrailHandler>();
         services.AddTransient<IAuditTrailDetailsService, AuditTrailDetailsService>();

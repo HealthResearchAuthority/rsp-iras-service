@@ -25,7 +25,7 @@ public class GetAuditTrailForReviewBody : TestServiceBase<ReviewBodyAuditTrailSe
     public async Task Returns_Correct_AuditTrails(int records, Generator<RegulatoryBodyAuditTrial> generator)
     {
         // Arrange
-        Mocker.Use<IReviewBodyAuditTrailRepository>(_repo);
+        Mocker.Use<IRegulatoryBodyAuditTrailRepository>(_repo);
         Sut = Mocker.CreateInstance<ReviewBodyAuditTrailService>();
 
         // Seed data using number of records to seed
