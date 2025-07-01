@@ -4,10 +4,10 @@ using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Infrastructure.EntitiesConfiguration;
 
-public class RespondentConfiguration : IEntityTypeConfiguration<Respondent>
+public class ProjectRecordConfiguration : IEntityTypeConfiguration<ProjectRecord>
 {
-    public void Configure(EntityTypeBuilder<Respondent> builder)
+    public void Configure(EntityTypeBuilder<ProjectRecord> builder)
     {
-        builder.HasKey(r => r.RespondentId);
+        builder.HasKey(ra => ra.Id);
     }
 }

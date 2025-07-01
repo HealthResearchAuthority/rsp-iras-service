@@ -22,7 +22,7 @@ public class SaveResponsesHandlerTests
         // Arrange
         var request = new RespondentAnswersRequest
         {
-            RespondentId = "R-123",
+            Id = "R-123",
             RespondentAnswers = new List<RespondentAnswerDto>
             {
                 new()

@@ -3,7 +3,7 @@ using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Application.Specifications;
 
-public class GetRespondentApplicationSpecification : Specification<ResearchApplication>
+public class GetRespondentApplicationSpecification : Specification<ProjectRecord>
 {
     /// <summary>
     /// Defines a specification to return a single, all or a number of records
@@ -16,8 +16,8 @@ public class GetRespondentApplicationSpecification : Specification<ResearchAppli
     {
         Query
             .AsNoTracking()
-            .Where(entity => entity.ApplicationId == id && entity.RespondentId == respondentId, id != null)
-            .Where(entity => entity.RespondentId == respondentId, id == null)
+            .Where(entity => entity.Id == id && entity.ProjectPersonnelId == respondentId, id != null)
+            .Where(entity => entity.ProjectPersonnelId == respondentId, id == null)
             .Skip(records, id == null && records == 0)
             .Take(records, id == null && records != 0);
     }

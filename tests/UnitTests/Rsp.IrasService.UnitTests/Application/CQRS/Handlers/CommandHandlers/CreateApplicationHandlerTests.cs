@@ -23,7 +23,7 @@ public class CreateApplicationHandlerTests
         // Arrange
         var request = new ApplicationRequest
         {
-            ApplicationId = "App-123",
+            Id = "App-123",
             Title = "New Project",
             Description = "A sample project",
             CreatedBy = "User-123",
@@ -32,7 +32,7 @@ public class CreateApplicationHandlerTests
 
         var expectedResponse = new ApplicationResponse
         {
-            ApplicationId = "App-123",
+            Id = "App-123",
             Status = "Created Successfully"
         };
 
@@ -47,7 +47,7 @@ public class CreateApplicationHandlerTests
 
         // Assert
         result.ShouldNotBeNull();
-        result.ApplicationId.ShouldBe(expectedResponse.ApplicationId);
+        result.Id.ShouldBe(expectedResponse.Id);
         result.Status.ShouldBe(expectedResponse.Status);
 
         _applicationsServiceMock.Verify(service => service.CreateApplication(request), Times.Once);

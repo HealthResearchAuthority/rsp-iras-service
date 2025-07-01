@@ -3,7 +3,7 @@ using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Application.Specifications;
 
-public class GetReviewBodiesSpecification : Specification<ReviewBody>
+public class GetReviewBodiesSpecification : Specification<RegulatoryBody>
 {
     public GetReviewBodiesSpecification(int pageNumber, int pageSize, string? searchQuery)
     {
@@ -17,11 +17,11 @@ public class GetReviewBodiesSpecification : Specification<ReviewBody>
 
             builder = builder.Where(x =>
                         splitQuery.Any(word =>
-                            x.OrganisationName.Contains(word)
+                            x.RegulatoryBodyName.Contains(word)
                             ));
         }
 
-        builder.OrderBy(x => x.OrganisationName)
+        builder.OrderBy(x => x.RegulatoryBodyName)
         .Skip((pageNumber - 1) * pageSize)
         .Take(pageSize);
     }

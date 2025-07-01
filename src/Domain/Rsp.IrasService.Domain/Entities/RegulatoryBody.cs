@@ -3,12 +3,12 @@ using Rsp.IrasService.Domain.Interfaces;
 
 namespace Rsp.IrasService.Domain.Entities;
 
-public class ReviewBody : IAuditable
+public class RegulatoryBody : IAuditable
 {
     public Guid Id { get; set; }
 
     [Auditable]
-    public string OrganisationName { get; set; } = null!;
+    public string RegulatoryBodyName { get; set; } = null!;
 
     [Auditable]
     public string EmailAddress { get; set; } = null!;
@@ -28,5 +28,5 @@ public class ReviewBody : IAuditable
     public string? UpdatedBy { get; set; }
 
     // navigation properties
-    public ICollection<ReviewBodyUsers> Users { get; set; } = [];
+    public ICollection<RegulatoryBodyUser> Users { get; set; } = [];
 }

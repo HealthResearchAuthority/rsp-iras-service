@@ -6,12 +6,12 @@ namespace Rsp.IrasService.UnitTests.Application.Specifications;
 public class GetApplicationSpecificationTests
 {
     [Theory, AutoData]
-    public void GetApplicationSpecification_ById_ReturnsCorrectSpecification(Generator<ResearchApplication> generator)
+    public void GetApplicationSpecification_ById_ReturnsCorrectSpecification(Generator<ProjectRecord> generator)
     {
         // Arrange
         var applications = generator.Take(3).ToList();
 
-        var spec = new GetApplicationSpecification(id: applications[0].ApplicationId);
+        var spec = new GetApplicationSpecification(id: applications[0].Id);
 
         // Act
         var result = spec
@@ -20,12 +20,12 @@ public class GetApplicationSpecificationTests
 
         // Assert
         result.ShouldNotBeNull();
-        result.ApplicationId.ShouldBe(applications[0].ApplicationId);
+        result.Id.ShouldBe(applications[0].Id);
     }
 
     [Theory, InlineAutoData(5, 5), InlineAutoData(0, 10)]
     public void GetApplicationSpecification_ByRecords_ReturnsCorrectSpecification(int records, int expected,
-        Generator<ResearchApplication> generator)
+        Generator<ProjectRecord> generator)
     {
         // Arrange
         var applications = generator.Take(10).ToList();
@@ -44,7 +44,7 @@ public class GetApplicationSpecificationTests
 
     [Theory, AutoData]
     public void GetApplicationSpecification_ByStatusAndId_ReturnsCorrectSpecification(
-        Generator<ResearchApplication> generator)
+        Generator<ProjectRecord> generator)
     {
         // Arrange
         var applications = generator.Take(10).ToList();
@@ -53,7 +53,7 @@ public class GetApplicationSpecificationTests
         applications[2].Status = "pending";
 
         // out of 10 records, it should return a single record
-        var spec = new GetApplicationSpecification("pending", applications[1].ApplicationId);
+        var spec = new GetApplicationSpecification("pending", applications[1].Id);
 
         // Act
         var result = spec
@@ -62,12 +62,12 @@ public class GetApplicationSpecificationTests
 
         // Assert
         result.Count.ShouldBe(1);
-        result[0].ApplicationId.ShouldBe(applications[1].ApplicationId);
+        result[0].Id.ShouldBe(applications[1].Id);
     }
 
     [Theory, InlineAutoData(5, 2), InlineAutoData(0, 2)]
     public void GetApplicationSpecification_ByStatusAndRecords_ReturnsCorrectSpecification(int records, int expected,
-        Generator<ResearchApplication> generator)
+        Generator<ProjectRecord> generator)
     {
         // Arrange
         var applications = generator.Take(10).ToList();

@@ -34,8 +34,8 @@ public class SaveResponses : TestServiceBase<RespondentService>
 
         var respondentAnswersRequest = new RespondentAnswersRequest
         {
-            ApplicationId = fixedApplicationId,
-            RespondentId = fixedRespondentId,
+            ProjectApplicationId = fixedApplicationId,
+            Id = fixedRespondentId,
             RespondentAnswers = new List<RespondentAnswerDto>
             {
                 new()
@@ -65,7 +65,7 @@ public class SaveResponses : TestServiceBase<RespondentService>
         await respondentService.SaveResponses(respondentAnswersRequest);
 
         // Assert
-        var savedResponses = await _context.RespondentAnswers.ToListAsync();
+        var savedResponses = await _context.ProjectRecordAnswers.ToListAsync();
         savedResponses.ShouldNotBeNull();
         savedResponses.Count.ShouldBe(2);
 
@@ -73,8 +73,8 @@ public class SaveResponses : TestServiceBase<RespondentService>
         {
             var expectedAnswer =
                 respondentAnswersRequest.RespondentAnswers.First(a => a.QuestionId == savedResponse.QuestionId);
-            savedResponse.ApplicationId.ShouldBe(fixedApplicationId);
-            savedResponse.RespondentId.ShouldBe(fixedRespondentId);
+            savedResponse.ProjectRecordId.ShouldBe(fixedApplicationId);
+            savedResponse.ProjectPersonnelId.ShouldBe(fixedRespondentId);
             savedResponse.QuestionId.ShouldBe(expectedAnswer.QuestionId);
             savedResponse.Category.ShouldBe(expectedAnswer.CategoryId);
             savedResponse.Section.ShouldBe(expectedAnswer.SectionId);
@@ -95,8 +95,8 @@ public class SaveResponses : TestServiceBase<RespondentService>
         var respondentService = new RespondentService(_respondentRepository);
         var respondentAnswersRequest = new RespondentAnswersRequest
         {
-            ApplicationId = "ApplicationId-123",
-            RespondentId = "RespondentId-123",
+            ProjectApplicationId = "ApplicationId-123",
+            Id = "RespondentId-123",
             RespondentAnswers = new List<RespondentAnswerDto>() // Empty list
         };
 
@@ -104,7 +104,7 @@ public class SaveResponses : TestServiceBase<RespondentService>
         await respondentService.SaveResponses(respondentAnswersRequest);
 
         // Assert
-        var savedResponses = await _context.RespondentAnswers.ToListAsync();
+        var savedResponses = await _context.ProjectRecordAnswers.ToListAsync();
         savedResponses.ShouldBeEmpty();
     }
 }

@@ -8,14 +8,14 @@ using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Services;
 
-public class ReviewBodyService(IReviewBodyRepository reviewBodyRepository) : IReviewBodyService
+public class ReviewBodyService(IRegulatoryBodyRepository reviewBodyRepository) : IReviewBodyService
 {
     public async Task<AllReviewBodiesResponse> GetReviewBodies(int pageNumber, int pageSize, string? searchQuery)
     {
         var specification = new GetReviewBodiesSpecification(pageNumber, pageSize, searchQuery);
 
-        var rbResponses = await reviewBodyRepository.GetReviewBodies(specification);
-        var rbCount = await reviewBodyRepository.GetReviewBodyCount(searchQuery);
+        var rbResponses = await reviewBodyRepository.GetRegulatoryBodies(specification);
+        var rbCount = await reviewBodyRepository.GetRegulatoryBodyCount(searchQuery);
 
         var response = new AllReviewBodiesResponse
         {
@@ -30,47 +30,47 @@ public class ReviewBodyService(IReviewBodyRepository reviewBodyRepository) : IRe
     {
         var specification = new GetReviewBodySpecification(id: id);
 
-        var response = await reviewBodyRepository.GetReviewBody(specification);
+        var response = await reviewBodyRepository.GetRegulatoryBody(specification);
 
         return response.Adapt<ReviewBodyDto>();
     }
 
     public async Task<ReviewBodyDto> CreateReviewBody(ReviewBodyDto reviewBody)
     {
-        var reviewBodyEntity = reviewBody.Adapt<ReviewBody>();
-        var response = await reviewBodyRepository.CreateReviewBody(reviewBodyEntity);
+        var reviewBodyEntity = reviewBody.Adapt<RegulatoryBody>();
+        var response = await reviewBodyRepository.CreateRegulatoryBody(reviewBodyEntity);
         return response.Adapt<ReviewBodyDto>();
     }
 
     public async Task<ReviewBodyDto> UpdateReviewBody(ReviewBodyDto reviewBody)
     {
-        var reviewBodyEntity = reviewBody.Adapt<ReviewBody>();
-        var response = await reviewBodyRepository.UpdateReviewBody(reviewBodyEntity);
+        var reviewBodyEntity = reviewBody.Adapt<RegulatoryBody>();
+        var response = await reviewBodyRepository.UpdateRegulatoryBody(reviewBodyEntity);
         return response.Adapt<ReviewBodyDto>();
     }
 
     public async Task<ReviewBodyDto?> DisableReviewBody(Guid id)
     {
-        var response = await reviewBodyRepository.DisableReviewBody(id);
+        var response = await reviewBodyRepository.DisableRegulatoryBody(id);
         return response.Adapt<ReviewBodyDto?>();
     }
 
     public async Task<ReviewBodyDto?> EnableReviewBody(Guid id)
     {
-        var response = await reviewBodyRepository.EnableReviewBody(id);
+        var response = await reviewBodyRepository.EnableRegulatoryBody(id);
         return response.Adapt<ReviewBodyDto?>();
     }
 
     public async Task<ReviewBodyUserDto?> AddUserToReviewBody(ReviewBodyUserDto reviewBodyUser)
     {
-        var reviewBodyUserEntity = reviewBodyUser.Adapt<ReviewBodyUsers>();
-        var response = await reviewBodyRepository.AddUserToReviewBody(reviewBodyUserEntity);
+        var reviewBodyUserEntity = reviewBodyUser.Adapt<RegulatoryBodyUser>();
+        var response = await reviewBodyRepository.AddUserToRegulatoryBody(reviewBodyUserEntity);
         return response.Adapt<ReviewBodyUserDto?>();
     }
 
     public async Task<ReviewBodyUserDto?> RemoveUserFromReviewBody(Guid reviewBodyId, Guid userId)
     {
-        var response = await reviewBodyRepository.RemoveUserFromReviewBody(reviewBodyId, userId);
+        var response = await reviewBodyRepository.RemoveUserFromRegulatoryBody(reviewBodyId, userId);
         return response.Adapt<ReviewBodyUserDto?>();
     }
 }

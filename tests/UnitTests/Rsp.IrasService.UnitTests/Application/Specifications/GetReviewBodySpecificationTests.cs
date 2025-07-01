@@ -7,7 +7,7 @@ public class GetReviewBodySpecificationTests
 {
     [Theory, AutoData]
     public void GetRespondentApplicationSpecification_ById_ReturnsCorrectSpecification(
-        Generator<ReviewBody> generator)
+        Generator<RegulatoryBody> generator)
     {
         // Arrange
         var applications = generator.Take(5).ToList();

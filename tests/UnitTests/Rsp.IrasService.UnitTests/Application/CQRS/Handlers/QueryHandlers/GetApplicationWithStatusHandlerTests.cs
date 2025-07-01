@@ -24,7 +24,7 @@ public class GetApplicationWithStatusHandlerTests
         var status = "Approved";
         var expectedResponse = new ApplicationResponse
         {
-            ApplicationId = applicationId,
+            Id = applicationId,
             Status = status
         };
 
@@ -43,7 +43,7 @@ public class GetApplicationWithStatusHandlerTests
 
         // Assert
         result.ShouldNotBeNull();
-        result.ApplicationId.ShouldBe(expectedResponse.ApplicationId);
+        result.Id.ShouldBe(expectedResponse.Id);
         result.Status.ShouldBe(expectedResponse.Status);
 
         _applicationsServiceMock.Verify(service => service.GetApplication(applicationId, status), Times.Once);

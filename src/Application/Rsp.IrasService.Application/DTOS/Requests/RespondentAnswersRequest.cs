@@ -5,12 +5,12 @@ public record RespondentAnswersRequest
     /// <summary>
     /// IRAS Project Id
     /// </summary>
-    public string RespondentId { get; set; } = null!;
+    public string Id { get; set; } = null!;
 
     /// <summary>
     /// Application Id
     /// </summary>
-    public string ApplicationId { get; set; } = null!;
+    public string ProjectApplicationId { get; set; } = null!;
 
     /// <summary>
     /// Respondent Answers
