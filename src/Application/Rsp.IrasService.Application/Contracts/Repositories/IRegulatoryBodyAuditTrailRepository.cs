@@ -5,7 +5,7 @@ namespace Rsp.IrasService.Application.Contracts.Repositories;
 
 public interface IRegulatoryBodyAuditTrailRepository
 {
-    IEnumerable<RegulatoryBodyAuditTrial> GetForReviewBody(ISpecification<RegulatoryBodyAuditTrial> specification);
+    IEnumerable<RegulatoryBodyAuditTrail> GetForReviewBody(ISpecification<RegulatoryBodyAuditTrail> specification);
 
-    Task<int> GetTotalNumberOfRecordsForReviewBody(ISpecification<RegulatoryBodyAuditTrial> specification);
+    Task<int> GetTotalNumberOfRecordsForReviewBody(ISpecification<RegulatoryBodyAuditTrail> specification);
 }

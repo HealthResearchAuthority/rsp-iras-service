@@ -5,12 +5,12 @@ using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Infrastructure.Repositories;
 
-public class RespondentRepository(IrasContext irasContext) : IRespondentRepository
+public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRepository
 {
-    public async Task SaveResponses(ISpecification<ProjectApplicationRespondentAnswer> specification, List<ProjectApplicationRespondentAnswer> respondentAnswers)
+    public async Task SaveResponses(ISpecification<ProjectRecordAnswer> specification, List<ProjectRecordAnswer> respondentAnswers)
     {
         var answers = irasContext
-            .ProjectApplicationRespondentAnswers
+            .ProjectRecordAnswers
             .WithSpecification(specification);
 
         foreach (var answer in respondentAnswers)
@@ -24,7 +24,7 @@ public class RespondentRepository(IrasContext irasContext) : IRespondentReposito
                 if ((string.IsNullOrWhiteSpace(existingAnswer.OptionType) && string.IsNullOrWhiteSpace(answer.Response)) ||
                     (existingAnswer.OptionType is "Single" or "Multiple" && string.IsNullOrWhiteSpace(answer.SelectedOptions)))
                 {
-                    irasContext.ProjectApplicationRespondentAnswers.Remove(existingAnswer);
+                    irasContext.ProjectRecordAnswers.Remove(existingAnswer);
                     continue;
                 }
 
@@ -41,16 +41,16 @@ public class RespondentRepository(IrasContext irasContext) : IRespondentReposito
                 continue;
             }
 
-            await irasContext.ProjectApplicationRespondentAnswers.AddAsync(answer);
+            await irasContext.ProjectRecordAnswers.AddAsync(answer);
         }
 
         await irasContext.SaveChangesAsync();
     }
 
-    public Task<IEnumerable<ProjectApplicationRespondentAnswer>> GetResponses(ISpecification<ProjectApplicationRespondentAnswer> specification)
+    public Task<IEnumerable<ProjectRecordAnswer>> GetResponses(ISpecification<ProjectRecordAnswer> specification)
     {
         var result = irasContext
-           .ProjectApplicationRespondentAnswers
+           .ProjectRecordAnswers
            .WithSpecification(specification)
            .AsEnumerable();
 

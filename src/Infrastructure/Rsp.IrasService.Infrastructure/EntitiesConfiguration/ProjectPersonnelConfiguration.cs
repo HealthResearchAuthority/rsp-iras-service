@@ -4,9 +4,9 @@ using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Infrastructure.EntitiesConfiguration;
 
-public class ProjectApplicationRespondentConfiguration : IEntityTypeConfiguration<ProjectApplicationRespondent>
+public class ProjectPersonnelConfiguration : IEntityTypeConfiguration<ProjectPersonnel>
 {
-    public void Configure(EntityTypeBuilder<ProjectApplicationRespondent> builder)
+    public void Configure(EntityTypeBuilder<ProjectPersonnel> builder)
     {
         builder.HasKey(r => r.Id);
     }

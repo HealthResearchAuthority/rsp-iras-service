@@ -9,7 +9,7 @@ namespace Rsp.IrasService.UnitTests.Services.ReviewBodyAuditTrailServiceTests;
 
 public class GetAuditTrailForReviewBody : TestServiceBase<ReviewBodyAuditTrailService>
 {
-    private readonly ReviewBodyAuditTrailRepository _repo;
+    private readonly RegulatoryBodyAuditTrailRepository _repo;
     private readonly IrasContext _context;
 
     public GetAuditTrailForReviewBody()
@@ -18,11 +18,11 @@ public class GetAuditTrailForReviewBody : TestServiceBase<ReviewBodyAuditTrailSe
             .UseInMemoryDatabase(Guid.NewGuid().ToString("N")).Options;
 
         _context = new IrasContext(options);
-        _repo = new ReviewBodyAuditTrailRepository(_context);
+        _repo = new RegulatoryBodyAuditTrailRepository(_context);
     }
 
     [Theory, InlineAutoData(10)]
-    public async Task Returns_Correct_AuditTrails(int records, Generator<RegulatoryBodyAuditTrial> generator)
+    public async Task Returns_Correct_AuditTrails(int records, Generator<RegulatoryBodyAuditTrail> generator)
     {
         // Arrange
         Mocker.Use<IRegulatoryBodyAuditTrailRepository>(_repo);
@@ -31,8 +31,8 @@ public class GetAuditTrailForReviewBody : TestServiceBase<ReviewBodyAuditTrailSe
         // Seed data using number of records to seed
         var testData = await TestData.SeedData(_context, generator, records);
 
-        var id = testData.FirstOrDefault()!.RegulatoryBodiesId;
-        var expectedData = _context.RegulatoryBodyAuditTrial.Where(x => x.RegulatoryBodiesId == id);
+        var id = testData.FirstOrDefault()!.RegulatoryBodyId;
+        var expectedData = _context.RegulatoryBodiesAuditTrail.Where(x => x.RegulatoryBodyId == id);
 
         // Act
         var result = await Sut.GetAuditTrailForReviewBody(id, 0, 10);

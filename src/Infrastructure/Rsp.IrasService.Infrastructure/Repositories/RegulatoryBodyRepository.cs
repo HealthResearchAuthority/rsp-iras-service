@@ -6,9 +6,9 @@ using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Infrastructure.Repositories;
 
-public class ReviewBodyRepository(IrasContext irasContext) : IRegulatoryBodyRepository
+public class RegulatoryBodyRepository(IrasContext irasContext) : IRegulatoryBodyRepository
 {
-    public Task<IEnumerable<RegulatoryBody>> GetReviewBodies(ISpecification<RegulatoryBody> specification)
+    public Task<IEnumerable<RegulatoryBody>> GetRegulatoryBodies(ISpecification<RegulatoryBody> specification)
     {
         var result = irasContext
             .RegulatoryBodies
@@ -18,7 +18,7 @@ public class ReviewBodyRepository(IrasContext irasContext) : IRegulatoryBodyRepo
         return Task.FromResult(result);
     }
 
-    public async Task<RegulatoryBody> CreateReviewBody(RegulatoryBody reviewBody)
+    public async Task<RegulatoryBody> CreateRegulatoryBody(RegulatoryBody reviewBody)
     {
         reviewBody.Id = Guid.NewGuid();
         reviewBody.CreatedDate = DateTime.Now;
@@ -28,13 +28,13 @@ public class ReviewBodyRepository(IrasContext irasContext) : IRegulatoryBodyRepo
         return reviewBody;
     }
 
-    public async Task<RegulatoryBody> UpdateReviewBody(RegulatoryBody reviewBody)
+    public async Task<RegulatoryBody> UpdateRegulatoryBody(RegulatoryBody reviewBody)
     {
         var reviewBodyEntity = await irasContext
             .RegulatoryBodies
             .SingleOrDefaultAsync(r => r.Id == reviewBody.Id);
 
-        if (reviewBodyEntity == null) return await CreateReviewBody(reviewBody);
+        if (reviewBodyEntity == null) return await CreateRegulatoryBody(reviewBody);
 
         irasContext.Entry(reviewBodyEntity).CurrentValues.SetValues(reviewBody);
         irasContext.Entry(reviewBodyEntity).Property(r => r.Id).IsModified = false;
@@ -48,7 +48,7 @@ public class ReviewBodyRepository(IrasContext irasContext) : IRegulatoryBodyRepo
         return reviewBodyEntity;
     }
 
-    public async Task<RegulatoryBody?> DisableReviewBody(Guid id)
+    public async Task<RegulatoryBody?> DisableRegulatoryBody(Guid id)
     {
         var reviewBodyEntity = await irasContext
             .RegulatoryBodies
@@ -62,7 +62,7 @@ public class ReviewBodyRepository(IrasContext irasContext) : IRegulatoryBodyRepo
         return reviewBodyEntity;
     }
 
-    public async Task<RegulatoryBody?> EnableReviewBody(Guid id)
+    public async Task<RegulatoryBody?> EnableRegulatoryBody(Guid id)
     {
         var reviewBodyEntity = await irasContext
             .RegulatoryBodies
@@ -79,30 +79,30 @@ public class ReviewBodyRepository(IrasContext irasContext) : IRegulatoryBodyRepo
         return reviewBodyEntity;
     }
 
-    public async Task<RegulatoryBodyUsers> AddUserToReviewBody(RegulatoryBodyUsers user)
+    public async Task<RegulatoryBodyUser> AddUserToRegulatoryBody(RegulatoryBodyUser user)
     {
-        var addedUser = await irasContext.RegulatoryBodyUsers.AddAsync(user);
+        var addedUser = await irasContext.RegulatoryBodiesUsers.AddAsync(user);
 
         await irasContext.SaveChangesAsync();
 
         return addedUser.Entity;
     }
 
-    public async Task<RegulatoryBodyUsers?> RemoveUserFromReviewBody(Guid reviewBodyId, Guid userId)
+    public async Task<RegulatoryBodyUser?> RemoveUserFromRegulatoryBody(Guid reviewBodyId, Guid userId)
     {
-        var userToRemove = await irasContext.RegulatoryBodyUsers
+        var userToRemove = await irasContext.RegulatoryBodiesUsers
             .SingleOrDefaultAsync(r => r.Id == reviewBodyId && r.UserId == userId);
 
         if (userToRemove == null) return null;
 
-        var removedUser = irasContext.RegulatoryBodyUsers.Remove(userToRemove);
+        var removedUser = irasContext.RegulatoryBodiesUsers.Remove(userToRemove);
 
         await irasContext.SaveChangesAsync();
 
         return removedUser.Entity;
     }
 
-    public async Task<RegulatoryBody?> GetReviewBody(ISpecification<RegulatoryBody> specification)
+    public async Task<RegulatoryBody?> GetRegulatoryBody(ISpecification<RegulatoryBody> specification)
     {
         var result = await irasContext
            .RegulatoryBodies
@@ -112,7 +112,7 @@ public class ReviewBodyRepository(IrasContext irasContext) : IRegulatoryBodyRepo
         return result;
     }
 
-    public Task<int> GetReviewBodyCount(string? searchQuery = null)
+    public Task<int> GetRegulatoryBodyCount(string? searchQuery = null)
     {
         if (!string.IsNullOrEmpty(searchQuery))
         {

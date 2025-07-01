@@ -4,9 +4,9 @@ using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Infrastructure.EntitiesConfiguration;
 
-public class ProjectApplicationConfiguration : IEntityTypeConfiguration<ProjectApplication>
+public class ProjectRecordConfiguration : IEntityTypeConfiguration<ProjectRecord>
 {
-    public void Configure(EntityTypeBuilder<ProjectApplication> builder)
+    public void Configure(EntityTypeBuilder<ProjectRecord> builder)
     {
         builder.HasKey(ra => ra.Id);
     }

@@ -45,7 +45,7 @@ public class ReviewBodyAuditTrailHandlerTests
     public void GenerateAuditTrails_ShouldReturnEmptyList_WhenEntityIsNotReviewBody()
     {
         // Arrange
-        var entity = new ProjectApplicationRespondent { Id = "id" };
+        var entity = new ProjectPersonnel { Id = "id" };
         var systemAdminEmail = "adminEmail";
 
         var entityEntry = MockEntityEntry(entity);
@@ -73,7 +73,7 @@ public class ReviewBodyAuditTrailHandlerTests
         // Assert
         var auditTrail = Assert.Single(result);
         Assert.Equal("name was created", auditTrail.Description);
-        Assert.Equal(id, auditTrail.RegulatoryBodiesId);
+        Assert.Equal(id, auditTrail.RegulatoryBodyId);
         Assert.Equal(systemAdminEmail, auditTrail.User);
     }
 
@@ -95,7 +95,7 @@ public class ReviewBodyAuditTrailHandlerTests
         // Assert
         var auditTrail = Assert.Single(result);
         Assert.Equal("name was enabled", auditTrail.Description);
-        Assert.Equal(id, auditTrail.RegulatoryBodiesId);
+        Assert.Equal(id, auditTrail.RegulatoryBodyId);
         Assert.Equal(systemAdminEmail, auditTrail.User);
     }
 
@@ -116,7 +116,7 @@ public class ReviewBodyAuditTrailHandlerTests
         // Assert
         var auditTrail = Assert.Single(result);
         Assert.Equal("RegulatoryBodyName was changed from name to new name", auditTrail.Description);
-        Assert.Equal(id, auditTrail.RegulatoryBodiesId);
+        Assert.Equal(id, auditTrail.RegulatoryBodyId);
         Assert.Equal(systemAdminEmail, auditTrail.User);
     }
 
@@ -151,7 +151,7 @@ public class ReviewBodyAuditTrailHandlerTests
         // Assert
         var auditTrail = Assert.Single(result);
         Assert.Equal("Countries was changed from country1, country2 to country1", auditTrail.Description);
-        Assert.Equal(id, auditTrail.RegulatoryBodiesId);
+        Assert.Equal(id, auditTrail.RegulatoryBodyId);
         Assert.Equal(systemAdminEmail, auditTrail.User);
     }
 

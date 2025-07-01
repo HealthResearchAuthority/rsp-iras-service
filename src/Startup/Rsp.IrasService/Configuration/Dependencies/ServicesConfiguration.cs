@@ -23,10 +23,10 @@ public static class ServicesConfiguration
         services.AddSingleton<ITokenHelper, TokenHelper>();
 
         services.AddTransient<IApplicationsService, ApplicationsService>();
-        services.AddTransient<IApplicationRepository, ApplicationRepository>();
+        services.AddTransient<IProjectRecordRepository, ProjectRecordRepository>();
 
         services.AddTransient<IRespondentService, RespondentService>();
-        services.AddTransient<IRespondentRepository, RespondentRepository>();
+        services.AddTransient<IProjectPersonnelRepository, RespondentRepository>();
         services.AddTransient<ITriggerEmailNotificationService, TriggerEmailNotificationService>();
         services.AddTransient<IMessageQueueService, AzureMessageQueueService>();
         services.AddTransient<IEventTypeService, EventTypeService>();
@@ -34,8 +34,8 @@ public static class ServicesConfiguration
         services.AddTransient<IEmailTemplateRepository, EmailTemplateRepository>();
         services.AddTransient<IEventTypeRepository, EventTypeRepository>();
         services.AddTransient<IReviewBodyService, ReviewBodyService>();
-        services.AddTransient<IRegulatoryBodyRepository, ReviewBodyRepository>();
-        services.AddTransient<IRegulatoryBodyAuditTrailRepository, ReviewBodyAuditTrailRepository>();
+        services.AddTransient<IRegulatoryBodyRepository, RegulatoryBodyRepository>();
+        services.AddTransient<IRegulatoryBodyAuditTrailRepository, RegulatoryBodyAuditTrailRepository>();
         services.AddTransient<IReviewBodyAuditTrailService, ReviewBodyAuditTrailService>();
         services.AddTransient<IAuditTrailHandler, ReviewBodyAuditTrailHandler>();
         services.AddTransient<IAuditTrailDetailsService, AuditTrailDetailsService>();

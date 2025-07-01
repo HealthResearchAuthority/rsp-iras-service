@@ -14,7 +14,7 @@ namespace Rsp.IrasService.UnitTests.Services.ApplicationsServiceTests;
 /// </summary>
 public class UpdateApplication : TestServiceBase<ApplicationsService>
 {
-    private readonly ApplicationRepository _applicationRepository;
+    private readonly ProjectRecordRepository _applicationRepository;
     private readonly IrasContext _context;
 
     public UpdateApplication()
@@ -23,7 +23,7 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
             .UseInMemoryDatabase(Guid.NewGuid().ToString("N")).Options;
 
         _context = new IrasContext(options);
-        _applicationRepository = new ApplicationRepository(_context);
+        _applicationRepository = new ProjectRecordRepository(_context);
     }
 
     /// <summary>
@@ -33,10 +33,10 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
     [Theory]
     [InlineAutoData(1)]
     public async Task Updates_And_Returns_CreateApplicationResponse(int records,
-        Generator<ProjectApplication> generator, ApplicationRequest createApplicationRequest)
+        Generator<ProjectRecord> generator, ApplicationRequest createApplicationRequest)
     {
         // Arrange
-        Mocker.Use<IApplicationRepository>(_applicationRepository);
+        Mocker.Use<IProjectRecordRepository>(_applicationRepository);
 
         Sut = Mocker.CreateInstance<ApplicationsService>();
 
@@ -67,11 +67,11 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
     /// <param name="createApplicationRequest">Represents the model for new application request</param>
     [Theory]
     [InlineAutoData(1)]
-    public async Task ReturnsNull_If_Id_DoesNotExist(int records, Generator<ProjectApplication> generator,
+    public async Task ReturnsNull_If_Id_DoesNotExist(int records, Generator<ProjectRecord> generator,
         ApplicationRequest createApplicationRequest)
     {
         // Arrange
-        Mocker.Use<IApplicationRepository>(_applicationRepository);
+        Mocker.Use<IProjectRecordRepository>(_applicationRepository);
 
         Sut = Mocker.CreateInstance<ApplicationsService>();
 
@@ -107,17 +107,17 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
             UpdatedBy = "UpdatedBy"
         };
 
-        var existingApplication = new ProjectApplication
+        var existingApplication = new ProjectRecord
         {
             Id = applicationRequest.Id,
-            ProjectApplicationRespondentId = fixedRespondentId,
+            ProjectPersonnelId = fixedRespondentId,
             CreatedBy = applicationRequest.CreatedBy,
             Description = applicationRequest.Description,
             Title = applicationRequest.Title,
             UpdatedBy = applicationRequest.UpdatedBy
         };
 
-        await _context.ProjectApplications.AddAsync(existingApplication);
+        await _context.ProjectRecords.AddAsync(existingApplication);
         await _context.SaveChangesAsync();
 
         // Ensure EF Core is tracking the entity
@@ -131,13 +131,13 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
         updatedApplication.ShouldBeOfType<ApplicationResponse>();
 
         // Reload entity from database to ensure the update was persisted
-        var dbApplication = await _context.ProjectApplications
+        var dbApplication = await _context.ProjectRecords
             .AsNoTracking()
             .FirstOrDefaultAsync(a => a.Id == existingApplication.Id);
 
         dbApplication.ShouldNotBeNull();
-        dbApplication.ProjectApplicationRespondentId.ShouldBe(fixedRespondentId);
+        dbApplication.ProjectPersonnelId.ShouldBe(fixedRespondentId);
 
-        (await _context.ProjectApplications.CountAsync()).ShouldBe(1);
+        (await _context.ProjectRecords.CountAsync()).ShouldBe(1);
     }
 }

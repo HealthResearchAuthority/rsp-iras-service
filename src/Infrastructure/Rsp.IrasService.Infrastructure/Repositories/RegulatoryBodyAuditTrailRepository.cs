@@ -6,19 +6,19 @@ using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Infrastructure.Repositories;
 
-public class ReviewBodyAuditTrailRepository(IrasContext irasContext) : IRegulatoryBodyAuditTrailRepository
+public class RegulatoryBodyAuditTrailRepository(IrasContext irasContext) : IRegulatoryBodyAuditTrailRepository
 {
-    public IEnumerable<RegulatoryBodyAuditTrial> GetForReviewBody(ISpecification<RegulatoryBodyAuditTrial> specification)
+    public IEnumerable<RegulatoryBodyAuditTrail> GetForReviewBody(ISpecification<RegulatoryBodyAuditTrail> specification)
     {
         return irasContext
-            .RegulatoryBodyAuditTrial
+            .RegulatoryBodiesAuditTrail
             .WithSpecification(specification);
     }
 
-    public async Task<int> GetTotalNumberOfRecordsForReviewBody(ISpecification<RegulatoryBodyAuditTrial> specification)
+    public async Task<int> GetTotalNumberOfRecordsForReviewBody(ISpecification<RegulatoryBodyAuditTrail> specification)
     {
         return await irasContext
-            .RegulatoryBodyAuditTrial
+            .RegulatoryBodiesAuditTrail
             .WithSpecification(specification)
             .CountAsync();
     }

@@ -1,6 +1,6 @@
 ﻿namespace Rsp.IrasService.Domain.Entities;
 
-public class RegulatoryBodyUsers
+public class RegulatoryBodyUser
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public Guid UserId { get; set; }

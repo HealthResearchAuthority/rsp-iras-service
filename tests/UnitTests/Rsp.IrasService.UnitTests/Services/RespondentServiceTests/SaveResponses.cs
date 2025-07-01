@@ -65,7 +65,7 @@ public class SaveResponses : TestServiceBase<RespondentService>
         await respondentService.SaveResponses(respondentAnswersRequest);
 
         // Assert
-        var savedResponses = await _context.ProjectApplicationRespondentAnswers.ToListAsync();
+        var savedResponses = await _context.ProjectRecordAnswers.ToListAsync();
         savedResponses.ShouldNotBeNull();
         savedResponses.Count.ShouldBe(2);
 
@@ -73,8 +73,8 @@ public class SaveResponses : TestServiceBase<RespondentService>
         {
             var expectedAnswer =
                 respondentAnswersRequest.RespondentAnswers.First(a => a.QuestionId == savedResponse.QuestionId);
-            savedResponse.ProjectApplicationId.ShouldBe(fixedApplicationId);
-            savedResponse.Id.ShouldBe(fixedRespondentId);
+            savedResponse.ProjectRecordId.ShouldBe(fixedApplicationId);
+            savedResponse.ProjectPersonnelId.ShouldBe(fixedRespondentId);
             savedResponse.QuestionId.ShouldBe(expectedAnswer.QuestionId);
             savedResponse.Category.ShouldBe(expectedAnswer.CategoryId);
             savedResponse.Section.ShouldBe(expectedAnswer.SectionId);
@@ -104,7 +104,7 @@ public class SaveResponses : TestServiceBase<RespondentService>
         await respondentService.SaveResponses(respondentAnswersRequest);
 
         // Assert
-        var savedResponses = await _context.ProjectApplicationRespondentAnswers.ToListAsync();
+        var savedResponses = await _context.ProjectRecordAnswers.ToListAsync();
         savedResponses.ShouldBeEmpty();
     }
 }

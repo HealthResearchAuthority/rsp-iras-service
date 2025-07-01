@@ -13,7 +13,7 @@ namespace Rsp.IrasService.UnitTests.Services.ApplicationsServiceTests;
 /// </summary>
 public class GetApplication : TestServiceBase<ApplicationsService>
 {
-    private readonly ApplicationRepository _applicationRepository;
+    private readonly ProjectRecordRepository _applicationRepository;
     private readonly IrasContext _context;
 
     public GetApplication()
@@ -22,7 +22,7 @@ public class GetApplication : TestServiceBase<ApplicationsService>
             .UseInMemoryDatabase(Guid.NewGuid().ToString("N")).Options;
 
         _context = new IrasContext(options);
-        _applicationRepository = new ApplicationRepository(_context);
+        _applicationRepository = new ProjectRecordRepository(_context);
     }
 
     /// <summary>
@@ -32,10 +32,10 @@ public class GetApplication : TestServiceBase<ApplicationsService>
     /// <param name="generator">Test Data Generator</param>
     [Theory]
     [InlineAutoData(5)]
-    public async Task Returns_Application_ById(int records, Generator<ProjectApplication> generator)
+    public async Task Returns_Application_ById(int records, Generator<ProjectRecord> generator)
     {
         // Arrange
-        Mocker.Use<IApplicationRepository>(_applicationRepository);
+        Mocker.Use<IProjectRecordRepository>(_applicationRepository);
 
         Sut = Mocker.CreateInstance<ApplicationsService>();
 
@@ -61,10 +61,10 @@ public class GetApplication : TestServiceBase<ApplicationsService>
     /// <param name="generator">Test Data Generator</param>
     [Theory]
     [InlineAutoData(5)]
-    public async Task Returns_Application_ByIdAndStatus(int records, Generator<ProjectApplication> generator)
+    public async Task Returns_Application_ByIdAndStatus(int records, Generator<ProjectRecord> generator)
     {
         // Arrange
-        Mocker.Use<IApplicationRepository>(_applicationRepository);
+        Mocker.Use<IProjectRecordRepository>(_applicationRepository);
 
         Sut = Mocker.CreateInstance<ApplicationsService>();
 
@@ -89,10 +89,10 @@ public class GetApplication : TestServiceBase<ApplicationsService>
     /// <param name="generator">Test data generator</param>
     [Theory]
     [InlineAutoData(5)]
-    public async Task ReturnsNull_If_Id_DoesNotExist(int records, Generator<ProjectApplication> generator)
+    public async Task ReturnsNull_If_Id_DoesNotExist(int records, Generator<ProjectRecord> generator)
     {
         // Arrange
-        Mocker.Use<IApplicationRepository>(_applicationRepository);
+        Mocker.Use<IProjectRecordRepository>(_applicationRepository);
 
         Sut = Mocker.CreateInstance<ApplicationsService>();
 

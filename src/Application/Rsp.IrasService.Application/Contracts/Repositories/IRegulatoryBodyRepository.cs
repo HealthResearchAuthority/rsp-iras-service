@@ -5,21 +5,21 @@ namespace Rsp.IrasService.Application.Contracts.Repositories;
 
 public interface IRegulatoryBodyRepository
 {
-    Task<IEnumerable<RegulatoryBody>> GetReviewBodies(ISpecification<RegulatoryBody> specification);
+    Task<IEnumerable<RegulatoryBody>> GetRegulatoryBodies(ISpecification<RegulatoryBody> specification);
 
-    Task<RegulatoryBody?> GetReviewBody(ISpecification<RegulatoryBody> specification);
+    Task<RegulatoryBody?> GetRegulatoryBody(ISpecification<RegulatoryBody> specification);
 
-    Task<RegulatoryBody> CreateReviewBody(RegulatoryBody reviewBody);
+    Task<RegulatoryBody> CreateRegulatoryBody(RegulatoryBody regulatoryBody);
 
-    Task<RegulatoryBody> UpdateReviewBody(RegulatoryBody reviewBody);
+    Task<RegulatoryBody> UpdateRegulatoryBody(RegulatoryBody regulatoryBody);
 
-    Task<RegulatoryBody?> DisableReviewBody(Guid id);
+    Task<RegulatoryBody?> DisableRegulatoryBody(Guid id);
 
-    Task<RegulatoryBody?> EnableReviewBody(Guid id);
+    Task<RegulatoryBody?> EnableRegulatoryBody(Guid id);
 
-    Task<RegulatoryBodyUsers> AddUserToReviewBody(RegulatoryBodyUsers user);
+    Task<RegulatoryBodyUser> AddUserToRegulatoryBody(RegulatoryBodyUser user);
 
-    Task<RegulatoryBodyUsers?> RemoveUserFromReviewBody(Guid reviewBodyId, Guid userId);
+    Task<RegulatoryBodyUser?> RemoveUserFromRegulatoryBody(Guid regulatoryBodyId, Guid userId);
 
-    Task<int> GetReviewBodyCount(string? searchQuery = null);
+    Task<int> GetRegulatoryBodyCount(string? searchQuery = null);
 }

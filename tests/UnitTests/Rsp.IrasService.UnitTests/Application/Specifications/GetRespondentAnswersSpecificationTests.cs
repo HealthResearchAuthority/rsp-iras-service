@@ -10,11 +10,11 @@ public class GetRespondentAnswersSpecificationTests
     /// </summary>
     [Theory, AutoData]
     public void GetRespondentAnswersSpecification_ByApplicationIdAndCategoryId_ReturnsCorrectSpecification(
-        Generator<ProjectApplicationRespondentAnswer> generator)
+        Generator<ProjectRecordAnswer> generator)
     {
         // Arrange
         var respondentAnswers = generator.Take(5).ToList();
-        var applicationId = respondentAnswers[0].ProjectApplicationId;
+        var applicationId = respondentAnswers[0].ProjectRecordId;
         var categoryId = respondentAnswers[0].Category;
 
         var spec = new GetRespondentAnswersSpecification(applicationId, categoryId);
@@ -26,7 +26,7 @@ public class GetRespondentAnswersSpecificationTests
 
         // Assert
         result.ShouldNotBeNull();
-        result.ShouldAllBe(answer => answer.ProjectApplicationId == applicationId && answer.Category == categoryId);
+        result.ShouldAllBe(answer => answer.ProjectRecordId == applicationId && answer.Category == categoryId);
     }
 
     /// <summary>
@@ -34,11 +34,11 @@ public class GetRespondentAnswersSpecificationTests
     /// </summary>
     [Theory, AutoData]
     public void GetRespondentAnswersSpecification_ByApplicationId_ReturnsCorrectSpecification(
-        Generator<ProjectApplicationRespondentAnswer> generator)
+        Generator<ProjectRecordAnswer> generator)
     {
         // Arrange
         var respondentAnswers = generator.Take(5).ToList();
-        var applicationId = respondentAnswers[0].ProjectApplicationId;
+        var applicationId = respondentAnswers[0].ProjectRecordId;
 
         var spec = new GetRespondentAnswersSpecification(applicationId);
 
@@ -49,7 +49,7 @@ public class GetRespondentAnswersSpecificationTests
 
         // Assert
         result.ShouldNotBeNull();
-        result.ShouldAllBe(answer => answer.ProjectApplicationId == applicationId);
+        result.ShouldAllBe(answer => answer.ProjectRecordId == applicationId);
     }
 
     /// <summary>
@@ -57,14 +57,14 @@ public class GetRespondentAnswersSpecificationTests
     /// </summary>
     [Theory, InlineAutoData(3), InlineAutoData(0)]
     public void GetRespondentAnswersSpecification_ByRecords_ReturnsCorrectCount(int records,
-        Generator<ProjectApplicationRespondentAnswer> generator)
+        Generator<ProjectRecordAnswer> generator)
     {
         // Arrange
         var respondentAnswers = generator.Take(5).ToList();
-        var applicationId = respondentAnswers[0].ProjectApplicationId;
+        var applicationId = respondentAnswers[0].ProjectRecordId;
 
         // Ensure all test data has the same ApplicationId
-        foreach (var answer in respondentAnswers) answer.ProjectApplicationId = applicationId;
+        foreach (var answer in respondentAnswers) answer.ProjectRecordId = applicationId;
 
         var spec = new GetRespondentAnswersSpecification(applicationId);
 

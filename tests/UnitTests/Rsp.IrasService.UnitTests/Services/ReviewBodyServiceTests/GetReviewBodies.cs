@@ -12,7 +12,7 @@ namespace Rsp.IrasService.UnitTests.Services.ReviewBodyServiceTests;
 /// </summary>
 public class GetReviewBodiesTests : TestServiceBase<ReviewBodyService>
 {
-    private readonly ReviewBodyRepository _reviewBodyRepository;
+    private readonly RegulatoryBodyRepository _reviewBodyRepository;
     private readonly IrasContext _context;
 
     public GetReviewBodiesTests()
@@ -21,7 +21,7 @@ public class GetReviewBodiesTests : TestServiceBase<ReviewBodyService>
             .UseInMemoryDatabase(Guid.NewGuid().ToString("N")).Options;
 
         _context = new IrasContext(options);
-        _reviewBodyRepository = new ReviewBodyRepository(_context);
+        _reviewBodyRepository = new RegulatoryBodyRepository(_context);
     }
 
     [Theory, InlineAutoData(5)]

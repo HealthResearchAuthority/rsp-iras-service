@@ -9,7 +9,7 @@ namespace Rsp.IrasService.UnitTests.Services.ApplicationsServiceTests;
 
 public class GetRespondentApplications : TestServiceBase<ApplicationsService>
 {
-    private readonly ApplicationRepository _applicationRepository;
+    private readonly ProjectRecordRepository _applicationRepository;
     private readonly IrasContext _context;
 
     public GetRespondentApplications()
@@ -19,7 +19,7 @@ public class GetRespondentApplications : TestServiceBase<ApplicationsService>
             .Options;
 
         _context = new IrasContext(options);
-        _applicationRepository = new ApplicationRepository(_context);
+        _applicationRepository = new ProjectRecordRepository(_context);
     }
 
     /// <summary>
@@ -54,10 +54,10 @@ public class GetRespondentApplications : TestServiceBase<ApplicationsService>
             }
         };
 
-        var researchApplications = applicationRequests.Select(request => new ProjectApplication
+        var researchApplications = applicationRequests.Select(request => new ProjectRecord
         {
             Id = request.Id,
-            ProjectApplicationRespondentId = request.Respondent.Id,
+            ProjectPersonnelId = request.Respondent.Id,
             CreatedBy = request.CreatedBy,
             Description = request.Description,
             Title = request.Title,
@@ -65,17 +65,17 @@ public class GetRespondentApplications : TestServiceBase<ApplicationsService>
         }).ToList();
 
         // Adding an application with a different RespondentId (should be filtered out)
-        researchApplications.Add(new ProjectApplication
+        researchApplications.Add(new ProjectRecord
         {
             Id = Guid.NewGuid().ToString(),
-            ProjectApplicationRespondentId = "OtherRespondent",
+            ProjectPersonnelId = "OtherRespondent",
             CreatedBy = "User3",
             Description = "Description3",
             Title = "Title3",
             UpdatedBy = "Updater3"
         });
 
-        await _context.ProjectApplications.AddRangeAsync(researchApplications);
+        await _context.ProjectRecords.AddRangeAsync(researchApplications);
         await _context.SaveChangesAsync();
 
         // Act

@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -11,191 +10,252 @@ namespace Rsp.IrasService.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "RespondentAnswers");
+            // Rename the RespondentAnswers table to ProjectRecordAnswers
+            migrationBuilder.RenameTable(
+                name: "RespondentAnswers",
+                newName: "ProjectRecordAnswers");
 
-            migrationBuilder.DropTable(
-                name: "ReviewBodiesAuditTrails");
+            migrationBuilder.DropForeignKey(
+            name: "FK_RespondentAnswers_ResearchApplications_ApplicationId",
+            table: "ProjectRecordAnswers");
 
-            migrationBuilder.DropTable(
-                name: "ReviewBodyUsers");
+            migrationBuilder.DropForeignKey(
+            name: "FK_RespondentAnswers_Respondents_RespondentId",
+            table: "ProjectRecordAnswers");
 
-            migrationBuilder.DropTable(
-                name: "ResearchApplications");
+            migrationBuilder.DropPrimaryKey(
+            name: "PK_RespondentAnswers",
+            table: "ProjectRecordAnswers");
 
-            migrationBuilder.DropTable(
-                name: "ReviewBodies");
+            migrationBuilder.DropColumn(
+            name: "StartDate",
+            table: "ProjectRecordAnswers");
 
-            migrationBuilder.DropTable(
-                name: "Respondents");
+            migrationBuilder.DropColumn(
+            name: "EndDate",
+            table: "ProjectRecordAnswers");
 
-            migrationBuilder.CreateTable(
-                name: "ProjectApplicationRespondents",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    GivenName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FamilyName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Role = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProjectApplicationRespondents", x => x.Id);
-                });
+            migrationBuilder.DropColumn(
+            name: "Version",
+            table: "ProjectRecordAnswers");
 
-            migrationBuilder.CreateTable(
-                name: "RegulatoryBodies",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RegulatoryBodyName = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
-                    EmailAddress = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
-                    Countries = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RegulatoryBodies", x => x.Id);
-                });
+            migrationBuilder.RenameColumn(
+            name: "RespondentId",
+            table: "ProjectRecordAnswers",
+            newName: "ProjectPersonnelId");
 
-            migrationBuilder.CreateTable(
-                name: "ProjectApplications",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProjectApplicationRespondentId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IrasId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProjectApplications", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ProjectApplications_ProjectApplicationRespondents_ProjectApplicationRespondentId",
-                        column: x => x.ProjectApplicationRespondentId,
-                        principalTable: "ProjectApplicationRespondents",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+            migrationBuilder.RenameColumn(
+            name: "ApplicationId",
+            table: "ProjectRecordAnswers",
+            newName: "ProjectRecordId");
 
-            migrationBuilder.CreateTable(
-                name: "RegulatoryBodyAuditTrial",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RegulatoryBodiesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DateTimeStamp = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    User = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RegulatoryBodyAuditTrial", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_RegulatoryBodyAuditTrial_RegulatoryBodies_RegulatoryBodiesId",
-                        column: x => x.RegulatoryBodiesId,
-                        principalTable: "RegulatoryBodies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+            migrationBuilder.AddPrimaryKey(
+            name: "PK_ProjectRecordAnswers",
+            table: "ProjectRecordAnswers",
+            columns: ["ProjectPersonnelId", "QuestionId", "ProjectRecordId"]);
 
-            migrationBuilder.CreateTable(
-                name: "RegulatoryBodyUsers",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DateAdded = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RegulatoryBodyUsers", x => new { x.Id, x.UserId });
-                    table.ForeignKey(
-                        name: "FK_RegulatoryBodyUsers_RegulatoryBodies_Id",
-                        column: x => x.Id,
-                        principalTable: "RegulatoryBodies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+            // Rename the ReviewBodiesAuditTrails table to RegulatoryBodiesAuditTrail
+            migrationBuilder.RenameTable(
+                name: "ReviewBodiesAuditTrails",
+                newName: "RegulatoryBodiesAuditTrail");
 
-            migrationBuilder.CreateTable(
-                name: "ProjectApplicationRespondentAnswers",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProjectApplicationId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    QuestionId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Category = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Section = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Response = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    OptionType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SelectedOptions = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProjectApplicationRespondentAnswers", x => new { x.Id, x.QuestionId, x.ProjectApplicationId });
-                    table.ForeignKey(
-                        name: "FK_ProjectApplicationRespondentAnswers_ProjectApplicationRespondents_Id",
-                        column: x => x.Id,
-                        principalTable: "ProjectApplicationRespondents",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_ProjectApplicationRespondentAnswers_ProjectApplications_ProjectApplicationId",
-                        column: x => x.ProjectApplicationId,
-                        principalTable: "ProjectApplications",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
+            migrationBuilder.DropForeignKey(
+            name: "FK_ReviewBodiesAuditTrails_ReviewBodies_ReviewBodyId",
+            table: "RegulatoryBodiesAuditTrail");
+
+            migrationBuilder.DropPrimaryKey(
+            name: "PK_ReviewBodiesAuditTrails",
+            table: "RegulatoryBodiesAuditTrail");
+
+            migrationBuilder.RenameColumn(
+            name: "ReviewBodyId",
+            table: "RegulatoryBodiesAuditTrail",
+            newName: "RegulatoryBodyId");
+
+            migrationBuilder.AddPrimaryKey(
+            name: "PK_RegulatoryBodiesAuditTrail",
+            table: "RegulatoryBodiesAuditTrail",
+            column: "Id");
+
+            // Rename the ReviewBodyUsers table to RegulatoryBodiesUsers
+            migrationBuilder.RenameTable(
+                name: "ReviewBodyUsers",
+                newName: "RegulatoryBodiesUsers");
+
+            migrationBuilder.DropForeignKey(
+            name: "FK_ReviewBodyUsers_ReviewBodies_ReviewBodyId",
+            table: "RegulatoryBodiesUsers");
+
+            migrationBuilder.DropPrimaryKey(
+            name: "PK_ReviewBodyUsers",
+            table: "RegulatoryBodiesUsers");
+
+            migrationBuilder.RenameColumn(
+            name: "ReviewBodyId",
+            table: "RegulatoryBodiesUsers",
+            newName: "Id");
+
+            migrationBuilder.AddPrimaryKey(
+            name: "PK_RegulatoryBodiesUsers",
+            table: "RegulatoryBodiesUsers",
+            columns: ["Id", "UserId"]);
+
+            // Rename the ResearchApplications table to ProjectRecords
+            migrationBuilder.RenameTable(
+                name: "ResearchApplications",
+                newName: "ProjectRecords");
+
+            migrationBuilder.DropForeignKey(
+            name: "FK_ResearchApplications_Respondents_RespondentId",
+            table: "ProjectRecords");
+
+            migrationBuilder.DropPrimaryKey(
+            name: "PK_ResearchApplications",
+            table: "ProjectRecords");
+
+            migrationBuilder.RenameColumn(
+            name: "ApplicationId",
+            table: "ProjectRecords",
+            newName: "Id");
+
+            migrationBuilder.RenameColumn(
+            name: "RespondentId",
+            table: "ProjectRecords",
+            newName: "ProjectPersonnelId");
+
+            migrationBuilder.AddPrimaryKey(
+            name: "PK_ProjectRecords",
+            table: "ProjectRecords",
+            column: "Id");
+
+            // Rename the ReviewBodies table to RegulatoryBodies
+            migrationBuilder.RenameTable(
+                name: "ReviewBodies",
+                newName: "RegulatoryBodies");
+
+            migrationBuilder.DropPrimaryKey(
+            name: "PK_ReviewBodies",
+            table: "RegulatoryBodies");
+
+            migrationBuilder.RenameColumn(
+            name: "OrganisationName",
+            table: "RegulatoryBodies",
+            newName: "RegulatoryBodyName");
+
+            migrationBuilder.AddPrimaryKey(
+            name: "PK_RegulatoryBodies",
+            table: "RegulatoryBodies",
+            column: "Id");
+
+            // Rename the Respondents table to ProjectPersonnels
+            migrationBuilder.RenameTable(
+                name: "Respondents",
+                newName: "ProjectPersonnels");
+
+            migrationBuilder.DropColumn(
+            name: "StartDate",
+            table: "ProjectPersonnels");
+
+            migrationBuilder.DropColumn(
+            name: "EndDate",
+            table: "ProjectPersonnels");
+
+            migrationBuilder.DropColumn(
+            name: "Version",
+            table: "ProjectPersonnels");
+
+            migrationBuilder.RenameColumn(
+            name: "RespondentId",
+            table: "ProjectPersonnels",
+            newName: "Id");
+
+            migrationBuilder.RenameColumn(
+            name: "FirstName",
+            table: "ProjectPersonnels",
+            newName: "GivenName");
+
+            migrationBuilder.RenameColumn(
+            name: "LastName",
+            table: "ProjectPersonnels",
+            newName: "FamilyName");
+
+            // Update foreign keys to match the new table and column names
+            migrationBuilder.AddForeignKey(
+            name: "FK_ProjectRecords_ProjectPersonnels_ProjectPersonnelId",
+            table: "ProjectRecords",
+            column: "ProjectPersonnelId",
+            principalTable: "ProjectPersonnels",
+            principalColumn: "Id",
+            onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_RegulatoryBodiesUsers_RegulatoryBodies_Id",
+                table: "RegulatoryBodiesUsers",
+                column: "Id",
+                principalTable: "RegulatoryBodies",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+            name: "FK_RegulatoryBodiesAuditTrail_RegulatoryBodies_RegulatoryBodyId",
+            table: "RegulatoryBodiesAuditTrail",
+            column: "RegulatoryBodyId",
+            principalTable: "RegulatoryBodies",
+            principalColumn: "Id",
+            onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+            name: "FK_ProjectRecordAnswers_ProjectPersonnels_ProjectPersonnelId",
+            table: "ProjectRecordAnswers",
+            column: "ProjectPersonnelId",
+            principalTable: "ProjectPersonnels",
+            principalColumn: "Id");
+
+            migrationBuilder.AddForeignKey(
+            name: "FK_ProjectRecordAnswers_ProjectRecords_ProjectRecordId",
+            table: "ProjectRecordAnswers",
+            column: "ProjectRecordId",
+            principalTable: "ProjectRecords",
+            principalColumn: "Id",
+            onDelete: ReferentialAction.Cascade);
+
+            // Create indexes for the new foreign keys
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectRecordAnswers_ProjectRecordId",
+                table: "ProjectRecordAnswers",
+                column: "ProjectRecordId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProjectApplicationRespondentAnswers_ProjectApplicationId",
-                table: "ProjectApplicationRespondentAnswers",
-                column: "ProjectApplicationId");
+                name: "IX_ProjectRecords_ProjectPersonnelId",
+                table: "ProjectRecords",
+                column: "ProjectPersonnelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProjectApplications_ProjectApplicationRespondentId",
-                table: "ProjectApplications",
-                column: "ProjectApplicationRespondentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RegulatoryBodyAuditTrial_RegulatoryBodiesId",
-                table: "RegulatoryBodyAuditTrial",
-                column: "RegulatoryBodiesId");
+                name: "IX_RegulatoryBodiesAuditTrail_RegulatoryBodyId",
+                table: "RegulatoryBodiesAuditTrail",
+                column: "RegulatoryBodyId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ProjectApplicationRespondentAnswers");
+                name: "ProjectRecordAnswers");
 
             migrationBuilder.DropTable(
-                name: "RegulatoryBodyAuditTrial");
+                name: "RegulatoryBodiesAuditTrail");
 
             migrationBuilder.DropTable(
-                name: "RegulatoryBodyUsers");
+                name: "RegulatoryBodiesUsers");
 
             migrationBuilder.DropTable(
-                name: "ProjectApplications");
+                name: "ProjectRecords");
 
             migrationBuilder.DropTable(
                 name: "RegulatoryBodies");
 
             migrationBuilder.DropTable(
-                name: "ProjectApplicationRespondents");
+                name: "ProjectPersonnels");
 
             migrationBuilder.CreateTable(
                 name: "Respondents",

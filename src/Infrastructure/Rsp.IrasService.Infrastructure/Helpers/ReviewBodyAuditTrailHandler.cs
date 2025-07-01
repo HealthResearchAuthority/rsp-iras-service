@@ -9,7 +9,7 @@ public class ReviewBodyAuditTrailHandler : IAuditTrailHandler
 {
     public bool CanHandle(object entity) => entity is RegulatoryBody;
 
-    public IEnumerable<RegulatoryBodyAuditTrial> GenerateAuditTrails(EntityEntry entry, string systemAdminEmail)
+    public IEnumerable<RegulatoryBodyAuditTrail> GenerateAuditTrails(EntityEntry entry, string systemAdminEmail)
     {
         if (entry.Entity is not RegulatoryBody reviewBody)
         {
@@ -24,18 +24,18 @@ public class ReviewBodyAuditTrailHandler : IAuditTrailHandler
         };
     }
 
-    private static RegulatoryBodyAuditTrial HandleAddedState(RegulatoryBody reviewBody, string systemAdminEmail)
+    private static RegulatoryBodyAuditTrail HandleAddedState(RegulatoryBody reviewBody, string systemAdminEmail)
     {
-        return new RegulatoryBodyAuditTrial
+        return new RegulatoryBodyAuditTrail
         {
             DateTimeStamp = DateTime.UtcNow,
-            RegulatoryBodiesId = reviewBody.Id,
+            RegulatoryBodyId = reviewBody.Id,
             User = systemAdminEmail,
             Description = $"{reviewBody.RegulatoryBodyName} was created"
         };
     }
 
-    private static List<RegulatoryBodyAuditTrial> HandleModifiedState(EntityEntry entry, RegulatoryBody reviewBody, string systemAdminEmail)
+    private static List<RegulatoryBodyAuditTrail> HandleModifiedState(EntityEntry entry, RegulatoryBody reviewBody, string systemAdminEmail)
     {
         var modifiedAuditableProps = entry.Properties
             .Where(p =>
@@ -45,10 +45,10 @@ public class ReviewBodyAuditTrailHandler : IAuditTrailHandler
                     : !AreListsEqual(p.OriginalValue as List<string>, p.CurrentValue as List<string>)) &&
                 p.IsModified);
 
-        return [.. modifiedAuditableProps.Select(property => new RegulatoryBodyAuditTrial
+        return [.. modifiedAuditableProps.Select(property => new RegulatoryBodyAuditTrail
         {
             DateTimeStamp = DateTime.UtcNow,
-            RegulatoryBodiesId = reviewBody.Id,
+            RegulatoryBodyId = reviewBody.Id,
             User = systemAdminEmail,
             Description = GenerateDescription(property, reviewBody)
         })];

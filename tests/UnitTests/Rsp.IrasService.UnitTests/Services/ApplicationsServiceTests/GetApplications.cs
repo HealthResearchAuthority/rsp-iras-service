@@ -12,7 +12,7 @@ namespace Rsp.IrasService.UnitTests.Services.ApplicationsServiceTests;
 /// </summary>
 public class GetApplications : TestServiceBase<ApplicationsService>
 {
-    private readonly ApplicationRepository _applicationRepository;
+    private readonly ProjectRecordRepository _applicationRepository;
     private readonly IrasContext _context;
 
     public GetApplications()
@@ -21,7 +21,7 @@ public class GetApplications : TestServiceBase<ApplicationsService>
             .UseInMemoryDatabase(Guid.NewGuid().ToString("N")).Options;
 
         _context = new IrasContext(options);
-        _applicationRepository = new ApplicationRepository(_context);
+        _applicationRepository = new ProjectRecordRepository(_context);
     }
 
     /// <summary>
@@ -30,10 +30,10 @@ public class GetApplications : TestServiceBase<ApplicationsService>
     /// <param name="generator">Test data generator</param>
     [Theory]
     [InlineAutoData(5)]
-    public async Task Returns_AllApplications(int records, Generator<ProjectApplication> generator)
+    public async Task Returns_AllApplications(int records, Generator<ProjectRecord> generator)
     {
         // Arrange
-        Mocker.Use<IApplicationRepository>(_applicationRepository);
+        Mocker.Use<IProjectRecordRepository>(_applicationRepository);
 
         Sut = Mocker.CreateInstance<ApplicationsService>();
 
@@ -57,10 +57,10 @@ public class GetApplications : TestServiceBase<ApplicationsService>
     [InlineAutoData(5, true, 2)]
     [InlineAutoData(5, false, 0)]
     public async Task Returns_ApplicationByStatusOrEmpty(int records, bool updateStatus, int expected,
-        Generator<ProjectApplication> generator)
+        Generator<ProjectRecord> generator)
     {
         // Arrange
-        Mocker.Use<IApplicationRepository>(_applicationRepository);
+        Mocker.Use<IProjectRecordRepository>(_applicationRepository);
 
         Sut = Mocker.CreateInstance<ApplicationsService>();
 

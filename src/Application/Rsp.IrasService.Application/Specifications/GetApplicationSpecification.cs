@@ -3,7 +3,7 @@ using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Application.Specifications;
 
-public class GetApplicationSpecification : Specification<ProjectApplication>
+public class GetApplicationSpecification : Specification<ProjectRecord>
 {
     /// <summary>
     /// Defines a specification to return a single, all or a number of records

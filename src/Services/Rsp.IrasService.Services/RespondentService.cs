@@ -7,20 +7,20 @@ using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Services;
 
-public class RespondentService(IRespondentRepository respondentRepository) : IRespondentService
+public class RespondentService(IProjectPersonnelRepository respondentRepository) : IRespondentService
 {
     public async Task SaveResponses(RespondentAnswersRequest respondentAnswersRequest)
     {
-        var respondentAnswers = new List<ProjectApplicationRespondentAnswer>();
+        var respondentAnswers = new List<ProjectRecordAnswer>();
 
         var applicationId = respondentAnswersRequest.ProjectApplicationId;
         var respondentId = respondentAnswersRequest.Id;
 
         foreach (var answer in respondentAnswersRequest.RespondentAnswers)
         {
-            var respondentAnswer = answer.Adapt<ProjectApplicationRespondentAnswer>();
-            respondentAnswer.ProjectApplicationId = applicationId;
-            respondentAnswer.Id = respondentId;
+            var respondentAnswer = answer.Adapt<ProjectRecordAnswer>();
+            respondentAnswer.ProjectRecordId = applicationId;
+            respondentAnswer.ProjectPersonnelId = respondentId;
 
             respondentAnswers.Add(respondentAnswer);
         }

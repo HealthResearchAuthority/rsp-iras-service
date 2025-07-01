@@ -1,9 +1,9 @@
 ﻿namespace Rsp.IrasService.Domain.Entities;
 
-public class ProjectApplication
+public class ProjectRecord
 {
     public string Id { get; set; } = null!;
-    public string ProjectApplicationRespondentId { get; set; } = null!;
+    public string ProjectPersonnelId { get; set; } = null!;
     public string Title { get; set; } = null!;
     public string Description { get; set; } = null!;
     public bool IsActive { get; set; } = true;

@@ -3,7 +3,7 @@ using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Application.Specifications;
 
-public class GetReviewBodyAuditTrailSpecification : Specification<RegulatoryBodyAuditTrial>
+public class GetReviewBodyAuditTrailSpecification : Specification<RegulatoryBodyAuditTrail>
 {
     public GetReviewBodyAuditTrailSpecification(Guid id, int skip, int take)
     {
@@ -12,7 +12,7 @@ public class GetReviewBodyAuditTrailSpecification : Specification<RegulatoryBody
             .AsSplitQuery();
 
         builder
-            .Where(a => a.RegulatoryBodiesId == id)
+            .Where(a => a.RegulatoryBodyId == id)
             .OrderByDescending(x => x.DateTimeStamp)
             .Skip(skip)
             .Take(take);

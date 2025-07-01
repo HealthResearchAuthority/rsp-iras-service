@@ -28,5 +28,5 @@ public class RegulatoryBody : IAuditable
     public string? UpdatedBy { get; set; }
 
     // navigation properties
-    public ICollection<RegulatoryBodyUsers> Users { get; set; } = [];
+    public ICollection<RegulatoryBodyUser> Users { get; set; } = [];
 }

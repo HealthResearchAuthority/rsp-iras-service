@@ -10,12 +10,12 @@ public class SaveResponsesSpecificationTests
     /// </summary>
     [Theory, AutoData]
     public void SaveResponsesSpecification_ByApplicationIdAndRespondentId_ReturnsCorrectSpecification(
-        Generator<ProjectApplicationRespondentAnswer> generator)
+        Generator<ProjectRecordAnswer> generator)
     {
         // Arrange
         var respondentAnswers = generator.Take(5).ToList();
-        var applicationId = respondentAnswers[0].ProjectApplicationId;
-        var respondentId = respondentAnswers[0].Id;
+        var applicationId = respondentAnswers[0].ProjectRecordId;
+        var respondentId = respondentAnswers[0].ProjectPersonnelId;
 
         var spec = new SaveResponsesSpecification(applicationId, respondentId);
 
@@ -26,14 +26,14 @@ public class SaveResponsesSpecificationTests
 
         // Assert
         result.ShouldNotBeNull();
-        result.ShouldAllBe(answer => answer.ProjectApplicationId == applicationId && answer.Id == respondentId);
+        result.ShouldAllBe(answer => answer.ProjectRecordId == applicationId && answer.ProjectPersonnelId == respondentId);
     }
 
     /// <summary>
     ///     Tests that SaveResponsesSpecification returns an empty list when no matching responses exist.
     /// </summary>
     [Theory, AutoData]
-    public void SaveResponsesSpecification_NoMatches_ReturnsEmptyList(Generator<ProjectApplicationRespondentAnswer> generator)
+    public void SaveResponsesSpecification_NoMatches_ReturnsEmptyList(Generator<ProjectRecordAnswer> generator)
     {
         // Arrange
         var respondentAnswers = generator.Take(5).ToList();
