@@ -11,7 +11,7 @@ public class CreateReviewBodyTests : TestServiceBase<ReviewBodyService>
 
 {
     private readonly IrasContext _context;
-    private readonly ReviewBodyRepository _reviewBodyRepository;
+    private readonly RegulatoryBodyRepository _reviewBodyRepository;
 
     public CreateReviewBodyTests()
     {
@@ -19,7 +19,7 @@ public class CreateReviewBodyTests : TestServiceBase<ReviewBodyService>
             .UseInMemoryDatabase(Guid.NewGuid().ToString("N")).Options;
 
         _context = new IrasContext(options);
-        _reviewBodyRepository = new ReviewBodyRepository(_context);
+        _reviewBodyRepository = new RegulatoryBodyRepository(_context);
     }
 
     [Theory]
@@ -27,7 +27,7 @@ public class CreateReviewBodyTests : TestServiceBase<ReviewBodyService>
     public async Task Creates_ReviewBody_Correctly(ReviewBodyDto reviewBodyDto)
     {
         // Arrange
-        Mocker.Use<IReviewBodyRepository>(_reviewBodyRepository);
+        Mocker.Use<IRegulatoryBodyRepository>(_reviewBodyRepository);
         Sut = Mocker.CreateInstance<ReviewBodyService>();
 
         // Act

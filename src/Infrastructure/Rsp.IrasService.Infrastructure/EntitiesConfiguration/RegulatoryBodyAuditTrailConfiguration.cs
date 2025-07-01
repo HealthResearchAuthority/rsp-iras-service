@@ -4,9 +4,9 @@ using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Infrastructure.EntitiesConfiguration;
 
-public class ReviewBodyAuditTrailConfiguration : IEntityTypeConfiguration<ReviewBodyAuditTrail>
+public class RegulatoryBodyAuditTrailConfiguration : IEntityTypeConfiguration<RegulatoryBodyAuditTrail>
 {
-    public void Configure(EntityTypeBuilder<ReviewBodyAuditTrail> builder)
+    public void Configure(EntityTypeBuilder<RegulatoryBodyAuditTrail> builder)
     {
         builder.HasKey(rb => rb.Id);
 
@@ -24,8 +24,8 @@ public class ReviewBodyAuditTrailConfiguration : IEntityTypeConfiguration<Review
             .IsRequired();
 
         builder
-            .HasOne(x => x.ReviewBody)
+            .HasOne(x => x.RegulatoryBody)
             .WithMany()
-            .HasForeignKey(x => x.ReviewBodyId);
+            .HasForeignKey(x => x.RegulatoryBodyId);
     }
 }

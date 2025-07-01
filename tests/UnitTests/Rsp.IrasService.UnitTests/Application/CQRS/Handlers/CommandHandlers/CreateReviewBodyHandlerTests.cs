@@ -22,13 +22,13 @@ public class CreateReviewBodyHandlerTests
         // Arrange
         var request = new ReviewBodyDto
         {
-            OrganisationName = "App-123",
+            RegulatoryBodyName = "App-123",
             Description = "Approved"
         };
 
         var expectedResponse = new ReviewBodyDto
         {
-            OrganisationName = "App-123",
+            RegulatoryBodyName = "App-123",
             Description = "Approved"
         };
 

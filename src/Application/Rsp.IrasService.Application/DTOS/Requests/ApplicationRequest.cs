@@ -5,7 +5,7 @@ public record ApplicationRequest
     /// <summary>
     /// The public key for the application database record
     /// </summary>
-    public string ApplicationId { get; set; } = DateTime.Now.ToString("yyyyMMddHHmmss");
+    public string Id { get; set; } = DateTime.Now.ToString("yyyyMMddHHmmss");
 
     /// <summary>
     /// The title of the project

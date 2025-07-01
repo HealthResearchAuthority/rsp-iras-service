@@ -32,7 +32,7 @@ public class ReviewBodyController(IMediator mediator, IReviewBodyAuditTrailServi
     /// </summary>
     [HttpGet]
     [HttpGet("{id}")]
-    [Produces<ReviewBody>]
+    [Produces<RegulatoryBody>]
     public async Task<ReviewBodyDto> GetReviewBody(Guid id)
     {
         var query = new GetReviewBodyQuery(id);

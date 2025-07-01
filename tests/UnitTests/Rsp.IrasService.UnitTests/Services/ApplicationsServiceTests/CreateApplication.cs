@@ -13,7 +13,7 @@ namespace Rsp.IrasService.UnitTests.Services.ApplicationsServiceTests;
 /// </summary>
 public class CreateApplication : TestServiceBase<ApplicationsService>
 {
-    private readonly ApplicationRepository _applicationRepository;
+    private readonly ProjectRecordRepository _applicationRepository;
     private readonly IrasContext _context;
 
     public CreateApplication()
@@ -22,7 +22,7 @@ public class CreateApplication : TestServiceBase<ApplicationsService>
             .UseInMemoryDatabase(Guid.NewGuid().ToString("N")).Options;
 
         _context = new IrasContext(options);
-        _applicationRepository = new ApplicationRepository(_context);
+        _applicationRepository = new ProjectRecordRepository(_context);
     }
 
     /// <summary>
@@ -34,7 +34,7 @@ public class CreateApplication : TestServiceBase<ApplicationsService>
     public async Task Returns_CreateApplicationResponse(ApplicationRequest createApplicationRequest)
     {
         // Arrange
-        Mocker.Use<IApplicationRepository>(_applicationRepository);
+        Mocker.Use<IProjectRecordRepository>(_applicationRepository);
 
         Sut = Mocker.CreateInstance<ApplicationsService>();
 
@@ -44,6 +44,6 @@ public class CreateApplication : TestServiceBase<ApplicationsService>
         // Assert
         irasApplication.ShouldNotBeNull();
         irasApplication.ShouldBeOfType<ApplicationResponse>();
-        (await _context.ResearchApplications.CountAsync()).ShouldBe(1);
+        (await _context.ProjectRecords.CountAsync()).ShouldBe(1);
     }
 }

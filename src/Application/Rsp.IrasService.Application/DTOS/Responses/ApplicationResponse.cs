@@ -5,7 +5,7 @@ public record ApplicationResponse
     /// <summary>
     /// The public key for the application database record
     /// </summary>
-    public string ApplicationId { get; set; } = null!;
+    public string Id { get; set; } = null!;
 
     /// <summary>
     /// The title of the project

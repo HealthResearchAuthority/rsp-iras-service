@@ -1,8 +1,8 @@
 ﻿namespace Rsp.IrasService.Domain.Entities;
 
-public class ReviewBodyUsers
+public class RegulatoryBodyUser
 {
-    public Guid ReviewBodyId { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
     public Guid UserId { get; set; }
     public DateTime DateAdded { get; set; }
 }

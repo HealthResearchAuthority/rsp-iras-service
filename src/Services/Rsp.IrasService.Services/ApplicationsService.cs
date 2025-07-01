@@ -8,14 +8,14 @@ using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Services;
 
-public class ApplicationsService(IApplicationRepository applicationRepository) : IApplicationsService
+public class ApplicationsService(IProjectRecordRepository applicationRepository) : IApplicationsService
 {
     public async Task<ApplicationResponse> CreateApplication(ApplicationRequest applicationRequest)
     {
-        var irasApplication = applicationRequest.Adapt<ResearchApplication>();
-        var respondent = applicationRequest.Respondent.Adapt<Respondent>();
+        var irasApplication = applicationRequest.Adapt<ProjectRecord>();
+        var respondent = applicationRequest.Respondent.Adapt<ProjectPersonnel>();
 
-        var createdApplication = await applicationRepository.CreateApplication(irasApplication, respondent);
+        var createdApplication = await applicationRepository.CreateProjectRecord(irasApplication, respondent);
 
         return createdApplication.Adapt<ApplicationResponse>();
     }
@@ -24,7 +24,7 @@ public class ApplicationsService(IApplicationRepository applicationRepository) :
     {
         var specification = new GetApplicationSpecification(id: applicationId);
 
-        var irasAppFromDb = await applicationRepository.GetApplication(specification);
+        var irasAppFromDb = await applicationRepository.GetProjectRecord(specification);
 
         return irasAppFromDb.Adapt<ApplicationResponse>();
     }
@@ -33,7 +33,7 @@ public class ApplicationsService(IApplicationRepository applicationRepository) :
     {
         var specification = new GetApplicationSpecification(applicationStatus, applicationId);
 
-        var irasAppFromDb = await applicationRepository.GetApplication(specification);
+        var irasAppFromDb = await applicationRepository.GetProjectRecord(specification);
 
         return irasAppFromDb.Adapt<ApplicationResponse>();
     }
@@ -42,7 +42,7 @@ public class ApplicationsService(IApplicationRepository applicationRepository) :
     {
         var specification = new GetApplicationSpecification();
 
-        var applicationsFromDb = await applicationRepository.GetApplications(specification);
+        var applicationsFromDb = await applicationRepository.GetProjectRecords(specification);
 
         return applicationsFromDb.Adapt<IEnumerable<ApplicationResponse>>();
     }
@@ -51,7 +51,7 @@ public class ApplicationsService(IApplicationRepository applicationRepository) :
     {
         var specification = new GetApplicationSpecification(status: applicationStatus);
 
-        var applicationsFromDb = await applicationRepository.GetApplications(specification);
+        var applicationsFromDb = await applicationRepository.GetProjectRecords(specification);
 
         return applicationsFromDb.Adapt<IEnumerable<ApplicationResponse>>();
     }
@@ -60,19 +60,19 @@ public class ApplicationsService(IApplicationRepository applicationRepository) :
     {
         var specification = new GetRespondentApplicationSpecification(respondentId: respondentId);
 
-        var applicationsFromDb = await applicationRepository.GetApplications(specification);
+        var applicationsFromDb = await applicationRepository.GetProjectRecords(specification);
 
         return applicationsFromDb.Adapt<IEnumerable<ApplicationResponse>>();
     }
 
     public async Task<ApplicationResponse> UpdateApplication(ApplicationRequest applicationRequest)
     {
-        var irasApplication = applicationRequest.Adapt<ResearchApplication>();
-        var respondent = applicationRequest.Respondent.Adapt<Respondent>();
+        var irasApplication = applicationRequest.Adapt<ProjectRecord>();
+        var respondent = applicationRequest.Respondent.Adapt<ProjectPersonnel>();
 
-        irasApplication.RespondentId = respondent.RespondentId;
+        irasApplication.ProjectPersonnelId = respondent.Id;
 
-        var updatedApplication = await applicationRepository.UpdateApplication(irasApplication);
+        var updatedApplication = await applicationRepository.UpdateProjectRecord(irasApplication);
 
         return updatedApplication.Adapt<ApplicationResponse>();
     }
