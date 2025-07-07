@@ -91,7 +91,7 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
                (searchQuery.ModificationTypes.Count == 0 || searchQuery.ModificationTypes.Contains(x.ModificationType))
            );
 
-        return filtered
+        return FilterModifications(result, searchQuery)
             .OrderByDescending(x => x.ModificationId)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize);
@@ -101,7 +101,12 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
     {
         var result = JsonHelper.Parse<ProjectModificationResult>("Modifications.json");
 
-        var filtered = result
+        return FilterModifications(result, searchQuery).Count();
+    }
+
+    private static IEnumerable<ProjectModificationResult> FilterModifications(List<ProjectModificationResult> modifications, ModificationSearchRequest searchQuery)
+    {
+        return modifications
             .Where(x =>
                 (string.IsNullOrEmpty(searchQuery.IrasId) || x.IrasId.Contains(searchQuery.IrasId, StringComparison.OrdinalIgnoreCase)) &&
                 (string.IsNullOrEmpty(searchQuery.ChiefInvestigatorName) || x.ChiefInvestigator.Contains(searchQuery.ChiefInvestigatorName, StringComparison.OrdinalIgnoreCase)) &&
@@ -115,7 +120,5 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
                     .Any(nation => searchQuery.Country.Contains(nation, StringComparer.OrdinalIgnoreCase)) == true) &&
                 (searchQuery.ModificationTypes.Count == 0 || searchQuery.ModificationTypes.Contains(x.ModificationType))
             );
-
-        return filtered.Count();
     }
 }

@@ -1,7 +1,9 @@
-﻿using System.Text.Json;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
 
 namespace Rsp.IrasService.Infrastructure.Helpers;
 
+[ExcludeFromCodeCoverage]
 public static class JsonHelper
 {
     public static List<TEntity> Parse<TEntity>(string fileName)
