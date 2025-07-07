@@ -1,4 +1,5 @@
 ﻿using Ardalis.Specification;
+using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Application.Contracts.Repositories;
@@ -26,4 +27,8 @@ public interface IProjectRecordRepository
     /// </summary>
     /// <param name="irasApplication">The ProjectRecord values</param>
     Task<ProjectRecord?> UpdateProjectRecord(ProjectRecord irasApplication);
+
+    IEnumerable<ProjectModificationResult> GetModifications(ModificationSearchRequest searchQuery, int pageNumber, int pageSize);
+
+    int GetModificationsCount(ModificationSearchRequest searchQuery);
 }
