@@ -76,4 +76,16 @@ public class ApplicationsService(IProjectRecordRepository applicationRepository)
 
         return updatedApplication.Adapt<ApplicationResponse>();
     }
+
+    public Task<ModificationResponse> GetModifications(ModificationSearchRequest searchQuery, int pageNumber, int pageSize)
+    {
+        var modifications = applicationRepository.GetModifications(searchQuery, pageNumber, pageSize);
+        var totalCount = applicationRepository.GetModificationsCount(searchQuery);
+
+        return Task.FromResult(new ModificationResponse
+        {
+            Modifications = modifications.Adapt<IEnumerable<ModificationDto>>(),
+            TotalCount = totalCount
+        });
+    }
 }

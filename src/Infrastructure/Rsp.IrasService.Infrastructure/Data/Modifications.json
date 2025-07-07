@@ -1,0 +1,412 @@
+[
+  {
+    "ModificationId": "9800001/1",
+    "IrasId": "9800001",
+    "ChiefInvestigator": "Barry White",
+    "CreatedAt": "2024-11-11",
+    "LeadNation": "England",
+    "ModificationType": "Minor modifications",
+    "ShortProjectTitle": "Project 01",
+    "SponsorOrganisation": "COLD GENESYS INC"
+  },
+  {
+    "ModificationId": "9800001/2",
+    "IrasId": "9800001",
+    "ChiefInvestigator": "Barry White",
+    "CreatedAt": "2024-02-29",
+    "LeadNation": "England",
+    "ModificationType": "Modification of an important detail",
+    "ShortProjectTitle": "Project 01",
+    "SponsorOrganisation": "COLD GENESYS INC"
+  },
+  {
+    "ModificationId": "9800001/3",
+    "IrasId": "9800001",
+    "ChiefInvestigator": "Barry White",
+    "CreatedAt": "2025-12-31",
+    "LeadNation": "England",
+    "ModificationType": "Modification of an important detail",
+    "ShortProjectTitle": "Project 01",
+    "SponsorOrganisation": "COLD GENESYS INC"
+  },
+  {
+    "ModificationId": "9800001/4",
+    "IrasId": "9800001",
+    "ChiefInvestigator": "Barry White",
+    "CreatedAt": "2026-01-01",
+    "LeadNation": "England",
+    "ModificationType": "Modification of an important detail",
+    "ShortProjectTitle": "Project 01",
+    "SponsorOrganisation": "COLD GENESYS INC"
+  },
+  {
+    "ModificationId": "9800002/2",
+    "IrasId": "9800002",
+    "ChiefInvestigator": "Dr Richard Jones-Smith",
+    "CreatedAt": "2024-02-29",
+    "LeadNation": "Northern Ireland",
+    "ModificationType": "Modification of an important detail",
+    "ShortProjectTitle": "Study 02",
+    "SponsorOrganisation": "Nottingham Trent University"
+  },
+  {
+    "ModificationId": "9800003/2",
+    "IrasId": "9800003",
+    "ChiefInvestigator": "Miss Becky O'neil",
+    "CreatedAt": "2025-12-31",
+    "LeadNation": "Scotland",
+    "ModificationType": "Minor modifications",
+    "ShortProjectTitle": "Short 03",
+    "SponsorOrganisation": "Eisai Co.,Ltd."
+  },
+  {
+    "ModificationId": "9800003/3",
+    "IrasId": "9800003",
+    "ChiefInvestigator": "Miss Becky O'neil",
+    "CreatedAt": "2025-12-31",
+    "LeadNation": "Scotland",
+    "ModificationType": "Minor modifications",
+    "ShortProjectTitle": "Short 03",
+    "SponsorOrganisation": "Eisai Co.,Ltd."
+  },
+  {
+    "ModificationId": "9800004/1",
+    "IrasId": "9800004",
+    "ChiefInvestigator": "Jeanne d'Arc",
+    "CreatedAt": "2020-01-01",
+    "LeadNation": "Wales",
+    "ModificationType": "Minor modifications",
+    "ShortProjectTitle": "Study title 04",
+    "SponsorOrganisation": "ASHFORD AND ST PETER'S HOSPITALS NHS FOUNDATION TRUST"
+  },
+  {
+    "ModificationId": "9800005/3",
+    "IrasId": "9800005",
+    "ChiefInvestigator": "Dr Ólafur",
+    "CreatedAt": "2020-01-01",
+    "LeadNation": "England, Northern Ireland",
+    "ModificationType": "Modification of an important detail",
+    "ShortProjectTitle": "Short study title 05",
+    "SponsorOrganisation": "AB SCIEX UK LIMITED"
+  },
+  {
+    "ModificationId": "9800006/1",
+    "IrasId": "9800006",
+    "ChiefInvestigator": "Capt. María-Jose",
+    "CreatedAt": "2024-11-12",
+    "LeadNation": "England, Scotland",
+    "ModificationType": "Modification of an important detail",
+    "ShortProjectTitle": "Project title 06",
+    "SponsorOrganisation": "Academic Medical Center at the University of Amsterdam (Netherlands)"
+  },
+  {
+    "ModificationId": "9800007/1",
+    "IrasId": "9800007",
+    "ChiefInvestigator": "Zoe Kim",
+    "CreatedAt": "2024-11-13",
+    "LeadNation": "England, Wales",
+    "ModificationType": "Minor modifications",
+    "ShortProjectTitle": "7-ABCD1234!” £$%^&*()_+[]{ };:@‘~#<>,.? / ¬λγθν€ £¥©® ™±≠ ≤≥÷×∞µ×÷≥∩ ∫≈≠≡ ≤≥⌂⌐⌠⌡│┌┐ ",
+    "SponsorOrganisation": "ACACIA PHARMA LIMITED"
+  },
+  {
+    "ModificationId": "9800008/1",
+    "IrasId": "9800008",
+    "ChiefInvestigator": "Tom Reed",
+    "CreatedAt": "2024-12-31",
+    "LeadNation": "Northern Ireland, Scotland",
+    "ModificationType": "Minor modifications",
+    "ShortProjectTitle": "Eight └┘□▪▫ ◊○◌● ◦ⱠⱡⱢ ⱣⱤ ™ ©® ° ± ≤ ≥ ÷ ≠ ≡ ≈ √ σ ν ο ι τ χ α ρ φ π λ ε η Η ϑ μ θ δ",
+    "SponsorOrganisation": "AB SCIEX UK LIMITED"
+  },
+  {
+    "ModificationId": "9800009/1",
+    "IrasId": "9800009",
+    "ChiefInvestigator": "Mei Zhang",
+    "CreatedAt": "2024-11-12",
+    "LeadNation": "Northern Ireland, Wales",
+    "ModificationType": "Minor modifications",
+    "ShortProjectTitle": "9-one two three four five six seven eight nine ten ne two three four five six seven eight nine ten ",
+    "SponsorOrganisation": "Conatus Pharmaceuticals Inc."
+  },
+  {
+    "ModificationId": "9800010/1",
+    "IrasId": "9800010",
+    "ChiefInvestigator": "Commander Maximilian Thorne-Winchester III",
+    "CreatedAt": "2020-02-29",
+    "LeadNation": "Scotland, Wales",
+    "ModificationType": "Minor modifications",
+    "ShortProjectTitle": "Study title 10",
+    "SponsorOrganisation": "AB SCIEX UK LIMITED"
+  },
+  {
+    "ModificationId": "9800011/1",
+    "IrasId": "9800011",
+    "ChiefInvestigator": "Barry White",
+    "CreatedAt": "2025-12-25",
+    "LeadNation": "England, Northern Ireland, Scotland",
+    "ModificationType": "Modification of an important detail",
+    "ShortProjectTitle": "Short study title 11",
+    "SponsorOrganisation": "EAST LONDON NHS FOUNDATION TRUST"
+  },
+  {
+    "ModificationId": "9800012/1",
+    "IrasId": "9800012",
+    "ChiefInvestigator": "Mx. River Skye",
+    "CreatedAt": "2026-01-02",
+    "LeadNation": "England, Northern Ireland, Wales",
+    "ModificationType": "Modification of an important detail",
+    "ShortProjectTitle": "Project title 12",
+    "SponsorOrganisation": "Innovent Biologics (Suzhou) Co., Ltd."
+  },
+  {
+    "ModificationId": "9800013/1",
+    "IrasId": "9800013",
+    "ChiefInvestigator": "Ing. Pavel Novák",
+    "CreatedAt": "2024-02-28",
+    "LeadNation": "England, Scotland, Wales",
+    "ModificationType": "Modification of an important detail",
+    "ShortProjectTitle": "Project 13",
+    "SponsorOrganisation": "COLD GENESYS INC"
+  },
+  {
+    "ModificationId": "9800014/1",
+    "IrasId": "9800014",
+    "ChiefInvestigator": "Chika Okoye-Adebayo",
+    "CreatedAt": "2028-12-31",
+    "LeadNation": "Northern Ireland, Scotland, Wales",
+    "ModificationType": "Modification of an important detail",
+    "ShortProjectTitle": "Study 14",
+    "SponsorOrganisation": "MANCHESTER UNIVERSITY NHS FOUNDATION TRUST"
+  },
+  {
+    "ModificationId": "9800014/2",
+    "IrasId": "9800014",
+    "ChiefInvestigator": "Chika Okoye-Adebayo",
+    "CreatedAt": "2029-02-11",
+    "LeadNation": "Northern Ireland, Scotland, Wales",
+    "ModificationType": "Minor modifications",
+    "ShortProjectTitle": "Study 14",
+    "SponsorOrganisation": "MANCHESTER UNIVERSITY NHS FOUNDATION TRUST"
+  },
+  {
+    "ModificationId": "9800015/1",
+    "IrasId": "9800015",
+    "ChiefInvestigator": "Lady Seraphina Elisabetta von Albrecht",
+    "CreatedAt": "3030-01-01",
+    "LeadNation": "England, Northern Ireland, Scotland, Wales",
+    "ModificationType": "Minor modifications",
+    "ShortProjectTitle": "Short 15",
+    "SponsorOrganisation": "Innovent Biologics (Suzhou) Co., Ltd."
+  },
+  {
+    "ModificationId": "9800016/1",
+    "IrasId": "9800016",
+    "ChiefInvestigator": "Tilda Noëlle Gray",
+    "CreatedAt": "2020-01-01",
+    "LeadNation": "England",
+    "ModificationType": "Minor modifications",
+    "ShortProjectTitle": "Study title 16",
+    "SponsorOrganisation": "BARNET, ENFIELD AND HARINGEY MENTAL HEALTH NHS TRUST"
+  },
+  {
+    "ModificationId": "9800017/1",
+    "IrasId": "9800017",
+    "ChiefInvestigator": "Mariana Constanza de la Cruz Valencia",
+    "CreatedAt": "2024-11-14",
+    "LeadNation": "England",
+    "ModificationType": "Minor modifications",
+    "ShortProjectTitle": "Short study title 17",
+    "SponsorOrganisation": "4D Pharma PLC"
+  },
+  {
+    "ModificationId": "9800018/1",
+    "IrasId": "9800018",
+    "ChiefInvestigator": "Prof. Adebayo Olufemi Ajani",
+    "CreatedAt": "2024-11-15",
+    "LeadNation": "England",
+    "ModificationType": "Minor modifications",
+    "ShortProjectTitle": "Project title 18",
+    "SponsorOrganisation": "AB SCIEX UK LIMITED"
+  },
+  {
+    "ModificationId": "9800019/1",
+    "IrasId": "9800019",
+    "ChiefInvestigator": "Sakura Ito",
+    "CreatedAt": "2026-12-13",
+    "LeadNation": "England",
+    "ModificationType": "Minor modifications",
+    "ShortProjectTitle": "P19",
+    "SponsorOrganisation": "Nottingham Trent University"
+  },
+  {
+    "ModificationId": "9800020/1",
+    "IrasId": "9800020",
+    "ChiefInvestigator": "Dr. Isabella Fernández-Hernández",
+    "CreatedAt": "2024-10-13",
+    "LeadNation": "Northern Ireland",
+    "ModificationType": "Minor modifications",
+    "ShortProjectTitle": "PST20",
+    "SponsorOrganisation": "COLD GENESYS INC"
+  },
+  {
+    "ModificationId": "9800021/1",
+    "IrasId": "9800021",
+    "ChiefInvestigator": "Luca Romano",
+    "CreatedAt": "2019-08-08",
+    "LeadNation": "Scotland",
+    "ModificationType": "Minor modifications",
+    "ShortProjectTitle": "SST21",
+    "SponsorOrganisation": "L'Institut d'Investigacions Biomediques August Pi i Sunyer (IDIBAPS) (Spain)"
+  },
+  {
+    "ModificationId": "9800022/1",
+    "IrasId": "9800022",
+    "ChiefInvestigator": "Prof. Adebayo Olufemi Ajani",
+    "CreatedAt": "1998-12-30",
+    "LeadNation": "Wales",
+    "ModificationType": "Minor modifications",
+    "ShortProjectTitle": "S22",
+    "SponsorOrganisation": "L. MOLTENI & C. DEI FRATELLI ALITTI - SOCIETA' DI ESERCIZIO - S.P.A"
+  },
+  {
+    "ModificationId": "9800023/1",
+    "IrasId": "9800023",
+    "ChiefInvestigator": "Dame Eloise Rutherford",
+    "CreatedAt": "2000-01-03",
+    "LeadNation": "England, Northern Ireland",
+    "ModificationType": "Modification of an important detail",
+    "ShortProjectTitle": "ST-STwentyThree",
+    "SponsorOrganisation": "EOS - CS (ETHICAL ONCOLOGY SCIENCE - CLINICAL STUDIES) S.R.L."
+  },
+  {
+    "ModificationId": "9800023/2",
+    "IrasId": "9800023",
+    "ChiefInvestigator": "Dame Eloise Rutherford",
+    "CreatedAt": "2000-01-05",
+    "LeadNation": "England, Northern Ireland",
+    "ModificationType": "Minor modifications",
+    "ShortProjectTitle": "ST-STwentyThree",
+    "SponsorOrganisation": "EOS - CS (ETHICAL ONCOLOGY SCIENCE - CLINICAL STUDIES) S.R.L."
+  },
+  {
+    "ModificationId": "9800023/4",
+    "IrasId": "9800023",
+    "ChiefInvestigator": "Dame Eloise Rutherford",
+    "CreatedAt": "2020-11-10",
+    "LeadNation": "England, Northern Ireland",
+    "ModificationType": "Modification of an important detail",
+    "ShortProjectTitle": "ST-STwentyThree",
+    "SponsorOrganisation": "EOS - CS (ETHICAL ONCOLOGY SCIENCE - CLINICAL STUDIES) S.R.L."
+  },
+  {
+    "ModificationId": "9800024/1",
+    "IrasId": "9800024",
+    "ChiefInvestigator": "Capt. Samuel T. Brinkley",
+    "CreatedAt": "2024-08-18",
+    "LeadNation": "England, Scotland",
+    "ModificationType": "Modification of an important detail",
+    "ShortProjectTitle": "Project-study24",
+    "SponsorOrganisation": "Eisai Co.,Ltd."
+  },
+  {
+    "ModificationId": "9800025/1",
+    "IrasId": "9800025",
+    "ChiefInvestigator": "Hon. Kavita Bose",
+    "CreatedAt": "2025-07-17",
+    "LeadNation": "England, Wales",
+    "ModificationType": "Modification of an important detail",
+    "ShortProjectTitle": "25 - Project",
+    "SponsorOrganisation": "Bill & Melinda Gates Foundation"
+  },
+  {
+    "ModificationId": "9800026/1",
+    "IrasId": "9800026",
+    "ChiefInvestigator": "Chief Bhekizizwe Madlala",
+    "CreatedAt": "2020-04-01",
+    "LeadNation": "Northern Ireland, Scotland",
+    "ModificationType": "Modification of an important detail",
+    "ShortProjectTitle": "26 -Study",
+    "SponsorOrganisation": "AKL RESEARCH & DEVELOPMENT LIMITED"
+  },
+  {
+    "ModificationId": "9800027/1",
+    "IrasId": "9800027",
+    "ChiefInvestigator": "Rev. Lydia Grace O'Connell",
+    "CreatedAt": "2020-01-01",
+    "LeadNation": "Northern Ireland, Wales",
+    "ModificationType": "Modification of an important detail",
+    "ShortProjectTitle": "27 -Short",
+    "SponsorOrganisation": "Y-mAbs Therapeutics A/S"
+  },
+  {
+    "ModificationId": "9800028/1",
+    "IrasId": "9800028",
+    "ChiefInvestigator": "Arjun Jet Malhotra",
+    "CreatedAt": "2024-11-16",
+    "LeadNation": "Scotland, Wales",
+    "ModificationType": "Modification of an important detail",
+    "ShortProjectTitle": "Project 28",
+    "SponsorOrganisation": "DIABETES CARE TRUST (Association of British Clinical Diabetologists ABCD)"
+  },
+  {
+    "ModificationId": "9800029/1",
+    "IrasId": "9800029",
+    "ChiefInvestigator": "Nova Cairo Pierce",
+    "CreatedAt": "2023-11-17",
+    "LeadNation": "England, Northern Ireland, Scotland",
+    "ModificationType": "Modification of an important detail",
+    "ShortProjectTitle": "Project 29",
+    "SponsorOrganisation": "EOS - CS (ETHICAL ONCOLOGY SCIENCE - CLINICAL STUDIES) S.R.L."
+  },
+  {
+    "ModificationId": "9800030/1",
+    "IrasId": "9800030",
+    "ChiefInvestigator": "Ayo Folorunsho",
+    "CreatedAt": "2026-06-11",
+    "LeadNation": "England, Northern Ireland, Wales",
+    "ModificationType": "Modification of an important detail",
+    "ShortProjectTitle": "Project 30",
+    "SponsorOrganisation": "e-Therapeutics"
+  },
+  {
+    "ModificationId": "9800030/2",
+    "IrasId": "9800030",
+    "ChiefInvestigator": "Ayo Folorunsho",
+    "CreatedAt": "2026-01-11",
+    "LeadNation": "England, Northern Ireland, Wales",
+    "ModificationType": "Modification of an important detail",
+    "ShortProjectTitle": "Project 30",
+    "SponsorOrganisation": "e-Therapeutics"
+  },
+  {
+    "ModificationId": "9800031/1",
+    "IrasId": "9800031",
+    "ChiefInvestigator": "Dr. Fernández-Hernández",
+    "CreatedAt": "2024-11-14",
+    "LeadNation": "England, Scotland, Wales",
+    "ModificationType": "Minor modifications",
+    "ShortProjectTitle": "Project 31",
+    "SponsorOrganisation": "King's Fund"
+  },
+  {
+    "ModificationId": "9800032/1",
+    "IrasId": "9800032",
+    "ChiefInvestigator": "Bashir El-Karim",
+    "CreatedAt": "2024-03-31",
+    "LeadNation": "Northern Ireland, Scotland, Wales",
+    "ModificationType": "Minor modifications",
+    "ShortProjectTitle": "Study 32",
+    "SponsorOrganisation": "EBR SYSTEMS, INC."
+  },
+  {
+    "ModificationId": "9800033/1",
+    "IrasId": "9800033",
+    "ChiefInvestigator": "Dr. Isabella Fernández-Hernández",
+    "CreatedAt": "2025-04-11",
+    "LeadNation": "England, Northern Ireland, Scotland, Wales",
+    "ModificationType": "Minor modifications",
+    "ShortProjectTitle": "Short 33",
+    "SponsorOrganisation": "F. Hoffmann-La Roche Ltd"
+  }
+]

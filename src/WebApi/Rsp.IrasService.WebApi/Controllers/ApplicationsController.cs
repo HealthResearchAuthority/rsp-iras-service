@@ -1,20 +1,16 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Rsp.IrasService.Application.Constants;
-using Rsp.IrasService.Application.Contracts.Services;
 using Rsp.IrasService.Application.CQRS.Commands;
 using Rsp.IrasService.Application.CQRS.Queries;
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.DTOS.Responses;
 using Rsp.IrasService.Domain.Entities;
-using Rsp.IrasService.Application.Contracts;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Rsp.IrasService.WebApi.Controllers;
 
+//[Authorize]
 [ApiController]
 [Route("[controller]")]
-[Authorize]
 public class ApplicationsController(IMediator mediator) : ControllerBase
 {
     /// <summary>
@@ -103,7 +99,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     public async Task<ApplicationResponse> CreateApplication(ApplicationRequest applicationRequest)
     {
         var request = new CreateApplicationCommand(applicationRequest);
-        var newApplication = await mediator.Send(request);       
+        var newApplication = await mediator.Send(request);
 
         return newApplication;
     }
@@ -118,5 +114,13 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
         var request = new UpdateApplicationCommand(applicationRequest);
 
         return await mediator.Send(request);
+    }
+
+    [HttpGet("modifications")]
+    public async Task<ActionResult<ModificationResponse>> GetModifications([FromBody] ModificationSearchRequest searchQuery, int pageNumber, int pageSize)
+    {
+        var query = new GetModificationsQuery(searchQuery, pageNumber, pageSize);
+
+        return await mediator.Send(query);
     }
 }
