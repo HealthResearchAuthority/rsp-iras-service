@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Rsp.IrasService.Application.CQRS.Commands;
 using Rsp.IrasService.Application.CQRS.Queries;
@@ -8,7 +9,7 @@ using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.WebApi.Controllers;
 
-//[Authorize]
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class ApplicationsController(IMediator mediator) : ControllerBase

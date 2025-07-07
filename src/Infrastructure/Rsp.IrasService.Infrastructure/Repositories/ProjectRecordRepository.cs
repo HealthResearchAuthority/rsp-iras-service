@@ -99,11 +99,8 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
                 (string.IsNullOrEmpty(searchQuery.SponsorOrganisation) || x.SponsorOrganisation.Contains(searchQuery.SponsorOrganisation, StringComparison.OrdinalIgnoreCase)) &&
                 (!searchQuery.FromDate.HasValue || x.CreatedAt >= searchQuery.FromDate.Value) &&
                 (!searchQuery.ToDate.HasValue || x.CreatedAt <= searchQuery.ToDate.Value) &&
-                (searchQuery.Country.Count == 0 ||
-                    x.LeadNation?
-                    .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-                    .Any(nation => searchQuery.Country.Contains(nation, StringComparer.OrdinalIgnoreCase)) == true) &&
-                (searchQuery.ModificationTypes.Count == 0 || searchQuery.ModificationTypes.Contains(x.ModificationType))
+                (searchQuery.Country.Count == 0 || searchQuery.Country.Contains(x.LeadNation, StringComparer.OrdinalIgnoreCase)) &&
+                (searchQuery.ModificationTypes.Count == 0 || searchQuery.ModificationTypes.Contains(x.ModificationType, StringComparer.OrdinalIgnoreCase))
             );
     }
 }

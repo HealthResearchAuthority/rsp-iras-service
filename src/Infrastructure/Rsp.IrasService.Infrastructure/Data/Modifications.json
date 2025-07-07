@@ -84,7 +84,7 @@
     "IrasId": "9800005",
     "ChiefInvestigator": "Dr Ólafur",
     "CreatedAt": "2020-01-01",
-    "LeadNation": "England, Northern Ireland",
+    "LeadNation": "England",
     "ModificationType": "Modification of an important detail",
     "ShortProjectTitle": "Short study title 05",
     "SponsorOrganisation": "AB SCIEX UK LIMITED"
@@ -94,7 +94,7 @@
     "IrasId": "9800006",
     "ChiefInvestigator": "Capt. María-Jose",
     "CreatedAt": "2024-11-12",
-    "LeadNation": "England, Scotland",
+    "LeadNation": "England",
     "ModificationType": "Modification of an important detail",
     "ShortProjectTitle": "Project title 06",
     "SponsorOrganisation": "Academic Medical Center at the University of Amsterdam (Netherlands)"
@@ -104,7 +104,7 @@
     "IrasId": "9800007",
     "ChiefInvestigator": "Zoe Kim",
     "CreatedAt": "2024-11-13",
-    "LeadNation": "England, Wales",
+    "LeadNation": "England",
     "ModificationType": "Minor modifications",
     "ShortProjectTitle": "7-ABCD1234!” £$%^&*()_+[]{ };:@‘~#<>,.? / ¬λγθν€ £¥©® ™±≠ ≤≥÷×∞µ×÷≥∩ ∫≈≠≡ ≤≥⌂⌐⌠⌡│┌┐ ",
     "SponsorOrganisation": "ACACIA PHARMA LIMITED"
@@ -114,7 +114,7 @@
     "IrasId": "9800008",
     "ChiefInvestigator": "Tom Reed",
     "CreatedAt": "2024-12-31",
-    "LeadNation": "Northern Ireland, Scotland",
+    "LeadNation": "Northern Ireland",
     "ModificationType": "Minor modifications",
     "ShortProjectTitle": "Eight └┘□▪▫ ◊○◌● ◦ⱠⱡⱢ ⱣⱤ ™ ©® ° ± ≤ ≥ ÷ ≠ ≡ ≈ √ σ ν ο ι τ χ α ρ φ π λ ε η Η ϑ μ θ δ",
     "SponsorOrganisation": "AB SCIEX UK LIMITED"
@@ -124,7 +124,7 @@
     "IrasId": "9800009",
     "ChiefInvestigator": "Mei Zhang",
     "CreatedAt": "2024-11-12",
-    "LeadNation": "Northern Ireland, Wales",
+    "LeadNation": "Northern Ireland",
     "ModificationType": "Minor modifications",
     "ShortProjectTitle": "9-one two three four five six seven eight nine ten ne two three four five six seven eight nine ten ",
     "SponsorOrganisation": "Conatus Pharmaceuticals Inc."
@@ -134,7 +134,7 @@
     "IrasId": "9800010",
     "ChiefInvestigator": "Commander Maximilian Thorne-Winchester III",
     "CreatedAt": "2020-02-29",
-    "LeadNation": "Scotland, Wales",
+    "LeadNation": "Scotland",
     "ModificationType": "Minor modifications",
     "ShortProjectTitle": "Study title 10",
     "SponsorOrganisation": "AB SCIEX UK LIMITED"
@@ -144,7 +144,7 @@
     "IrasId": "9800011",
     "ChiefInvestigator": "Barry White",
     "CreatedAt": "2025-12-25",
-    "LeadNation": "England, Northern Ireland, Scotland",
+    "LeadNation": "England",
     "ModificationType": "Modification of an important detail",
     "ShortProjectTitle": "Short study title 11",
     "SponsorOrganisation": "EAST LONDON NHS FOUNDATION TRUST"
@@ -154,7 +154,7 @@
     "IrasId": "9800012",
     "ChiefInvestigator": "Mx. River Skye",
     "CreatedAt": "2026-01-02",
-    "LeadNation": "England, Northern Ireland, Wales",
+    "LeadNation": "England",
     "ModificationType": "Modification of an important detail",
     "ShortProjectTitle": "Project title 12",
     "SponsorOrganisation": "Innovent Biologics (Suzhou) Co., Ltd."
@@ -164,7 +164,7 @@
     "IrasId": "9800013",
     "ChiefInvestigator": "Ing. Pavel Novák",
     "CreatedAt": "2024-02-28",
-    "LeadNation": "England, Scotland, Wales",
+    "LeadNation": "England",
     "ModificationType": "Modification of an important detail",
     "ShortProjectTitle": "Project 13",
     "SponsorOrganisation": "COLD GENESYS INC"
@@ -174,7 +174,7 @@
     "IrasId": "9800014",
     "ChiefInvestigator": "Chika Okoye-Adebayo",
     "CreatedAt": "2028-12-31",
-    "LeadNation": "Northern Ireland, Scotland, Wales",
+    "LeadNation": "Northern Ireland",
     "ModificationType": "Modification of an important detail",
     "ShortProjectTitle": "Study 14",
     "SponsorOrganisation": "MANCHESTER UNIVERSITY NHS FOUNDATION TRUST"
@@ -184,7 +184,7 @@
     "IrasId": "9800014",
     "ChiefInvestigator": "Chika Okoye-Adebayo",
     "CreatedAt": "2029-02-11",
-    "LeadNation": "Northern Ireland, Scotland, Wales",
+    "LeadNation": "Northern Ireland",
     "ModificationType": "Minor modifications",
     "ShortProjectTitle": "Study 14",
     "SponsorOrganisation": "MANCHESTER UNIVERSITY NHS FOUNDATION TRUST"
@@ -194,7 +194,7 @@
     "IrasId": "9800015",
     "ChiefInvestigator": "Lady Seraphina Elisabetta von Albrecht",
     "CreatedAt": "3030-01-01",
-    "LeadNation": "England, Northern Ireland, Scotland, Wales",
+    "LeadNation": "England",
     "ModificationType": "Minor modifications",
     "ShortProjectTitle": "Short 15",
     "SponsorOrganisation": "Innovent Biologics (Suzhou) Co., Ltd."
@@ -274,7 +274,7 @@
     "IrasId": "9800023",
     "ChiefInvestigator": "Dame Eloise Rutherford",
     "CreatedAt": "2000-01-03",
-    "LeadNation": "England, Northern Ireland",
+    "LeadNation": "England",
     "ModificationType": "Modification of an important detail",
     "ShortProjectTitle": "ST-STwentyThree",
     "SponsorOrganisation": "EOS - CS (ETHICAL ONCOLOGY SCIENCE - CLINICAL STUDIES) S.R.L."
@@ -284,7 +284,7 @@
     "IrasId": "9800023",
     "ChiefInvestigator": "Dame Eloise Rutherford",
     "CreatedAt": "2000-01-05",
-    "LeadNation": "England, Northern Ireland",
+    "LeadNation": "England",
     "ModificationType": "Minor modifications",
     "ShortProjectTitle": "ST-STwentyThree",
     "SponsorOrganisation": "EOS - CS (ETHICAL ONCOLOGY SCIENCE - CLINICAL STUDIES) S.R.L."
@@ -294,7 +294,7 @@
     "IrasId": "9800023",
     "ChiefInvestigator": "Dame Eloise Rutherford",
     "CreatedAt": "2020-11-10",
-    "LeadNation": "England, Northern Ireland",
+    "LeadNation": "England",
     "ModificationType": "Modification of an important detail",
     "ShortProjectTitle": "ST-STwentyThree",
     "SponsorOrganisation": "EOS - CS (ETHICAL ONCOLOGY SCIENCE - CLINICAL STUDIES) S.R.L."
@@ -304,7 +304,7 @@
     "IrasId": "9800024",
     "ChiefInvestigator": "Capt. Samuel T. Brinkley",
     "CreatedAt": "2024-08-18",
-    "LeadNation": "England, Scotland",
+    "LeadNation": "England",
     "ModificationType": "Modification of an important detail",
     "ShortProjectTitle": "Project-study24",
     "SponsorOrganisation": "Eisai Co.,Ltd."
@@ -314,7 +314,7 @@
     "IrasId": "9800025",
     "ChiefInvestigator": "Hon. Kavita Bose",
     "CreatedAt": "2025-07-17",
-    "LeadNation": "England, Wales",
+    "LeadNation": "England",
     "ModificationType": "Modification of an important detail",
     "ShortProjectTitle": "25 - Project",
     "SponsorOrganisation": "Bill & Melinda Gates Foundation"
@@ -324,7 +324,7 @@
     "IrasId": "9800026",
     "ChiefInvestigator": "Chief Bhekizizwe Madlala",
     "CreatedAt": "2020-04-01",
-    "LeadNation": "Northern Ireland, Scotland",
+    "LeadNation": "Northern Ireland",
     "ModificationType": "Modification of an important detail",
     "ShortProjectTitle": "26 -Study",
     "SponsorOrganisation": "AKL RESEARCH & DEVELOPMENT LIMITED"
@@ -334,7 +334,7 @@
     "IrasId": "9800027",
     "ChiefInvestigator": "Rev. Lydia Grace O'Connell",
     "CreatedAt": "2020-01-01",
-    "LeadNation": "Northern Ireland, Wales",
+    "LeadNation": "Northern Ireland",
     "ModificationType": "Modification of an important detail",
     "ShortProjectTitle": "27 -Short",
     "SponsorOrganisation": "Y-mAbs Therapeutics A/S"
@@ -344,7 +344,7 @@
     "IrasId": "9800028",
     "ChiefInvestigator": "Arjun Jet Malhotra",
     "CreatedAt": "2024-11-16",
-    "LeadNation": "Scotland, Wales",
+    "LeadNation": "Scotland",
     "ModificationType": "Modification of an important detail",
     "ShortProjectTitle": "Project 28",
     "SponsorOrganisation": "DIABETES CARE TRUST (Association of British Clinical Diabetologists ABCD)"
@@ -354,7 +354,7 @@
     "IrasId": "9800029",
     "ChiefInvestigator": "Nova Cairo Pierce",
     "CreatedAt": "2023-11-17",
-    "LeadNation": "England, Northern Ireland, Scotland",
+    "LeadNation": "England",
     "ModificationType": "Modification of an important detail",
     "ShortProjectTitle": "Project 29",
     "SponsorOrganisation": "EOS - CS (ETHICAL ONCOLOGY SCIENCE - CLINICAL STUDIES) S.R.L."
@@ -364,7 +364,7 @@
     "IrasId": "9800030",
     "ChiefInvestigator": "Ayo Folorunsho",
     "CreatedAt": "2026-06-11",
-    "LeadNation": "England, Northern Ireland, Wales",
+    "LeadNation": "England",
     "ModificationType": "Modification of an important detail",
     "ShortProjectTitle": "Project 30",
     "SponsorOrganisation": "e-Therapeutics"
@@ -374,7 +374,7 @@
     "IrasId": "9800030",
     "ChiefInvestigator": "Ayo Folorunsho",
     "CreatedAt": "2026-01-11",
-    "LeadNation": "England, Northern Ireland, Wales",
+    "LeadNation": "England",
     "ModificationType": "Modification of an important detail",
     "ShortProjectTitle": "Project 30",
     "SponsorOrganisation": "e-Therapeutics"
@@ -384,7 +384,7 @@
     "IrasId": "9800031",
     "ChiefInvestigator": "Dr. Fernández-Hernández",
     "CreatedAt": "2024-11-14",
-    "LeadNation": "England, Scotland, Wales",
+    "LeadNation": "England",
     "ModificationType": "Minor modifications",
     "ShortProjectTitle": "Project 31",
     "SponsorOrganisation": "King's Fund"
@@ -394,7 +394,7 @@
     "IrasId": "9800032",
     "ChiefInvestigator": "Bashir El-Karim",
     "CreatedAt": "2024-03-31",
-    "LeadNation": "Northern Ireland, Scotland, Wales",
+    "LeadNation": "Northern Ireland",
     "ModificationType": "Minor modifications",
     "ShortProjectTitle": "Study 32",
     "SponsorOrganisation": "EBR SYSTEMS, INC."
@@ -404,7 +404,7 @@
     "IrasId": "9800033",
     "ChiefInvestigator": "Dr. Isabella Fernández-Hernández",
     "CreatedAt": "2025-04-11",
-    "LeadNation": "England, Northern Ireland, Scotland, Wales",
+    "LeadNation": "England",
     "ModificationType": "Minor modifications",
     "ShortProjectTitle": "Short 33",
     "SponsorOrganisation": "F. Hoffmann-La Roche Ltd"
