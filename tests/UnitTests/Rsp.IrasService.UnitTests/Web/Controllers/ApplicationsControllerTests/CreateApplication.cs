@@ -5,19 +5,10 @@ using Rsp.IrasService.WebApi.Controllers;
 
 namespace Rsp.IrasService.UnitTests.Web.Controllers.ApplicationsControllerTests;
 
-public class CreateApplication : TestServiceBase
+public class CreateApplication : TestServiceBase<ApplicationsController>
 {
-    private readonly ApplicationsController _controller;
-
-    public CreateApplication()
-    {
-        _controller = Mocker.CreateInstance<ApplicationsController>();
-    }
-
-    [Theory]
-    [AutoData]
-    public async Task CreateApplication_ShouldSendCommand_AndReturnCreatedApplication(ApplicationRequest request,
-        ApplicationResponse mockResponse)
+    [Theory, AutoData]
+    public async Task CreateApplication_ShouldSendCommand_AndReturnCreatedApplication(ApplicationRequest request, ApplicationResponse mockResponse)
     {
         // Arrange
         var mockMediator = Mocker.GetMock<IMediator>();
@@ -26,13 +17,22 @@ public class CreateApplication : TestServiceBase
             .ReturnsAsync(mockResponse);
 
         // Act
-        var result = await _controller.CreateApplication(request);
+        var result = await Sut.CreateApplication(request);
 
         // Assert
         result.ShouldNotBeNull();
         result.ShouldBe(mockResponse);
-        mockMediator.Verify(
-            m => m.Send(It.Is<CreateApplicationCommand>(c => c.CreateApplicationRequest == request), default),
-            Times.Once);
+
+        // Verify
+        mockMediator.Verify
+        (
+            m => m
+            .Send
+            (
+                It.Is<CreateApplicationCommand>(c => c.CreateApplicationRequest == request),
+                default
+            ),
+            Times.Once
+        );
     }
 }

@@ -17,19 +17,23 @@ public class MappingRegister : IRegister
         // register your mapster mappings here only if you
         // need custom mapping or need different settings for mapping
 
+        // ApplicationRequest -> ProjectRecord mapping
         config
             .NewConfig<ApplicationRequest, ProjectRecord>()
             .Map(dest => dest.CreatedDate, source => source.StartDate)
             .Map(dest => dest.UpdatedDate, _ => DateTime.Now);
 
+        // ProjectRecord -> ApplicationRequest mapping
         config
             .NewConfig<ProjectRecord, ApplicationRequest>()
             .Map(dest => dest.StartDate, source => source.CreatedDate);
 
+        // RespondentDto -> ProjectPersonnel mapping
         config
             .NewConfig<RespondentDto, ProjectPersonnel>()
             .Map(dest => dest.Email, source => source.EmailAddress);
 
+        // RespondentAnswerDto -> ProjectRecordAnswer mapping
         config
             .NewConfig<RespondentAnswerDto, ProjectRecordAnswer>()
             .Ignore(ra => ra.ProjectPersonnelId)
@@ -40,8 +44,30 @@ public class MappingRegister : IRegister
             .Map(dest => dest.SelectedOptions, source => source.SelectedOption, source => !string.IsNullOrWhiteSpace(source.SelectedOption))
             .Map(dest => dest.SelectedOptions, source => string.Join(',', source.Answers), source => source.Answers.Count > 0);
 
+        // ProjectRecordAnswer -> RespondentAnswerDto mapping
         config
             .NewConfig<ProjectRecordAnswer, RespondentAnswerDto>()
+            .Map(dest => dest.CategoryId, source => source.Category)
+            .Map(dest => dest.SectionId, source => source.Section)
+            .Map(dest => dest.AnswerText, source => source.Response)
+            .Map(dest => dest.SelectedOption, source => source.SelectedOptions, source => source.OptionType == "Single")
+            .Map(dest => dest.Answers, source => source.SelectedOptions!.Split(',', StringSplitOptions.RemoveEmptyEntries), source => source.OptionType == "Multiple");
+
+        // RespondentAnswerDto -> ProjectModificationAnswer mapping
+        config
+            .NewConfig<RespondentAnswerDto, ProjectModificationAnswer>()
+            .Ignore(ra => ra.ProjectModificationChangeId)
+            .Ignore(ra => ra.ProjectPersonnelId)
+            .Ignore(ra => ra.ProjectRecordId)
+            .Map(dest => dest.Category, source => source.CategoryId)
+            .Map(dest => dest.Section, source => source.SectionId)
+            .Map(dest => dest.Response, source => source.AnswerText)
+            .Map(dest => dest.SelectedOptions, source => source.SelectedOption, source => !string.IsNullOrWhiteSpace(source.SelectedOption))
+            .Map(dest => dest.SelectedOptions, source => string.Join(',', source.Answers), source => source.Answers.Count > 0);
+
+        // ProjectModificationAnswer -> RespondentAnswerDto mapping
+        config
+            .NewConfig<ProjectModificationAnswer, RespondentAnswerDto>()
             .Map(dest => dest.CategoryId, source => source.Category)
             .Map(dest => dest.SectionId, source => source.Section)
             .Map(dest => dest.AnswerText, source => source.Response)
