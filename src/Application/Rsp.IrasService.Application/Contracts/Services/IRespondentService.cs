@@ -13,5 +13,11 @@ public interface IRespondentService : IInterceptable
 
     Task<IEnumerable<RespondentAnswerDto>> GetResponses(string applicationId, string categoryId);
 
+    Task<IEnumerable<RespondentAnswerDto>> GetResponses(Guid modificationChangeId, string projectRecordId);
+
+    Task<IEnumerable<RespondentAnswerDto>> GetResponses(Guid modificationChangeId, string projectRecordId, string categoryId);
+
+    Task SaveModificationAnswers(ModificationAnswersRequest modificationAnswersRequest);
+
     Task SaveResponses(RespondentAnswersRequest respondentAnswersRequest);
 }

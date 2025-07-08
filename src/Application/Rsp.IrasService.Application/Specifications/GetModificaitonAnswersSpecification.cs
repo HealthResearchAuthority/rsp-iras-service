@@ -1,0 +1,40 @@
+﻿using Ardalis.Specification;
+using Rsp.IrasService.Domain.Entities;
+
+namespace Rsp.IrasService.Application.Specifications;
+
+public class GetModificationAnswersSpecification : Specification<ProjectModificationAnswer>
+{
+    /// <summary>
+    /// Defines a specification to return all records for the applicationId and categoryId
+    /// </summary>
+    /// <param name="modificationChangeId">Unique Id of the change added to the modification</param>
+    /// <param name="projectRecordId">Unique Id of the application to get. Default: null for all records</param>
+    /// <param name="categoryId">Category Id of the questions to be returned</param>
+    public GetModificationAnswersSpecification(Guid modificationChangeId, string projectRecordId, string categoryId)
+    {
+        Query
+            .AsNoTracking()
+            .Where
+            (entity =>
+                entity.ProjectModificationChangeId == modificationChangeId &&
+                entity.ProjectRecordId == projectRecordId &&
+                entity.Category == categoryId
+            );
+    }
+
+    /// <summary>
+    /// Defines a specification to return all records for the applicationId
+    /// </summary>
+    /// <param name="projectRecordId">Unique Id of the application to get</param>
+    public GetModificationAnswersSpecification(Guid modificationChangeId, string projectRecordId)
+    {
+        Query
+            .AsNoTracking()
+            .Where
+            (entity =>
+                entity.ProjectModificationChangeId == modificationChangeId &&
+                entity.ProjectRecordId == projectRecordId
+            );
+    }
+}

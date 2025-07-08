@@ -8,11 +8,11 @@ public class SaveResponsesSpecification : Specification<ProjectRecordAnswer>
     /// <summary>
     /// Defines a specification to return all records for the applicationId and categoryId
     /// </summary>
-    /// <param name="applicationId">Unique Id of the application to get. Default: null for all records</param>
+    /// <param name="projectRecordId">Unique Id of the application to get. Default: null for all records</param>
     /// <param name="respondentId">Category Id of the questions to be returned</param>
-    public SaveResponsesSpecification(string applicationId, string respondentId)
+    public SaveResponsesSpecification(string projectRecordId, string respondentId)
     {
         Query
-            .Where(entity => entity.ProjectRecordId == applicationId && entity.ProjectPersonnelId == respondentId);
+            .Where(entity => entity.ProjectRecordId == projectRecordId && entity.ProjectPersonnelId == respondentId);
     }
 }

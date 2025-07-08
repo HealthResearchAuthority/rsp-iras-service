@@ -18,6 +18,14 @@ public class RespondentController(IMediator mediator) : ControllerBase
         await mediator.Send(command);
     }
 
+    [HttpPost("modification")]
+    public async Task SaveModificationAnswers(ModificationAnswersRequest request)
+    {
+        var command = new SaveModificationAnswersCommand(request);
+
+        await mediator.Send(command);
+    }
+
     [HttpGet("{applicationId}")]
     [Produces<IEnumerable<RespondentAnswerDto>>]
     public async Task<IEnumerable<RespondentAnswerDto>> GetRespondentAnswers(string applicationId)
@@ -37,6 +45,33 @@ public class RespondentController(IMediator mediator) : ControllerBase
         var command = new GetResponsesQuery
         {
             ApplicationId = applicationId,
+            CategoryId = categoryId
+        };
+
+        return await mediator.Send(command);
+    }
+
+    [HttpGet("modification/{modificationChangeId}/{projectRecordId}")]
+    [Produces<IEnumerable<RespondentAnswerDto>>]
+    public async Task<IEnumerable<RespondentAnswerDto>> GetModificationAnswers(Guid modificationChangeId, string projectRecordId)
+    {
+        var command = new GetModificationAnswersQuery
+        {
+            ProjectModificationChangeId = modificationChangeId,
+            ProjectRecordId = projectRecordId
+        };
+
+        return await mediator.Send(command);
+    }
+
+    [HttpGet("modification/{modificationChangeId}/{projectRecordId}/{categoryId}")]
+    [Produces<IEnumerable<RespondentAnswerDto>>]
+    public async Task<IEnumerable<RespondentAnswerDto>> GetModificationAnswers(Guid modificationChangeId, string projectRecordId, string categoryId)
+    {
+        var command = new GetModificationAnswersQuery
+        {
+            ProjectModificationChangeId = modificationChangeId,
+            ProjectRecordId = projectRecordId,
             CategoryId = categoryId
         };
 

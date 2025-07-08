@@ -18,7 +18,7 @@ public class ProjectModificationChange
     /// <summary>
     /// Gets or sets the area of the project that was changed.
     /// </summary>
-    public int AreaOfChange { get; set; }
+    public string AreaOfChange { get; set; } = null!;
 
     /// <summary>
     /// Gets or sets the specific detail or sub-area of the change.
