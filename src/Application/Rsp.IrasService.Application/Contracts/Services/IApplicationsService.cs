@@ -44,6 +44,11 @@ public interface IApplicationsService : IInterceptable
     Task<IEnumerable<ApplicationResponse>> GetRespondentApplications(string respondentId);
 
     /// <summary>
+    /// Returns all applications for a specified respondent with pagination
+    /// </summary>
+    Task<IEnumerable<ApplicationResponse>> GetRespondentApplications(string respondentId, string? searchQuery, int pageIndex, int pageSize);
+
+    /// <summary>
     /// Updates the values of an application
     /// </summary>
     /// <param name="applicationRequest">The application values</param>

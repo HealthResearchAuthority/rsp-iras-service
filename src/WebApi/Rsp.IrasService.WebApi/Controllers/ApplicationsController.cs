@@ -1,14 +1,11 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Rsp.IrasService.Application.Constants;
-using Rsp.IrasService.Application.Contracts.Services;
 using Rsp.IrasService.Application.CQRS.Commands;
 using Rsp.IrasService.Application.CQRS.Queries;
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.DTOS.Responses;
 using Rsp.IrasService.Domain.Entities;
-using Rsp.IrasService.Application.Contracts;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Rsp.IrasService.WebApi.Controllers;
 
@@ -80,16 +77,26 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     }
 
     /// <summary>
-    /// Returns all applications for the respondent
+    /// Returns all applications for the respondent, with possibility of pagination if pageIndex and pageSize are defined > 0 (defaut - no pagination)
     /// </summary>
     /// <param name="respondentId">Reasearch Application Respondent Id</param>
+    /// <param name="searchQuery">Optional search query to filter projects by title or description.</param>
+    /// <param name="pageIndex">Page number (1-based). Pagination applied if greater than 0.</param>
+    /// <param name="pageSize">Number of records per page. Pagination applied if greater than 0.</param>
     [HttpGet("respondent")]
     [Produces<IEnumerable<ProjectRecord>>]
-    public async Task<IEnumerable<ApplicationResponse>> GetApplicationsByRespondent(string respondentId)
+    public async Task<IEnumerable<ApplicationResponse>> GetApplicationsByRespondent(
+        string respondentId,
+        string? searchQuery = null,
+        int pageIndex = 0,
+        int pageSize = 0)
     {
         var request = new GetApplicationsWithRespondentQuery
         {
-            RespondentId = respondentId
+            RespondentId = respondentId,
+            SearchQuery = searchQuery,
+            PageIndex = pageIndex,
+            PageSize = pageSize,
         };
 
         return await mediator.Send(request);
@@ -103,7 +110,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     public async Task<ApplicationResponse> CreateApplication(ApplicationRequest applicationRequest)
     {
         var request = new CreateApplicationCommand(applicationRequest);
-        var newApplication = await mediator.Send(request);       
+        var newApplication = await mediator.Send(request);
 
         return newApplication;
     }

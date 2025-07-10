@@ -65,6 +65,16 @@ public class ApplicationsService(IProjectRecordRepository applicationRepository)
         return applicationsFromDb.Adapt<IEnumerable<ApplicationResponse>>();
     }
 
+    // This overload uses pagination
+    public async Task<IEnumerable<ApplicationResponse>> GetRespondentApplications(string respondentId, string? searchQuery, int pageIndex, int pageSize)
+    {
+        var specification = new GetRespondentApplicationSpecification(respondentId: respondentId, searchQuery: searchQuery, pageIndex: pageIndex, pageSize: pageSize);
+
+        var applicationsFromDb = await applicationRepository.GetProjectRecords(specification);
+
+        return applicationsFromDb.Adapt<IEnumerable<ApplicationResponse>>();
+    }
+
     public async Task<ApplicationResponse> UpdateApplication(ApplicationRequest applicationRequest)
     {
         var irasApplication = applicationRequest.Adapt<ProjectRecord>();
