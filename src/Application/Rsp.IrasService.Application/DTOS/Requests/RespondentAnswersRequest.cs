@@ -10,7 +10,7 @@ public record RespondentAnswersRequest
     /// <summary>
     /// Application Id
     /// </summary>
-    public string ProjectApplicationId { get; set; } = null!;
+    public string ProjectRecordId { get; set; } = null!;
 
     /// <summary>
     /// Respondent Answers

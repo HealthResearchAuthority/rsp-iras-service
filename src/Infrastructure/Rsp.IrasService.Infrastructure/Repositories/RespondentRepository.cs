@@ -47,10 +47,60 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
         await irasContext.SaveChangesAsync();
     }
 
+    public async Task SaveModificationResponses(ISpecification<ProjectModificationAnswer> specification, List<ProjectModificationAnswer> respondentAnswers)
+    {
+        var answers = irasContext
+            .ProjectModificationAnswers
+            .WithSpecification(specification);
+
+        foreach (var answer in respondentAnswers)
+        {
+            var existingAnswer = answers.FirstOrDefault(ans => ans.QuestionId == answer.QuestionId);
+
+            if (existingAnswer != null)
+            {
+                // delete the answer if existingAnswer was previously saved
+                // and now cleared or all of the options are unselected
+                if ((string.IsNullOrWhiteSpace(existingAnswer.OptionType) && string.IsNullOrWhiteSpace(answer.Response)) ||
+                    (existingAnswer.OptionType is "Single" or "Multiple" && string.IsNullOrWhiteSpace(answer.SelectedOptions)))
+                {
+                    irasContext.ProjectModificationAnswers.Remove(existingAnswer);
+                    continue;
+                }
+
+                existingAnswer.Response = answer.Response;
+                existingAnswer.SelectedOptions = answer.SelectedOptions;
+
+                continue;
+            }
+
+            // do not add if answer is multiplechoice but none of the options are selected
+            if ((string.IsNullOrWhiteSpace(answer.OptionType) && string.IsNullOrWhiteSpace(answer.Response)) ||
+                (answer.OptionType is "Single" or "Multiple" && string.IsNullOrWhiteSpace(answer.SelectedOptions)))
+            {
+                continue;
+            }
+
+            await irasContext.ProjectModificationAnswers.AddAsync(answer);
+        }
+
+        await irasContext.SaveChangesAsync();
+    }
+
     public Task<IEnumerable<ProjectRecordAnswer>> GetResponses(ISpecification<ProjectRecordAnswer> specification)
     {
         var result = irasContext
            .ProjectRecordAnswers
+           .WithSpecification(specification)
+           .AsEnumerable();
+
+        return Task.FromResult(result);
+    }
+
+    public Task<IEnumerable<ProjectModificationAnswer>> GetResponses(ISpecification<ProjectModificationAnswer> specification)
+    {
+        var result = irasContext
+           .ProjectModificationAnswers
            .WithSpecification(specification)
            .AsEnumerable();
 
