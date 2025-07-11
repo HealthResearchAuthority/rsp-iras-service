@@ -77,21 +77,37 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     }
 
     /// <summary>
-    /// Returns all applications for the respondent, with possibility of pagination if pageIndex and pageSize are defined > 0 (defaut - no pagination)
+    /// Returns all applications for the respondent
+    /// </summary>
+    /// <param name="respondentId">Reasearch Application Respondent Id</param>
+    [HttpGet("respondent")]
+    [Produces<IEnumerable<ProjectRecord>>]
+    public async Task<IEnumerable<ApplicationResponse>> GetApplicationsByRespondent(string respondentId)
+    {
+        var request = new GetApplicationsWithRespondentQuery
+        {
+            RespondentId = respondentId,
+        };
+
+        return await mediator.Send(request);
+    }
+
+    /// <summary>
+    /// Returns applications for the respondent, with possibility of pagination if pageIndex and pageSize are defined > 0 (defaut - no pagination)
     /// </summary>
     /// <param name="respondentId">Reasearch Application Respondent Id</param>
     /// <param name="searchQuery">Optional search query to filter projects by title or description.</param>
     /// <param name="pageIndex">Page number (1-based). Pagination applied if greater than 0.</param>
     /// <param name="pageSize">Number of records per page. Pagination applied if greater than 0.</param>
-    [HttpGet("respondent")]
-    [Produces<IEnumerable<ProjectRecord>>]
-    public async Task<IEnumerable<ApplicationResponse>> GetApplicationsByRespondent(
+    [HttpGet("respondent/paginated")]
+    [Produces(typeof(PaginatedResponse<ApplicationResponse>))]
+    public async Task<PaginatedResponse<ApplicationResponse>> GetPaginatedApplicationsByRespondent(
         string respondentId,
         string? searchQuery = null,
         int pageIndex = 0,
         int pageSize = 0)
     {
-        var request = new GetApplicationsWithRespondentQuery
+        var request = new GetPaginatedApplicationsWithRespondentQuery
         {
             RespondentId = respondentId,
             SearchQuery = searchQuery,
@@ -99,7 +115,13 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
             PageSize = pageSize,
         };
 
-        return await mediator.Send(request);
+        var result = await mediator.Send(request);
+
+        return new PaginatedResponse<ApplicationResponse>
+        {
+            Items = result.Items,
+            TotalCount = result.TotalCount
+        };
     }
 
     /// <summary>

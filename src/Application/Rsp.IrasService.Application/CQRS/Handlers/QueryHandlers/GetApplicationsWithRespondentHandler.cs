@@ -9,6 +9,6 @@ public class GetApplicationsWithRespondentHandler(IApplicationsService applicati
 {
     public async Task<IEnumerable<ApplicationResponse>> Handle(GetApplicationsWithRespondentQuery request, CancellationToken cancellationToken)
     {
-        return await applicationsService.GetRespondentApplications(request.RespondentId, request.SearchQuery, request.PageIndex, request.PageSize);
+        return await applicationsService.GetRespondentApplications(request.RespondentId);
     }
 }
