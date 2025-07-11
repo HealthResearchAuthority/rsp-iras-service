@@ -41,6 +41,7 @@ public class SaveResponses : TestServiceBase<RespondentService>
                 new()
                 {
                     QuestionId = "Q1",
+                    VersionId = "v1",
                     CategoryId = "Category-1",
                     SectionId = "Section-1",
                     AnswerText = "Answer text 1",
@@ -51,6 +52,7 @@ public class SaveResponses : TestServiceBase<RespondentService>
                 new()
                 {
                     QuestionId = "Q2",
+                    VersionId = "v1",
                     CategoryId = "Category-2",
                     SectionId = "Section-2",
                     AnswerText = "Answer text 2",

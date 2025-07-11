@@ -8,6 +8,11 @@ public class RespondentAnswerDto
     public string QuestionId { get; set; } = null!;
 
     /// <summary>
+    /// Version Id
+    /// </summary>
+    public string VersionId { get; set; } = null!;
+
+    /// <summary>
     /// Question Category Id
     /// </summary>
     public string CategoryId { get; set; } = null!;
