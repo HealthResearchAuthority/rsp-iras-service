@@ -3,7 +3,7 @@ using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Application.Specifications;
 
-public class GetReviewBodySpecification : Specification<ReviewBody>
+public class GetReviewBodySpecification : Specification<RegulatoryBody>
 {
     public GetReviewBodySpecification(Guid id)
     {

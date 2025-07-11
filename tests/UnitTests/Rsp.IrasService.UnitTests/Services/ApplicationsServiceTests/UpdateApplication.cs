@@ -14,7 +14,7 @@ namespace Rsp.IrasService.UnitTests.Services.ApplicationsServiceTests;
 /// </summary>
 public class UpdateApplication : TestServiceBase<ApplicationsService>
 {
-    private readonly ApplicationRepository _applicationRepository;
+    private readonly ProjectRecordRepository _applicationRepository;
     private readonly IrasContext _context;
 
     public UpdateApplication()
@@ -23,7 +23,7 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
             .UseInMemoryDatabase(Guid.NewGuid().ToString("N")).Options;
 
         _context = new IrasContext(options);
-        _applicationRepository = new ApplicationRepository(_context);
+        _applicationRepository = new ProjectRecordRepository(_context);
     }
 
     /// <summary>
@@ -33,17 +33,17 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
     [Theory]
     [InlineAutoData(1)]
     public async Task Updates_And_Returns_CreateApplicationResponse(int records,
-        Generator<ResearchApplication> generator, ApplicationRequest createApplicationRequest)
+        Generator<ProjectRecord> generator, ApplicationRequest createApplicationRequest)
     {
         // Arrange
-        Mocker.Use<IApplicationRepository>(_applicationRepository);
+        Mocker.Use<IProjectRecordRepository>(_applicationRepository);
 
         Sut = Mocker.CreateInstance<ApplicationsService>();
 
         // seed data with the number of records
         var applications = await TestData.SeedData(_context, generator, records);
 
-        createApplicationRequest.ApplicationId = applications[0].ApplicationId;
+        createApplicationRequest.Id = applications[0].Id;
         createApplicationRequest.StartDate = applications[0].CreatedDate;
 
         // Act
@@ -54,7 +54,7 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
         irasApplication.ShouldBeOfType<ApplicationResponse>();
         irasApplication.ShouldSatisfyAllConditions
         (
-            app => app.ApplicationId.ShouldBe(createApplicationRequest.ApplicationId),
+            app => app.Id.ShouldBe(createApplicationRequest.Id),
             app => app.Title.ShouldBe(createApplicationRequest.Title),
             app => app.CreatedDate.ShouldBe(createApplicationRequest.StartDate!.Value),
             app => app.Status.ShouldBe(createApplicationRequest.Status)
@@ -67,11 +67,11 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
     /// <param name="createApplicationRequest">Represents the model for new application request</param>
     [Theory]
     [InlineAutoData(1)]
-    public async Task ReturnsNull_If_Id_DoesNotExist(int records, Generator<ResearchApplication> generator,
+    public async Task ReturnsNull_If_Id_DoesNotExist(int records, Generator<ProjectRecord> generator,
         ApplicationRequest createApplicationRequest)
     {
         // Arrange
-        Mocker.Use<IApplicationRepository>(_applicationRepository);
+        Mocker.Use<IProjectRecordRepository>(_applicationRepository);
 
         Sut = Mocker.CreateInstance<ApplicationsService>();
 
@@ -79,7 +79,7 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
         await TestData.SeedData(_context, generator, records);
 
         // get the id that won't exists
-        createApplicationRequest.ApplicationId = DateTime.Now.ToString("yyyyddMMHHmmss");
+        createApplicationRequest.Id = DateTime.Now.ToString("yyyyddMMHHmmss");
 
         // Act/Assert
         var application = await Sut.UpdateApplication(createApplicationRequest);
@@ -99,25 +99,25 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
 
         var applicationRequest = new ApplicationRequest
         {
-            ApplicationId = Guid.NewGuid().ToString(),
-            Respondent = new RespondentDto { RespondentId = fixedRespondentId },
+            Id = Guid.NewGuid().ToString(),
+            Respondent = new RespondentDto { Id = fixedRespondentId },
             CreatedBy = "CreatedBy",
             Description = "Description",
             Title = "Title",
             UpdatedBy = "UpdatedBy"
         };
 
-        var existingApplication = new ResearchApplication
+        var existingApplication = new ProjectRecord
         {
-            ApplicationId = applicationRequest.ApplicationId,
-            RespondentId = fixedRespondentId,
+            Id = applicationRequest.Id,
+            ProjectPersonnelId = fixedRespondentId,
             CreatedBy = applicationRequest.CreatedBy,
             Description = applicationRequest.Description,
             Title = applicationRequest.Title,
             UpdatedBy = applicationRequest.UpdatedBy
         };
 
-        await _context.ResearchApplications.AddAsync(existingApplication);
+        await _context.ProjectRecords.AddAsync(existingApplication);
         await _context.SaveChangesAsync();
 
         // Ensure EF Core is tracking the entity
@@ -131,13 +131,13 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
         updatedApplication.ShouldBeOfType<ApplicationResponse>();
 
         // Reload entity from database to ensure the update was persisted
-        var dbApplication = await _context.ResearchApplications
+        var dbApplication = await _context.ProjectRecords
             .AsNoTracking()
-            .FirstOrDefaultAsync(a => a.ApplicationId == existingApplication.ApplicationId);
+            .FirstOrDefaultAsync(a => a.Id == existingApplication.Id);
 
         dbApplication.ShouldNotBeNull();
-        dbApplication.RespondentId.ShouldBe(fixedRespondentId);
+        dbApplication.ProjectPersonnelId.ShouldBe(fixedRespondentId);
 
-        (await _context.ResearchApplications.CountAsync()).ShouldBe(1);
+        (await _context.ProjectRecords.CountAsync()).ShouldBe(1);
     }
 }

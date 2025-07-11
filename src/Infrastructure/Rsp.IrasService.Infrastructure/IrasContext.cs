@@ -6,26 +6,34 @@ namespace Rsp.IrasService.Infrastructure;
 
 public class IrasContext(DbContextOptions<IrasContext> options) : DbContext(options)
 {
-    public DbSet<ResearchApplication> ResearchApplications { get; set; }
-    public DbSet<Respondent> Respondents { get; set; }
-    public DbSet<RespondentAnswer> RespondentAnswers { get; set; }
+    public DbSet<ProjectRecord> ProjectRecords { get; set; }
+    public DbSet<ProjectPersonnel> ProjectPersonnels { get; set; }
+    public DbSet<ProjectRecordAnswer> ProjectRecordAnswers { get; set; }
     public DbSet<EventType> EventTypes { get; set; }
     public DbSet<EmailTemplate> EmailTemplates { get; set; }
-    public DbSet<ReviewBody> ReviewBodies { get; set; }
-    public DbSet<ReviewBodyUsers> ReviewBodyUsers { get; set; }
-    public DbSet<ReviewBodyAuditTrail> ReviewBodiesAuditTrails { get; set; }
+    public DbSet<RegulatoryBody> RegulatoryBodies { get; set; }
+    public DbSet<RegulatoryBodyUser> RegulatoryBodiesUsers { get; set; }
+    public DbSet<RegulatoryBodyAuditTrail> RegulatoryBodiesAuditTrail { get; set; }
+    public DbSet<ProjectModification> ProjectModifications { get; set; }
+    public DbSet<ProjectModificationChange> ProjectModificationChanges { get; set; }
+    public DbSet<ProjectModificationAnswer> ProjectModificationAnswers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.ApplyConfiguration(new ResearchApplicationConfiguration());
-        modelBuilder.ApplyConfiguration(new RespondentConfiguration());
-        modelBuilder.ApplyConfiguration(new RespondentAnswerConfiguration());
+        modelBuilder.ApplyConfiguration(new ProjectRecordConfiguration());
+        modelBuilder.ApplyConfiguration(new ProjectPersonnelConfiguration());
+        modelBuilder.ApplyConfiguration(new ProjectRecordAnswerConfiguration());
         modelBuilder.ApplyConfiguration(new EventTypeConfiguration());
         modelBuilder.ApplyConfiguration(new EmailTemplateConfiguration());
-        modelBuilder.ApplyConfiguration(new ReviewBodyConfiguration());
-        modelBuilder.ApplyConfiguration(new ReviewBodyAuditTrailConfiguration());
-        modelBuilder.ApplyConfiguration(new ReviewBodyUsersConfiguration());
+        modelBuilder.ApplyConfiguration(new RegulatoryBodyConfiguration());
+        modelBuilder.ApplyConfiguration(new RegulatoryBodyAuditTrailConfiguration());
+        modelBuilder.ApplyConfiguration(new ReviewBodyUserConfiguration());
+
+        // project modifications entities configuration
+        modelBuilder.ApplyConfiguration(new ProjectModificationConfiguration());
+        modelBuilder.ApplyConfiguration(new ProjectModificationChangeConfiguration());
+        modelBuilder.ApplyConfiguration(new ProjectModificationAnswerConfiguration());
     }
 }

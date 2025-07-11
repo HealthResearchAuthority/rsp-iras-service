@@ -7,11 +7,11 @@ namespace Rsp.IrasService.Infrastructure.Helpers;
 
 public class ReviewBodyAuditTrailHandler : IAuditTrailHandler
 {
-    public bool CanHandle(object entity) => entity is ReviewBody;
+    public bool CanHandle(object entity) => entity is RegulatoryBody;
 
-    public IEnumerable<ReviewBodyAuditTrail> GenerateAuditTrails(EntityEntry entry, string systemAdminEmail)
+    public IEnumerable<RegulatoryBodyAuditTrail> GenerateAuditTrails(EntityEntry entry, string systemAdminEmail)
     {
-        if (entry.Entity is not ReviewBody reviewBody)
+        if (entry.Entity is not RegulatoryBody reviewBody)
         {
             return [];
         }
@@ -24,18 +24,18 @@ public class ReviewBodyAuditTrailHandler : IAuditTrailHandler
         };
     }
 
-    private static ReviewBodyAuditTrail HandleAddedState(ReviewBody reviewBody, string systemAdminEmail)
+    private static RegulatoryBodyAuditTrail HandleAddedState(RegulatoryBody reviewBody, string systemAdminEmail)
     {
-        return new ReviewBodyAuditTrail
+        return new RegulatoryBodyAuditTrail
         {
             DateTimeStamp = DateTime.UtcNow,
-            ReviewBodyId = reviewBody.Id,
+            RegulatoryBodyId = reviewBody.Id,
             User = systemAdminEmail,
-            Description = $"{reviewBody.OrganisationName} was created"
+            Description = $"{reviewBody.RegulatoryBodyName} was created"
         };
     }
 
-    private static List<ReviewBodyAuditTrail> HandleModifiedState(EntityEntry entry, ReviewBody reviewBody, string systemAdminEmail)
+    private static List<RegulatoryBodyAuditTrail> HandleModifiedState(EntityEntry entry, RegulatoryBody reviewBody, string systemAdminEmail)
     {
         var modifiedAuditableProps = entry.Properties
             .Where(p =>
@@ -45,10 +45,10 @@ public class ReviewBodyAuditTrailHandler : IAuditTrailHandler
                     : !AreListsEqual(p.OriginalValue as List<string>, p.CurrentValue as List<string>)) &&
                 p.IsModified);
 
-        return [.. modifiedAuditableProps.Select(property => new ReviewBodyAuditTrail
+        return [.. modifiedAuditableProps.Select(property => new RegulatoryBodyAuditTrail
         {
             DateTimeStamp = DateTime.UtcNow,
-            ReviewBodyId = reviewBody.Id,
+            RegulatoryBodyId = reviewBody.Id,
             User = systemAdminEmail,
             Description = GenerateDescription(property, reviewBody)
         })];
@@ -74,12 +74,12 @@ public class ReviewBodyAuditTrailHandler : IAuditTrailHandler
         return list1.SequenceEqual(list2);
     }
 
-    private static string GenerateDescription(PropertyEntry property, ReviewBody reviewBody)
+    private static string GenerateDescription(PropertyEntry property, RegulatoryBody reviewBody)
     {
-        if (property.Metadata.Name == nameof(ReviewBody.IsActive))
+        if (property.Metadata.Name == nameof(RegulatoryBody.IsActive))
         {
             var newStatus = property.CurrentValue as bool? == true ? "enabled" : "disabled";
-            return $"{reviewBody.OrganisationName} was {newStatus}";
+            return $"{reviewBody.RegulatoryBodyName} was {newStatus}";
         }
         else
         {
@@ -88,7 +88,7 @@ public class ReviewBodyAuditTrailHandler : IAuditTrailHandler
             var oldValue = property.OriginalValue ?? emptyValue;
             var newValue = property.CurrentValue ?? emptyValue;
 
-            if (property.Metadata.Name == nameof(ReviewBody.Countries))
+            if (property.Metadata.Name == nameof(RegulatoryBody.Countries))
             {
                 oldValue = string.Join(", ", property.OriginalValue as List<string> ?? [emptyValue]);
                 newValue = string.Join(", ", property.CurrentValue as List<string> ?? [emptyValue]);

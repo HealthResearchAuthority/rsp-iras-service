@@ -1,20 +1,17 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Rsp.IrasService.Application.Constants;
-using Rsp.IrasService.Application.Contracts.Services;
 using Rsp.IrasService.Application.CQRS.Commands;
 using Rsp.IrasService.Application.CQRS.Queries;
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.DTOS.Responses;
 using Rsp.IrasService.Domain.Entities;
-using Rsp.IrasService.Application.Contracts;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Rsp.IrasService.WebApi.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
-[Authorize]
 public class ApplicationsController(IMediator mediator) : ControllerBase
 {
     /// <summary>
@@ -22,7 +19,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     /// </summary>
     /// <param name="applicationId">Research Application Id</param>
     [HttpGet("{applicationId}")]
-    [Produces<ResearchApplication>]
+    [Produces<ProjectRecord>]
     public async Task<ActionResult<ApplicationResponse>> GetApplication(string applicationId)
     {
         var request = new GetApplicationQuery(applicationId);
@@ -38,7 +35,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     /// <param name="applicationId">Research Application Id</param>
     /// <param name="status">Research Application Status e.g. pending, created, approved</param>
     [HttpGet("{applicationId}/{status}")]
-    [Produces<ResearchApplication>]
+    [Produces<ProjectRecord>]
     public async Task<ActionResult<ApplicationResponse>> GetApplication(string applicationId, string status)
     {
         var request = new GetApplicationWithStatusQuery(applicationId)
@@ -55,7 +52,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     /// Returns all applications or applications by status
     /// </summary>
     [HttpGet]
-    [Produces<IEnumerable<ResearchApplication>>]
+    [Produces<IEnumerable<ProjectRecord>>]
     public async Task<IEnumerable<ApplicationResponse>> GetApplications()
     {
         var query = new GetApplicationsQuery();
@@ -68,7 +65,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     /// </summary>
     /// <param name="status">Research Application Status</param>
     [HttpGet("status")]
-    [Produces<IEnumerable<ResearchApplication>>]
+    [Produces<IEnumerable<ProjectRecord>>]
     public async Task<IEnumerable<ApplicationResponse>> GetApplicationsByStatus(string status)
     {
         var query = new GetApplicationsWithStatusQuery
@@ -84,7 +81,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     /// </summary>
     /// <param name="respondentId">Reasearch Application Respondent Id</param>
     [HttpGet("respondent")]
-    [Produces<IEnumerable<ResearchApplication>>]
+    [Produces<IEnumerable<ProjectRecord>>]
     public async Task<IEnumerable<ApplicationResponse>> GetApplicationsByRespondent(string respondentId)
     {
         var request = new GetApplicationsWithRespondentQuery
@@ -103,7 +100,7 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     public async Task<ApplicationResponse> CreateApplication(ApplicationRequest applicationRequest)
     {
         var request = new CreateApplicationCommand(applicationRequest);
-        var newApplication = await mediator.Send(request);       
+        var newApplication = await mediator.Send(request);
 
         return newApplication;
     }
@@ -118,5 +115,13 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
         var request = new UpdateApplicationCommand(applicationRequest);
 
         return await mediator.Send(request);
+    }
+
+    [HttpGet("modifications")]
+    public async Task<ActionResult<ModificationResponse>> GetModifications([FromBody] ModificationSearchRequest searchQuery, int pageNumber, int pageSize)
+    {
+        var query = new GetModificationsQuery(searchQuery, pageNumber, pageSize);
+
+        return await mediator.Send(query);
     }
 }

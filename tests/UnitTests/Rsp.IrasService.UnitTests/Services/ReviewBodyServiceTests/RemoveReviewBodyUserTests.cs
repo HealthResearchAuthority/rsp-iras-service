@@ -11,15 +11,15 @@ public class RemoveReviewBodyUserTests : TestServiceBase<ReviewBodyService>
     public async Task RemoveUserFromReviewBody_ShouldReturnDto_WhenUserIsRemoved(Guid reviewBodyId, Guid userId)
     {
         // Arrange
-        var reviewBodyUser = new ReviewBodyUsers
+        var reviewBodyUser = new RegulatoryBodyUser
         {
-            ReviewBodyId = reviewBodyId,
+            Id = reviewBodyId,
             UserId = userId,
             DateAdded = DateTime.UtcNow,
         };
 
-        Mocker.GetMock<IReviewBodyRepository>()
-            .Setup(x => x.RemoveUserFromReviewBody(It.IsAny<Guid>(), It.IsAny<Guid>()))
+        Mocker.GetMock<IRegulatoryBodyRepository>()
+            .Setup(x => x.RemoveUserFromRegulatoryBody(It.IsAny<Guid>(), It.IsAny<Guid>()))
             .ReturnsAsync(reviewBodyUser);
 
         // Act
@@ -28,7 +28,7 @@ public class RemoveReviewBodyUserTests : TestServiceBase<ReviewBodyService>
         // Assert
         result.ShouldNotBeNull();
         result.ShouldBeOfType<ReviewBodyUserDto>();
-        result.ReviewBodyId.ShouldBe(reviewBodyId);
+        result.Id.ShouldBe(reviewBodyId);
         result.UserId.ShouldBe(userId);
     }
 }

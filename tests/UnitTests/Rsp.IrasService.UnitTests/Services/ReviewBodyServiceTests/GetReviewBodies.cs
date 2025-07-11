@@ -12,7 +12,7 @@ namespace Rsp.IrasService.UnitTests.Services.ReviewBodyServiceTests;
 /// </summary>
 public class GetReviewBodiesTests : TestServiceBase<ReviewBodyService>
 {
-    private readonly ReviewBodyRepository _reviewBodyRepository;
+    private readonly RegulatoryBodyRepository _reviewBodyRepository;
     private readonly IrasContext _context;
 
     public GetReviewBodiesTests()
@@ -21,14 +21,14 @@ public class GetReviewBodiesTests : TestServiceBase<ReviewBodyService>
             .UseInMemoryDatabase(Guid.NewGuid().ToString("N")).Options;
 
         _context = new IrasContext(options);
-        _reviewBodyRepository = new ReviewBodyRepository(_context);
+        _reviewBodyRepository = new RegulatoryBodyRepository(_context);
     }
 
     [Theory, InlineAutoData(5)]
-    public async Task Returns_Correct_ReviewBodies(int records, Generator<ReviewBody> generator)
+    public async Task Returns_Correct_ReviewBodies(int records, Generator<RegulatoryBody> generator)
     {
         // Arrange
-        Mocker.Use<IReviewBodyRepository>(_reviewBodyRepository);
+        Mocker.Use<IRegulatoryBodyRepository>(_reviewBodyRepository);
         Sut = Mocker.CreateInstance<ReviewBodyService>();
 
         // Seed data using number of records to seed

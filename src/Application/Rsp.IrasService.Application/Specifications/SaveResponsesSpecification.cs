@@ -3,7 +3,7 @@ using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Application.Specifications;
 
-public class SaveResponsesSpecification : Specification<RespondentAnswer>
+public class SaveResponsesSpecification : Specification<ProjectRecordAnswer>
 {
     /// <summary>
     /// Defines a specification to return all records for the applicationId and categoryId
@@ -13,6 +13,6 @@ public class SaveResponsesSpecification : Specification<RespondentAnswer>
     public SaveResponsesSpecification(string applicationId, string respondentId)
     {
         Query
-            .Where(entity => entity.ApplicationId == applicationId && entity.RespondentId == respondentId);
+            .Where(entity => entity.ProjectRecordId == applicationId && entity.ProjectPersonnelId == respondentId);
     }
 }

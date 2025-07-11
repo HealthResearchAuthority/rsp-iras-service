@@ -83,9 +83,158 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.ToTable("EventTypes");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ResearchApplication", b =>
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModification", b =>
                 {
-                    b.Property<string>("ApplicationId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModificationIdentifier")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ModificationNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProjectRecordId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectRecordId");
+
+                    b.ToTable("ProjectModifications");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModificationAnswer", b =>
+                {
+                    b.Property<Guid>("ProjectModificationChangeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("QuestionId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProjectPersonnelId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OptionType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProjectRecordId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Response")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Section")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SelectedOptions")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ProjectModificationChangeId", "QuestionId", "ProjectPersonnelId");
+
+                    b.HasIndex("ProjectPersonnelId");
+
+                    b.HasIndex("ProjectRecordId");
+
+                    b.ToTable("ProjectModificationAnswers");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModificationChange", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AreaOfChange")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("ProjectModificationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("SpecificAreaOfChange")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectModificationId");
+
+                    b.ToTable("ProjectModificationChanges");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectPersonnel", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FamilyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GivenName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProjectPersonnels");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectRecord", b =>
+                {
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CreatedBy")
@@ -105,7 +254,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<string>("RespondentId")
+                    b.Property<string>("ProjectPersonnelId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -123,64 +272,27 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("ApplicationId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("RespondentId");
+                    b.HasIndex("ProjectPersonnelId");
 
-                    b.ToTable("ResearchApplications");
+                    b.ToTable("ProjectRecords");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.Respondent", b =>
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectRecordAnswer", b =>
                 {
-                    b.Property<string>("RespondentId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Role")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Version")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("RespondentId");
-
-                    b.ToTable("Respondents");
-                });
-
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.RespondentAnswer", b =>
-                {
-                    b.Property<string>("RespondentId")
+                    b.Property<string>("ProjectPersonnelId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("QuestionId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ApplicationId")
+                    b.Property<string>("ProjectRecordId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Category")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("EndDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("OptionType")
                         .HasColumnType("nvarchar(max)");
@@ -195,20 +307,14 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Property<string>("SelectedOptions")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("StartDate")
-                        .HasColumnType("datetime2");
+                    b.HasKey("ProjectPersonnelId", "QuestionId", "ProjectRecordId");
 
-                    b.Property<string>("Version")
-                        .HasColumnType("nvarchar(max)");
+                    b.HasIndex("ProjectRecordId");
 
-                    b.HasKey("RespondentId", "QuestionId", "ApplicationId");
-
-                    b.HasIndex("ApplicationId");
-
-                    b.ToTable("RespondentAnswers");
+                    b.ToTable("ProjectRecordAnswers");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ReviewBody", b =>
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.RegulatoryBody", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -238,7 +344,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<string>("OrganisationName")
+                    b.Property<string>("RegulatoryBodyName")
                         .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
@@ -252,10 +358,10 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ReviewBodies");
+                    b.ToTable("RegulatoryBodies");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ReviewBodyAuditTrail", b =>
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.RegulatoryBodyAuditTrail", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -268,7 +374,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("ReviewBodyId")
+                    b.Property<Guid>("RegulatoryBodyId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("User")
@@ -278,14 +384,14 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ReviewBodyId");
+                    b.HasIndex("RegulatoryBodyId");
 
-                    b.ToTable("ReviewBodiesAuditTrails");
+                    b.ToTable("RegulatoryBodiesAuditTrail");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ReviewBodyUsers", b =>
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.RegulatoryBodyUser", b =>
                 {
-                    b.Property<Guid>("ReviewBodyId")
+                    b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UserId")
@@ -294,9 +400,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Property<DateTime>("DateAdded")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("ReviewBodyId", "UserId");
+                    b.HasKey("Id", "UserId");
 
-                    b.ToTable("ReviewBodyUsers");
+                    b.ToTable("RegulatoryBodiesUsers");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.EmailTemplate", b =>
@@ -310,60 +416,115 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Navigation("EventType");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ResearchApplication", b =>
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModification", b =>
                 {
-                    b.HasOne("Rsp.IrasService.Domain.Entities.Respondent", null)
-                        .WithMany("ResearchApplications")
-                        .HasForeignKey("RespondentId")
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectRecord", null)
+                        .WithMany("ProjectModifications")
+                        .HasForeignKey("ProjectRecordId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.RespondentAnswer", b =>
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModificationAnswer", b =>
                 {
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ResearchApplication", "ResearchApplication")
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectModificationChange", "ProjectModificationChange")
                         .WithMany()
-                        .HasForeignKey("ApplicationId")
+                        .HasForeignKey("ProjectModificationChangeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Rsp.IrasService.Domain.Entities.Respondent", "Respondent")
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectPersonnel", "ProjectPersonnel")
                         .WithMany()
-                        .HasForeignKey("RespondentId")
+                        .HasForeignKey("ProjectPersonnelId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("ResearchApplication");
-
-                    b.Navigation("Respondent");
-                });
-
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ReviewBodyAuditTrail", b =>
-                {
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ReviewBody", "ReviewBody")
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectRecord", "ProjectRecord")
                         .WithMany()
-                        .HasForeignKey("ReviewBodyId")
+                        .HasForeignKey("ProjectRecordId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("ProjectModificationChange");
+
+                    b.Navigation("ProjectPersonnel");
+
+                    b.Navigation("ProjectRecord");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModificationChange", b =>
+                {
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectModification", null)
+                        .WithMany("ProjectModificationChanges")
+                        .HasForeignKey("ProjectModificationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectRecord", b =>
+                {
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectPersonnel", null)
+                        .WithMany("ProjectRecords")
+                        .HasForeignKey("ProjectPersonnelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectRecordAnswer", b =>
+                {
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectPersonnel", "ProjectPersonnel")
+                        .WithMany()
+                        .HasForeignKey("ProjectPersonnelId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectRecord", "ProjectRecord")
+                        .WithMany()
+                        .HasForeignKey("ProjectRecordId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ReviewBody");
+                    b.Navigation("ProjectPersonnel");
+
+                    b.Navigation("ProjectRecord");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ReviewBodyUsers", b =>
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.RegulatoryBodyAuditTrail", b =>
                 {
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ReviewBody", null)
+                    b.HasOne("Rsp.IrasService.Domain.Entities.RegulatoryBody", "RegulatoryBody")
+                        .WithMany()
+                        .HasForeignKey("RegulatoryBodyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RegulatoryBody");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.RegulatoryBodyUser", b =>
+                {
+                    b.HasOne("Rsp.IrasService.Domain.Entities.RegulatoryBody", null)
                         .WithMany("Users")
-                        .HasForeignKey("ReviewBodyId")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.Respondent", b =>
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModification", b =>
                 {
-                    b.Navigation("ResearchApplications");
+                    b.Navigation("ProjectModificationChanges");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ReviewBody", b =>
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectPersonnel", b =>
+                {
+                    b.Navigation("ProjectRecords");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectRecord", b =>
+                {
+                    b.Navigation("ProjectModifications");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.RegulatoryBody", b =>
                 {
                     b.Navigation("Users");
                 });
