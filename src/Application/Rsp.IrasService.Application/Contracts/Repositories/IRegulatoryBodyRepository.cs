@@ -1,4 +1,5 @@
 ﻿using Ardalis.Specification;
+using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Application.Contracts.Repositories;
@@ -21,5 +22,5 @@ public interface IRegulatoryBodyRepository
 
     Task<RegulatoryBodyUser?> RemoveUserFromRegulatoryBody(Guid regulatoryBodyId, Guid userId);
 
-    Task<int> GetRegulatoryBodyCount(string? searchQuery = null);
+    Task<int> GetRegulatoryBodyCount(ReviewBodySearchRequest searchQuery );
 }

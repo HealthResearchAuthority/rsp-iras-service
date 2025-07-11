@@ -2,6 +2,7 @@
 using Ardalis.Specification.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Application.Contracts.Repositories;
+using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Infrastructure.Repositories;
@@ -112,18 +113,42 @@ public class RegulatoryBodyRepository(IrasContext irasContext) : IRegulatoryBody
         return result;
     }
 
-    public Task<int> GetRegulatoryBodyCount(string? searchQuery = null)
+    public Task<int> GetRegulatoryBodyCount(ReviewBodySearchRequest? searchQuery)
     {
-        if (!string.IsNullOrEmpty(searchQuery))
-        {
-            var splitQuery = searchQuery.Split(' ');
+        var query = irasContext.RegulatoryBodies
+            .AsNoTracking()
+            .AsQueryable();
 
-            return irasContext.RegulatoryBodies.CountAsync(x =>
-                        splitQuery.Any(word =>
-                            x.RegulatoryBodyName.Contains(word)
-                            ));
+        if (searchQuery != null)
+        {
+            if (!string.IsNullOrEmpty(searchQuery.SearchQuery))
+            {
+                var splitQuery = searchQuery.SearchQuery
+                    .Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+                query = query.Where(x =>
+                    splitQuery.Any(word =>
+                        x.RegulatoryBodyName.Contains(word)));
+            }
+
+            if (searchQuery.Country is { Count: > 0 })
+            {
+                var lowerCountries = searchQuery.Country
+                    .Where(c => !string.IsNullOrWhiteSpace(c))
+                    .Select(c => c.ToLower())
+                    .ToList();
+
+                query = query.Where(rb =>
+                    rb.Countries.Any(c =>
+                        lowerCountries.Contains(c.ToLower())));
+            }
+
+            if (searchQuery.Status != null)
+            {
+                query = query.Where(x => x.IsActive == searchQuery.Status.Value);
+            }
         }
 
-        return irasContext.RegulatoryBodies.CountAsync();
+        return query.CountAsync();
     }
 }
