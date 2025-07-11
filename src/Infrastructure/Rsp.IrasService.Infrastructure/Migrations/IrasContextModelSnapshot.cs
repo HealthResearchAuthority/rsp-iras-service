@@ -148,6 +148,56 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.ToTable("ModificationDocuments");
                 });
 
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationDocument", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("DocumentTypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FileSize")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("HasPreviousVersion")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("ProjectModificationChangeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ProjectPersonnelId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProjectRecordId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("SponsorDocumentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SponsorDocumentVersion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DocumentTypeId");
+
+                    b.HasIndex("ProjectModificationChangeId");
+
+                    b.HasIndex("ProjectPersonnelId");
+
+                    b.HasIndex("ProjectRecordId");
+
+                    b.ToTable("ModificationDocuments");
+                });
+
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationParticipatingOrganisation", b =>
                 {
                     b.Property<Guid>("Id")
