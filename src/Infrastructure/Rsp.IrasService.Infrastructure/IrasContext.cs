@@ -14,6 +14,9 @@ public class IrasContext(DbContextOptions<IrasContext> options) : DbContext(opti
     public DbSet<RegulatoryBody> RegulatoryBodies { get; set; }
     public DbSet<RegulatoryBodyUser> RegulatoryBodiesUsers { get; set; }
     public DbSet<RegulatoryBodyAuditTrail> RegulatoryBodiesAuditTrail { get; set; }
+    public DbSet<ProjectModification> ProjectModifications { get; set; }
+    public DbSet<ProjectModificationChange> ProjectModificationChanges { get; set; }
+    public DbSet<ProjectModificationAnswer> ProjectModificationAnswers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -27,5 +30,10 @@ public class IrasContext(DbContextOptions<IrasContext> options) : DbContext(opti
         modelBuilder.ApplyConfiguration(new RegulatoryBodyConfiguration());
         modelBuilder.ApplyConfiguration(new RegulatoryBodyAuditTrailConfiguration());
         modelBuilder.ApplyConfiguration(new ReviewBodyUserConfiguration());
+
+        // project modifications entities configuration
+        modelBuilder.ApplyConfiguration(new ProjectModificationConfiguration());
+        modelBuilder.ApplyConfiguration(new ProjectModificationChangeConfiguration());
+        modelBuilder.ApplyConfiguration(new ProjectModificationAnswerConfiguration());
     }
 }

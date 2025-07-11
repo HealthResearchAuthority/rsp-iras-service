@@ -9,9 +9,9 @@ using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.WebApi.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
-[Authorize]
 public class ApplicationsController(IMediator mediator) : ControllerBase
 {
     /// <summary>
@@ -147,5 +147,13 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
         var request = new UpdateApplicationCommand(applicationRequest);
 
         return await mediator.Send(request);
+    }
+
+    [HttpGet("modifications")]
+    public async Task<ActionResult<ModificationResponse>> GetModifications([FromBody] ModificationSearchRequest searchQuery, int pageNumber, int pageSize)
+    {
+        var query = new GetModificationsQuery(searchQuery, pageNumber, pageSize);
+
+        return await mediator.Send(query);
     }
 }

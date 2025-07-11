@@ -53,4 +53,6 @@ public interface IApplicationsService : IInterceptable
     /// </summary>
     /// <param name="applicationRequest">The application values</param>
     Task<ApplicationResponse> UpdateApplication(ApplicationRequest applicationRequest);
+
+    Task<ModificationResponse> GetModifications(ModificationSearchRequest searchQuery, int pageNumber, int pageSize);
 }
