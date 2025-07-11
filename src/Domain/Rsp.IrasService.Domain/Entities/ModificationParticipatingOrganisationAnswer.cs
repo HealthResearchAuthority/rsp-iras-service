@@ -1,14 +1,16 @@
 ﻿namespace Rsp.IrasService.Domain.Entities;
 
-/// <summary>
-/// Represents an answer to a project modification question.
-/// </summary>
-public class ProjectModificationAnswer
+public class ModificationParticipatingOrganisationAnswer
 {
     /// <summary>
-    /// Gets or sets the unique identifier for the project modification change.
+    /// Gets or sets the unique identifier for this modification document.
     /// </summary>
-    public Guid ProjectModificationChangeId { get; set; }
+    public Guid Id { get; set; }
+
+    /// <summary>
+    /// Gets or sets the unique identifier for the modification participating organisation.
+    /// </summary>
+    public Guid ModificationParticipatingOrganisationId { get; set; }
 
     /// <summary>
     /// Gets or sets the identifier of the question being answered.
@@ -19,16 +21,6 @@ public class ProjectModificationAnswer
     /// Gets or sets the version Id for this question.
     /// </summary>
     public string VersionId { get; set; } = null!;
-
-    /// <summary>
-    /// Gets or sets the identifier of the project personnel related to this answer.
-    /// </summary>
-    public string ProjectPersonnelId { get; set; } = null!;
-
-    /// <summary>
-    /// Gets or sets the identifier of the project record related to this answer.
-    /// </summary>
-    public string ProjectRecordId { get; set; } = null!;
 
     /// <summary>
     /// Gets or sets the category of the question.
@@ -56,17 +48,7 @@ public class ProjectModificationAnswer
     public string? SelectedOptions { get; set; }
 
     /// <summary>
-    /// Navigation property to the related project personnel.
+    /// Navigation property to the related modification participating organisation.
     /// </summary>
-    public ProjectPersonnel? ProjectPersonnel { get; set; }
-
-    /// <summary>
-    /// Navigation property to the related project record.
-    /// </summary>
-    public ProjectRecord? ProjectRecord { get; set; }
-
-    /// <summary>
-    /// Navigation property to the related project modification change.
-    /// </summary>
-    public ProjectModificationChange? ProjectModificationChange { get; set; }
+    public ModificationParticipatingOrganisation? ModificationParticipatingOrganisation { get; set; }
 }

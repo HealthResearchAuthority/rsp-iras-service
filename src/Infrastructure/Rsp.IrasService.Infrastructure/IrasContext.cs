@@ -17,6 +17,9 @@ public class IrasContext(DbContextOptions<IrasContext> options) : DbContext(opti
     public DbSet<ProjectModification> ProjectModifications { get; set; }
     public DbSet<ProjectModificationChange> ProjectModificationChanges { get; set; }
     public DbSet<ProjectModificationAnswer> ProjectModificationAnswers { get; set; }
+    public DbSet<ModificationDocument> ModificationDocuments { get; set; }
+    public DbSet<ModificationParticipatingOrganisation> ModificationParticipatingOrganisations { get; set; }
+    public DbSet<ModificationParticipatingOrganisationAnswer> ModificationParticipatingOrganisationAnswers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -35,5 +38,8 @@ public class IrasContext(DbContextOptions<IrasContext> options) : DbContext(opti
         modelBuilder.ApplyConfiguration(new ProjectModificationConfiguration());
         modelBuilder.ApplyConfiguration(new ProjectModificationChangeConfiguration());
         modelBuilder.ApplyConfiguration(new ProjectModificationAnswerConfiguration());
+        modelBuilder.ApplyConfiguration(new ModificationDocumentConfiguration());
+        modelBuilder.ApplyConfiguration(new ModificationParticipatingOrganisationConfiguration());
+        modelBuilder.ApplyConfiguration(new ModificationParticipatingOrganisationAnswerConfiguration());
     }
 }
