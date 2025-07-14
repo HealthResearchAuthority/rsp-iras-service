@@ -26,7 +26,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                 defaultValue: "");
 
             migrationBuilder.CreateTable(
-                name: "DocumentType",
+                name: "DocumentTypes",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -34,7 +34,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DocumentType", x => x.Id);
+                    table.PrimaryKey("PK_DocumentTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -87,9 +87,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_ModificationDocuments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ModificationDocuments_DocumentType_DocumentTypeId",
+                        name: "FK_ModificationDocuments_DocumentTypes_DocumentTypeId",
                         column: x => x.DocumentTypeId,
-                        principalTable: "DocumentType",
+                        principalTable: "DocumentTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -186,7 +186,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                 name: "ModificationParticipatingOrganisationAnswers");
 
             migrationBuilder.DropTable(
-                name: "DocumentType");
+                name: "DocumentTypes");
 
             migrationBuilder.DropTable(
                 name: "ModificationParticipatingOrganisations");
