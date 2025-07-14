@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Rsp.IrasService.Application.CQRS.Commands;
 using Rsp.IrasService.Application.CQRS.Queries;
 using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.IrasService.Application.DTOS.Responses;
+using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.WebApi.Controllers;
 
@@ -33,6 +35,42 @@ public class RespondentController(IMediator mediator) : ControllerBase
     public async Task SaveModificationAnswers(ModificationAnswersRequest request)
     {
         var command = new SaveModificationAnswersCommand(request);
+
+        await mediator.Send(command);
+    }
+
+    /// <summary>
+    /// Saves modification participating organisations for a project modification change.
+    /// </summary>
+    /// <param name="request">The modification participating organisations request.</param>
+    [HttpPost("modificationparticipatingorganisation")]
+    public async Task SaveModificationParticipatingOrganisations(ModificationParticipatingOrganisationDto request)
+    {
+        var command = new SaveModificationParticipatingOrganisationsCommand(request);
+
+        await mediator.Send(command);
+    }
+
+    /// <summary>
+    /// Saves modification participating organisation answers for a project modification change.
+    /// </summary>
+    /// <param name="request">The modification participating organisation answers request.</param>
+    [HttpPost("modificationparticipatingorganisationanswer")]
+    public async Task SaveModificationParticipatingOrganisationAnswers(ModificationParticipatingOrganisationAnswerDto request)
+    {
+        var command = new SaveModificationParticipatingOrganisationAnswersCommand(request);
+
+        await mediator.Send(command);
+    }
+
+    /// <summary>
+    /// Saves modification documents for a project modification change.
+    /// </summary>
+    /// <param name="request">The modification documents request.</param>
+    [HttpPost("modificationdocument")]
+    public async Task SaveModificationDocuments(ModificationDocumentDto request)
+    {
+        var command = new SaveModificationDocumentsCommand(request);
 
         await mediator.Send(command);
     }
@@ -108,6 +146,73 @@ public class RespondentController(IMediator mediator) : ControllerBase
             ProjectModificationChangeId = modificationChangeId,
             ProjectRecordId = projectRecordId,
             CategoryId = categoryId
+        };
+
+        return await mediator.Send(command);
+    }
+
+    /// <summary>
+    /// Returns all document types
+    /// </summary>
+    [HttpGet]
+    [Produces<IEnumerable<DocumentType>>]
+    public async Task<IEnumerable<DocumentTypeResponse>> GetDocumentTypes()
+    {
+        var query = new GetDocumentTypesQuery();
+
+        return await mediator.Send(query);
+    }
+
+    /// <summary>
+    /// Gets modification documents for a specific modification change and project record.
+    /// </summary>
+    /// <param name="modificationChangeId">The modification change identifier.</param>
+    /// <param name="projectRecordId">The project record identifier.</param>
+    /// <returns>A collection of documents for the modification.</returns>
+    [HttpGet("modificationdocument/{modificationChangeId}/{projectRecordId}")]
+    [Produces<IEnumerable<ModificationDocumentDto>>]
+    public async Task<IEnumerable<ModificationDocumentDto>> GetModificationDocuments(Guid modificationChangeId, string projectRecordId)
+    {
+        var command = new GetModificationDocumentsQuery
+        {
+            ProjectModificationChangeId = modificationChangeId,
+            ProjectRecordId = projectRecordId
+        };
+
+        return await mediator.Send(command);
+    }
+
+    /// <summary>
+    /// Gets modification participating organisations for a specific modification change and project record.
+    /// </summary>
+    /// <param name="modificationChangeId">The modification change identifier.</param>
+    /// <param name="projectRecordId">The project record identifier.</param>
+    /// <returns>A collection of documents for the modification.</returns>
+    [HttpGet("modificationparticipatingorganisation/{modificationChangeId}/{projectRecordId}")]
+    [Produces<IEnumerable<ModificationParticipatingOrganisationDto>>]
+    public async Task<IEnumerable<ModificationParticipatingOrganisationDto>> GetModificationParticipatingOrganisations(Guid modificationChangeId, string projectRecordId)
+    {
+        var command = new GetModificationParticipatingOrganisationsQuery
+        {
+            ProjectModificationChangeId = modificationChangeId,
+            ProjectRecordId = projectRecordId
+        };
+
+        return await mediator.Send(command);
+    }
+
+    /// <summary>
+    /// Gets modification participating organisation answer for a specific organisation.
+    /// </summary>
+    /// <param name="participatingOrganisationId">The participating organisation identifier.</param>
+    /// <returns>A participating organisation answer for the participating organisation.</returns>
+    [HttpGet("modificationparticipatingorganisationanswer/{participatingOrganisationId}")]
+    [Produces<ModificationParticipatingOrganisationAnswerDto>]
+    public async Task<ModificationParticipatingOrganisationAnswerDto> GetModificationParticipatingOrganisationAnswer(Guid participatingOrganisationId)
+    {
+        var command = new GetModificationParticipatingOrganisationAnswerQuery
+        {
+            ModificationParticipatingOrganisationId = participatingOrganisationId
         };
 
         return await mediator.Send(command);
