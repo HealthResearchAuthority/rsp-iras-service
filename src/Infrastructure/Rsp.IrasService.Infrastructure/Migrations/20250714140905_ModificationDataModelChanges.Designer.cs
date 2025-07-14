@@ -12,7 +12,7 @@ using Rsp.IrasService.Infrastructure;
 namespace Rsp.IrasService.Infrastructure.Migrations
 {
     [DbContext(typeof(IrasContext))]
-    [Migration("20250714140227_ModificationDataModelChanges")]
+    [Migration("20250714140905_ModificationDataModelChanges")]
     partial class ModificationDataModelChanges
     {
         /// <inheritdoc />

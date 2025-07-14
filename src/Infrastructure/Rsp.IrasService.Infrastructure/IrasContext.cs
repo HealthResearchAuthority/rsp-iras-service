@@ -39,6 +39,7 @@ public class IrasContext(DbContextOptions<IrasContext> options) : DbContext(opti
         modelBuilder.ApplyConfiguration(new ProjectModificationConfiguration());
         modelBuilder.ApplyConfiguration(new ProjectModificationChangeConfiguration());
         modelBuilder.ApplyConfiguration(new ProjectModificationAnswerConfiguration());
+        modelBuilder.ApplyConfiguration(new DocumentTypeConfiguration());
         modelBuilder.ApplyConfiguration(new ModificationDocumentConfiguration());
         modelBuilder.ApplyConfiguration(new ModificationParticipatingOrganisationConfiguration());
         modelBuilder.ApplyConfiguration(new ModificationParticipatingOrganisationAnswerConfiguration());
