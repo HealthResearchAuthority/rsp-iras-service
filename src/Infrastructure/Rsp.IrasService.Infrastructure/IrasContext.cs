@@ -17,6 +17,7 @@ public class IrasContext(DbContextOptions<IrasContext> options) : DbContext(opti
     public DbSet<ProjectModification> ProjectModifications { get; set; }
     public DbSet<ProjectModificationChange> ProjectModificationChanges { get; set; }
     public DbSet<ProjectModificationAnswer> ProjectModificationAnswers { get; set; }
+    public DbSet<DocumentType> DocumentTypes { get; set; }
     public DbSet<ModificationDocument> ModificationDocuments { get; set; }
     public DbSet<ModificationParticipatingOrganisation> ModificationParticipatingOrganisations { get; set; }
     public DbSet<ModificationParticipatingOrganisationAnswer> ModificationParticipatingOrganisationAnswers { get; set; }

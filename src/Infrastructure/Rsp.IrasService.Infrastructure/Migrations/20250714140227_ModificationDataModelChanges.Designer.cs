@@ -12,8 +12,8 @@ using Rsp.IrasService.Infrastructure;
 namespace Rsp.IrasService.Infrastructure.Migrations
 {
     [DbContext(typeof(IrasContext))]
-    [Migration("20250702124326_ProjectModificationsSchema")]
-    partial class ProjectModificationsSchema
+    [Migration("20250714140227_ModificationDataModelChanges")]
+    partial class ModificationDataModelChanges
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,21 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.DocumentType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DocumentTypes");
+                });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.EmailTemplate", b =>
                 {
@@ -84,6 +99,129 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("EventTypes");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationDocument", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("DocumentTypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FileSize")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("HasPreviousVersion")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("ProjectModificationChangeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ProjectPersonnelId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProjectRecordId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("SponsorDocumentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SponsorDocumentVersion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DocumentTypeId");
+
+                    b.HasIndex("ProjectModificationChangeId");
+
+                    b.HasIndex("ProjectPersonnelId");
+
+                    b.HasIndex("ProjectRecordId");
+
+                    b.ToTable("ModificationDocuments");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationParticipatingOrganisation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("OrganisationId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ProjectModificationChangeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ProjectPersonnelId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProjectRecordId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectModificationChangeId");
+
+                    b.HasIndex("ProjectPersonnelId");
+
+                    b.HasIndex("ProjectRecordId");
+
+                    b.ToTable("ModificationParticipatingOrganisations");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationParticipatingOrganisationAnswer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ModificationParticipatingOrganisationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("OptionType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("QuestionId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Response")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Section")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SelectedOptions")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VersionId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ModificationParticipatingOrganisationId");
+
+                    b.ToTable("ModificationParticipatingOrganisationAnswers");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModification", b =>
@@ -158,6 +296,10 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SelectedOptions")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VersionId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ProjectModificationChangeId", "QuestionId", "ProjectPersonnelId");
@@ -310,6 +452,10 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Property<string>("SelectedOptions")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("VersionId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("ProjectPersonnelId", "QuestionId", "ProjectRecordId");
 
                     b.HasIndex("ProjectRecordId");
@@ -417,6 +563,79 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("EventType");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationDocument", b =>
+                {
+                    b.HasOne("Rsp.IrasService.Domain.Entities.DocumentType", "DocumentType")
+                        .WithMany()
+                        .HasForeignKey("DocumentTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectModificationChange", "ProjectModificationChange")
+                        .WithMany()
+                        .HasForeignKey("ProjectModificationChangeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectPersonnel", "ProjectPersonnel")
+                        .WithMany()
+                        .HasForeignKey("ProjectPersonnelId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectRecord", "ProjectRecord")
+                        .WithMany()
+                        .HasForeignKey("ProjectRecordId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("DocumentType");
+
+                    b.Navigation("ProjectModificationChange");
+
+                    b.Navigation("ProjectPersonnel");
+
+                    b.Navigation("ProjectRecord");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationParticipatingOrganisation", b =>
+                {
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectModificationChange", "ProjectModificationChange")
+                        .WithMany()
+                        .HasForeignKey("ProjectModificationChangeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectPersonnel", "ProjectPersonnel")
+                        .WithMany()
+                        .HasForeignKey("ProjectPersonnelId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectRecord", "ProjectRecord")
+                        .WithMany()
+                        .HasForeignKey("ProjectRecordId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("ProjectModificationChange");
+
+                    b.Navigation("ProjectPersonnel");
+
+                    b.Navigation("ProjectRecord");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationParticipatingOrganisationAnswer", b =>
+                {
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ModificationParticipatingOrganisation", "ModificationParticipatingOrganisation")
+                        .WithMany()
+                        .HasForeignKey("ModificationParticipatingOrganisationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ModificationParticipatingOrganisation");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModification", b =>
