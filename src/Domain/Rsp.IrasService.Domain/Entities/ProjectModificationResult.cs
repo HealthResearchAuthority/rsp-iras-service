@@ -1,8 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿namespace Rsp.IrasService.Domain.Entities;
 
-namespace Rsp.IrasService.Domain.Entities;
-
-[ExcludeFromCodeCoverage]
 public class ProjectModificationResult
 {
     public string ModificationId { get; set; } = null!;
