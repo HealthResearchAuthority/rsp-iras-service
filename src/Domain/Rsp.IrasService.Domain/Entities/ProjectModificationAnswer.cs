@@ -18,7 +18,7 @@ public class ProjectModificationAnswer
     /// <summary>
     /// Gets or sets the version Id for this question.
     /// </summary>
-    public string VersionId { get; set; } = null!;
+    public string VersionId { get; set; }
 
     /// <summary>
     /// Gets or sets the identifier of the project personnel related to this answer.

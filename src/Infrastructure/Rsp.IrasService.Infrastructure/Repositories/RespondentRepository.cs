@@ -133,4 +133,179 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
 
         return Task.FromResult(result);
     }
+
+    /// <summary>
+    /// Gets document types based on the provided specification.
+    /// </summary>
+    /// <param name="specification">The specification to filter document type.</param>
+    /// <returns>A collection of <see cref="DocumentType"/> objects.</returns>
+    public Task<IEnumerable<DocumentType>> GetResponses(ISpecification<DocumentType> specification)
+    {
+        var result = irasContext
+            .DocumentTypes
+            .WithSpecification(specification)
+            .AsEnumerable();
+
+        return Task.FromResult(result);
+    }
+
+    /// <summary>
+    /// Gets modification documents matching the given specification.
+    /// </summary>
+    /// <param name="specification">The specification to filter modfication documents.</param>
+    /// <returns>A collection of <see cref="ModificationDocument"/> objects.</returns>
+    public Task<IEnumerable<ModificationDocument>> GetResponses(ISpecification<ModificationDocument> specification)
+    {
+        var result = irasContext
+            .ModificationDocuments
+            .WithSpecification(specification)
+            .AsEnumerable();
+
+        return Task.FromResult(result);
+    }
+
+    /// <summary>
+    /// Gets participating organisations for a modification based on specification.
+    /// </summary>
+    /// <param name="specification">The specification to filter modification participating organisations.</param>
+    /// <returns>A collection of <see cref="ModificationParticipatingOrganisation"/> objects.</returns>
+    public Task<IEnumerable<ModificationParticipatingOrganisation>> GetResponses(ISpecification<ModificationParticipatingOrganisation> specification)
+    {
+        var result = irasContext
+            .ModificationParticipatingOrganisations
+            .WithSpecification(specification)
+            .AsEnumerable();
+
+        return Task.FromResult(result);
+    }
+
+    /// <summary>
+    /// Gets a single participating organisation answer matching the given specification.
+    /// </summary>
+    /// <param name="specification">The specification to filter modification participating organisation answers.</param>
+    /// <returns>A collection of <see cref="ModificationParticipatingOrganisationAnswer"/> objects.</returns>
+    public Task<ModificationParticipatingOrganisationAnswer> GetResponses(ISpecification<ModificationParticipatingOrganisationAnswer> specification)
+    {
+        var result = irasContext
+            .ModificationParticipatingOrganisationAnswers
+            .WithSpecification(specification)
+            .FirstOrDefault();
+
+        return Task.FromResult(result);
+    }
+
+    /// <summary>
+    /// Saves a list of document responses. Updates if existing, adds if new.
+    /// </summary>
+    /// <param name="specification">The specification to filter which modification answers to save.</param>
+    /// <param name="respondentAnswers">The list of modification answers to save.</param>
+    public async Task SaveModificationDocumentResponses(
+        ISpecification<ModificationDocument> specification,
+        List<ModificationDocument> respondentAnswers)
+    {
+        var documents = irasContext
+            .ModificationDocuments
+            .WithSpecification(specification);
+
+        foreach (var answer in respondentAnswers)
+        {
+            var existingAnswer = documents.FirstOrDefault(ans => ans.Id == answer.Id);
+
+            if (existingAnswer != null)
+            {
+                // Update existing document entry
+                existingAnswer.ProjectModificationChangeId = answer.ProjectModificationChangeId;
+                existingAnswer.ProjectRecordId = answer.ProjectRecordId;
+                existingAnswer.ProjectPersonnelId = answer.ProjectPersonnelId;
+                existingAnswer.DocumentTypeId = answer.DocumentTypeId;
+                existingAnswer.FileName = answer.FileName;
+                existingAnswer.FileSize = answer.FileSize;
+                existingAnswer.SponsorDocumentVersion = answer.SponsorDocumentVersion;
+                existingAnswer.HasPreviousVersion = answer.HasPreviousVersion;
+                existingAnswer.SponsorDocumentDate = answer.SponsorDocumentDate;
+
+                continue;
+            }
+
+            // Add new document entry
+            await irasContext.ModificationDocuments.AddAsync(answer);
+        }
+
+        await irasContext.SaveChangesAsync();
+    }
+
+    /// <summary>
+    /// Saves participating organisations linked to a modification. Updates if existing, adds if new.
+    /// </summary>
+    /// <param name="specification">The specification to filter which modification answers to save.</param>
+    /// <param name="respondentAnswers">The list of modification answers to save.</param>
+    public async Task SaveModificationParticipatingOrganisationResponses(
+        ISpecification<ModificationParticipatingOrganisation> specification,
+        List<ModificationParticipatingOrganisation> respondentAnswers)
+    {
+        var organisations = irasContext
+            .ModificationParticipatingOrganisations
+            .WithSpecification(specification);
+
+        foreach (var answer in respondentAnswers)
+        {
+            var existingAnswer = organisations.FirstOrDefault(ans => ans.Id == answer.Id);
+
+            if (existingAnswer != null)
+            {
+                // Update organisation entry
+                existingAnswer.ProjectModificationChangeId = answer.ProjectModificationChangeId;
+                existingAnswer.ProjectRecordId = answer.ProjectRecordId;
+                existingAnswer.ProjectPersonnelId = answer.ProjectPersonnelId;
+                existingAnswer.OrganisationId = answer.OrganisationId;
+
+                continue;
+            }
+
+            // Add new organisation entry
+            await irasContext.ModificationParticipatingOrganisations.AddAsync(answer);
+        }
+
+        await irasContext.SaveChangesAsync();
+    }
+
+    /// <summary>
+    /// Saves or updates a single answer for a participating organisation in a modification.
+    /// Handles delete logic if empty or deselected.
+    /// </summary>
+    /// <param name="specification">The specification to filter which modification answers to save.</param>
+    /// <param name="respondentAnswer">The modification answer to save.</param>
+    public async Task SaveModificationParticipatingOrganisationAnswerResponses(
+        ISpecification<ModificationParticipatingOrganisationAnswer> specification,
+        ModificationParticipatingOrganisationAnswer respondentAnswer)
+    {
+        var organisations = irasContext
+            .ModificationParticipatingOrganisationAnswers
+            .WithSpecification(specification);
+
+        var existingAnswer = organisations.FirstOrDefault(ans => ans.Id == respondentAnswer.Id);
+
+        if (existingAnswer != null)
+        {
+            // Delete if answer is empty or options are deselected
+            if ((string.IsNullOrWhiteSpace(existingAnswer.OptionType) && string.IsNullOrWhiteSpace(respondentAnswer.Response)) ||
+                (existingAnswer.OptionType is "Single" or "Multiple" && string.IsNullOrWhiteSpace(respondentAnswer.SelectedOptions)))
+            {
+                irasContext.ModificationParticipatingOrganisationAnswers.Remove(existingAnswer);
+            }
+            else
+            {
+                // Update answer
+                existingAnswer.Response = respondentAnswer.Response;
+                existingAnswer.SelectedOptions = respondentAnswer.SelectedOptions;
+            }
+        }
+        else
+        {
+            // Add new answer
+            await irasContext.ModificationParticipatingOrganisationAnswers.AddAsync(respondentAnswer);
+        }
+
+        await irasContext.SaveChangesAsync();
+    }
 }

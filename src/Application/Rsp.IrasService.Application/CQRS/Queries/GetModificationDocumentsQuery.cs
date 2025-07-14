@@ -14,4 +14,9 @@ public class GetModificationDocumentsQuery : IRequest<IEnumerable<ModificationDo
     /// Gets or sets the project record identifier.
     /// </summary>
     public string ProjectRecordId { get; set; } = null!;
+
+    /// <summary>
+    /// Gets or sets the project personnel identifier.
+    /// </summary>
+    public string ProjectPersonnelId { get; set; } = null!;
 }

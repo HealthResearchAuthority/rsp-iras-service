@@ -30,7 +30,7 @@ public class ModificationDocument
     /// <summary>
     /// Gets or sets the name of the document.
     /// </summary>
-    public string FileName { get; set; } = null!;
+    public string FileName { get; set; }
 
     /// <summary>
     /// Gets or sets the size of the document.
@@ -40,17 +40,17 @@ public class ModificationDocument
     /// <summary>
     /// Gets or sets the version of the document.
     /// </summary>
-    public string SponsorDocumentVersion { get; set; } = null!;
+    public string SponsorDocumentVersion { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether this document has previous version.
     /// </summary>
-    public bool HasPreviousVersion { get; set; } = true;
+    public bool HasPreviousVersion { get; set; }
 
     /// <summary>
     /// Gets or sets the date and time for the sponsor document.
     /// </summary>
-    public DateTime SponsorDocumentDate { get; set; }
+    public DateTime? SponsorDocumentDate { get; set; }
 
     /// <summary>
     /// Navigation property to the related project personnel.

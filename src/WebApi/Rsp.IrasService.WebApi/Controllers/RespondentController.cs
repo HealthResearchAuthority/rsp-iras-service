@@ -44,7 +44,7 @@ public class RespondentController(IMediator mediator) : ControllerBase
     /// </summary>
     /// <param name="request">The modification participating organisations request.</param>
     [HttpPost("modificationparticipatingorganisation")]
-    public async Task SaveModificationParticipatingOrganisations(ModificationParticipatingOrganisationDto request)
+    public async Task SaveModificationParticipatingOrganisations(List<ModificationParticipatingOrganisationDto> request)
     {
         var command = new SaveModificationParticipatingOrganisationsCommand(request);
 
@@ -68,7 +68,7 @@ public class RespondentController(IMediator mediator) : ControllerBase
     /// </summary>
     /// <param name="request">The modification documents request.</param>
     [HttpPost("modificationdocument")]
-    public async Task SaveModificationDocuments(ModificationDocumentDto request)
+    public async Task SaveModificationDocuments(List<ModificationDocumentDto> request)
     {
         var command = new SaveModificationDocumentsCommand(request);
 

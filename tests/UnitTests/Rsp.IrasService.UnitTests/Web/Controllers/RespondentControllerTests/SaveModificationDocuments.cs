@@ -7,7 +7,7 @@ namespace Rsp.IrasService.UnitTests.Web.Controllers.RespondentControllerTests;
 public class SaveModificationDocuments : TestServiceBase<RespondentController>
 {
     [Theory, AutoData]
-    public async Task SaveModificationDocuments_SendsCommand(ModificationDocumentDto request)
+    public async Task SaveModificationDocuments_SendsCommand(List<ModificationDocumentDto> request)
     {
         // Arrange
         var mediator = Mocker.GetMock<IMediator>();
@@ -25,7 +25,7 @@ public class SaveModificationDocuments : TestServiceBase<RespondentController>
             (m => m
                 .Send
                 (
-                    It.Is<SaveModificationDocumentsCommand>(cmd => cmd.ModificationDocumentRequest == request),
+                    It.Is<SaveModificationDocumentsCommand>(cmd => cmd.ModificationDocumentsRequest == request),
                     It.IsAny<CancellationToken>()
                 ),
                 Times.Once

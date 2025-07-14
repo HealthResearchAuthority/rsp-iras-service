@@ -7,7 +7,7 @@ namespace Rsp.IrasService.UnitTests.Web.Controllers.RespondentControllerTests;
 public class SaveModificationParticipatingOrganisations : TestServiceBase<RespondentController>
 {
     [Theory, AutoData]
-    public async Task SaveModificationParticipatingOrganisations_SendsCommand(ModificationParticipatingOrganisationDto request)
+    public async Task SaveModificationParticipatingOrganisations_SendsCommand(List<ModificationParticipatingOrganisationDto> request)
     {
         // Arrange
         var mediator = Mocker.GetMock<IMediator>();

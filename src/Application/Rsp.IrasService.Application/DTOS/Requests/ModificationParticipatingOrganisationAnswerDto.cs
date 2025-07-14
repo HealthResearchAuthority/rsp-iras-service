@@ -13,7 +13,7 @@ public class ModificationParticipatingOrganisationAnswerDto
     /// <summary>
     /// Modification Participating Organisation Id
     /// </summary>
-    public string ModificationParticipatingOrganisationId { get; set; } = null!;
+    public Guid ModificationParticipatingOrganisationId { get; set; }
 
     /// <summary>
     /// Question Id
