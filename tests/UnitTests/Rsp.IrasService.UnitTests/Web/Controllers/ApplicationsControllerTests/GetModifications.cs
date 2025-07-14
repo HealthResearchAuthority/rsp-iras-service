@@ -16,14 +16,18 @@ public class GetModifications : TestServiceBase
 
     [Theory]
     [AutoData]
-    public async Task GetModifications_ShouldReturnOk_WhenModificationsExist(
-    ModificationSearchRequest searchQuery,
-    ModificationResponse mockResponse,
-    int pageNumber,
-    int pageSize)
+    public async Task GetModifications_ShouldReturnOk_WhenModificationsExist
+    (
+        ModificationSearchRequest searchQuery,
+        ModificationResponse mockResponse,
+        int pageNumber,
+        int pageSize,
+        string sortField,
+        string sortDirection
+    )
     {
         // Arrange
-        var query = new GetModificationsQuery(searchQuery, pageNumber, pageSize);
+        var query = new GetModificationsQuery(searchQuery, pageNumber, pageSize, sortField, sortDirection);
 
         var mockMediator = Mocker.GetMock<IMediator>();
         mockMediator
@@ -34,7 +38,7 @@ public class GetModifications : TestServiceBase
             .ReturnsAsync(mockResponse);
 
         // Act
-        var result = await _controller.GetModifications(searchQuery, pageNumber, pageSize);
+        var result = await _controller.GetModifications(searchQuery, pageNumber, pageSize, sortField, sortDirection);
 
         // Assert
         result.Value.ShouldBe(mockResponse);
