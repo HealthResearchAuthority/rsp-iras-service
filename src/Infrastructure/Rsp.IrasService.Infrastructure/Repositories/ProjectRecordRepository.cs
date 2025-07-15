@@ -155,6 +155,7 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
             nameof(ProjectModificationResult.ModificationType) => x => x.ModificationType.ToLowerInvariant(),
             nameof(ProjectModificationResult.SponsorOrganisation) => x => x.SponsorOrganisation.ToLowerInvariant(),
             nameof(ProjectModificationResult.LeadNation) => x => x.LeadNation.ToLowerInvariant(),
+            nameof(ProjectModificationResult.CreatedAt) => x => x.CreatedAt,
             _ => null
         };
 
