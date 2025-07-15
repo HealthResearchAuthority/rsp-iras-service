@@ -21,13 +21,21 @@ public class GetPaginatedApplicationsByRespondent : TestServiceBase
         // Arrange
         var mockMediator = Mocker.GetMock<IMediator>();
         mockMediator
-            .Setup(m => m.Send(
-                It.Is<GetPaginatedApplicationsWithRespondentQuery>(q =>
-                    q.RespondentId == respondentId &&
-                    q.SearchQuery == null &&
-                    q.PageIndex == 1 &&
-         q.PageSize == 5),
-                It.IsAny<CancellationToken>()))
+            .Setup
+            (
+                m => m.Send
+                (
+                    It.Is<GetPaginatedApplicationsWithRespondentQuery>
+                    (
+                        q =>
+                            q.RespondentId == respondentId &&
+                            q.SearchQuery == null &&
+                            q.PageIndex == 1 &&
+                            q.PageSize == 5
+                    ),
+                    It.IsAny<CancellationToken>()
+                )
+            )
             .ReturnsAsync(mockResponse);
 
         // Act
@@ -45,13 +53,21 @@ public class GetPaginatedApplicationsByRespondent : TestServiceBase
         // Arrange
         var mockMediator = Mocker.GetMock<IMediator>();
         mockMediator
-            .Setup(m => m.Send(
-                It.Is<GetPaginatedApplicationsWithRespondentQuery>(q =>
-                    q.RespondentId == respondentId &&
-                    q.SearchQuery == null &&
-                    q.PageIndex == 1 &&
-                    q.PageSize == 5),
-                It.IsAny<CancellationToken>()))
+            .Setup
+            (
+                m => m.Send
+                (
+                    It.Is<GetPaginatedApplicationsWithRespondentQuery>
+                        (
+                            q =>
+                                q.RespondentId == respondentId &&
+                                q.SearchQuery == null &&
+                                q.PageIndex == 1 &&
+                                q.PageSize == 5
+                        ),
+                    It.IsAny<CancellationToken>()
+                )
+            )
             .ReturnsAsync(new PaginatedResponse<ApplicationResponse>
             {
                 Items = new List<ApplicationResponse>(),

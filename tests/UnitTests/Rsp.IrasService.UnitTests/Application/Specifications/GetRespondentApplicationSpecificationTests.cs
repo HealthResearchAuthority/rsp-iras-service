@@ -87,12 +87,12 @@ public class GetRespondentApplicationSpecificationTests
         // Arrange
         var respondentId = "R-123";
         var applications = new List<ProjectRecord>
-    {
-        new() { Id = "1", ProjectPersonnelId = respondentId, Title = "ABC Project", Description = "Phase Alpha" },
-        new() { Id = "2", ProjectPersonnelId = respondentId, Title = "XYZ Initiative", Description = "Phase Beta" },
-        new() { Id = "3", ProjectPersonnelId = respondentId, Title = "123 Study", Description = "Phase Gamma" },
-        new() { Id = "4", ProjectPersonnelId = "Other", Title = "ABC Project", Description = "Phase Alpha" }
-    };
+        {
+            new() { Id = "1", ProjectPersonnelId = respondentId, Title = "ABC Project", Description = "Phase Alpha" },
+            new() { Id = "2", ProjectPersonnelId = respondentId, Title = "XYZ Initiative", Description = "Phase Beta" },
+            new() { Id = "3", ProjectPersonnelId = respondentId, Title = "123 Study", Description = "Phase Gamma" },
+            new() { Id = "4", ProjectPersonnelId = "Other", Title = "ABC Project", Description = "Phase Alpha" }
+        };
 
         var searchQuery = "ABC Alpha";
 
@@ -113,9 +113,9 @@ public class GetRespondentApplicationSpecificationTests
         // Arrange
         var respondentId = "R-123";
         var applications = new List<ProjectRecord>
-    {
-        new() { Id = "1", ProjectPersonnelId = respondentId, Title = "ABC Project", Description = "Phase Alpha" }
-    };
+        {
+            new() { Id = "1", ProjectPersonnelId = respondentId, Title = "ABC Project", Description = "Phase Alpha" }
+        };
 
         var searchQuery = "XYZ";
 
