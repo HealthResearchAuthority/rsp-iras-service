@@ -38,12 +38,12 @@ public class ModificationParticipatingOrganisationAnswerDto
     /// <summary>
     /// Question Response text
     /// </summary>
-    public string ResponseText { get; set; } = null!;
+    public string ResponseText { get; set; }
 
     /// <summary>
     /// Indiciates a single or multiple selection for the SelectionOption
     /// </summary>
-    public string? OptionType { get; set; } = null!;
+    public string? OptionType { get; set; }
 
     /// <summary>
     /// Single selection answer e.g. Boolean (Yes/No)

@@ -40,7 +40,7 @@ public class ModificationDocumentDto
     /// <summary>
     /// Gets or sets the document version.
     /// </summary>
-    public string SponsorDocumentVersion { get; set; } = null!;
+    public string SponsorDocumentVersion { get; set; }
 
     /// <summary>
     /// Gets or sets if the document has previous version.

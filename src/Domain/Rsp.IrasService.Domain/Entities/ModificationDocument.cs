@@ -35,17 +35,17 @@ public class ModificationDocument
     /// <summary>
     /// Gets or sets the size of the document.
     /// </summary>
-    public int FileSize { get; set; }
+    public int? FileSize { get; set; }
 
     /// <summary>
     /// Gets or sets the version of the document.
     /// </summary>
-    public string SponsorDocumentVersion { get; set; }
+    public string? SponsorDocumentVersion { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether this document has previous version.
     /// </summary>
-    public bool HasPreviousVersion { get; set; }
+    public bool? HasPreviousVersion { get; set; }
 
     /// <summary>
     /// Gets or sets the date and time for the sponsor document.
