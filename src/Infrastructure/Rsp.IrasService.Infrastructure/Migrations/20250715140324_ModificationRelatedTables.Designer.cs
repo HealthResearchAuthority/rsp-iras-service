@@ -12,8 +12,8 @@ using Rsp.IrasService.Infrastructure;
 namespace Rsp.IrasService.Infrastructure.Migrations
 {
     [DbContext(typeof(IrasContext))]
-    [Migration("20250715135308_ModificationColumnsAsNullable")]
-    partial class ModificationColumnsAsNullable
+    [Migration("20250715140324_ModificationRelatedTables")]
+    partial class ModificationRelatedTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -114,10 +114,10 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("FileSize")
+                    b.Property<int?>("FileSize")
                         .HasColumnType("int");
 
-                    b.Property<bool>("HasPreviousVersion")
+                    b.Property<bool?>("HasPreviousVersion")
                         .HasColumnType("bit");
 
                     b.Property<Guid>("ProjectModificationChangeId")
@@ -135,7 +135,6 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("SponsorDocumentVersion")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
