@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Rsp.IrasService.Domain.Entities;
+using Rsp.IrasService.Infrastructure.Helpers;
 
 namespace Rsp.IrasService.Infrastructure.EntitiesConfiguration;
 
@@ -16,10 +17,6 @@ public class ProjectRecordAnswerConfiguration : IEntityTypeConfiguration<Project
             .HasForeignKey(r => r.ProjectPersonnelId)
             .OnDelete(DeleteBehavior.NoAction);
 
-        builder
-            .HasOne(ra => ra.ProjectRecord)
-            .WithMany()
-            .HasForeignKey(r => r.ProjectRecordId)
-            .OnDelete(DeleteBehavior.Cascade);
+        builder.HasData(JsonHelper.Parse<ProjectRecordAnswer>("ProjectRecordAnswers.json"));
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Rsp.IrasService.Domain.Entities;
+using Rsp.IrasService.Infrastructure.Helpers;
 
 namespace Rsp.IrasService.Infrastructure.EntitiesConfiguration;
 
@@ -15,5 +16,7 @@ public class ProjectModificationConfiguration : IEntityTypeConfiguration<Project
         //   .WithMany()
         //   .HasForeignKey(r => r.ProjectRecordId)
         //   .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasData(JsonHelper.Parse<ProjectModification>("ProjectModifications.json"));
     }
 }

@@ -28,7 +28,14 @@ public interface IProjectRecordRepository
     /// <param name="irasApplication">The ProjectRecord values</param>
     Task<ProjectRecord?> UpdateProjectRecord(ProjectRecord irasApplication);
 
-    IEnumerable<ProjectModificationResult> GetModifications(ModificationSearchRequest searchQuery, int pageNumber, int pageSize);
+    IEnumerable<ProjectModificationResult> GetModifications
+    (
+        ModificationSearchRequest searchQuery,
+        int pageNumber,
+        int pageSize,
+        string sortField,
+        string sortDirection
+    );
 
     int GetModificationsCount(ModificationSearchRequest searchQuery);
 }
