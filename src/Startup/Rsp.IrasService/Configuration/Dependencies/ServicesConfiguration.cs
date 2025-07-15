@@ -22,23 +22,29 @@ public static class ServicesConfiguration
     {
         services.AddSingleton<ITokenHelper, TokenHelper>();
 
+        // services
         services.AddTransient<IApplicationsService, ApplicationsService>();
-        services.AddTransient<IProjectRecordRepository, ProjectRecordRepository>();
-
         services.AddTransient<IRespondentService, RespondentService>();
-        services.AddTransient<IProjectPersonnelRepository, RespondentRepository>();
         services.AddTransient<ITriggerEmailNotificationService, TriggerEmailNotificationService>();
         services.AddTransient<IMessageQueueService, AzureMessageQueueService>();
         services.AddTransient<IEventTypeService, EventTypeService>();
         services.AddTransient<IEmailTemplateService, EmailTemplateService>();
+        services.AddTransient<IReviewBodyService, ReviewBodyService>();
+        services.AddTransient<IReviewBodyAuditTrailService, ReviewBodyAuditTrailService>();
+        services.AddTransient<IAuditTrailDetailsService, AuditTrailDetailsService>();
+        services.AddTransient<IProjectModificationService, ProjectModificationService>();
+
+        // repositories
+        services.AddTransient<IProjectRecordRepository, ProjectRecordRepository>();
+        services.AddTransient<IProjectPersonnelRepository, RespondentRepository>();
         services.AddTransient<IEmailTemplateRepository, EmailTemplateRepository>();
         services.AddTransient<IEventTypeRepository, EventTypeRepository>();
-        services.AddTransient<IReviewBodyService, ReviewBodyService>();
         services.AddTransient<IRegulatoryBodyRepository, RegulatoryBodyRepository>();
         services.AddTransient<IRegulatoryBodyAuditTrailRepository, RegulatoryBodyAuditTrailRepository>();
-        services.AddTransient<IReviewBodyAuditTrailService, ReviewBodyAuditTrailService>();
+        services.AddTransient<IProjectModificationRepository, ProjectModificationRepository>();
+
+        // handlers and interceptors
         services.AddTransient<IAuditTrailHandler, ReviewBodyAuditTrailHandler>();
-        services.AddTransient<IAuditTrailDetailsService, AuditTrailDetailsService>();
         services.AddTransient<AuditTrailInterceptor>();
 
         services.AddMediatR(option => option.RegisterServicesFromAssemblyContaining<IApplication>());

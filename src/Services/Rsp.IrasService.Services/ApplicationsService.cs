@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Mapster;
+﻿using Mapster;
 using Rsp.IrasService.Application.Contracts.Repositories;
 using Rsp.IrasService.Application.Contracts.Services;
 using Rsp.IrasService.Application.DTOS.Requests;
@@ -95,10 +94,16 @@ public class ApplicationsService(IProjectRecordRepository applicationRepository)
         return updatedApplication.Adapt<ApplicationResponse>();
     }
 
-    [ExcludeFromCodeCoverage]
-    public Task<ModificationResponse> GetModifications(ModificationSearchRequest searchQuery, int pageNumber, int pageSize)
+    public Task<ModificationResponse> GetModifications
+    (
+        ModificationSearchRequest searchQuery,
+        int pageNumber,
+        int pageSize,
+        string sortField,
+        string sortDirection
+    )
     {
-        var modifications = applicationRepository.GetModifications(searchQuery, pageNumber, pageSize);
+        var modifications = applicationRepository.GetModifications(searchQuery, pageNumber, pageSize, sortField, sortDirection);
         var totalCount = applicationRepository.GetModificationsCount(searchQuery);
 
         return Task.FromResult(new ModificationResponse

@@ -12,18 +12,17 @@ namespace Rsp.IrasService.WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-[Authorize]
+//[Authorize]
 public class ReviewBodyController(IMediator mediator, IReviewBodyAuditTrailService auditService) : ControllerBase
 {
-    /// <summary>
-    ///     Returns all review bodies
-    /// </summary>
-    [HttpGet("all")]
+    [HttpPost("all")]
     [Produces<AllReviewBodiesResponse>]
-    public async Task<AllReviewBodiesResponse> GetAllReviewBodies(int pageNumber, int pageSize, string? searchQuery = null)
+    public async Task<AllReviewBodiesResponse> GetAllReviewBodies(
+        [FromQuery] int pageNumber,
+        [FromQuery] int pageSize,
+        [FromBody] ReviewBodySearchRequest searchQuery)
     {
         var query = new GetReviewBodiesQuery(pageNumber, pageSize, searchQuery);
-
         return await mediator.Send(query);
     }
 

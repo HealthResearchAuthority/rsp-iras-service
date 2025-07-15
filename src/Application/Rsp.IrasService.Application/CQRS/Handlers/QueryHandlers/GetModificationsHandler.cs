@@ -9,6 +9,13 @@ public class GetModificationsHandler(IApplicationsService applicationsService) :
 {
     public async Task<ModificationResponse> Handle(GetModificationsQuery request, CancellationToken cancellationToken)
     {
-        return await applicationsService.GetModifications(request.SearchQuery, request.PageNumber, request.PageSize);
+        return await applicationsService.GetModifications
+        (
+            request.SearchQuery,
+            request.PageNumber,
+            request.PageSize,
+            request.SortField,
+            request.SortDirection
+        );
     }
 }

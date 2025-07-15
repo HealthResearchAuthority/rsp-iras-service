@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Rsp.IrasService.Application.Contracts.Repositories;
+using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Domain.Entities;
 using Rsp.IrasService.Infrastructure;
 using Rsp.IrasService.Infrastructure.Repositories;
@@ -110,5 +112,47 @@ public class GetResponses : TestServiceBase<RespondentService>
         result.ShouldNotBeNull();
         result.Count().ShouldBe(2);
         result.All(a => a.CategoryId == fixedCategoryId).ShouldBeTrue();
+    }
+
+    /// <summary>
+    ///     Tests that responses are returned for given modificationChangeId and projectRecordId
+    /// </summary>
+    [Theory, AutoData]
+    public async Task GetResponses_ShouldReturnAnswers_For_ModificationChangeId_ProjectRecordId(Guid modificationChangeId, string projectRecordId)
+    {
+        // Arrange
+        Mocker.Use<IProjectPersonnelRepository>(_respondentRepository);
+
+        // Optionally seed data here if needed for the test
+
+        Sut = Mocker.CreateInstance<RespondentService>();
+
+        // Act
+        var result = await Sut.GetResponses(modificationChangeId, projectRecordId);
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.ShouldBeAssignableTo<IEnumerable<RespondentAnswerDto>>();
+    }
+
+    /// <summary>
+    ///     Tests that responses are returned for given modificationChangeId, projectRecordId, and categoryId
+    /// </summary>
+    [Theory, AutoData]
+    public async Task GetResponses_ShouldReturnAnswers_For_ModificationChangeId_ProjectRecordId_CategoryId(Guid modificationChangeId, string projectRecordId, string categoryId)
+    {
+        // Arrange
+        Mocker.Use<IProjectPersonnelRepository>(_respondentRepository);
+
+        // Optionally seed data here if needed for the test
+
+        Sut = Mocker.CreateInstance<RespondentService>();
+
+        // Act
+        var result = await Sut.GetResponses(modificationChangeId, projectRecordId, categoryId);
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.ShouldBeAssignableTo<IEnumerable<RespondentAnswerDto>>();
     }
 }
