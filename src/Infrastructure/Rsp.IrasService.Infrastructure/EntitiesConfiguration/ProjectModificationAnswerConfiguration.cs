@@ -27,5 +27,9 @@ public class ProjectModificationAnswerConfiguration : IEntityTypeConfiguration<P
             .WithMany()
             .HasForeignKey(r => r.ProjectRecordId)
             .OnDelete(DeleteBehavior.NoAction);
+
+        builder
+            .Property(e => e.VersionId)
+            .HasDefaultValue("published version");
     }
 }

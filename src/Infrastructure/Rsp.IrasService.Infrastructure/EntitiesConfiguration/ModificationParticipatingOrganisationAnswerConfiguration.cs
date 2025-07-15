@@ -15,5 +15,9 @@ public class ModificationParticipatingOrganisationAnswerConfiguration : IEntityT
             .WithMany()
             .HasForeignKey(r => r.ModificationParticipatingOrganisationId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder
+            .Property(e => e.VersionId)
+            .HasDefaultValue("published version");
     }
 }
