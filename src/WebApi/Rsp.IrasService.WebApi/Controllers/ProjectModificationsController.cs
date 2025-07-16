@@ -43,7 +43,7 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
     /// <summary>
     /// Returns all area of changes and specific area of changes for a project modification change.
     /// </summary>
-    [HttpGet]
+    [HttpGet("areaofchanges")]
     [Produces<IEnumerable<ModificationAreaOfChange>>]
     public async Task<IEnumerable<ModificationAreaOfChangeDto>> GetAreaOfChanges()
     {
