@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Rsp.IrasService.Application.CQRS.Commands;
+using Rsp.IrasService.Application.CQRS.Queries;
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.DTOS.Responses;
+using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.WebApi.Controllers;
 
@@ -36,5 +38,17 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
         var request = new SaveModificationChangeCommand(modificationChangeRequest);
 
         return await mediator.Send(request);
+    }
+
+    /// <summary>
+    /// Returns all area of changes and specific area of changes for a project modification change.
+    /// </summary>
+    [HttpGet]
+    [Produces<IEnumerable<ModificationAreaOfChange>>]
+    public async Task<IEnumerable<ModificationAreaOfChangeDto>> GetAreaOfChanges()
+    {
+        var query = new GetModificationAreaOfChangeQuery();
+
+        return await mediator.Send(query);
     }
 }
