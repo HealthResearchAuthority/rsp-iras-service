@@ -75,6 +75,12 @@ public interface IRespondentService : IInterceptable
     Task<ModificationParticipatingOrganisationAnswerDto> GetModificationParticipatingOrganisationAnswerResponses(Guid modificationParticipatingOrganisationId);
 
     /// <summary>
+    /// Retrieves modification area of changes and specific area of changes matching the given specification.
+    /// </summary>
+    /// <returns>A <see cref="ModificationAreaOfChangeDto"/> object.</returns>
+    Task<IEnumerable<ModificationAreaOfChangeDto>> GetModificationAreaOfChanges();
+
+    /// <summary>
     /// Saves respondent answers for a project modification.
     /// </summary>
     /// <param name="modificationAnswersRequest">The modification answers request containing answers to save.</param>

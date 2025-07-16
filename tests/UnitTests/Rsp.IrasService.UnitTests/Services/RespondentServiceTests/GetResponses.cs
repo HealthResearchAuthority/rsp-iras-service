@@ -179,6 +179,27 @@ public class GetResponses : TestServiceBase<RespondentService>
     }
 
     /// <summary>
+    ///     Tests that responses are returned for document types
+    /// </summary>
+    [Theory, AutoData]
+    public async Task GetModificationAreaOfChanges_ShouldReturnAnswers()
+    {
+        // Arrange
+        Mocker.Use<IProjectPersonnelRepository>(_respondentRepository);
+
+        // Optionally seed data here if needed for the test
+
+        Sut = Mocker.CreateInstance<RespondentService>();
+
+        // Act
+        var result = await Sut.GetModificationAreaOfChanges();
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.ShouldBeAssignableTo<IEnumerable<ModificationAreaOfChangeDto>>();
+    }
+
+    /// <summary>
     ///     Tests that documents are returned for given modificationChangeId, projectRecordId, and personnelId
     /// </summary>
     [Theory, AutoData]

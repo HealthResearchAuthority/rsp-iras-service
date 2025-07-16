@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rsp.IrasService.Infrastructure;
 
@@ -11,9 +12,11 @@ using Rsp.IrasService.Infrastructure;
 namespace Rsp.IrasService.Infrastructure.Migrations
 {
     [DbContext(typeof(IrasContext))]
-    partial class IrasContextModelSnapshot : ModelSnapshot
+    [Migration("20250716123652_ModificationAreaOfChanges")]
+    partial class ModificationAreaOfChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -797,126 +800,6 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             Status = "OPEN",
                             UpdatedBy = "Test Personnel",
                             UpdatedDate = new DateTime(2025, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("abc0a888-a6e1-426b-9404-7bd398c6f4c4"),
-                            CreatedBy = "Test Personnel",
-                            CreatedDate = new DateTime(2024, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModificationIdentifier = "0001/1",
-                            ModificationNumber = 1,
-                            ProjectRecordId = "b8b4d3d6-a423-4de6-b76d-682f49be9607",
-                            Status = "OPEN",
-                            UpdatedBy = "Test Personnel",
-                            UpdatedDate = new DateTime(2024, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("d2d47942-fcb9-4274-a8ee-44b266a63816"),
-                            CreatedBy = "Test Personnel",
-                            CreatedDate = new DateTime(2024, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModificationIdentifier = "0001/2",
-                            ModificationNumber = 2,
-                            ProjectRecordId = "b8b4d3d6-a423-4de6-b76d-682f49be9607",
-                            Status = "OPEN",
-                            UpdatedBy = "Test Personnel",
-                            UpdatedDate = new DateTime(2024, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("1cb61841-8d38-42d1-93e6-46a165cf05de"),
-                            CreatedBy = "Test Personnel",
-                            CreatedDate = new DateTime(2024, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModificationIdentifier = "0001/3",
-                            ModificationNumber = 3,
-                            ProjectRecordId = "b8b4d3d6-a423-4de6-b76d-682f49be9607",
-                            Status = "OPEN",
-                            UpdatedBy = "Test Personnel",
-                            UpdatedDate = new DateTime(2024, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("60d5a5d1-ba3d-472d-96ed-e167be034dc2"),
-                            CreatedBy = "Test Personnel",
-                            CreatedDate = new DateTime(2014, 6, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModificationIdentifier = "9999999/99",
-                            ModificationNumber = 99,
-                            ProjectRecordId = "bc02d18d-5bdf-4711-bfb2-50dcaa097573",
-                            Status = "OPEN",
-                            UpdatedBy = "Test Personnel",
-                            UpdatedDate = new DateTime(2014, 6, 17, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("8bc41eb5-e329-45db-826e-d5ded59d6470"),
-                            CreatedBy = "Test Personnel",
-                            CreatedDate = new DateTime(2001, 6, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModificationIdentifier = "83453/1",
-                            ModificationNumber = 1,
-                            ProjectRecordId = "63f67087-e217-4439-995b-33c2109f6402",
-                            Status = "OPEN",
-                            UpdatedBy = "Test Personnel",
-                            UpdatedDate = new DateTime(2001, 6, 25, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("e05f73a0-4d19-43a0-aab5-2b0e9bc91cf0"),
-                            CreatedBy = "Test Personnel",
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModificationIdentifier = "4523/1",
-                            ModificationNumber = 1,
-                            ProjectRecordId = "44674431-010a-4536-b896-96ab15946a17",
-                            Status = "OPEN",
-                            UpdatedBy = "Test Personnel",
-                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("2bb56b29-ac7d-4006-bc7d-bff80a7e957d"),
-                            CreatedBy = "Test Personnel",
-                            CreatedDate = new DateTime(2005, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModificationIdentifier = "4237/1",
-                            ModificationNumber = 1,
-                            ProjectRecordId = "9d813504-b1cf-4d1f-b11e-d671e18ff4d2",
-                            Status = "OPEN",
-                            UpdatedBy = "Test Personnel",
-                            UpdatedDate = new DateTime(2005, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("7fa41b2a-f9c9-45f3-9cb3-cb7c21fcca94"),
-                            CreatedBy = "Test Personnel",
-                            CreatedDate = new DateTime(2006, 4, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModificationIdentifier = "3724/1",
-                            ModificationNumber = 1,
-                            ProjectRecordId = "8167f4a5-4f5e-4c11-be8e-1d821c290bab",
-                            Status = "OPEN",
-                            UpdatedBy = "Test Personnel",
-                            UpdatedDate = new DateTime(2006, 4, 8, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("e2bfe66a-c9d4-487a-a824-5536c1396d3a"),
-                            CreatedBy = "Test Personnel",
-                            CreatedDate = new DateTime(2007, 7, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModificationIdentifier = "27827/1",
-                            ModificationNumber = 1,
-                            ProjectRecordId = "52f3526e-bfa8-4f72-80cb-53be3c7fea58",
-                            Status = "OPEN",
-                            UpdatedBy = "Test Personnel",
-                            UpdatedDate = new DateTime(2007, 7, 19, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("748ac01f-2720-4522-a5e9-55360ef3dfa8"),
-                            CreatedBy = "Test Personnel",
-                            CreatedDate = new DateTime(2009, 1, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModificationIdentifier = "3737/1",
-                            ModificationNumber = 1,
-                            ProjectRecordId = "3f59fba9-c1b0-447a-9b23-99c76a4ede41",
-                            Status = "OPEN",
-                            UpdatedBy = "Test Personnel",
-                            UpdatedDate = new DateTime(2009, 1, 26, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -1500,126 +1383,6 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             Status = "OPEN",
                             UpdatedBy = "Test Personnel",
                             UpdatedDate = new DateTime(2025, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("4b557cae-9aa2-425c-b5f3-376a5572c8a0"),
-                            AreaOfChange = "OPT0318",
-                            CreatedBy = "Test Personnel",
-                            CreatedDate = new DateTime(2024, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ProjectModificationId = new Guid("abc0a888-a6e1-426b-9404-7bd398c6f4c4"),
-                            SpecificAreaOfChange = "OPT0321",
-                            Status = "OPEN",
-                            UpdatedBy = "Test Personnel",
-                            UpdatedDate = new DateTime(2024, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("3840fbdc-3a97-4a57-a2b0-269f4272e3bb"),
-                            AreaOfChange = "OPT0318",
-                            CreatedBy = "Test Personnel",
-                            CreatedDate = new DateTime(2024, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ProjectModificationId = new Guid("d2d47942-fcb9-4274-a8ee-44b266a63816"),
-                            SpecificAreaOfChange = "OPT0321",
-                            Status = "OPEN",
-                            UpdatedBy = "Test Personnel",
-                            UpdatedDate = new DateTime(2024, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("8bb85bc5-c708-4bd2-887e-159968bb2728"),
-                            AreaOfChange = "OPT0318",
-                            CreatedBy = "Test Personnel",
-                            CreatedDate = new DateTime(2024, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ProjectModificationId = new Guid("1cb61841-8d38-42d1-93e6-46a165cf05de"),
-                            SpecificAreaOfChange = "OPT0321",
-                            Status = "OPEN",
-                            UpdatedBy = "Test Personnel",
-                            UpdatedDate = new DateTime(2024, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("fff62a1c-b3ad-4bd0-bd9f-ee83a43dbac5"),
-                            AreaOfChange = "OPT0318",
-                            CreatedBy = "Test Personnel",
-                            CreatedDate = new DateTime(2014, 6, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ProjectModificationId = new Guid("60d5a5d1-ba3d-472d-96ed-e167be034dc2"),
-                            SpecificAreaOfChange = "OPT0319",
-                            Status = "OPEN",
-                            UpdatedBy = "Test Personnel",
-                            UpdatedDate = new DateTime(2014, 6, 17, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("2e8dac5f-5e1f-4b65-873b-9215b3c089e9"),
-                            AreaOfChange = "OPT0318",
-                            CreatedBy = "Test Personnel",
-                            CreatedDate = new DateTime(2001, 6, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ProjectModificationId = new Guid("8bc41eb5-e329-45db-826e-d5ded59d6470"),
-                            SpecificAreaOfChange = "OPT0319",
-                            Status = "OPEN",
-                            UpdatedBy = "Test Personnel",
-                            UpdatedDate = new DateTime(2001, 6, 25, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("2f4f4d1e-51b6-48bf-876f-de447a68e041"),
-                            AreaOfChange = "OPT0318",
-                            CreatedBy = "Test Personnel",
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ProjectModificationId = new Guid("e05f73a0-4d19-43a0-aab5-2b0e9bc91cf0"),
-                            SpecificAreaOfChange = "OPT0319",
-                            Status = "OPEN",
-                            UpdatedBy = "Test Personnel",
-                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("13c72f2e-20a7-4933-aed1-429959d42f88"),
-                            AreaOfChange = "OPT0318",
-                            CreatedBy = "Test Personnel",
-                            CreatedDate = new DateTime(2005, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ProjectModificationId = new Guid("2bb56b29-ac7d-4006-bc7d-bff80a7e957d"),
-                            SpecificAreaOfChange = "OPT0319",
-                            Status = "OPEN",
-                            UpdatedBy = "Test Personnel",
-                            UpdatedDate = new DateTime(2005, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("bded1243-f03a-4007-9405-0779f8438ea4"),
-                            AreaOfChange = "OPT0318",
-                            CreatedBy = "Test Personnel",
-                            CreatedDate = new DateTime(2006, 4, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ProjectModificationId = new Guid("7fa41b2a-f9c9-45f3-9cb3-cb7c21fcca94"),
-                            SpecificAreaOfChange = "OPT0319",
-                            Status = "OPEN",
-                            UpdatedBy = "Test Personnel",
-                            UpdatedDate = new DateTime(2006, 4, 8, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("ebcbeb2f-481b-4eef-b0ad-b2f6950431eb"),
-                            AreaOfChange = "OPT0318",
-                            CreatedBy = "Test Personnel",
-                            CreatedDate = new DateTime(2007, 7, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ProjectModificationId = new Guid("e2bfe66a-c9d4-487a-a824-5536c1396d3a"),
-                            SpecificAreaOfChange = "OPT0319",
-                            Status = "OPEN",
-                            UpdatedBy = "Test Personnel",
-                            UpdatedDate = new DateTime(2007, 7, 19, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("ed843281-3aaf-4649-84ca-407201778cdf"),
-                            AreaOfChange = "OPT0318",
-                            CreatedBy = "Test Personnel",
-                            CreatedDate = new DateTime(2009, 1, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ProjectModificationId = new Guid("748ac01f-2720-4522-a5e9-55360ef3dfa8"),
-                            SpecificAreaOfChange = "OPT0319",
-                            Status = "OPEN",
-                            UpdatedBy = "Test Personnel",
-                            UpdatedDate = new DateTime(2009, 1, 26, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -2160,118 +1923,6 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "",
                             IrasId = 9800033,
-                            IsActive = true,
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            Status = "created",
-                            Title = "",
-                            UpdatedBy = "Test Personnel",
-                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = "b8b4d3d6-a423-4de6-b76d-682f49be9607",
-                            CreatedBy = "Test Personnel",
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            IrasId = 1,
-                            IsActive = true,
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            Status = "created",
-                            Title = "",
-                            UpdatedBy = "Test Personnel",
-                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = "bc02d18d-5bdf-4711-bfb2-50dcaa097573",
-                            CreatedBy = "Test Personnel",
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            IrasId = 9999999,
-                            IsActive = true,
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            Status = "created",
-                            Title = "",
-                            UpdatedBy = "Test Personnel",
-                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = "63f67087-e217-4439-995b-33c2109f6402",
-                            CreatedBy = "Test Personnel",
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            IrasId = 83453,
-                            IsActive = true,
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            Status = "created",
-                            Title = "",
-                            UpdatedBy = "Test Personnel",
-                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = "44674431-010a-4536-b896-96ab15946a17",
-                            CreatedBy = "Test Personnel",
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            IrasId = 4523,
-                            IsActive = true,
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            Status = "created",
-                            Title = "",
-                            UpdatedBy = "Test Personnel",
-                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = "9d813504-b1cf-4d1f-b11e-d671e18ff4d2",
-                            CreatedBy = "Test Personnel",
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            IrasId = 4237,
-                            IsActive = true,
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            Status = "created",
-                            Title = "",
-                            UpdatedBy = "Test Personnel",
-                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = "8167f4a5-4f5e-4c11-be8e-1d821c290bab",
-                            CreatedBy = "Test Personnel",
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            IrasId = 3724,
-                            IsActive = true,
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            Status = "created",
-                            Title = "",
-                            UpdatedBy = "Test Personnel",
-                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = "52f3526e-bfa8-4f72-80cb-53be3c7fea58",
-                            CreatedBy = "Test Personnel",
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            IrasId = 27827,
-                            IsActive = true,
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            Status = "created",
-                            Title = "",
-                            UpdatedBy = "Test Personnel",
-                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = "3f59fba9-c1b0-447a-9b23-99c76a4ede41",
-                            CreatedBy = "Test Personnel",
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "",
-                            IrasId = 3737,
                             IsActive = true,
                             ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
                             Status = "created",

@@ -150,6 +150,21 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
     }
 
     /// <summary>
+    /// Gets area of changes based on the provided specification.
+    /// </summary>
+    /// <param name="specification">The specification to filter document type.</param>
+    /// <returns>A collection of <see cref="ModificationAreaOfChange"/> objects.</returns>
+    public Task<IEnumerable<ModificationAreaOfChange>> GetResponses(ISpecification<ModificationAreaOfChange> specification)
+    {
+        var result = irasContext
+            .ModificationAreaOfChanges
+            .WithSpecification(specification)
+            .AsEnumerable();
+
+        return Task.FromResult(result);
+    }
+
+    /// <summary>
     /// Gets modification documents matching the given specification.
     /// </summary>
     /// <param name="specification">The specification to filter modfication documents.</param>

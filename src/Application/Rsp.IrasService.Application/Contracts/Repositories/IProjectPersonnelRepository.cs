@@ -51,6 +51,13 @@ public interface IProjectPersonnelRepository
     Task<ModificationParticipatingOrganisationAnswer> GetResponses(ISpecification<ModificationParticipatingOrganisationAnswer> specification);
 
     /// <summary>
+    /// Retrieves modification area of changes and specific area of changes matching the given specification.
+    /// </summary>
+    /// <param name="specification">The specification to filter area of changes and specific area of changes.</param>
+    /// <returns>A <see cref="ModificationAreaOfChange"/> object.</returns>
+    Task<IEnumerable<ModificationAreaOfChange>> GetResponses(ISpecification<ModificationAreaOfChange> specification);
+
+    /// <summary>
     /// Saves the provided project record answers that match the given specification.
     /// </summary>
     /// <param name="specification">The specification to filter which answers to save.</param>

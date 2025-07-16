@@ -186,6 +186,19 @@ public class RespondentService(IProjectPersonnelRepository projectPersonnelRepos
     }
 
     /// <summary>
+    /// Retrieves the list of area of changes and specific area of changes.
+    /// </summary>
+    /// <returns>A collection of document types as <see cref="ModificationAreaOfChangeDto"/>.</returns>
+    public async Task<IEnumerable<ModificationAreaOfChangeDto>> GetModificationAreaOfChanges()
+    {
+        var specification = new GetModificationAreaOfChangeSpecification();
+
+        var responses = await projectPersonnelRepository.GetResponses(specification);
+
+        return responses.Adapt<IEnumerable<ModificationAreaOfChangeDto>>();
+    }
+
+    /// <summary>
     /// Saves the list of document responses associated with a modification change.
     /// </summary>
     /// <param name="respondentAnswers">A list of document DTOs to be saved for the specified modification.</param>
