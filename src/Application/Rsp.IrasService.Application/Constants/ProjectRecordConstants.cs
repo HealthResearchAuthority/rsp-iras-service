@@ -10,4 +10,12 @@ public static class ProjectRecordConstants
     public const string ParticipatingOrgs = "OPT0318";
     public const string MajorModificationAreaOfChange = "OPT0319";
     public const string MinorModificationAreaOfChange = "OPT0321";
+
+    public static Dictionary<string, string> NationIdMap { get; set; } = new()
+    {
+        { "OPT0018", "England" },
+        { "OPT0019", "Northern Ireland" },
+        { "OPT0020", "Scotland" },
+        { "OPT0021", "Wales" },
+    };
 }
