@@ -1,0 +1,32 @@
+﻿[
+    {
+        "ModificationAreaOfChangeId": 1,
+        "Id": 1,
+        "Name": "Early closure or withdrawal of research sites",
+        "JourneyType": "Participating organisation"
+    },
+    {
+        "ModificationAreaOfChangeId": 1,
+        "Id": 2,
+        "Name": "PICs - Addition of Participant Identification Centres undertaking the same activities as existing PICs",
+        "JourneyType": "Participating organisation"
+    },
+    {
+        "ModificationAreaOfChangeId": 1,
+        "Id": 3,
+        "Name": "PICs - Early closure or withdrawal of Participant Identification Centres",
+        "JourneyType": "Participating organisation"
+    },
+    {
+        "ModificationAreaOfChangeId": 2,
+        "Id": 4,
+        "Name": "Change to planned end date",
+        "JourneyType": "Planned end date"
+    },
+    {
+        "ModificationAreaOfChangeId": 1,
+        "Id": 5,
+        "Name": "Addition of sites undertaking the same activities as existing sites",
+        "JourneyType": "Participating organisation"
+    }
+]
