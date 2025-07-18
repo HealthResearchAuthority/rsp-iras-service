@@ -113,6 +113,18 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ModificationAreaOfChanges");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Participating organisations"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Project design"
+                        });
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationDocument", b =>
@@ -262,6 +274,43 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.HasIndex("ModificationAreaOfChangeId");
 
                     b.ToTable("ModificationSpecificAreaOfChanges");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            JourneyType = "Participating organisation",
+                            ModificationAreaOfChangeId = 1,
+                            Name = "Early closure or withdrawal of research sites"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            JourneyType = "Participating organisation",
+                            ModificationAreaOfChangeId = 1,
+                            Name = "PICs - Addition of Participant Identification Centres undertaking the same activities as existing PICs"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            JourneyType = "Participating organisation",
+                            ModificationAreaOfChangeId = 1,
+                            Name = "PICs - Early closure or withdrawal of Participant Identification Centres"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            JourneyType = "Planned end date",
+                            ModificationAreaOfChangeId = 2,
+                            Name = "Change to planned end date"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            JourneyType = "Participating organisation",
+                            ModificationAreaOfChangeId = 1,
+                            Name = "Addition of sites undertaking the same activities as existing sites"
+                        });
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModification", b =>
