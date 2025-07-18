@@ -10,9 +10,9 @@ namespace Rsp.IrasService.Services;
 
 public class ReviewBodyService(IRegulatoryBodyRepository reviewBodyRepository) : IReviewBodyService
 {
-    public async Task<AllReviewBodiesResponse> GetReviewBodies(int pageNumber, int pageSize, ReviewBodySearchRequest searchQuery)
+    public async Task<AllReviewBodiesResponse> GetReviewBodies(int pageNumber, int pageSize, string sortField, string sortDirection, ReviewBodySearchRequest searchQuery)
     {
-        var specification = new GetReviewBodiesSpecification(pageNumber, pageSize, searchQuery);
+        var specification = new GetReviewBodiesSpecification(pageNumber, pageSize, sortField, sortDirection, searchQuery);
 
         var rbResponses = await reviewBodyRepository.GetRegulatoryBodies(specification);
         var rbCount = await reviewBodyRepository.GetRegulatoryBodyCount(searchQuery);

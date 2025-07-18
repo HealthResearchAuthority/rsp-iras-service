@@ -1,4 +1,5 @@
 ﻿using Rsp.IrasService.Application.CQRS.Queries;
+using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.WebApi.Controllers;
 
 namespace Rsp.IrasService.UnitTests.Web.Controllers.ReviewBodyControllersTests;
@@ -19,7 +20,7 @@ public class GetReviewBodiesTests : TestServiceBase
         var mockMediator = Mocker.GetMock<IMediator>();
 
         // Act
-        await _controller.GetAllReviewBodies(1, 100, null);
+        await _controller.GetAllReviewBodies(1, 100,nameof(ReviewBodyDto.RegulatoryBodyName), "asc", null);
 
         // Assert
         mockMediator.Verify(

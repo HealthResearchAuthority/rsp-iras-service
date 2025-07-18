@@ -114,7 +114,7 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
                        .FirstOrDefault() ?? string.Empty,
                    LeadNation = projectAnswers
                        .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.LeadNation)
-                       .Select(a => a.Response)
+                       .Select(a => a.SelectedOptions)
                        .FirstOrDefault() ?? string.Empty,
                    ShortProjectTitle = projectAnswers
                        .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ShortProjectTitle)
@@ -133,6 +133,11 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
     {
         return modifications
             .AsEnumerable()
+            .Select(mod =>
+            {
+                mod.LeadNation = ProjectRecordConstants.NationIdMap.TryGetValue(mod.LeadNation, out var nation) ? nation : string.Empty;
+                return mod;
+            })
             .Where(x =>
                 (string.IsNullOrEmpty(searchQuery.IrasId) || x.IrasId.Contains(searchQuery.IrasId, StringComparison.OrdinalIgnoreCase)) &&
                 (string.IsNullOrEmpty(searchQuery.ChiefInvestigatorName) || x.ChiefInvestigator.Contains(searchQuery.ChiefInvestigatorName, StringComparison.OrdinalIgnoreCase)) &&
@@ -141,8 +146,7 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
                 (!searchQuery.FromDate.HasValue || x.CreatedAt >= searchQuery.FromDate.Value) &&
                 (!searchQuery.ToDate.HasValue || x.CreatedAt <= searchQuery.ToDate.Value) &&
                 (searchQuery.Country.Count == 0 || searchQuery.Country.Contains(x.LeadNation, StringComparer.OrdinalIgnoreCase)) &&
-                (searchQuery.ModificationTypes.Count == 0 || searchQuery.ModificationTypes.Contains(x.ModificationType, StringComparer.OrdinalIgnoreCase))
-            );
+                (searchQuery.ModificationTypes.Count == 0 || searchQuery.ModificationTypes.Contains(x.ModificationType, StringComparer.OrdinalIgnoreCase)));
     }
 
     private static IEnumerable<ProjectModificationResult> SortModifications(IEnumerable<ProjectModificationResult> modifications, string sortField, string sortDirection)
