@@ -30,10 +30,10 @@ public class GetReviewBodiesHandlerTests
             TotalCount = 2
         };
 
-        var query = new GetReviewBodiesQuery(1, 100, null);
+        var query = new GetReviewBodiesQuery(1, 100, nameof(ReviewBodyDto.RegulatoryBodyName), "asc", null);
 
         _reviewBodyServiceMock
-            .Setup(service => service.GetReviewBodies(1, 100, null))
+            .Setup(service => service.GetReviewBodies(1, 100, nameof(ReviewBodyDto.RegulatoryBodyName), "asc", null))
             .ReturnsAsync(expectedResponse);
 
         // Act
@@ -43,6 +43,6 @@ public class GetReviewBodiesHandlerTests
         result.ShouldNotBeNull();
         result.TotalCount.ShouldBe(expectedResponse.TotalCount);
 
-        _reviewBodyServiceMock.Verify(service => service.GetReviewBodies(1, 100, null), Times.Once);
+        _reviewBodyServiceMock.Verify(service => service.GetReviewBodies(1, 100, nameof(ReviewBodyDto.RegulatoryBodyName), "asc", null), Times.Once);
     }
 }
