@@ -12,6 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Data\ModificationAreaOfChanges.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Data\ProjectModificationChanges.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
