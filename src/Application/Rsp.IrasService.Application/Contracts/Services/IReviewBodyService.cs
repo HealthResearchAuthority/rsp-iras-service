@@ -10,7 +10,7 @@ namespace Rsp.IrasService.Application.Contracts.Services;
 /// </summary>
 public interface IReviewBodyService : IInterceptable
 {
-    Task<AllReviewBodiesResponse> GetReviewBodies(int pageNumber, int pageSize, ReviewBodySearchRequest searchQuery);
+    Task<AllReviewBodiesResponse> GetReviewBodies(int pageNumber, int pageSize, string sortField, string sortDirection, ReviewBodySearchRequest searchQuery);
 
     Task<ReviewBodyDto> GetReviewBody(Guid id);
 

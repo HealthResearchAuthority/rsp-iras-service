@@ -1,4 +1,5 @@
-﻿using Rsp.IrasService.Application.Specifications;
+﻿using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.IrasService.Application.Specifications;
 using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.UnitTests.Application.Specifications;
@@ -12,7 +13,7 @@ public class GetReviewBodySpecificationTests
         // Arrange
         var applications = generator.Take(5).ToList();
 
-        var spec = new GetReviewBodiesSpecification(1, 10, null);
+        var spec = new GetReviewBodiesSpecification(1, 10, nameof(ReviewBodyDto.RegulatoryBodyName), "asc", null);
 
         // Act
         var result = spec

@@ -34,7 +34,7 @@ public class UpdateReviewBodyTests : TestServiceBase<ReviewBodyService>
 
         // Seed data using number of records to seed
         await TestData.SeedData(_context, generator, records);
-        var reviewBodies = await Sut.GetReviewBodies(1, 100, null);
+        var reviewBodies = await Sut.GetReviewBodies(1, 100, nameof(ReviewBodyDto.RegulatoryBodyName), "asc", null);
 
         // Act
         var result = await Sut.UpdateReviewBody(reviewBodies.ReviewBodies.First());

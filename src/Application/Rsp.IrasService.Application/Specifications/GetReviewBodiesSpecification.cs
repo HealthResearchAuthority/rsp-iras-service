@@ -6,7 +6,7 @@ namespace Rsp.IrasService.Application.Specifications;
 
 public class GetReviewBodiesSpecification : Specification<RegulatoryBody>
 {
-    public GetReviewBodiesSpecification(int pageNumber, int pageSize, ReviewBodySearchRequest? searchQuery)
+    public GetReviewBodiesSpecification(int pageNumber, int pageSize, string sortField, string sortDirection ,ReviewBodySearchRequest? searchQuery)
     {
         var builder = Query
             .AsNoTracking()
@@ -42,7 +42,19 @@ public class GetReviewBodiesSpecification : Specification<RegulatoryBody>
             }
         }
 
-        builder.OrderBy(x => x.RegulatoryBodyName)
+        // Apply sorting
+        builder = (sortField.ToLower(), sortDirection.ToLower()) switch
+        {
+            ("regulatorybodyname", "asc") => builder.OrderBy(x => x.RegulatoryBodyName).ThenBy(x => x.IsActive),
+            ("regulatorybodyname", "desc") => builder.OrderByDescending(x => x.RegulatoryBodyName).ThenBy(x => x.IsActive),
+            ("countries", "asc") => builder.OrderBy(x => x.Countries.FirstOrDefault()).ThenBy(x => x.IsActive),
+            ("countries", "desc") => builder.OrderByDescending(x => x.Countries.FirstOrDefault()).ThenBy(x => x.IsActive),
+            ("isactive", "asc") => builder.OrderBy(x => x.IsActive),
+            ("isactive", "desc") => builder.OrderByDescending(x => x.IsActive),
+            _ => builder.OrderBy(x => x.RegulatoryBodyName).ThenByDescending(x => x.IsActive)
+        };
+
+        builder
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize);
     }
