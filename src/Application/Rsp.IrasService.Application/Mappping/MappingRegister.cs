@@ -38,6 +38,7 @@ public class MappingRegister : IRegister
             .NewConfig<RespondentAnswerDto, ProjectRecordAnswer>()
             .Ignore(ra => ra.ProjectPersonnelId)
             .Ignore(ra => ra.ProjectRecordId)
+            .Map(dest => dest.VersionId, source => source.VersionId)
             .Map(dest => dest.Category, source => source.CategoryId)
             .Map(dest => dest.Section, source => source.SectionId)
             .Map(dest => dest.Response, source => source.AnswerText)
@@ -47,6 +48,7 @@ public class MappingRegister : IRegister
         // ProjectRecordAnswer -> RespondentAnswerDto mapping
         config
             .NewConfig<ProjectRecordAnswer, RespondentAnswerDto>()
+            .Map(dest => dest.VersionId, source => source.VersionId)
             .Map(dest => dest.CategoryId, source => source.Category)
             .Map(dest => dest.SectionId, source => source.Section)
             .Map(dest => dest.AnswerText, source => source.Response)
@@ -59,6 +61,7 @@ public class MappingRegister : IRegister
             .Ignore(ra => ra.ProjectModificationChangeId)
             .Ignore(ra => ra.ProjectPersonnelId)
             .Ignore(ra => ra.ProjectRecordId)
+            .Map(dest => dest.VersionId, source => source.VersionId)
             .Map(dest => dest.Category, source => source.CategoryId)
             .Map(dest => dest.Section, source => source.SectionId)
             .Map(dest => dest.Response, source => source.AnswerText)
@@ -68,6 +71,7 @@ public class MappingRegister : IRegister
         // ProjectModificationAnswer -> RespondentAnswerDto mapping
         config
             .NewConfig<ProjectModificationAnswer, RespondentAnswerDto>()
+            .Map(dest => dest.VersionId, source => source.VersionId)
             .Map(dest => dest.CategoryId, source => source.Category)
             .Map(dest => dest.SectionId, source => source.Section)
             .Map(dest => dest.AnswerText, source => source.Response)

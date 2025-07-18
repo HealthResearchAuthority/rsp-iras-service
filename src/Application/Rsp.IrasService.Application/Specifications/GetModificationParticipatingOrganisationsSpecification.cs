@@ -1,0 +1,24 @@
+﻿using Ardalis.Specification;
+using Rsp.IrasService.Domain.Entities;
+
+namespace Rsp.IrasService.Application.Specifications;
+
+public class GetModificationParticipatingOrganisationsSpecification : Specification<ModificationParticipatingOrganisation>
+{
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GetModificationParticipatingOrganisationsSpecification"/> class to return all documents for the specified modification change and project record.
+    /// </summary>
+    /// <param name="modificationChangeId">Unique Id of the change added to the modification.</param>
+    /// <param name="projectRecordId">Unique Id of the application to get. Default: null for all records.</param>
+    /// <param name="projectPersonnelId">Unique Id of the personnel to get. Default: null for all records.</param>
+    public GetModificationParticipatingOrganisationsSpecification(Guid modificationChangeId, string projectRecordId, string projectPersonnelId)
+    {
+        Query
+            .AsNoTracking()
+            .Where(entity =>
+                entity.ProjectModificationChangeId == modificationChangeId &&
+                entity.ProjectRecordId == projectRecordId &&
+                entity.ProjectPersonnelId == projectPersonnelId
+            );
+    }
+}

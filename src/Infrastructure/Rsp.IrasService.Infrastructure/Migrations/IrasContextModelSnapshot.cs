@@ -22,6 +22,21 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.DocumentType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DocumentTypes");
+                });
+
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.EmailTemplate", b =>
                 {
                     b.Property<int>("Id")
@@ -81,6 +96,172 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("EventTypes");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationAreaOfChange", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ModificationAreaOfChanges");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationDocument", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("DocumentTypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("FileSize")
+                        .HasColumnType("int");
+
+                    b.Property<bool?>("HasPreviousVersion")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("ProjectModificationChangeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ProjectPersonnelId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProjectRecordId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("SponsorDocumentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SponsorDocumentVersion")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DocumentTypeId");
+
+                    b.HasIndex("ProjectModificationChangeId");
+
+                    b.HasIndex("ProjectPersonnelId");
+
+                    b.HasIndex("ProjectRecordId");
+
+                    b.ToTable("ModificationDocuments");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationParticipatingOrganisation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("OrganisationId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ProjectModificationChangeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ProjectPersonnelId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProjectRecordId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectModificationChangeId");
+
+                    b.HasIndex("ProjectPersonnelId");
+
+                    b.HasIndex("ProjectRecordId");
+
+                    b.ToTable("ModificationParticipatingOrganisations");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationParticipatingOrganisationAnswer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ModificationParticipatingOrganisationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("OptionType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("QuestionId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Response")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Section")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SelectedOptions")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VersionId")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("published version");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ModificationParticipatingOrganisationId");
+
+                    b.ToTable("ModificationParticipatingOrganisationAnswers");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationSpecificAreaOfChange", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("JourneyType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ModificationAreaOfChangeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ModificationAreaOfChangeId");
+
+                    b.ToTable("ModificationSpecificAreaOfChanges");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModification", b =>
@@ -770,6 +951,12 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.Property<string>("SelectedOptions")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VersionId")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("published version");
 
                     b.HasKey("ProjectModificationChangeId", "QuestionId", "ProjectPersonnelId");
 
@@ -2122,6 +2309,12 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Property<string>("SelectedOptions")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("VersionId")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("published version");
+
                     b.HasKey("ProjectPersonnelId", "QuestionId", "ProjectRecordId");
 
                     b.HasIndex("ProjectRecordId");
@@ -2136,7 +2329,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "8621f884-27e7-4fa6-915b-dda058f899ab",
                             Category = "project record v1",
                             Response = "Barry White",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2145,7 +2339,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "8621f884-27e7-4fa6-915b-dda058f899ab",
                             Category = "project record v1",
                             Response = "Project 01",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2154,7 +2349,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "8621f884-27e7-4fa6-915b-dda058f899ab",
                             Category = "project record v1",
                             Response = "COLD GENESYS INC",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2162,9 +2358,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "8621f884-27e7-4fa6-915b-dda058f899ab",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "England",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0018"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2173,7 +2369,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "cbad81e0-f16b-4751-9edb-f35bdb35f931",
                             Category = "project record v1",
                             Response = "Dr Richard Jones-Smith",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2182,7 +2379,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "cbad81e0-f16b-4751-9edb-f35bdb35f931",
                             Category = "project record v1",
                             Response = "Study 02",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2191,7 +2389,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "cbad81e0-f16b-4751-9edb-f35bdb35f931",
                             Category = "project record v1",
                             Response = "Nottingham Trent University",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2199,9 +2398,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "cbad81e0-f16b-4751-9edb-f35bdb35f931",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "Northern Ireland",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0019"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2210,7 +2409,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "38b8f121-25c7-4b76-941b-1b5143e83db4",
                             Category = "project record v1",
                             Response = "Miss Becky O'neil",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2219,7 +2419,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "38b8f121-25c7-4b76-941b-1b5143e83db4",
                             Category = "project record v1",
                             Response = "Short 03",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2228,7 +2429,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "38b8f121-25c7-4b76-941b-1b5143e83db4",
                             Category = "project record v1",
                             Response = "Eisai Co.,Ltd.",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2236,9 +2438,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "38b8f121-25c7-4b76-941b-1b5143e83db4",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "Scotland",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0020"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2247,7 +2449,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "b720dc5c-f5ed-4b74-8847-3008e7fb132e",
                             Category = "project record v1",
                             Response = "Jeanne d'Arc",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2256,7 +2459,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "b720dc5c-f5ed-4b74-8847-3008e7fb132e",
                             Category = "project record v1",
                             Response = "Study title 04",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2265,7 +2469,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "b720dc5c-f5ed-4b74-8847-3008e7fb132e",
                             Category = "project record v1",
                             Response = "ASHFORD AND ST PETER'S HOSPITALS NHS FOUNDATION TRUST",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2273,9 +2478,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "b720dc5c-f5ed-4b74-8847-3008e7fb132e",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "Wales",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0021"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2284,7 +2489,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "0bdbe9f6-ad47-4047-96e8-6252183e62c9",
                             Category = "project record v1",
                             Response = "Dr Ólafur",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2293,7 +2499,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "0bdbe9f6-ad47-4047-96e8-6252183e62c9",
                             Category = "project record v1",
                             Response = "Short study title 05",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2302,7 +2509,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "0bdbe9f6-ad47-4047-96e8-6252183e62c9",
                             Category = "project record v1",
                             Response = "AB SCIEX UK LIMITED",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2310,9 +2518,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "0bdbe9f6-ad47-4047-96e8-6252183e62c9",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "England",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0018"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2321,7 +2529,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "e1ebe9dc-c554-4214-baf8-ef5410ac5477",
                             Category = "project record v1",
                             Response = "Capt. María-Jose",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2330,7 +2539,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "e1ebe9dc-c554-4214-baf8-ef5410ac5477",
                             Category = "project record v1",
                             Response = "Project title 06",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2339,7 +2549,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "e1ebe9dc-c554-4214-baf8-ef5410ac5477",
                             Category = "project record v1",
                             Response = "Academic Medical Center at the University of Amsterdam (Netherlands)",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2347,9 +2558,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "e1ebe9dc-c554-4214-baf8-ef5410ac5477",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "England",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0018"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2358,7 +2569,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "4c565f6b-d87e-4bc3-b404-e70f15f07256",
                             Category = "project record v1",
                             Response = "Zoe Kim",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2367,7 +2579,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "4c565f6b-d87e-4bc3-b404-e70f15f07256",
                             Category = "project record v1",
                             Response = "7-ABCD1234!” £$%^&*()_+[]{ };:@‘~#<>,.? / ¬λγθν€ £¥©® ™±≠ ≤≥÷×∞µ×÷≥∩ ∫≈≠≡ ≤≥⌂⌐⌠⌡│┌┐ ",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2376,7 +2589,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "4c565f6b-d87e-4bc3-b404-e70f15f07256",
                             Category = "project record v1",
                             Response = "ACACIA PHARMA LIMITED",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2384,9 +2598,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "4c565f6b-d87e-4bc3-b404-e70f15f07256",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "England",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0018"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2395,7 +2609,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "e71883ef-f548-43ae-94bd-c83b11e6457b",
                             Category = "project record v1",
                             Response = "Tom Reed",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2404,7 +2619,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "e71883ef-f548-43ae-94bd-c83b11e6457b",
                             Category = "project record v1",
                             Response = "Eight └┘□▪▫ ◊○◌● ◦ⱠⱡⱢ ⱣⱤ ™ ©® ° ± ≤ ≥ ÷ ≠ ≡ ≈ √ σ ν ο ι τ χ α ρ φ π λ ε η Η ϑ μ θ δ",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2413,7 +2629,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "e71883ef-f548-43ae-94bd-c83b11e6457b",
                             Category = "project record v1",
                             Response = "AB SCIEX UK LIMITED",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2421,9 +2638,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "e71883ef-f548-43ae-94bd-c83b11e6457b",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "Northern Ireland",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0019"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2432,7 +2649,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "f047d051-1498-446f-bfb5-462fb5522b68",
                             Category = "project record v1",
                             Response = "Mei Zhang",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2441,7 +2659,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "f047d051-1498-446f-bfb5-462fb5522b68",
                             Category = "project record v1",
                             Response = "9-one two three four five six seven eight nine ten ne two three four five six seven eight nine ten ",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2450,7 +2669,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "f047d051-1498-446f-bfb5-462fb5522b68",
                             Category = "project record v1",
                             Response = "Conatus Pharmaceuticals Inc.",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2458,9 +2678,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "f047d051-1498-446f-bfb5-462fb5522b68",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "Northern Ireland",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0019"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2469,7 +2689,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "5ea1d104-368b-4a72-be78-aefcc1325d87",
                             Category = "project record v1",
                             Response = "Commander Maximilian Thorne-Winchester III",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2478,7 +2699,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "5ea1d104-368b-4a72-be78-aefcc1325d87",
                             Category = "project record v1",
                             Response = "Study title 10",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2487,7 +2709,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "5ea1d104-368b-4a72-be78-aefcc1325d87",
                             Category = "project record v1",
                             Response = "AB SCIEX UK LIMITED",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2495,9 +2718,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "5ea1d104-368b-4a72-be78-aefcc1325d87",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "Scotland",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0020"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2506,7 +2729,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "dfcbe913-dcc0-497a-859d-9c4309c22499",
                             Category = "project record v1",
                             Response = "Barry White",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2515,7 +2739,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "dfcbe913-dcc0-497a-859d-9c4309c22499",
                             Category = "project record v1",
                             Response = "Short study title 11",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2524,7 +2749,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "dfcbe913-dcc0-497a-859d-9c4309c22499",
                             Category = "project record v1",
                             Response = "EAST LONDON NHS FOUNDATION TRUST",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2532,9 +2758,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "dfcbe913-dcc0-497a-859d-9c4309c22499",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "England",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0018"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2543,7 +2769,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "48f4cf52-45eb-4628-8d81-95a9a9ad961b",
                             Category = "project record v1",
                             Response = "Mx. River Skye",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2552,7 +2779,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "48f4cf52-45eb-4628-8d81-95a9a9ad961b",
                             Category = "project record v1",
                             Response = "Project title 12",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2561,7 +2789,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "48f4cf52-45eb-4628-8d81-95a9a9ad961b",
                             Category = "project record v1",
                             Response = "Innovent Biologics (Suzhou) Co., Ltd.",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2569,9 +2798,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "48f4cf52-45eb-4628-8d81-95a9a9ad961b",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "England",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0018"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2580,7 +2809,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "78442e04-9ecd-46a7-9a60-fd45cc065d60",
                             Category = "project record v1",
                             Response = "Ing. Pavel Novák",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2589,7 +2819,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "78442e04-9ecd-46a7-9a60-fd45cc065d60",
                             Category = "project record v1",
                             Response = "Project 13",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2598,7 +2829,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "78442e04-9ecd-46a7-9a60-fd45cc065d60",
                             Category = "project record v1",
                             Response = "COLD GENESYS INC",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2606,9 +2838,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "78442e04-9ecd-46a7-9a60-fd45cc065d60",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "England",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0018"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2617,7 +2849,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "b8f9aade-b6ce-4c89-a8da-d645c65504b3",
                             Category = "project record v1",
                             Response = "Chika Okoye-Adebayo",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2626,7 +2859,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "b8f9aade-b6ce-4c89-a8da-d645c65504b3",
                             Category = "project record v1",
                             Response = "Study 14",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2635,7 +2869,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "b8f9aade-b6ce-4c89-a8da-d645c65504b3",
                             Category = "project record v1",
                             Response = "MANCHESTER UNIVERSITY NHS FOUNDATION TRUST",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2643,9 +2878,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "b8f9aade-b6ce-4c89-a8da-d645c65504b3",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "Northern Ireland",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0019"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2654,7 +2889,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "7b7deced-a6fd-4c56-91d5-3bec8d86513d",
                             Category = "project record v1",
                             Response = "Lady Seraphina Elisabetta von Albrecht",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2663,7 +2899,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "7b7deced-a6fd-4c56-91d5-3bec8d86513d",
                             Category = "project record v1",
                             Response = "Short 15",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2672,7 +2909,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "7b7deced-a6fd-4c56-91d5-3bec8d86513d",
                             Category = "project record v1",
                             Response = "Innovent Biologics (Suzhou) Co., Ltd.",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2680,9 +2918,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "7b7deced-a6fd-4c56-91d5-3bec8d86513d",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "England",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0018"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2691,7 +2929,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "bc7a58bd-c84b-4319-8953-3271e6abdd8e",
                             Category = "project record v1",
                             Response = "Tilda Noëlle Gray",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2700,7 +2939,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "bc7a58bd-c84b-4319-8953-3271e6abdd8e",
                             Category = "project record v1",
                             Response = "Study title 16",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2709,7 +2949,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "bc7a58bd-c84b-4319-8953-3271e6abdd8e",
                             Category = "project record v1",
                             Response = "BARNET, ENFIELD AND HARINGEY MENTAL HEALTH NHS TRUST",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2717,9 +2958,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "bc7a58bd-c84b-4319-8953-3271e6abdd8e",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "England",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0018"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2728,7 +2969,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "7bb298b0-5f66-4d96-a94d-1c6a1eec1fb6",
                             Category = "project record v1",
                             Response = "Mariana Constanza de la Cruz Valencia",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2737,7 +2979,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "7bb298b0-5f66-4d96-a94d-1c6a1eec1fb6",
                             Category = "project record v1",
                             Response = "Short study title 17",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2746,7 +2989,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "7bb298b0-5f66-4d96-a94d-1c6a1eec1fb6",
                             Category = "project record v1",
                             Response = "4D Pharma PLC",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2754,9 +2998,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "7bb298b0-5f66-4d96-a94d-1c6a1eec1fb6",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "England",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0018"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2765,7 +3009,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "ffb6f01f-9614-4ced-84fa-ef8c0d8696e3",
                             Category = "project record v1",
                             Response = "Prof. Adebayo Olufemi Ajani",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2774,7 +3019,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "ffb6f01f-9614-4ced-84fa-ef8c0d8696e3",
                             Category = "project record v1",
                             Response = "Project title 18",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2783,7 +3029,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "ffb6f01f-9614-4ced-84fa-ef8c0d8696e3",
                             Category = "project record v1",
                             Response = "AB SCIEX UK LIMITED",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2791,9 +3038,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "ffb6f01f-9614-4ced-84fa-ef8c0d8696e3",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "England",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0018"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2802,7 +3049,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "7f1743ff-2cde-41cb-bbdc-1ef393dbc746",
                             Category = "project record v1",
                             Response = "Sakura Ito",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2811,7 +3059,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "7f1743ff-2cde-41cb-bbdc-1ef393dbc746",
                             Category = "project record v1",
                             Response = "P19",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2820,7 +3069,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "7f1743ff-2cde-41cb-bbdc-1ef393dbc746",
                             Category = "project record v1",
                             Response = "Nottingham Trent University",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2828,9 +3078,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "7f1743ff-2cde-41cb-bbdc-1ef393dbc746",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "England",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0018"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2839,7 +3089,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "2ec5b24e-0d9a-4745-b0fb-1e593d3123c2",
                             Category = "project record v1",
                             Response = "Dr. Isabella Fernández-Hernández",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2848,7 +3099,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "2ec5b24e-0d9a-4745-b0fb-1e593d3123c2",
                             Category = "project record v1",
                             Response = "PST20",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2857,7 +3109,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "2ec5b24e-0d9a-4745-b0fb-1e593d3123c2",
                             Category = "project record v1",
                             Response = "COLD GENESYS INC",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2865,9 +3118,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "2ec5b24e-0d9a-4745-b0fb-1e593d3123c2",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "Northern Ireland",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0019"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2876,7 +3129,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "13a9fb24-7fd8-4a99-93ae-a850f2244255",
                             Category = "project record v1",
                             Response = "Luca Romano",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2885,7 +3139,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "13a9fb24-7fd8-4a99-93ae-a850f2244255",
                             Category = "project record v1",
                             Response = "SST21",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2894,7 +3149,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "13a9fb24-7fd8-4a99-93ae-a850f2244255",
                             Category = "project record v1",
                             Response = "L'Institut d'Investigacions Biomediques August Pi i Sunyer (IDIBAPS) (Spain)",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2902,9 +3158,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "13a9fb24-7fd8-4a99-93ae-a850f2244255",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "Scotland",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0020"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2913,7 +3169,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "8ba9958f-79d0-4ad3-9a06-ff8ebceca508",
                             Category = "project record v1",
                             Response = "Prof. Adebayo Olufemi Ajani",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2922,7 +3179,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "8ba9958f-79d0-4ad3-9a06-ff8ebceca508",
                             Category = "project record v1",
                             Response = "S22",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2931,7 +3189,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "8ba9958f-79d0-4ad3-9a06-ff8ebceca508",
                             Category = "project record v1",
                             Response = "L. MOLTENI & C. DEI FRATELLI ALITTI - SOCIETA' DI ESERCIZIO - S.P.A",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2939,9 +3198,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "8ba9958f-79d0-4ad3-9a06-ff8ebceca508",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "Wales",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0021"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2950,7 +3209,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "1cabb7b7-d513-4e42-ac1f-63f692656367",
                             Category = "project record v1",
                             Response = "Dame Eloise Rutherford",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2959,7 +3219,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "1cabb7b7-d513-4e42-ac1f-63f692656367",
                             Category = "project record v1",
                             Response = "ST-STwentyThree",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2968,7 +3229,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "1cabb7b7-d513-4e42-ac1f-63f692656367",
                             Category = "project record v1",
                             Response = "EOS - CS (ETHICAL ONCOLOGY SCIENCE - CLINICAL STUDIES) S.R.L.",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2976,9 +3238,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "1cabb7b7-d513-4e42-ac1f-63f692656367",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "England",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0018"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2987,7 +3249,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "5ec03122-6bcd-4acd-b1dd-4e517c327de8",
                             Category = "project record v1",
                             Response = "Capt. Samuel T. Brinkley",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2996,7 +3259,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "5ec03122-6bcd-4acd-b1dd-4e517c327de8",
                             Category = "project record v1",
                             Response = "Project-study24",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3005,7 +3269,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "5ec03122-6bcd-4acd-b1dd-4e517c327de8",
                             Category = "project record v1",
                             Response = "Eisai Co.,Ltd.",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3013,9 +3278,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "5ec03122-6bcd-4acd-b1dd-4e517c327de8",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "England",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0018"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3024,7 +3289,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "0c7c0fc1-0576-434f-b669-f5cb3bc97abd",
                             Category = "project record v1",
                             Response = "Hon. Kavita Bose",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3033,7 +3299,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "0c7c0fc1-0576-434f-b669-f5cb3bc97abd",
                             Category = "project record v1",
                             Response = "25 - Project",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3042,7 +3309,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "0c7c0fc1-0576-434f-b669-f5cb3bc97abd",
                             Category = "project record v1",
                             Response = "Bill & Melinda Gates Foundation",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3050,9 +3318,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "0c7c0fc1-0576-434f-b669-f5cb3bc97abd",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "England",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0018"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3061,7 +3329,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "581806f0-efb0-4630-8894-aa45b08dc233",
                             Category = "project record v1",
                             Response = "Chief Bhekizizwe Madlala",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3070,7 +3339,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "581806f0-efb0-4630-8894-aa45b08dc233",
                             Category = "project record v1",
                             Response = "26 -Study",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3079,7 +3349,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "581806f0-efb0-4630-8894-aa45b08dc233",
                             Category = "project record v1",
                             Response = "AKL RESEARCH & DEVELOPMENT LIMITED",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3087,9 +3358,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "581806f0-efb0-4630-8894-aa45b08dc233",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "Northern Ireland",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0019"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3098,7 +3369,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "15a18460-5fcd-42f3-adbf-3f6517831dd5",
                             Category = "project record v1",
                             Response = "Rev. Lydia Grace O'Connell",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3107,7 +3379,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "15a18460-5fcd-42f3-adbf-3f6517831dd5",
                             Category = "project record v1",
                             Response = "27 -Short",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3116,7 +3389,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "15a18460-5fcd-42f3-adbf-3f6517831dd5",
                             Category = "project record v1",
                             Response = "Y-mAbs Therapeutics A/S",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3124,9 +3398,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "15a18460-5fcd-42f3-adbf-3f6517831dd5",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "Northern Ireland",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0019"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3135,7 +3409,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "5b74e181-adf9-49ef-9b08-e9c5fe5bb13e",
                             Category = "project record v1",
                             Response = "Arjun Jet Malhotra",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3144,7 +3419,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "5b74e181-adf9-49ef-9b08-e9c5fe5bb13e",
                             Category = "project record v1",
                             Response = "Project 28",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3153,7 +3429,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "5b74e181-adf9-49ef-9b08-e9c5fe5bb13e",
                             Category = "project record v1",
                             Response = "DIABETES CARE TRUST (Association of British Clinical Diabetologists ABCD)",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3161,9 +3438,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "5b74e181-adf9-49ef-9b08-e9c5fe5bb13e",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "Scotland",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0020"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3172,7 +3449,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "ff7fd51d-ee44-4269-99ff-a965f87d1269",
                             Category = "project record v1",
                             Response = "Nova Cairo Pierce",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3181,7 +3459,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "ff7fd51d-ee44-4269-99ff-a965f87d1269",
                             Category = "project record v1",
                             Response = "Project 29",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3190,7 +3469,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "ff7fd51d-ee44-4269-99ff-a965f87d1269",
                             Category = "project record v1",
                             Response = "EOS - CS (ETHICAL ONCOLOGY SCIENCE - CLINICAL STUDIES) S.R.L.",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3198,9 +3478,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "ff7fd51d-ee44-4269-99ff-a965f87d1269",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "England",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0018"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3209,7 +3489,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "bec28d3f-a7ee-48b5-bf70-fb7056ca017a",
                             Category = "project record v1",
                             Response = "Ayo Folorunsho",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3218,7 +3499,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "bec28d3f-a7ee-48b5-bf70-fb7056ca017a",
                             Category = "project record v1",
                             Response = "Project 30",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3227,7 +3509,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "bec28d3f-a7ee-48b5-bf70-fb7056ca017a",
                             Category = "project record v1",
                             Response = "e-Therapeutics",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3235,9 +3518,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "bec28d3f-a7ee-48b5-bf70-fb7056ca017a",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "England",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0018"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3246,7 +3529,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "ce252b0d-2428-40a9-9033-d60361f2b741",
                             Category = "project record v1",
                             Response = "Dr. Fernández-Hernández",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3255,7 +3539,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "ce252b0d-2428-40a9-9033-d60361f2b741",
                             Category = "project record v1",
                             Response = "Project 31",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3264,7 +3549,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "ce252b0d-2428-40a9-9033-d60361f2b741",
                             Category = "project record v1",
                             Response = "King's Fund",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3272,9 +3558,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "ce252b0d-2428-40a9-9033-d60361f2b741",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "England",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0018"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3283,7 +3569,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "b591f0c5-860d-42af-9ec9-6ac2bd7757b9",
                             Category = "project record v1",
                             Response = "Bashir El-Karim",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3292,7 +3579,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "b591f0c5-860d-42af-9ec9-6ac2bd7757b9",
                             Category = "project record v1",
                             Response = "Study 32",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3301,7 +3589,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "b591f0c5-860d-42af-9ec9-6ac2bd7757b9",
                             Category = "project record v1",
                             Response = "EBR SYSTEMS, INC.",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3309,9 +3598,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "b591f0c5-860d-42af-9ec9-6ac2bd7757b9",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "Northern Ireland",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0019"
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3320,7 +3609,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "d1eb154b-9921-477c-8f5f-2592ea44e245",
                             Category = "project record v1",
                             Response = "Dr. Isabella Fernández-Hernández",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3329,7 +3619,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "d1eb154b-9921-477c-8f5f-2592ea44e245",
                             Category = "project record v1",
                             Response = "Short 33",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3338,7 +3629,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "d1eb154b-9921-477c-8f5f-2592ea44e245",
                             Category = "project record v1",
                             Response = "F. Hoffmann-La Roche Ltd",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -3346,303 +3638,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             QuestionId = "IQA0005",
                             ProjectRecordId = "d1eb154b-9921-477c-8f5f-2592ea44e245",
                             Category = "project record v1",
-                            OptionType = "Single",
+                            Response = "England",
                             Section = "IQT0004",
-                            SelectedOptions = "OPT0018"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0311",
-                            ProjectRecordId = "b8b4d3d6-a423-4de6-b76d-682f49be9607",
-                            Category = "project record v1",
-                            Response = "Title one two three four five six seven eight nine ten one two three four five six seven eight nine ten one two three four five six seven eight nine ten one two three four five six seven eight nine ten one two three four five six seven eight n END250 First-name one two three four five six seven eight nine ten one two three four five six seven eight nine ten one two three four five six seven eight nine ten one two three four five six seven eight nine ten one two three four five six seven ei END250 Last-name one two three four five six seven eight nine ten one two three four five six seven eight nine ten one two three four five six seven eight nine ten one two three four five six seven eight nine ten one two three four five six seven eig END250",
-                            Section = "IQT0003"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0002",
-                            ProjectRecordId = "b8b4d3d6-a423-4de6-b76d-682f49be9607",
-                            Category = "project record v1",
-                            Response = "1234 ! ” £ $ % ^ & * ( ) _ + [ ]  one two three four five six seven eight nine ten1 one two t END100",
-                            Section = "IQT0002"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0312",
-                            ProjectRecordId = "b8b4d3d6-a423-4de6-b76d-682f49be9607",
-                            Category = "project record v1",
-                            Response = "Fundacion FLS de Lucha contra el sida, las enfermedades infecciosas y la promocion y la ciencia",
-                            Section = "IQT0003"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0005",
-                            ProjectRecordId = "b8b4d3d6-a423-4de6-b76d-682f49be9607",
-                            Category = "project record v1",
-                            OptionType = "Single",
-                            Section = "IQT0004",
-                            SelectedOptions = "OPT0019"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0311",
-                            ProjectRecordId = "bc02d18d-5bdf-4711-bfb2-50dcaa097573",
-                            Category = "project record v1",
-                            Response = "Hiroshi Tanaka",
-                            Section = "IQT0003"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0002",
-                            ProjectRecordId = "bc02d18d-5bdf-4711-bfb2-50dcaa097573",
-                            Category = "project record v1",
-                            Response = "CodeQuest",
-                            Section = "IQT0002"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0312",
-                            ProjectRecordId = "bc02d18d-5bdf-4711-bfb2-50dcaa097573",
-                            Category = "project record v1",
-                            Response = "4D Pharma PLC",
-                            Section = "IQT0003"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0005",
-                            ProjectRecordId = "bc02d18d-5bdf-4711-bfb2-50dcaa097573",
-                            Category = "project record v1",
-                            OptionType = "Single",
-                            Section = "IQT0004",
-                            SelectedOptions = "OPT0020"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0311",
-                            ProjectRecordId = "63f67087-e217-4439-995b-33c2109f6402",
-                            Category = "project record v1",
-                            Response = "",
-                            Section = "IQT0003"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0002",
-                            ProjectRecordId = "63f67087-e217-4439-995b-33c2109f6402",
-                            Category = "project record v1",
-                            Response = "EcoLoop",
-                            Section = "IQT0002"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0312",
-                            ProjectRecordId = "63f67087-e217-4439-995b-33c2109f6402",
-                            Category = "project record v1",
-                            Response = "Innovent Biologics (Suzhou) Co., Ltd.",
-                            Section = "IQT0003"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0005",
-                            ProjectRecordId = "63f67087-e217-4439-995b-33c2109f6402",
-                            Category = "project record v1",
-                            OptionType = "Single",
-                            Section = "IQT0004",
-                            SelectedOptions = "OPT0019"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0311",
-                            ProjectRecordId = "44674431-010a-4536-b896-96ab15946a17",
-                            Category = "project record v1",
-                            Response = "Seraphina Leigh Montgomery",
-                            Section = "IQT0003"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0002",
-                            ProjectRecordId = "44674431-010a-4536-b896-96ab15946a17",
-                            Category = "project record v1",
-                            Response = "ZeroWaste Lab",
-                            Section = "IQT0002"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0312",
-                            ProjectRecordId = "44674431-010a-4536-b896-96ab15946a17",
-                            Category = "project record v1",
-                            Response = "Innovent Biologics (Suzhou) Co., Ltd.",
-                            Section = "IQT0003"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0005",
-                            ProjectRecordId = "44674431-010a-4536-b896-96ab15946a17",
-                            Category = "project record v1",
-                            OptionType = "Single",
-                            Section = "IQT0004",
-                            SelectedOptions = "OPT0020"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0311",
-                            ProjectRecordId = "9d813504-b1cf-4d1f-b11e-d671e18ff4d2",
-                            Category = "project record v1",
-                            Response = "Maximilian Henri Dupont",
-                            Section = "IQT0003"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0002",
-                            ProjectRecordId = "9d813504-b1cf-4d1f-b11e-d671e18ff4d2",
-                            Category = "project record v1",
-                            Response = "Greener Cities Initiative",
-                            Section = "IQT0002"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0312",
-                            ProjectRecordId = "9d813504-b1cf-4d1f-b11e-d671e18ff4d2",
-                            Category = "project record v1",
-                            Response = "King's Fund",
-                            Section = "IQT0003"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0005",
-                            ProjectRecordId = "9d813504-b1cf-4d1f-b11e-d671e18ff4d2",
-                            Category = "project record v1",
-                            Section = "IQT0004"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0311",
-                            ProjectRecordId = "8167f4a5-4f5e-4c11-be8e-1d821c290bab",
-                            Category = "project record v1",
-                            Response = "Isabella Noelle Carrington",
-                            Section = "IQT0003"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0002",
-                            ProjectRecordId = "8167f4a5-4f5e-4c11-be8e-1d821c290bab",
-                            Category = "project record v1",
-                            Response = "Carbon Clock: Climate Awareness Platform",
-                            Section = "IQT0002"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0312",
-                            ProjectRecordId = "8167f4a5-4f5e-4c11-be8e-1d821c290bab",
-                            Category = "project record v1",
-                            Response = "L. MOLTENI & C. DEI FRATELLI ALITTI - SOCIETA' DI ESERCIZIO - S.P.A",
-                            Section = "IQT0003"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0005",
-                            ProjectRecordId = "8167f4a5-4f5e-4c11-be8e-1d821c290bab",
-                            Category = "project record v1",
-                            OptionType = "Single",
-                            Section = "IQT0004",
-                            SelectedOptions = "OPT0021"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0311",
-                            ProjectRecordId = "52f3526e-bfa8-4f72-80cb-53be3c7fea58",
-                            Category = "project record v1",
-                            Response = "Nathaniel Orion Fitzpatrick",
-                            Section = "IQT0003"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0002",
-                            ProjectRecordId = "52f3526e-bfa8-4f72-80cb-53be3c7fea58",
-                            Category = "project record v1",
-                            Response = "",
-                            Section = "IQT0002"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0312",
-                            ProjectRecordId = "52f3526e-bfa8-4f72-80cb-53be3c7fea58",
-                            Category = "project record v1",
-                            Response = "L'Institut d'Investigacions Biomediques August Pi i Sunyer (IDIBAPS) (Spain)",
-                            Section = "IQT0003"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0005",
-                            ProjectRecordId = "52f3526e-bfa8-4f72-80cb-53be3c7fea58",
-                            Category = "project record v1",
-                            OptionType = "Single",
-                            Section = "IQT0004",
-                            SelectedOptions = "OPT0019"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0311",
-                            ProjectRecordId = "3f59fba9-c1b0-447a-9b23-99c76a4ede41",
-                            Category = "project record v1",
-                            Response = "Celestine Ramona Rivers",
-                            Section = "IQT0003"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0002",
-                            ProjectRecordId = "3f59fba9-c1b0-447a-9b23-99c76a4ede41",
-                            Category = "project record v1",
-                            Response = "Project ReLeaf: Urban Forestry",
-                            Section = "IQT0002"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0312",
-                            ProjectRecordId = "3f59fba9-c1b0-447a-9b23-99c76a4ede41",
-                            Category = "project record v1",
-                            Response = "",
-                            Section = "IQT0003"
-                        },
-                        new
-                        {
-                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
-                            QuestionId = "IQA0005",
-                            ProjectRecordId = "3f59fba9-c1b0-447a-9b23-99c76a4ede41",
-                            Category = "project record v1",
-                            OptionType = "Single",
-                            Section = "IQT0004",
-                            SelectedOptions = "OPT0020"
+                            VersionId = "1.0.0"
                         });
                 });
 
@@ -3748,6 +3746,88 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Navigation("EventType");
                 });
 
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationDocument", b =>
+                {
+                    b.HasOne("Rsp.IrasService.Domain.Entities.DocumentType", "DocumentType")
+                        .WithMany()
+                        .HasForeignKey("DocumentTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectModificationChange", "ProjectModificationChange")
+                        .WithMany()
+                        .HasForeignKey("ProjectModificationChangeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectPersonnel", "ProjectPersonnel")
+                        .WithMany()
+                        .HasForeignKey("ProjectPersonnelId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectRecord", "ProjectRecord")
+                        .WithMany()
+                        .HasForeignKey("ProjectRecordId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("DocumentType");
+
+                    b.Navigation("ProjectModificationChange");
+
+                    b.Navigation("ProjectPersonnel");
+
+                    b.Navigation("ProjectRecord");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationParticipatingOrganisation", b =>
+                {
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectModificationChange", "ProjectModificationChange")
+                        .WithMany()
+                        .HasForeignKey("ProjectModificationChangeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectPersonnel", "ProjectPersonnel")
+                        .WithMany()
+                        .HasForeignKey("ProjectPersonnelId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectRecord", "ProjectRecord")
+                        .WithMany()
+                        .HasForeignKey("ProjectRecordId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("ProjectModificationChange");
+
+                    b.Navigation("ProjectPersonnel");
+
+                    b.Navigation("ProjectRecord");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationParticipatingOrganisationAnswer", b =>
+                {
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ModificationParticipatingOrganisation", "ModificationParticipatingOrganisation")
+                        .WithMany()
+                        .HasForeignKey("ModificationParticipatingOrganisationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ModificationParticipatingOrganisation");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationSpecificAreaOfChange", b =>
+                {
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ModificationAreaOfChange", null)
+                        .WithMany("ModificationSpecificAreaOfChanges")
+                        .HasForeignKey("ModificationAreaOfChangeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModification", b =>
                 {
                     b.HasOne("Rsp.IrasService.Domain.Entities.ProjectRecord", null)
@@ -3839,6 +3919,11 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationAreaOfChange", b =>
+                {
+                    b.Navigation("ModificationSpecificAreaOfChanges");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModification", b =>
