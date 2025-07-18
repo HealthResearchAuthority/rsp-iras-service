@@ -16,6 +16,11 @@ public class ProjectModificationAnswer
     public string QuestionId { get; set; } = null!;
 
     /// <summary>
+    /// Gets or sets the version Id for this question.
+    /// </summary>
+    public string VersionId { get; set; } = null!;
+
+    /// <summary>
     /// Gets or sets the identifier of the project personnel related to this answer.
     /// </summary>
     public string ProjectPersonnelId { get; set; } = null!;
