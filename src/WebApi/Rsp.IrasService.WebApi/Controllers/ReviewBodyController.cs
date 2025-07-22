@@ -19,10 +19,12 @@ public class ReviewBodyController(IMediator mediator, IReviewBodyAuditTrailServi
     [Produces<AllReviewBodiesResponse>]
     public async Task<AllReviewBodiesResponse> GetAllReviewBodies(
         [FromQuery] int pageNumber,
-        [FromQuery] int pageSize,
+        [FromQuery] int pageSize, 
+        [FromQuery] string sortField,
+        [FromQuery] string sortDirection,
         [FromBody] ReviewBodySearchRequest searchQuery)
     {
-        var query = new GetReviewBodiesQuery(pageNumber, pageSize, searchQuery);
+        var query = new GetReviewBodiesQuery(pageNumber, pageSize, sortField, sortDirection, searchQuery);
         return await mediator.Send(query);
     }
 

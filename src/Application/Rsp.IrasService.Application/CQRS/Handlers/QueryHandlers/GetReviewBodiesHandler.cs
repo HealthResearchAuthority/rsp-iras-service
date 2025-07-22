@@ -11,6 +11,6 @@ public class GetReviewBodiesHandler(IReviewBodyService reviewBodyService)
     public async Task<AllReviewBodiesResponse> Handle(GetReviewBodiesQuery request,
         CancellationToken cancellationToken)
     {
-        return await reviewBodyService.GetReviewBodies(request.PageNumber, request.PageSize, request.SearchQuery);
+        return await reviewBodyService.GetReviewBodies(request.PageNumber, request.PageSize, request.SortField, request.SortDirection, request.SearchQuery);
     }
 }

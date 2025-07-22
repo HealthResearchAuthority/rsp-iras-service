@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Application.Contracts.Repositories;
+using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Domain.Entities;
 using Rsp.IrasService.Infrastructure;
 using Rsp.IrasService.Infrastructure.Repositories;
@@ -35,7 +36,7 @@ public class GetReviewBodiesTests : TestServiceBase<ReviewBodyService>
         await TestData.SeedData(_context, generator, records);
 
         // Act
-        var result = await Sut.GetReviewBodies(1, 100, null);
+        var result = await Sut.GetReviewBodies(1, 100, nameof(ReviewBodyDto.RegulatoryBodyName), "asc", null);
 
         // Assert
         result.ShouldNotBeNull();

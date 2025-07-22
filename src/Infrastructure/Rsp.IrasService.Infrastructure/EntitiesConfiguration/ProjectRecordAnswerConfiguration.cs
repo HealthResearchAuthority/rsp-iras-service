@@ -17,6 +17,10 @@ public class ProjectRecordAnswerConfiguration : IEntityTypeConfiguration<Project
             .HasForeignKey(r => r.ProjectPersonnelId)
             .OnDelete(DeleteBehavior.NoAction);
 
+        builder
+            .Property(e => e.VersionId)
+            .HasDefaultValue("published version");
+
         builder.HasData(JsonHelper.Parse<ProjectRecordAnswer>("ProjectRecordAnswers.json"));
     }
 }

@@ -22,6 +22,21 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.DocumentType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DocumentTypes");
+                });
+
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.EmailTemplate", b =>
                 {
                     b.Property<int>("Id")
@@ -81,6 +96,221 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("EventTypes");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationAreaOfChange", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ModificationAreaOfChanges");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Participating organisations"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Project design"
+                        });
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationDocument", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("DocumentTypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("FileSize")
+                        .HasColumnType("int");
+
+                    b.Property<bool?>("HasPreviousVersion")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("ProjectModificationChangeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ProjectPersonnelId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProjectRecordId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("SponsorDocumentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SponsorDocumentVersion")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DocumentTypeId");
+
+                    b.HasIndex("ProjectModificationChangeId");
+
+                    b.HasIndex("ProjectPersonnelId");
+
+                    b.HasIndex("ProjectRecordId");
+
+                    b.ToTable("ModificationDocuments");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationParticipatingOrganisation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("OrganisationId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ProjectModificationChangeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ProjectPersonnelId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProjectRecordId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectModificationChangeId");
+
+                    b.HasIndex("ProjectPersonnelId");
+
+                    b.HasIndex("ProjectRecordId");
+
+                    b.ToTable("ModificationParticipatingOrganisations");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationParticipatingOrganisationAnswer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ModificationParticipatingOrganisationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("OptionType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("QuestionId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Response")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Section")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SelectedOptions")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VersionId")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("published version");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ModificationParticipatingOrganisationId");
+
+                    b.ToTable("ModificationParticipatingOrganisationAnswers");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationSpecificAreaOfChange", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("JourneyType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ModificationAreaOfChangeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ModificationAreaOfChangeId");
+
+                    b.ToTable("ModificationSpecificAreaOfChanges");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            JourneyType = "Participating organisation",
+                            ModificationAreaOfChangeId = 1,
+                            Name = "Early closure or withdrawal of research sites"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            JourneyType = "Participating organisation",
+                            ModificationAreaOfChangeId = 1,
+                            Name = "PICs - Addition of Participant Identification Centres undertaking the same activities as existing PICs"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            JourneyType = "Participating organisation",
+                            ModificationAreaOfChangeId = 1,
+                            Name = "PICs - Early closure or withdrawal of Participant Identification Centres"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            JourneyType = "Planned end date",
+                            ModificationAreaOfChangeId = 2,
+                            Name = "Change to planned end date"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            JourneyType = "Participating organisation",
+                            ModificationAreaOfChangeId = 1,
+                            Name = "Addition of sites undertaking the same activities as existing sites"
+                        });
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModification", b =>
@@ -616,6 +846,126 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             Status = "OPEN",
                             UpdatedBy = "Test Personnel",
                             UpdatedDate = new DateTime(2025, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("abc0a888-a6e1-426b-9404-7bd398c6f4c4"),
+                            CreatedBy = "Test Personnel",
+                            CreatedDate = new DateTime(2024, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModificationIdentifier = "0001/1",
+                            ModificationNumber = 1,
+                            ProjectRecordId = "b8b4d3d6-a423-4de6-b76d-682f49be9607",
+                            Status = "OPEN",
+                            UpdatedBy = "Test Personnel",
+                            UpdatedDate = new DateTime(2024, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("d2d47942-fcb9-4274-a8ee-44b266a63816"),
+                            CreatedBy = "Test Personnel",
+                            CreatedDate = new DateTime(2024, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModificationIdentifier = "0001/2",
+                            ModificationNumber = 2,
+                            ProjectRecordId = "b8b4d3d6-a423-4de6-b76d-682f49be9607",
+                            Status = "OPEN",
+                            UpdatedBy = "Test Personnel",
+                            UpdatedDate = new DateTime(2024, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("1cb61841-8d38-42d1-93e6-46a165cf05de"),
+                            CreatedBy = "Test Personnel",
+                            CreatedDate = new DateTime(2024, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModificationIdentifier = "0001/3",
+                            ModificationNumber = 3,
+                            ProjectRecordId = "b8b4d3d6-a423-4de6-b76d-682f49be9607",
+                            Status = "OPEN",
+                            UpdatedBy = "Test Personnel",
+                            UpdatedDate = new DateTime(2024, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("60d5a5d1-ba3d-472d-96ed-e167be034dc2"),
+                            CreatedBy = "Test Personnel",
+                            CreatedDate = new DateTime(2014, 6, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModificationIdentifier = "9999999/99",
+                            ModificationNumber = 99,
+                            ProjectRecordId = "bc02d18d-5bdf-4711-bfb2-50dcaa097573",
+                            Status = "OPEN",
+                            UpdatedBy = "Test Personnel",
+                            UpdatedDate = new DateTime(2014, 6, 17, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("8bc41eb5-e329-45db-826e-d5ded59d6470"),
+                            CreatedBy = "Test Personnel",
+                            CreatedDate = new DateTime(2001, 6, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModificationIdentifier = "83453/1",
+                            ModificationNumber = 1,
+                            ProjectRecordId = "63f67087-e217-4439-995b-33c2109f6402",
+                            Status = "OPEN",
+                            UpdatedBy = "Test Personnel",
+                            UpdatedDate = new DateTime(2001, 6, 25, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("e05f73a0-4d19-43a0-aab5-2b0e9bc91cf0"),
+                            CreatedBy = "Test Personnel",
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModificationIdentifier = "4523/1",
+                            ModificationNumber = 1,
+                            ProjectRecordId = "44674431-010a-4536-b896-96ab15946a17",
+                            Status = "OPEN",
+                            UpdatedBy = "Test Personnel",
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("2bb56b29-ac7d-4006-bc7d-bff80a7e957d"),
+                            CreatedBy = "Test Personnel",
+                            CreatedDate = new DateTime(2005, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModificationIdentifier = "4237/1",
+                            ModificationNumber = 1,
+                            ProjectRecordId = "9d813504-b1cf-4d1f-b11e-d671e18ff4d2",
+                            Status = "OPEN",
+                            UpdatedBy = "Test Personnel",
+                            UpdatedDate = new DateTime(2005, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("7fa41b2a-f9c9-45f3-9cb3-cb7c21fcca94"),
+                            CreatedBy = "Test Personnel",
+                            CreatedDate = new DateTime(2006, 4, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModificationIdentifier = "3724/1",
+                            ModificationNumber = 1,
+                            ProjectRecordId = "8167f4a5-4f5e-4c11-be8e-1d821c290bab",
+                            Status = "OPEN",
+                            UpdatedBy = "Test Personnel",
+                            UpdatedDate = new DateTime(2006, 4, 8, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("e2bfe66a-c9d4-487a-a824-5536c1396d3a"),
+                            CreatedBy = "Test Personnel",
+                            CreatedDate = new DateTime(2007, 7, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModificationIdentifier = "27827/1",
+                            ModificationNumber = 1,
+                            ProjectRecordId = "52f3526e-bfa8-4f72-80cb-53be3c7fea58",
+                            Status = "OPEN",
+                            UpdatedBy = "Test Personnel",
+                            UpdatedDate = new DateTime(2007, 7, 19, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("748ac01f-2720-4522-a5e9-55360ef3dfa8"),
+                            CreatedBy = "Test Personnel",
+                            CreatedDate = new DateTime(2009, 1, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModificationIdentifier = "3737/1",
+                            ModificationNumber = 1,
+                            ProjectRecordId = "3f59fba9-c1b0-447a-9b23-99c76a4ede41",
+                            Status = "OPEN",
+                            UpdatedBy = "Test Personnel",
+                            UpdatedDate = new DateTime(2009, 1, 26, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -650,6 +1000,12 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.Property<string>("SelectedOptions")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VersionId")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("published version");
 
                     b.HasKey("ProjectModificationChangeId", "QuestionId", "ProjectPersonnelId");
 
@@ -1193,6 +1549,126 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             Status = "OPEN",
                             UpdatedBy = "Test Personnel",
                             UpdatedDate = new DateTime(2025, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("4b557cae-9aa2-425c-b5f3-376a5572c8a0"),
+                            AreaOfChange = "OPT0318",
+                            CreatedBy = "Test Personnel",
+                            CreatedDate = new DateTime(2024, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProjectModificationId = new Guid("abc0a888-a6e1-426b-9404-7bd398c6f4c4"),
+                            SpecificAreaOfChange = "OPT0321",
+                            Status = "OPEN",
+                            UpdatedBy = "Test Personnel",
+                            UpdatedDate = new DateTime(2024, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("3840fbdc-3a97-4a57-a2b0-269f4272e3bb"),
+                            AreaOfChange = "OPT0318",
+                            CreatedBy = "Test Personnel",
+                            CreatedDate = new DateTime(2024, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProjectModificationId = new Guid("d2d47942-fcb9-4274-a8ee-44b266a63816"),
+                            SpecificAreaOfChange = "OPT0321",
+                            Status = "OPEN",
+                            UpdatedBy = "Test Personnel",
+                            UpdatedDate = new DateTime(2024, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("8bb85bc5-c708-4bd2-887e-159968bb2728"),
+                            AreaOfChange = "OPT0318",
+                            CreatedBy = "Test Personnel",
+                            CreatedDate = new DateTime(2024, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProjectModificationId = new Guid("1cb61841-8d38-42d1-93e6-46a165cf05de"),
+                            SpecificAreaOfChange = "OPT0321",
+                            Status = "OPEN",
+                            UpdatedBy = "Test Personnel",
+                            UpdatedDate = new DateTime(2024, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("fff62a1c-b3ad-4bd0-bd9f-ee83a43dbac5"),
+                            AreaOfChange = "OPT0318",
+                            CreatedBy = "Test Personnel",
+                            CreatedDate = new DateTime(2014, 6, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProjectModificationId = new Guid("60d5a5d1-ba3d-472d-96ed-e167be034dc2"),
+                            SpecificAreaOfChange = "OPT0319",
+                            Status = "OPEN",
+                            UpdatedBy = "Test Personnel",
+                            UpdatedDate = new DateTime(2014, 6, 17, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("2e8dac5f-5e1f-4b65-873b-9215b3c089e9"),
+                            AreaOfChange = "OPT0318",
+                            CreatedBy = "Test Personnel",
+                            CreatedDate = new DateTime(2001, 6, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProjectModificationId = new Guid("8bc41eb5-e329-45db-826e-d5ded59d6470"),
+                            SpecificAreaOfChange = "OPT0319",
+                            Status = "OPEN",
+                            UpdatedBy = "Test Personnel",
+                            UpdatedDate = new DateTime(2001, 6, 25, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("2f4f4d1e-51b6-48bf-876f-de447a68e041"),
+                            AreaOfChange = "OPT0318",
+                            CreatedBy = "Test Personnel",
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProjectModificationId = new Guid("e05f73a0-4d19-43a0-aab5-2b0e9bc91cf0"),
+                            SpecificAreaOfChange = "OPT0319",
+                            Status = "OPEN",
+                            UpdatedBy = "Test Personnel",
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("13c72f2e-20a7-4933-aed1-429959d42f88"),
+                            AreaOfChange = "OPT0318",
+                            CreatedBy = "Test Personnel",
+                            CreatedDate = new DateTime(2005, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProjectModificationId = new Guid("2bb56b29-ac7d-4006-bc7d-bff80a7e957d"),
+                            SpecificAreaOfChange = "OPT0319",
+                            Status = "OPEN",
+                            UpdatedBy = "Test Personnel",
+                            UpdatedDate = new DateTime(2005, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("bded1243-f03a-4007-9405-0779f8438ea4"),
+                            AreaOfChange = "OPT0318",
+                            CreatedBy = "Test Personnel",
+                            CreatedDate = new DateTime(2006, 4, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProjectModificationId = new Guid("7fa41b2a-f9c9-45f3-9cb3-cb7c21fcca94"),
+                            SpecificAreaOfChange = "OPT0319",
+                            Status = "OPEN",
+                            UpdatedBy = "Test Personnel",
+                            UpdatedDate = new DateTime(2006, 4, 8, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("ebcbeb2f-481b-4eef-b0ad-b2f6950431eb"),
+                            AreaOfChange = "OPT0318",
+                            CreatedBy = "Test Personnel",
+                            CreatedDate = new DateTime(2007, 7, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProjectModificationId = new Guid("e2bfe66a-c9d4-487a-a824-5536c1396d3a"),
+                            SpecificAreaOfChange = "OPT0319",
+                            Status = "OPEN",
+                            UpdatedBy = "Test Personnel",
+                            UpdatedDate = new DateTime(2007, 7, 19, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("ed843281-3aaf-4649-84ca-407201778cdf"),
+                            AreaOfChange = "OPT0318",
+                            CreatedBy = "Test Personnel",
+                            CreatedDate = new DateTime(2009, 1, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ProjectModificationId = new Guid("748ac01f-2720-4522-a5e9-55360ef3dfa8"),
+                            SpecificAreaOfChange = "OPT0319",
+                            Status = "OPEN",
+                            UpdatedBy = "Test Personnel",
+                            UpdatedDate = new DateTime(2009, 1, 26, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -1739,6 +2215,118 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             Title = "",
                             UpdatedBy = "Test Personnel",
                             UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = "b8b4d3d6-a423-4de6-b76d-682f49be9607",
+                            CreatedBy = "Test Personnel",
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "",
+                            IrasId = 1,
+                            IsActive = true,
+                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
+                            Status = "created",
+                            Title = "",
+                            UpdatedBy = "Test Personnel",
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = "bc02d18d-5bdf-4711-bfb2-50dcaa097573",
+                            CreatedBy = "Test Personnel",
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "",
+                            IrasId = 9999999,
+                            IsActive = true,
+                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
+                            Status = "created",
+                            Title = "",
+                            UpdatedBy = "Test Personnel",
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = "63f67087-e217-4439-995b-33c2109f6402",
+                            CreatedBy = "Test Personnel",
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "",
+                            IrasId = 83453,
+                            IsActive = true,
+                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
+                            Status = "created",
+                            Title = "",
+                            UpdatedBy = "Test Personnel",
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = "44674431-010a-4536-b896-96ab15946a17",
+                            CreatedBy = "Test Personnel",
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "",
+                            IrasId = 4523,
+                            IsActive = true,
+                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
+                            Status = "created",
+                            Title = "",
+                            UpdatedBy = "Test Personnel",
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = "9d813504-b1cf-4d1f-b11e-d671e18ff4d2",
+                            CreatedBy = "Test Personnel",
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "",
+                            IrasId = 4237,
+                            IsActive = true,
+                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
+                            Status = "created",
+                            Title = "",
+                            UpdatedBy = "Test Personnel",
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = "8167f4a5-4f5e-4c11-be8e-1d821c290bab",
+                            CreatedBy = "Test Personnel",
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "",
+                            IrasId = 3724,
+                            IsActive = true,
+                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
+                            Status = "created",
+                            Title = "",
+                            UpdatedBy = "Test Personnel",
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = "52f3526e-bfa8-4f72-80cb-53be3c7fea58",
+                            CreatedBy = "Test Personnel",
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "",
+                            IrasId = 27827,
+                            IsActive = true,
+                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
+                            Status = "created",
+                            Title = "",
+                            UpdatedBy = "Test Personnel",
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = "3f59fba9-c1b0-447a-9b23-99c76a4ede41",
+                            CreatedBy = "Test Personnel",
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "",
+                            IrasId = 3737,
+                            IsActive = true,
+                            ProjectPersonnelId = "369e5231-45ec-4f20-bbc2-4940959be518",
+                            Status = "created",
+                            Title = "",
+                            UpdatedBy = "Test Personnel",
+                            UpdatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -1770,6 +2358,12 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Property<string>("SelectedOptions")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("VersionId")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("published version");
+
                     b.HasKey("ProjectPersonnelId", "QuestionId", "ProjectRecordId");
 
                     b.HasIndex("ProjectRecordId");
@@ -1784,7 +2378,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "8621f884-27e7-4fa6-915b-dda058f899ab",
                             Category = "project record v1",
                             Response = "Barry White",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -1793,7 +2388,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "8621f884-27e7-4fa6-915b-dda058f899ab",
                             Category = "project record v1",
                             Response = "Project 01",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -1802,7 +2398,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "8621f884-27e7-4fa6-915b-dda058f899ab",
                             Category = "project record v1",
                             Response = "COLD GENESYS INC",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -1811,7 +2408,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "8621f884-27e7-4fa6-915b-dda058f899ab",
                             Category = "project record v1",
                             Response = "England",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -1820,7 +2418,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "cbad81e0-f16b-4751-9edb-f35bdb35f931",
                             Category = "project record v1",
                             Response = "Dr Richard Jones-Smith",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -1829,7 +2428,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "cbad81e0-f16b-4751-9edb-f35bdb35f931",
                             Category = "project record v1",
                             Response = "Study 02",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -1838,7 +2438,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "cbad81e0-f16b-4751-9edb-f35bdb35f931",
                             Category = "project record v1",
                             Response = "Nottingham Trent University",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -1847,7 +2448,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "cbad81e0-f16b-4751-9edb-f35bdb35f931",
                             Category = "project record v1",
                             Response = "Northern Ireland",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -1856,7 +2458,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "38b8f121-25c7-4b76-941b-1b5143e83db4",
                             Category = "project record v1",
                             Response = "Miss Becky O'neil",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -1865,7 +2468,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "38b8f121-25c7-4b76-941b-1b5143e83db4",
                             Category = "project record v1",
                             Response = "Short 03",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -1874,7 +2478,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "38b8f121-25c7-4b76-941b-1b5143e83db4",
                             Category = "project record v1",
                             Response = "Eisai Co.,Ltd.",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -1883,7 +2488,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "38b8f121-25c7-4b76-941b-1b5143e83db4",
                             Category = "project record v1",
                             Response = "Scotland",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -1892,7 +2498,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "b720dc5c-f5ed-4b74-8847-3008e7fb132e",
                             Category = "project record v1",
                             Response = "Jeanne d'Arc",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -1901,7 +2508,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "b720dc5c-f5ed-4b74-8847-3008e7fb132e",
                             Category = "project record v1",
                             Response = "Study title 04",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -1910,7 +2518,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "b720dc5c-f5ed-4b74-8847-3008e7fb132e",
                             Category = "project record v1",
                             Response = "ASHFORD AND ST PETER'S HOSPITALS NHS FOUNDATION TRUST",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -1919,7 +2528,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "b720dc5c-f5ed-4b74-8847-3008e7fb132e",
                             Category = "project record v1",
                             Response = "Wales",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -1928,7 +2538,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "0bdbe9f6-ad47-4047-96e8-6252183e62c9",
                             Category = "project record v1",
                             Response = "Dr Ólafur",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -1937,7 +2548,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "0bdbe9f6-ad47-4047-96e8-6252183e62c9",
                             Category = "project record v1",
                             Response = "Short study title 05",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -1946,7 +2558,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "0bdbe9f6-ad47-4047-96e8-6252183e62c9",
                             Category = "project record v1",
                             Response = "AB SCIEX UK LIMITED",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -1955,7 +2568,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "0bdbe9f6-ad47-4047-96e8-6252183e62c9",
                             Category = "project record v1",
                             Response = "England",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -1964,7 +2578,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "e1ebe9dc-c554-4214-baf8-ef5410ac5477",
                             Category = "project record v1",
                             Response = "Capt. María-Jose",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -1973,7 +2588,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "e1ebe9dc-c554-4214-baf8-ef5410ac5477",
                             Category = "project record v1",
                             Response = "Project title 06",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -1982,7 +2598,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "e1ebe9dc-c554-4214-baf8-ef5410ac5477",
                             Category = "project record v1",
                             Response = "Academic Medical Center at the University of Amsterdam (Netherlands)",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -1991,7 +2608,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "e1ebe9dc-c554-4214-baf8-ef5410ac5477",
                             Category = "project record v1",
                             Response = "England",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2000,7 +2618,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "4c565f6b-d87e-4bc3-b404-e70f15f07256",
                             Category = "project record v1",
                             Response = "Zoe Kim",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2009,7 +2628,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "4c565f6b-d87e-4bc3-b404-e70f15f07256",
                             Category = "project record v1",
                             Response = "7-ABCD1234!” £$%^&*()_+[]{ };:@‘~#<>,.? / ¬λγθν€ £¥©® ™±≠ ≤≥÷×∞µ×÷≥∩ ∫≈≠≡ ≤≥⌂⌐⌠⌡│┌┐ ",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2018,7 +2638,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "4c565f6b-d87e-4bc3-b404-e70f15f07256",
                             Category = "project record v1",
                             Response = "ACACIA PHARMA LIMITED",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2027,7 +2648,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "4c565f6b-d87e-4bc3-b404-e70f15f07256",
                             Category = "project record v1",
                             Response = "England",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2036,7 +2658,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "e71883ef-f548-43ae-94bd-c83b11e6457b",
                             Category = "project record v1",
                             Response = "Tom Reed",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2045,7 +2668,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "e71883ef-f548-43ae-94bd-c83b11e6457b",
                             Category = "project record v1",
                             Response = "Eight └┘□▪▫ ◊○◌● ◦ⱠⱡⱢ ⱣⱤ ™ ©® ° ± ≤ ≥ ÷ ≠ ≡ ≈ √ σ ν ο ι τ χ α ρ φ π λ ε η Η ϑ μ θ δ",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2054,7 +2678,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "e71883ef-f548-43ae-94bd-c83b11e6457b",
                             Category = "project record v1",
                             Response = "AB SCIEX UK LIMITED",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2063,7 +2688,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "e71883ef-f548-43ae-94bd-c83b11e6457b",
                             Category = "project record v1",
                             Response = "Northern Ireland",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2072,7 +2698,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "f047d051-1498-446f-bfb5-462fb5522b68",
                             Category = "project record v1",
                             Response = "Mei Zhang",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2081,7 +2708,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "f047d051-1498-446f-bfb5-462fb5522b68",
                             Category = "project record v1",
                             Response = "9-one two three four five six seven eight nine ten ne two three four five six seven eight nine ten ",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2090,7 +2718,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "f047d051-1498-446f-bfb5-462fb5522b68",
                             Category = "project record v1",
                             Response = "Conatus Pharmaceuticals Inc.",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2099,7 +2728,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "f047d051-1498-446f-bfb5-462fb5522b68",
                             Category = "project record v1",
                             Response = "Northern Ireland",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2108,7 +2738,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "5ea1d104-368b-4a72-be78-aefcc1325d87",
                             Category = "project record v1",
                             Response = "Commander Maximilian Thorne-Winchester III",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2117,7 +2748,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "5ea1d104-368b-4a72-be78-aefcc1325d87",
                             Category = "project record v1",
                             Response = "Study title 10",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2126,7 +2758,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "5ea1d104-368b-4a72-be78-aefcc1325d87",
                             Category = "project record v1",
                             Response = "AB SCIEX UK LIMITED",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2135,7 +2768,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "5ea1d104-368b-4a72-be78-aefcc1325d87",
                             Category = "project record v1",
                             Response = "Scotland",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2144,7 +2778,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "dfcbe913-dcc0-497a-859d-9c4309c22499",
                             Category = "project record v1",
                             Response = "Barry White",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2153,7 +2788,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "dfcbe913-dcc0-497a-859d-9c4309c22499",
                             Category = "project record v1",
                             Response = "Short study title 11",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2162,7 +2798,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "dfcbe913-dcc0-497a-859d-9c4309c22499",
                             Category = "project record v1",
                             Response = "EAST LONDON NHS FOUNDATION TRUST",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2171,7 +2808,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "dfcbe913-dcc0-497a-859d-9c4309c22499",
                             Category = "project record v1",
                             Response = "England",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2180,7 +2818,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "48f4cf52-45eb-4628-8d81-95a9a9ad961b",
                             Category = "project record v1",
                             Response = "Mx. River Skye",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2189,7 +2828,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "48f4cf52-45eb-4628-8d81-95a9a9ad961b",
                             Category = "project record v1",
                             Response = "Project title 12",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2198,7 +2838,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "48f4cf52-45eb-4628-8d81-95a9a9ad961b",
                             Category = "project record v1",
                             Response = "Innovent Biologics (Suzhou) Co., Ltd.",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2207,7 +2848,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "48f4cf52-45eb-4628-8d81-95a9a9ad961b",
                             Category = "project record v1",
                             Response = "England",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2216,7 +2858,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "78442e04-9ecd-46a7-9a60-fd45cc065d60",
                             Category = "project record v1",
                             Response = "Ing. Pavel Novák",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2225,7 +2868,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "78442e04-9ecd-46a7-9a60-fd45cc065d60",
                             Category = "project record v1",
                             Response = "Project 13",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2234,7 +2878,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "78442e04-9ecd-46a7-9a60-fd45cc065d60",
                             Category = "project record v1",
                             Response = "COLD GENESYS INC",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2243,7 +2888,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "78442e04-9ecd-46a7-9a60-fd45cc065d60",
                             Category = "project record v1",
                             Response = "England",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2252,7 +2898,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "b8f9aade-b6ce-4c89-a8da-d645c65504b3",
                             Category = "project record v1",
                             Response = "Chika Okoye-Adebayo",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2261,7 +2908,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "b8f9aade-b6ce-4c89-a8da-d645c65504b3",
                             Category = "project record v1",
                             Response = "Study 14",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2270,7 +2918,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "b8f9aade-b6ce-4c89-a8da-d645c65504b3",
                             Category = "project record v1",
                             Response = "MANCHESTER UNIVERSITY NHS FOUNDATION TRUST",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2279,7 +2928,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "b8f9aade-b6ce-4c89-a8da-d645c65504b3",
                             Category = "project record v1",
                             Response = "Northern Ireland",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2288,7 +2938,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "7b7deced-a6fd-4c56-91d5-3bec8d86513d",
                             Category = "project record v1",
                             Response = "Lady Seraphina Elisabetta von Albrecht",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2297,7 +2948,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "7b7deced-a6fd-4c56-91d5-3bec8d86513d",
                             Category = "project record v1",
                             Response = "Short 15",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2306,7 +2958,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "7b7deced-a6fd-4c56-91d5-3bec8d86513d",
                             Category = "project record v1",
                             Response = "Innovent Biologics (Suzhou) Co., Ltd.",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2315,7 +2968,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "7b7deced-a6fd-4c56-91d5-3bec8d86513d",
                             Category = "project record v1",
                             Response = "England",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2324,7 +2978,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "bc7a58bd-c84b-4319-8953-3271e6abdd8e",
                             Category = "project record v1",
                             Response = "Tilda Noëlle Gray",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2333,7 +2988,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "bc7a58bd-c84b-4319-8953-3271e6abdd8e",
                             Category = "project record v1",
                             Response = "Study title 16",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2342,7 +2998,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "bc7a58bd-c84b-4319-8953-3271e6abdd8e",
                             Category = "project record v1",
                             Response = "BARNET, ENFIELD AND HARINGEY MENTAL HEALTH NHS TRUST",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2351,7 +3008,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "bc7a58bd-c84b-4319-8953-3271e6abdd8e",
                             Category = "project record v1",
                             Response = "England",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2360,7 +3018,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "7bb298b0-5f66-4d96-a94d-1c6a1eec1fb6",
                             Category = "project record v1",
                             Response = "Mariana Constanza de la Cruz Valencia",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2369,7 +3028,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "7bb298b0-5f66-4d96-a94d-1c6a1eec1fb6",
                             Category = "project record v1",
                             Response = "Short study title 17",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2378,7 +3038,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "7bb298b0-5f66-4d96-a94d-1c6a1eec1fb6",
                             Category = "project record v1",
                             Response = "4D Pharma PLC",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2387,7 +3048,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "7bb298b0-5f66-4d96-a94d-1c6a1eec1fb6",
                             Category = "project record v1",
                             Response = "England",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2396,7 +3058,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "ffb6f01f-9614-4ced-84fa-ef8c0d8696e3",
                             Category = "project record v1",
                             Response = "Prof. Adebayo Olufemi Ajani",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2405,7 +3068,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "ffb6f01f-9614-4ced-84fa-ef8c0d8696e3",
                             Category = "project record v1",
                             Response = "Project title 18",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2414,7 +3078,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "ffb6f01f-9614-4ced-84fa-ef8c0d8696e3",
                             Category = "project record v1",
                             Response = "AB SCIEX UK LIMITED",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2423,7 +3088,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "ffb6f01f-9614-4ced-84fa-ef8c0d8696e3",
                             Category = "project record v1",
                             Response = "England",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2432,7 +3098,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "7f1743ff-2cde-41cb-bbdc-1ef393dbc746",
                             Category = "project record v1",
                             Response = "Sakura Ito",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2441,7 +3108,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "7f1743ff-2cde-41cb-bbdc-1ef393dbc746",
                             Category = "project record v1",
                             Response = "P19",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2450,7 +3118,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "7f1743ff-2cde-41cb-bbdc-1ef393dbc746",
                             Category = "project record v1",
                             Response = "Nottingham Trent University",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2459,7 +3128,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "7f1743ff-2cde-41cb-bbdc-1ef393dbc746",
                             Category = "project record v1",
                             Response = "England",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2468,7 +3138,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "2ec5b24e-0d9a-4745-b0fb-1e593d3123c2",
                             Category = "project record v1",
                             Response = "Dr. Isabella Fernández-Hernández",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2477,7 +3148,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "2ec5b24e-0d9a-4745-b0fb-1e593d3123c2",
                             Category = "project record v1",
                             Response = "PST20",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2486,7 +3158,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "2ec5b24e-0d9a-4745-b0fb-1e593d3123c2",
                             Category = "project record v1",
                             Response = "COLD GENESYS INC",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2495,7 +3168,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "2ec5b24e-0d9a-4745-b0fb-1e593d3123c2",
                             Category = "project record v1",
                             Response = "Northern Ireland",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2504,7 +3178,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "13a9fb24-7fd8-4a99-93ae-a850f2244255",
                             Category = "project record v1",
                             Response = "Luca Romano",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2513,7 +3188,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "13a9fb24-7fd8-4a99-93ae-a850f2244255",
                             Category = "project record v1",
                             Response = "SST21",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2522,7 +3198,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "13a9fb24-7fd8-4a99-93ae-a850f2244255",
                             Category = "project record v1",
                             Response = "L'Institut d'Investigacions Biomediques August Pi i Sunyer (IDIBAPS) (Spain)",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2531,7 +3208,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "13a9fb24-7fd8-4a99-93ae-a850f2244255",
                             Category = "project record v1",
                             Response = "Scotland",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2540,7 +3218,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "8ba9958f-79d0-4ad3-9a06-ff8ebceca508",
                             Category = "project record v1",
                             Response = "Prof. Adebayo Olufemi Ajani",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2549,7 +3228,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "8ba9958f-79d0-4ad3-9a06-ff8ebceca508",
                             Category = "project record v1",
                             Response = "S22",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2558,7 +3238,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "8ba9958f-79d0-4ad3-9a06-ff8ebceca508",
                             Category = "project record v1",
                             Response = "L. MOLTENI & C. DEI FRATELLI ALITTI - SOCIETA' DI ESERCIZIO - S.P.A",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2567,7 +3248,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "8ba9958f-79d0-4ad3-9a06-ff8ebceca508",
                             Category = "project record v1",
                             Response = "Wales",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2576,7 +3258,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "1cabb7b7-d513-4e42-ac1f-63f692656367",
                             Category = "project record v1",
                             Response = "Dame Eloise Rutherford",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2585,7 +3268,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "1cabb7b7-d513-4e42-ac1f-63f692656367",
                             Category = "project record v1",
                             Response = "ST-STwentyThree",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2594,7 +3278,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "1cabb7b7-d513-4e42-ac1f-63f692656367",
                             Category = "project record v1",
                             Response = "EOS - CS (ETHICAL ONCOLOGY SCIENCE - CLINICAL STUDIES) S.R.L.",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2603,7 +3288,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "1cabb7b7-d513-4e42-ac1f-63f692656367",
                             Category = "project record v1",
                             Response = "England",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2612,7 +3298,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "5ec03122-6bcd-4acd-b1dd-4e517c327de8",
                             Category = "project record v1",
                             Response = "Capt. Samuel T. Brinkley",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2621,7 +3308,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "5ec03122-6bcd-4acd-b1dd-4e517c327de8",
                             Category = "project record v1",
                             Response = "Project-study24",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2630,7 +3318,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "5ec03122-6bcd-4acd-b1dd-4e517c327de8",
                             Category = "project record v1",
                             Response = "Eisai Co.,Ltd.",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2639,7 +3328,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "5ec03122-6bcd-4acd-b1dd-4e517c327de8",
                             Category = "project record v1",
                             Response = "England",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2648,7 +3338,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "0c7c0fc1-0576-434f-b669-f5cb3bc97abd",
                             Category = "project record v1",
                             Response = "Hon. Kavita Bose",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2657,7 +3348,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "0c7c0fc1-0576-434f-b669-f5cb3bc97abd",
                             Category = "project record v1",
                             Response = "25 - Project",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2666,7 +3358,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "0c7c0fc1-0576-434f-b669-f5cb3bc97abd",
                             Category = "project record v1",
                             Response = "Bill & Melinda Gates Foundation",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2675,7 +3368,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "0c7c0fc1-0576-434f-b669-f5cb3bc97abd",
                             Category = "project record v1",
                             Response = "England",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2684,7 +3378,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "581806f0-efb0-4630-8894-aa45b08dc233",
                             Category = "project record v1",
                             Response = "Chief Bhekizizwe Madlala",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2693,7 +3388,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "581806f0-efb0-4630-8894-aa45b08dc233",
                             Category = "project record v1",
                             Response = "26 -Study",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2702,7 +3398,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "581806f0-efb0-4630-8894-aa45b08dc233",
                             Category = "project record v1",
                             Response = "AKL RESEARCH & DEVELOPMENT LIMITED",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2711,7 +3408,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "581806f0-efb0-4630-8894-aa45b08dc233",
                             Category = "project record v1",
                             Response = "Northern Ireland",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2720,7 +3418,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "15a18460-5fcd-42f3-adbf-3f6517831dd5",
                             Category = "project record v1",
                             Response = "Rev. Lydia Grace O'Connell",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2729,7 +3428,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "15a18460-5fcd-42f3-adbf-3f6517831dd5",
                             Category = "project record v1",
                             Response = "27 -Short",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2738,7 +3438,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "15a18460-5fcd-42f3-adbf-3f6517831dd5",
                             Category = "project record v1",
                             Response = "Y-mAbs Therapeutics A/S",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2747,7 +3448,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "15a18460-5fcd-42f3-adbf-3f6517831dd5",
                             Category = "project record v1",
                             Response = "Northern Ireland",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2756,7 +3458,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "5b74e181-adf9-49ef-9b08-e9c5fe5bb13e",
                             Category = "project record v1",
                             Response = "Arjun Jet Malhotra",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2765,7 +3468,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "5b74e181-adf9-49ef-9b08-e9c5fe5bb13e",
                             Category = "project record v1",
                             Response = "Project 28",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2774,7 +3478,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "5b74e181-adf9-49ef-9b08-e9c5fe5bb13e",
                             Category = "project record v1",
                             Response = "DIABETES CARE TRUST (Association of British Clinical Diabetologists ABCD)",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2783,7 +3488,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "5b74e181-adf9-49ef-9b08-e9c5fe5bb13e",
                             Category = "project record v1",
                             Response = "Scotland",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2792,7 +3498,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "ff7fd51d-ee44-4269-99ff-a965f87d1269",
                             Category = "project record v1",
                             Response = "Nova Cairo Pierce",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2801,7 +3508,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "ff7fd51d-ee44-4269-99ff-a965f87d1269",
                             Category = "project record v1",
                             Response = "Project 29",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2810,7 +3518,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "ff7fd51d-ee44-4269-99ff-a965f87d1269",
                             Category = "project record v1",
                             Response = "EOS - CS (ETHICAL ONCOLOGY SCIENCE - CLINICAL STUDIES) S.R.L.",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2819,7 +3528,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "ff7fd51d-ee44-4269-99ff-a965f87d1269",
                             Category = "project record v1",
                             Response = "England",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2828,7 +3538,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "bec28d3f-a7ee-48b5-bf70-fb7056ca017a",
                             Category = "project record v1",
                             Response = "Ayo Folorunsho",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2837,7 +3548,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "bec28d3f-a7ee-48b5-bf70-fb7056ca017a",
                             Category = "project record v1",
                             Response = "Project 30",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2846,7 +3558,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "bec28d3f-a7ee-48b5-bf70-fb7056ca017a",
                             Category = "project record v1",
                             Response = "e-Therapeutics",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2855,7 +3568,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "bec28d3f-a7ee-48b5-bf70-fb7056ca017a",
                             Category = "project record v1",
                             Response = "England",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2864,7 +3578,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "ce252b0d-2428-40a9-9033-d60361f2b741",
                             Category = "project record v1",
                             Response = "Dr. Fernández-Hernández",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2873,7 +3588,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "ce252b0d-2428-40a9-9033-d60361f2b741",
                             Category = "project record v1",
                             Response = "Project 31",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2882,7 +3598,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "ce252b0d-2428-40a9-9033-d60361f2b741",
                             Category = "project record v1",
                             Response = "King's Fund",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2891,7 +3608,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "ce252b0d-2428-40a9-9033-d60361f2b741",
                             Category = "project record v1",
                             Response = "England",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2900,7 +3618,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "b591f0c5-860d-42af-9ec9-6ac2bd7757b9",
                             Category = "project record v1",
                             Response = "Bashir El-Karim",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2909,7 +3628,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "b591f0c5-860d-42af-9ec9-6ac2bd7757b9",
                             Category = "project record v1",
                             Response = "Study 32",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2918,7 +3638,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "b591f0c5-860d-42af-9ec9-6ac2bd7757b9",
                             Category = "project record v1",
                             Response = "EBR SYSTEMS, INC.",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2927,7 +3648,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "b591f0c5-860d-42af-9ec9-6ac2bd7757b9",
                             Category = "project record v1",
                             Response = "Northern Ireland",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2936,7 +3658,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "d1eb154b-9921-477c-8f5f-2592ea44e245",
                             Category = "project record v1",
                             Response = "Dr. Isabella Fernández-Hernández",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2945,7 +3668,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "d1eb154b-9921-477c-8f5f-2592ea44e245",
                             Category = "project record v1",
                             Response = "Short 33",
-                            Section = "IQT0002"
+                            Section = "IQT0002",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2954,7 +3678,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "d1eb154b-9921-477c-8f5f-2592ea44e245",
                             Category = "project record v1",
                             Response = "F. Hoffmann-La Roche Ltd",
-                            Section = "IQT0003"
+                            Section = "IQT0003",
+                            VersionId = "1.0.0"
                         },
                         new
                         {
@@ -2963,7 +3688,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             ProjectRecordId = "d1eb154b-9921-477c-8f5f-2592ea44e245",
                             Category = "project record v1",
                             Response = "England",
-                            Section = "IQT0004"
+                            Section = "IQT0004",
+                            VersionId = "1.0.0"
                         });
                 });
 
@@ -3069,6 +3795,88 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Navigation("EventType");
                 });
 
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationDocument", b =>
+                {
+                    b.HasOne("Rsp.IrasService.Domain.Entities.DocumentType", "DocumentType")
+                        .WithMany()
+                        .HasForeignKey("DocumentTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectModificationChange", "ProjectModificationChange")
+                        .WithMany()
+                        .HasForeignKey("ProjectModificationChangeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectPersonnel", "ProjectPersonnel")
+                        .WithMany()
+                        .HasForeignKey("ProjectPersonnelId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectRecord", "ProjectRecord")
+                        .WithMany()
+                        .HasForeignKey("ProjectRecordId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("DocumentType");
+
+                    b.Navigation("ProjectModificationChange");
+
+                    b.Navigation("ProjectPersonnel");
+
+                    b.Navigation("ProjectRecord");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationParticipatingOrganisation", b =>
+                {
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectModificationChange", "ProjectModificationChange")
+                        .WithMany()
+                        .HasForeignKey("ProjectModificationChangeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectPersonnel", "ProjectPersonnel")
+                        .WithMany()
+                        .HasForeignKey("ProjectPersonnelId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectRecord", "ProjectRecord")
+                        .WithMany()
+                        .HasForeignKey("ProjectRecordId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("ProjectModificationChange");
+
+                    b.Navigation("ProjectPersonnel");
+
+                    b.Navigation("ProjectRecord");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationParticipatingOrganisationAnswer", b =>
+                {
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ModificationParticipatingOrganisation", "ModificationParticipatingOrganisation")
+                        .WithMany()
+                        .HasForeignKey("ModificationParticipatingOrganisationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ModificationParticipatingOrganisation");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationSpecificAreaOfChange", b =>
+                {
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ModificationAreaOfChange", null)
+                        .WithMany("ModificationSpecificAreaOfChanges")
+                        .HasForeignKey("ModificationAreaOfChangeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModification", b =>
                 {
                     b.HasOne("Rsp.IrasService.Domain.Entities.ProjectRecord", null)
@@ -3160,6 +3968,11 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationAreaOfChange", b =>
+                {
+                    b.Navigation("ModificationSpecificAreaOfChanges");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModification", b =>
