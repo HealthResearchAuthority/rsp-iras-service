@@ -28,6 +28,11 @@ public class ModificationDocument
     public Guid DocumentTypeId { get; set; }
 
     /// <summary>
+    /// Gets or sets the document storage path.
+    /// </summary>
+    public string? DocumentStoragePath { get; set; }
+
+    /// <summary>
     /// Gets or sets the name of the document.
     /// </summary>
     public string FileName { get; set; }
