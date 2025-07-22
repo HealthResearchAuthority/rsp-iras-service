@@ -33,22 +33,27 @@ public class ModificationDocumentDto
     public string FileName { get; set; } = null!;
 
     /// <summary>
+    /// Gets or sets the document storage path.
+    /// </summary>
+    public string? DocumentStoragePath { get; set; }
+
+    /// <summary>
     /// Gets or sets the document file size.
     /// </summary>
-    public int FileSize { get; set; }
+    public int? FileSize { get; set; }
 
     /// <summary>
     /// Gets or sets the document version.
     /// </summary>
-    public string SponsorDocumentVersion { get; set; }
+    public string? SponsorDocumentVersion { get; set; }
 
     /// <summary>
     /// Gets or sets if the document has previous version.
     /// </summary>
-    public bool HasPreviousVersion { get; set; }
+    public bool? HasPreviousVersion { get; set; }
 
     /// <summary>
     /// Gets or sets the sponsor document date.
     /// </summary>
-    public DateTime SponsorDocumentDate { get; set; }
+    public DateTime? SponsorDocumentDate { get; set; }
 }
