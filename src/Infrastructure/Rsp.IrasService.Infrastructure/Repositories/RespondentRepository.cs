@@ -234,6 +234,7 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
                 existingAnswer.ProjectPersonnelId = answer.ProjectPersonnelId;
                 existingAnswer.DocumentTypeId = answer.DocumentTypeId;
                 existingAnswer.FileName = answer.FileName;
+                existingAnswer.DocumentStoragePath = answer.DocumentStoragePath;
                 existingAnswer.FileSize = answer.FileSize;
                 existingAnswer.SponsorDocumentVersion = answer.SponsorDocumentVersion;
                 existingAnswer.HasPreviousVersion = answer.HasPreviousVersion;
