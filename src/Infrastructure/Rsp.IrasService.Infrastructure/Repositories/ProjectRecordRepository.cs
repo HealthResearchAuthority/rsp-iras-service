@@ -116,6 +116,10 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
                        .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.LeadNation)
                        .Select(a => a.SelectedOptions)
                        .FirstOrDefault() ?? string.Empty,
+                   ParticipatingNation = projectAnswers
+                       .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ParticipatingNation)
+                       .Select(a => a.SelectedOptions)
+                       .ToList() ?? [],
                    ShortProjectTitle = projectAnswers
                        .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ShortProjectTitle)
                        .Select(a => a.Response)
@@ -145,7 +149,7 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
                 (string.IsNullOrEmpty(searchQuery.SponsorOrganisation) || x.SponsorOrganisation.Contains(searchQuery.SponsorOrganisation, StringComparison.OrdinalIgnoreCase)) &&
                 (!searchQuery.FromDate.HasValue || x.CreatedAt >= searchQuery.FromDate.Value) &&
                 (!searchQuery.ToDate.HasValue || x.CreatedAt <= searchQuery.ToDate.Value) &&
-                (searchQuery.Country.Count == 0 || searchQuery.Country.Contains(x.LeadNation, StringComparer.OrdinalIgnoreCase)) &&
+                (searchQuery.LeadNation.Count == 0 || searchQuery.LeadNation.Contains(x.LeadNation, StringComparer.OrdinalIgnoreCase)) &&
                 (searchQuery.ModificationTypes.Count == 0 || searchQuery.ModificationTypes.Contains(x.ModificationType, StringComparer.OrdinalIgnoreCase)));
     }
 
