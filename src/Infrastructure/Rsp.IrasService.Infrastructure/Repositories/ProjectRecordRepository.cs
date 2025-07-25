@@ -116,6 +116,10 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
                        .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.LeadNation)
                        .Select(a => a.SelectedOptions)
                        .FirstOrDefault() ?? string.Empty,
+                   ParticipatingNation = projectAnswers
+                       .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ParticipatingNation)
+                       .Select(a => a.SelectedOptions)
+                       .FirstOrDefault() ?? string.Empty,
                    ShortProjectTitle = projectAnswers
                        .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ShortProjectTitle)
                        .Select(a => a.Response)
@@ -135,7 +139,24 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
             .AsEnumerable()
             .Select(mod =>
             {
-                mod.LeadNation = ProjectRecordConstants.NationIdMap.TryGetValue(mod.LeadNation, out var nation) ? nation : string.Empty;
+                mod.LeadNation = ProjectRecordConstants.NationIdMap.TryGetValue(mod.LeadNation, out var leadnation)
+                    ? leadnation
+                    : string.Empty;
+
+                // Map ParticipatingNation codes to names
+                if (!string.IsNullOrWhiteSpace(mod.ParticipatingNation))
+                {
+                    var parts = mod.ParticipatingNation.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                    var mapped = parts
+                        .Select(code => ProjectRecordConstants.NationIdMap.TryGetValue(code, out var name) ? name : null)
+                        .Where(n => !string.IsNullOrEmpty(n));
+                    mod.ParticipatingNation = string.Join(", ", mapped);
+                }
+                else
+                {
+                    mod.ParticipatingNation = string.Empty;
+                }
+
                 return mod;
             })
             .Where(x =>
@@ -145,7 +166,10 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
                 (string.IsNullOrEmpty(searchQuery.SponsorOrganisation) || x.SponsorOrganisation.Contains(searchQuery.SponsorOrganisation, StringComparison.OrdinalIgnoreCase)) &&
                 (!searchQuery.FromDate.HasValue || x.CreatedAt >= searchQuery.FromDate.Value) &&
                 (!searchQuery.ToDate.HasValue || x.CreatedAt <= searchQuery.ToDate.Value) &&
-                (searchQuery.Country.Count == 0 || searchQuery.Country.Contains(x.LeadNation, StringComparer.OrdinalIgnoreCase)) &&
+                (searchQuery.LeadNation.Count == 0 || searchQuery.LeadNation.Contains(x.LeadNation, StringComparer.OrdinalIgnoreCase)) &&
+                (searchQuery.ParticipatingNation.Count == 0 || x.ParticipatingNation
+                        .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                        .Any(pn => searchQuery.ParticipatingNation.Contains(pn, StringComparer.OrdinalIgnoreCase))) &&
                 (searchQuery.ModificationTypes.Count == 0 || searchQuery.ModificationTypes.Contains(x.ModificationType, StringComparer.OrdinalIgnoreCase)));
     }
 
