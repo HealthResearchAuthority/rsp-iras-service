@@ -9,5 +9,6 @@ public class ModificationSearchRequest
     public DateTime? FromDate { get; set; }
     public DateTime? ToDate { get; set; }
     public List<string> LeadNation { get; set; } = [];
+    public List<string> ParticipatingNation { get; set; } = [];
     public List<string> ModificationTypes { get; set; } = [];
 }
