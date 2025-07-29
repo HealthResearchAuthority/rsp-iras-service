@@ -7,6 +7,7 @@ public record ModificationDto
     public string ModificationType { get; set; } = null!;
     public string ChiefInvestigator { get; set; } = null!;
     public string LeadNation { get; set; } = null!;
+    public string ParticipatingNation { get; set; } = null!;
     public string SponsorOrganisation { get; set; } = null!;
     public DateTime CreatedAt { get; set; }
 }
