@@ -40,7 +40,7 @@ public class ModificationDocumentDto
     /// <summary>
     /// Gets or sets the document file size.
     /// </summary>
-    public int? FileSize { get; set; }
+    public long? FileSize { get; set; }
 
     /// <summary>
     /// Gets or sets the document version.
