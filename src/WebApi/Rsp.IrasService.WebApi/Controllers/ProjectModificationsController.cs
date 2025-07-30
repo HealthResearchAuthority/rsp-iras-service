@@ -64,21 +64,4 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
 
         await mediator.Send(request);
     }
-
-    ///// <summary>
-    ///// Returns all area of changes and specific area of changes for a project modification change.
-    ///// </summary>
-    //[HttpGet("modificationchangedocuments")]
-    //[Produces<IEnumerable<ModificationDocumentDto>>]
-    //public async Task<IEnumerable<ModificationDocumentDto>> GetModificationChangesDocuments(ModificationDocumentDto modificationChangeRequest)
-    //{
-    //    var query = new GetModificationDocumentsQuery
-    //    {
-    //        ProjectModificationChangeId = modificationChangeRequest.ProjectModificationChangeId,
-    //        ProjectRecordId = modificationChangeRequest.ProjectRecordId,
-    //        ProjectPersonnelId = modificationChangeRequest.ProjectPersonnelId
-    //    };
-
-    //    return await mediator.Send(query);
-    //}
 }
