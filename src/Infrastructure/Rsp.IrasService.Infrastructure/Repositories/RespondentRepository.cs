@@ -84,6 +84,7 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
                 }
 
                 // Update the existing answer
+                existingAnswer.OptionType = answer.OptionType;
                 existingAnswer.Response = answer.Response;
                 existingAnswer.SelectedOptions = answer.SelectedOptions;
 
