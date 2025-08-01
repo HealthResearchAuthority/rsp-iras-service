@@ -3,19 +3,19 @@
         "ModificationAreaOfChangeId": 1,
         "Id": 1,
         "Name": "Early closure or withdrawal of research sites",
-        "JourneyType": "Participating organisation"
+        "JourneyType": "Participating organisations"
     },
     {
         "ModificationAreaOfChangeId": 1,
         "Id": 2,
         "Name": "PICs - Addition of Participant Identification Centres undertaking the same activities as existing PICs",
-        "JourneyType": "Participating organisation"
+        "JourneyType": "Participating organisations"
     },
     {
         "ModificationAreaOfChangeId": 1,
         "Id": 3,
         "Name": "PICs - Early closure or withdrawal of Participant Identification Centres",
-        "JourneyType": "Participating organisation"
+        "JourneyType": "Participating organisations"
     },
     {
         "ModificationAreaOfChangeId": 2,
@@ -27,6 +27,48 @@
         "ModificationAreaOfChangeId": 1,
         "Id": 5,
         "Name": "Addition of sites undertaking the same activities as existing sites",
-        "JourneyType": "Participating organisation"
+        "JourneyType": "Participating organisations"
+    },
+    {
+        "ModificationAreaOfChangeId": 3,
+        "Id": 6,
+        "Name": "Correction of typographical errors",
+        "JourneyType": "Project documents"
+    },
+    {
+        "ModificationAreaOfChangeId": 3,
+        "Id": 7,
+        "Name": "CRF/other study data records - Changes in the documentation used by the research team for recording study data",
+        "JourneyType": "Project documents"
+    },
+    {
+        "ModificationAreaOfChangeId": 3,
+        "Id": 8,
+        "Name": "GDPR wording - Accepted wording used verbatim",
+        "JourneyType": "Project documents"
+    },
+    {
+        "ModificationAreaOfChangeId": 3,
+        "Id": 9,
+        "Name": "Other minor change to study documents (e.g. information sheets, consent forms, questionnaires, letters) that will have additional resource implications for participating organisations",
+        "JourneyType": "Project documents"
+    },
+    {
+        "ModificationAreaOfChangeId": 3,
+        "Id": 10,
+        "Name": "Post trial information for participants (which does not contradict the protocol)",
+        "JourneyType": "Project documents"
+    },
+    {
+        "ModificationAreaOfChangeId": 3,
+        "Id": 11,
+        "Name": "Protocol - Non-substantial changes (e.g. not affecting safety or the scientific value of the trial)",
+        "JourneyType": "Project documents"
+    },
+    {
+        "ModificationAreaOfChangeId": 3,
+        "Id": 12,
+        "Name": "Translations - Addition of translated versions of participant-facing documentation",
+        "JourneyType": "Project documents"
     }
 ]

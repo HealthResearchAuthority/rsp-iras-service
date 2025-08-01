@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rsp.IrasService.Infrastructure;
 
@@ -11,9 +12,11 @@ using Rsp.IrasService.Infrastructure;
 namespace Rsp.IrasService.Infrastructure.Migrations
 {
     [DbContext(typeof(IrasContext))]
-    partial class IrasContextModelSnapshot : ModelSnapshot
+    [Migration("20250722142009_SeedModificationProjectDocumentData")]
+    partial class SeedModificationProjectDocumentData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -141,7 +144,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Property<string>("DocumentStoragePath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("DocumentTypeId")
+                    b.Property<Guid>("DocumentTypeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("FileName")
@@ -3857,7 +3860,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.HasOne("Rsp.IrasService.Domain.Entities.DocumentType", "DocumentType")
                         .WithMany()
                         .HasForeignKey("DocumentTypeId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Rsp.IrasService.Domain.Entities.ProjectModificationChange", "ProjectModificationChange")
                         .WithMany()

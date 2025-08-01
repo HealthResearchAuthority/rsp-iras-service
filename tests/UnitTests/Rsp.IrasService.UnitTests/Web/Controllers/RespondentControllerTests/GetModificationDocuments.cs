@@ -11,6 +11,7 @@ public class GetModificationDocuments : TestServiceBase<RespondentController>
     (
         Guid modificationChangeId,
         string projectRecordId,
+        string projectPersonnelId,
         List<ModificationDocumentDto> expected
     )
     {
@@ -22,7 +23,7 @@ public class GetModificationDocuments : TestServiceBase<RespondentController>
             .ReturnsAsync(expected);
 
         // Act
-        var result = await Sut.GetModificationDocuments(modificationChangeId, projectRecordId);
+        var result = await Sut.GetModificationDocuments(modificationChangeId, projectRecordId, projectPersonnelId);
 
         // Assert
         result.ShouldBeEquivalentTo(expected);
