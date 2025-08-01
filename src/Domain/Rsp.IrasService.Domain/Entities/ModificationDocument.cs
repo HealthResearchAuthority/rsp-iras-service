@@ -25,7 +25,12 @@ public class ModificationDocument
     /// <summary>
     /// Gets or sets the unique identifier for this document type.
     /// </summary>
-    public Guid DocumentTypeId { get; set; }
+    public Guid? DocumentTypeId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the document storage path.
+    /// </summary>
+    public string? DocumentStoragePath { get; set; }
 
     /// <summary>
     /// Gets or sets the name of the document.

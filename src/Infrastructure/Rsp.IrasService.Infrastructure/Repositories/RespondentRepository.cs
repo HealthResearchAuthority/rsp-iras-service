@@ -84,6 +84,7 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
                 }
 
                 // Update the existing answer
+                existingAnswer.OptionType = answer.OptionType;
                 existingAnswer.Response = answer.Response;
                 existingAnswer.SelectedOptions = answer.SelectedOptions;
 
@@ -224,6 +225,9 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
 
         foreach (var answer in respondentAnswers)
         {
+            Guid? documentTypeId = answer.DocumentTypeId == Guid.Empty ? null : answer.DocumentTypeId;
+            answer.DocumentTypeId = documentTypeId;
+
             var existingAnswer = documents.FirstOrDefault(ans => ans.Id == answer.Id);
 
             if (existingAnswer != null)
@@ -232,8 +236,9 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
                 existingAnswer.ProjectModificationChangeId = answer.ProjectModificationChangeId;
                 existingAnswer.ProjectRecordId = answer.ProjectRecordId;
                 existingAnswer.ProjectPersonnelId = answer.ProjectPersonnelId;
-                existingAnswer.DocumentTypeId = answer.DocumentTypeId;
+                existingAnswer.DocumentTypeId = documentTypeId;
                 existingAnswer.FileName = answer.FileName;
+                existingAnswer.DocumentStoragePath = answer.DocumentStoragePath;
                 existingAnswer.FileSize = answer.FileSize;
                 existingAnswer.SponsorDocumentVersion = answer.SponsorDocumentVersion;
                 existingAnswer.HasPreviousVersion = answer.HasPreviousVersion;

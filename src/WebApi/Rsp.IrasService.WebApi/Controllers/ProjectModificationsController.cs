@@ -51,4 +51,17 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
 
         return await mediator.Send(query);
     }
+
+    /// <summary>
+    /// Creates a new change for a project modification.
+    /// </summary>
+    /// <param name="modificationChangeRequest">The request object containing modification change details.</param>
+    /// <returns>The created modification change response.</returns>
+    [HttpPost("createdocument")]
+    public async Task CreateModificationDocument(List<ModificationDocumentDto> modificationChangeRequest)
+    {
+        var request = new SaveModificationDocumentsCommand(modificationChangeRequest);
+
+        await mediator.Send(request);
+    }
 }
