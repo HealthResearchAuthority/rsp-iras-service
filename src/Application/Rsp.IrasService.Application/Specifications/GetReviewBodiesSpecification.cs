@@ -49,8 +49,13 @@ public class GetReviewBodiesSpecification : Specification<RegulatoryBody>
             ("regulatorybodyname", "desc") => builder.OrderByDescending(x => x.RegulatoryBodyName).ThenBy(x => x.IsActive),
             ("countries", "asc") => builder.OrderBy(x => x.Countries.FirstOrDefault()).ThenBy(x => x.IsActive),
             ("countries", "desc") => builder.OrderByDescending(x => x.Countries.FirstOrDefault()).ThenBy(x => x.IsActive),
-            ("isactive", "asc") => builder.OrderBy(x => x.IsActive),
-            ("isactive", "desc") => builder.OrderByDescending(x => x.IsActive),
+
+            // Sort so that active records (IsActive == true) appear first when sorting ascending
+            ("isactive", "asc") => builder.OrderByDescending(x => x.IsActive),
+
+            // Sort so that inactive records (IsActive == false) appear first when sorting descending
+            ("isactive", "desc") => builder.OrderBy(x => x.IsActive),
+
             _ => builder.OrderBy(x => x.RegulatoryBodyName).ThenByDescending(x => x.IsActive)
         };
 
