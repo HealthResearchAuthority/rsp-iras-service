@@ -21,7 +21,7 @@ public class GetPaginatedApplicationsWithRespondentHandlerTests
     {
         // Arrange
         var respondentId = "R-123";
-        var pageIndex = 0;
+        var pageIndex = 1;
         var pageSize = 10;
         var expectedItems = new List<ApplicationResponse>
         {
@@ -44,7 +44,7 @@ public class GetPaginatedApplicationsWithRespondentHandlerTests
         };
 
         _applicationsServiceMock
-            .Setup(service => service.GetPaginatedRespondentApplications(respondentId, null, pageIndex, pageSize))
+            .Setup(service => service.GetPaginatedRespondentApplications(respondentId, null, pageIndex, pageSize, null, null))
             .ReturnsAsync(expectedResponse);
 
         // Act
@@ -55,6 +55,6 @@ public class GetPaginatedApplicationsWithRespondentHandlerTests
         result.TotalCount.ShouldBe(2);
 
         _applicationsServiceMock.Verify(service =>
-            service.GetPaginatedRespondentApplications(respondentId, null, pageIndex, pageSize), Times.Once);
+            service.GetPaginatedRespondentApplications(respondentId, null, pageIndex, pageSize, null, null), Times.Once);
     }
 }

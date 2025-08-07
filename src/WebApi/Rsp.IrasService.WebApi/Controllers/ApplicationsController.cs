@@ -97,31 +97,45 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     /// </summary>
     /// <param name="respondentId">Reasearch Application Respondent Id</param>
     /// <param name="searchQuery">Optional search query to filter projects by title or description.</param>
-    /// <param name="pageIndex">Page number (1-based). Pagination applied if greater than 0.</param>
-    /// <param name="pageSize">Number of records per page. Pagination applied if greater than 0.</param>
+    /// <param name="pageIndex">1-based index of the page to retrieve. Must be greater than 0.</param>
+    /// <param name="pageSize">Optional number of items per page. If null, all matching applications are returned. Must be greater than 0 if specified.</param>
     [HttpGet("respondent/paginated")]
     [Produces(typeof(PaginatedResponse<ApplicationResponse>))]
-    public async Task<PaginatedResponse<ApplicationResponse>> GetPaginatedApplicationsByRespondent(
+    public async Task<ActionResult<PaginatedResponse<ApplicationResponse>>> GetPaginatedApplicationsByRespondent(
         string respondentId,
         string? searchQuery = null,
-        int pageIndex = 0,
-        int pageSize = 0)
+        int pageIndex = 1,
+        int? pageSize = null,
+        string? sortField = null,
+        string? sortDirection = null)
     {
+        if (pageIndex <= 0)
+        {
+            return BadRequest("pageIndex must be greater than 0 if specified.");
+        }
+        if (pageSize.HasValue && pageSize <= 0)
+        {
+            return BadRequest("pageSize must be greater than 0 if specified.");
+        }
+
         var request = new GetPaginatedApplicationsWithRespondentQuery
         {
             RespondentId = respondentId,
             SearchQuery = searchQuery,
             PageIndex = pageIndex,
             PageSize = pageSize,
+            SortField = sortField,
+            SortDirection = sortDirection
         };
 
         var result = await mediator.Send(request);
-
-        return new PaginatedResponse<ApplicationResponse>
+        var applications = new PaginatedResponse<ApplicationResponse>
         {
             Items = result.Items,
             TotalCount = result.TotalCount
         };
+
+        return Ok(applications);
     }
 
     /// <summary>

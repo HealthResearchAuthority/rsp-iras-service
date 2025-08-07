@@ -23,6 +23,11 @@ public interface IProjectRecordRepository
     Task<IEnumerable<ProjectRecord>> GetProjectRecords(ISpecification<ProjectRecord> specification);
 
     /// <summary>
+    /// Return all or specified number ProjectRecords from the database with pagination
+    /// </summary>
+    Task<(IEnumerable<ProjectRecord>, int)> GetPaginatedProjectRecords(ISpecification<ProjectRecord> specification, int pageIndex, int? pageSize);
+
+    /// <summary>
     /// Update the values of an ProjectRecord in the database
     /// </summary>
     /// <param name="irasApplication">The ProjectRecord values</param>

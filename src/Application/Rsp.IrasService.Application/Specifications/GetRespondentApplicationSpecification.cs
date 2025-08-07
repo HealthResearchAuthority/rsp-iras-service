@@ -27,29 +27,72 @@ public class GetRespondentApplicationSpecification : Specification<ProjectRecord
     /// </summary>
     /// <param name="respondentId">Unique Id of the respondent to get associated records for.</param>
     /// <param name="searchQuery">Optional search query to filter projects by title or description.</param>
-    /// <param name="pageIndex">Page number (1-based). Must be greater than 0.</param>
-    /// <param name="pageSize">Number of records per page. Must be greater than 0.</param>
-    public GetRespondentApplicationSpecification(string respondentId, string? searchQuery, int pageIndex, int pageSize)
+    /// <param name="sortField">Optional field name to sort the results by.</param>
+    /// <param name="sortDirection">Optional sort direction: Ascending or Descending.</param>
+    public GetRespondentApplicationSpecification
+    (
+        string respondentId,
+        string? searchQuery,
+        string? sortField,
+        string? sortDirection
+    )
     {
-        Query
-         .AsNoTracking()
-         .Where(entity => entity.ProjectPersonnelId == respondentId);
+        var builder = Query
+            .AsNoTracking();
+
+        builder.Where(entity => entity.ProjectPersonnelId == respondentId);
 
         if (!string.IsNullOrWhiteSpace(searchQuery))
         {
             var terms = searchQuery.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            foreach (var term in terms)
-            {
-                Query.Where(entity =>
-                entity.Title.Contains(term) || entity.Description.Contains(term));
-            }
+            builder
+                .Where
+                (
+                    entity => terms.Any
+                    (
+                        term => entity.Title.Contains(term)
+                    )
+                );
         }
 
-        if (pageIndex > 0 && pageSize > 0)
+        // Apply sorting
+        switch ((sortField?.ToLower(), sortDirection?.ToLower()))
         {
-            Query
-            .Skip((pageIndex - 1) * pageSize)
-            .Take(pageSize);
+            case ("title", "asc"):
+                builder.OrderBy(x => x.Title);
+                break;
+
+            case ("title", "desc"):
+                builder.OrderByDescending(x => x.Title);
+                break;
+
+            case ("status", "asc"):
+                builder.OrderBy(x => x.Status);
+                break;
+
+            case ("status", "desc"):
+                builder.OrderByDescending(x => x.Status);
+                break;
+
+            case ("createddate", "asc"):
+                builder.OrderBy(x => x.CreatedDate);
+                break;
+
+            case ("createddate", "desc"):
+                builder.OrderByDescending(x => x.CreatedDate);
+                break;
+
+            case ("irasid", "asc"):
+                builder.OrderBy(x => x.IrasId);
+                break;
+
+            case ("irasid", "desc"):
+                builder.OrderByDescending(x => x.IrasId);
+                break;
+
+            default:
+                builder.OrderByDescending(x => x.CreatedDate);
+                break;
         }
     }
 }

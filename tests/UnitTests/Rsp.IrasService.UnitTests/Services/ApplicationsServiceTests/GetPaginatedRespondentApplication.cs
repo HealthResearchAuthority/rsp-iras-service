@@ -79,9 +79,9 @@ public class GetPaginatedRespondentApplications : TestServiceBase<ApplicationsSe
         await _context.SaveChangesAsync();
 
         // Act
-        int pageIndex = 0;
+        int pageIndex = 1;
         int pageSize = 10;
-        var result = await applicationsService.GetPaginatedRespondentApplications(fixedRespondentId, null, pageIndex, pageSize);
+        var result = await applicationsService.GetPaginatedRespondentApplications(fixedRespondentId, null, pageIndex, pageSize, null, null);
 
         // Assert
         result.ShouldNotBeNull();
@@ -109,13 +109,67 @@ public class GetPaginatedRespondentApplications : TestServiceBase<ApplicationsSe
         var fixedRespondentId = "NonExistentRespondent"; // No applications exist for this ID
 
         // Act
-        int pageIndex = 0;
+        int pageIndex = 1;
         int pageSize = 10;
-        var result = await applicationsService.GetPaginatedRespondentApplications(fixedRespondentId, null, pageIndex, pageSize);
+        var result = await applicationsService.GetPaginatedRespondentApplications(fixedRespondentId, null, pageIndex, pageSize, null, null);
 
         // Assert
         result.ShouldNotBeNull();
         result.Items.ShouldBeEmpty();
         result.TotalCount.ShouldBe(0);
+    }
+
+    [Theory]
+    [AutoData]
+    public async Task GetPaginatedRespondentApplications_ShouldPaginateCorrectly_WhenPageSizeIsLimited(List<ProjectRecord> generatedRecords)
+    {
+        // Arrange
+        var applicationsService = new ApplicationsService(_applicationRepository);
+        var respondentId = "LimitedPageSizeRespondent";
+
+        foreach (var record in generatedRecords)
+        {
+            record.ProjectPersonnelId = respondentId;
+        }
+
+        await _context.ProjectRecords.AddRangeAsync(generatedRecords);
+        await _context.SaveChangesAsync();
+
+        // Act
+        int pageIndex = 1;
+        int pageSize = 2;
+        var result = await applicationsService.GetPaginatedRespondentApplications(respondentId, null, pageIndex, pageSize, null, null);
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.Items.Count().ShouldBe(Math.Min(pageSize, generatedRecords.Count));
+        result.TotalCount.ShouldBe(generatedRecords.Count);
+    }
+
+    [Theory]
+    [AutoData]
+    public async Task GetPaginatedRespondentApplications_ShouldReturnAll_WhenPageSizeIsNull(List<ProjectRecord> generatedRecords)
+    {
+        // Arrange
+        var applicationsService = new ApplicationsService(_applicationRepository);
+        var respondentId = "NoPageSizeRespondent";
+
+        foreach (var record in generatedRecords)
+        {
+            record.ProjectPersonnelId = respondentId;
+        }
+
+        await _context.ProjectRecords.AddRangeAsync(generatedRecords);
+        await _context.SaveChangesAsync();
+
+        // Act
+        int pageIndex = 1;
+        int? pageSize = null;
+        var result = await applicationsService.GetPaginatedRespondentApplications(respondentId, null, pageIndex, pageSize, null, null);
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.Items.Count().ShouldBe(generatedRecords.Count);
+        result.TotalCount.ShouldBe(generatedRecords.Count);
     }
 }

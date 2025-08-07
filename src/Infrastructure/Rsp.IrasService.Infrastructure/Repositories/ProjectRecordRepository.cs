@@ -48,6 +48,34 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
         return Task.FromResult(result);
     }
 
+    public async Task<(IEnumerable<ProjectRecord>, int)> GetPaginatedProjectRecords(ISpecification<ProjectRecord> specification, int pageIndex, int? pageSize)
+    {
+        /// count the total number of records that match the specification
+        var count = await irasContext
+            .ProjectRecords
+            .WithSpecification(specification)
+            .CountAsync();
+
+        // Prepare the query
+        var query = irasContext
+            .ProjectRecords
+            .WithSpecification(specification);
+
+        // Apply pagination if pageSize is specified
+        if (pageSize.HasValue)
+        {
+            query = query
+                .Skip((pageIndex - 1) * pageSize.Value)
+                .Take(pageSize.Value);
+        }
+
+        // Execute the query
+        var projectRecords = await query.ToListAsync();
+
+        // Return the organisations and the total count
+        return (projectRecords, count);
+    }
+
     public async Task<ProjectRecord?> UpdateProjectRecord(ProjectRecord irasApplication)
     {
         var entity = await irasContext

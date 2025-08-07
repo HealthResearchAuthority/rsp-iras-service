@@ -65,20 +65,16 @@ public class ApplicationsService(IProjectRecordRepository applicationRepository)
         return applicationsFromDb.Adapt<IEnumerable<ApplicationResponse>>();
     }
 
-    public async Task<PaginatedResponse<ApplicationResponse>> GetPaginatedRespondentApplications(string respondentId, string? searchQuery, int pageIndex, int pageSize)
+    public async Task<PaginatedResponse<ApplicationResponse>> GetPaginatedRespondentApplications(string respondentId, string? searchQuery, int pageIndex, int? pageSize, string? sortField, string? sortDirection)
     {
-        var specification = new GetRespondentApplicationSpecification(respondentId: respondentId, searchQuery: searchQuery, pageIndex: pageIndex, pageSize: pageSize);
+        var specification = new GetRespondentApplicationSpecification(respondentId: respondentId, searchQuery: searchQuery, sortField: sortField, sortDirection: sortDirection);
 
-        var applicationsFromDb = await applicationRepository.GetProjectRecords(specification);
-
-        var specificationWithoutPagination = new GetRespondentApplicationSpecification(respondentId: respondentId);
-
-        var applicationsFromDbWithoutPagination = await applicationRepository.GetProjectRecords(specificationWithoutPagination);
+        var (applicationsFromDb, totalCount) = await applicationRepository.GetPaginatedProjectRecords(specification, pageIndex, pageSize);
 
         return new PaginatedResponse<ApplicationResponse>
         {
             Items = applicationsFromDb.Adapt<IEnumerable<ApplicationResponse>>(),
-            TotalCount = applicationsFromDbWithoutPagination.Count()
+            TotalCount = totalCount
         };
     }
 
