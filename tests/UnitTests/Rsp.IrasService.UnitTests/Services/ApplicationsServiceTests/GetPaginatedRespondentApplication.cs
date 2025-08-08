@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.IrasService.Application.Settings;
 using Rsp.IrasService.Domain.Entities;
 using Rsp.IrasService.Infrastructure;
 using Rsp.IrasService.Infrastructure.Repositories;
@@ -11,6 +12,7 @@ public class GetPaginatedRespondentApplications : TestServiceBase<ApplicationsSe
 {
     private readonly ProjectRecordRepository _applicationRepository;
     private readonly IrasContext _context;
+    private readonly AppSettings _appSettings;
 
     public GetPaginatedRespondentApplications()
     {
@@ -20,6 +22,7 @@ public class GetPaginatedRespondentApplications : TestServiceBase<ApplicationsSe
 
         _context = new IrasContext(options);
         _applicationRepository = new ProjectRecordRepository(_context);
+        _appSettings = new AppSettings() { QuestionIds = new Dictionary<string, string> { { "ShortProjectTitle", "IQA0002" } } };
     }
 
     /// <summary>
@@ -29,7 +32,7 @@ public class GetPaginatedRespondentApplications : TestServiceBase<ApplicationsSe
     public async Task GetPaginatedRespondentApplications_ShouldReturnApplicationsForRespondent()
     {
         // Arrange
-        var applicationsService = new ApplicationsService(_applicationRepository);
+        var applicationsService = new ApplicationsService(_applicationRepository, _appSettings);
         var fixedRespondentId = "FixedRespondentId-123";
 
         var applicationRequests = new List<ApplicationRequest>
@@ -105,7 +108,7 @@ public class GetPaginatedRespondentApplications : TestServiceBase<ApplicationsSe
     public async Task GetPaginatedRespondentApplications_ShouldReturnEmptyList_WhenNoApplicationsExist()
     {
         // Arrange
-        var applicationsService = new ApplicationsService(_applicationRepository);
+        var applicationsService = new ApplicationsService(_applicationRepository, _appSettings);
         var fixedRespondentId = "NonExistentRespondent"; // No applications exist for this ID
 
         // Act
@@ -124,7 +127,7 @@ public class GetPaginatedRespondentApplications : TestServiceBase<ApplicationsSe
     public async Task GetPaginatedRespondentApplications_ShouldPaginateCorrectly_WhenPageSizeIsLimited(List<ProjectRecord> generatedRecords)
     {
         // Arrange
-        var applicationsService = new ApplicationsService(_applicationRepository);
+        var applicationsService = new ApplicationsService(_applicationRepository, _appSettings);
         var respondentId = "LimitedPageSizeRespondent";
 
         foreach (var record in generatedRecords)
@@ -151,7 +154,7 @@ public class GetPaginatedRespondentApplications : TestServiceBase<ApplicationsSe
     public async Task GetPaginatedRespondentApplications_ShouldReturnAll_WhenPageSizeIsNull(List<ProjectRecord> generatedRecords)
     {
         // Arrange
-        var applicationsService = new ApplicationsService(_applicationRepository);
+        var applicationsService = new ApplicationsService(_applicationRepository, _appSettings);
         var respondentId = "NoPageSizeRespondent";
 
         foreach (var record in generatedRecords)

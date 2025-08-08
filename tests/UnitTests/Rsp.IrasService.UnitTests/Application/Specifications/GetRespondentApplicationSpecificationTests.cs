@@ -17,7 +17,7 @@ public class GetRespondentApplicationSpecificationTests
         var respondentId = applications[0].ProjectPersonnelId;
         var applicationId = applications[0].Id;
 
-        var spec = new GetRespondentApplicationSpecification(respondentId, applicationId);
+        var spec = new GetRespondentApplicationSpecification(respondentId, id: applicationId);
 
         // Act
         var result = spec
@@ -96,7 +96,7 @@ public class GetRespondentApplicationSpecificationTests
 
         var searchQuery = "ABC Alpha";
 
-        var spec = new GetRespondentApplicationSpecification(respondentId, searchQuery, null, null);
+        var spec = new GetRespondentApplicationSpecification(respondentId, searchQuery);
 
         // Act
         var result = spec.Evaluate(applications).ToList();
@@ -119,7 +119,7 @@ public class GetRespondentApplicationSpecificationTests
 
         var searchQuery = "XYZ";
 
-        var spec = new GetRespondentApplicationSpecification(respondentId, searchQuery, null, null);
+        var spec = new GetRespondentApplicationSpecification(respondentId, searchQuery);
 
         // Act
         var result = spec.Evaluate(applications).ToList();
@@ -127,41 +127,5 @@ public class GetRespondentApplicationSpecificationTests
         // Assert
         result.ShouldNotBeNull();
         result.ShouldBeEmpty();
-    }
-
-    [Theory]
-    [InlineData("title", "asc", new[] { "1", "2", "3" })]
-    [InlineData("title", "desc", new[] { "3", "2", "1" })]
-    [InlineData("createddate", "asc", new[] { "1", "2", "3" })]
-    [InlineData("createddate", "desc", new[] { "3", "2", "1" })]
-    [InlineData("status", "asc", new[] { "1", "2", "3" })]
-    [InlineData("status", "desc", new[] { "3", "2", "1" })]
-    [InlineData("irasid", "asc", new[] { "1", "2", "3" })]
-    [InlineData("irasid", "desc", new[] { "3", "2", "1" })]
-    [InlineData(null, null, new[] { "3", "2", "1" })] // default sort by CreatedDate desc
-    [InlineData("other", "asc", new[] { "3", "2", "1" })] // default sort by CreatedDate desc
-    public void GetRespondentApplicationSpecification_Sorting_WorksCorrectly(
-    string? sortField,
-    string? sortDirection,
-    string[] expectedOrder)
-    {
-        // Arrange
-        var respondentId = "R-123";
-        var applications = new List<ProjectRecord>
-    {
-        new() { Id = "1", ProjectPersonnelId = respondentId, Title = "Alpha", CreatedDate = new DateTime(2020, 1, 1, 0 ,0, 0, 0, DateTimeKind.Utc), Status = "a", IrasId = 11 },
-        new() { Id = "2", ProjectPersonnelId = respondentId, Title = "Beta", CreatedDate = new DateTime(2021, 1, 1, 0 ,0, 0, 0, DateTimeKind.Utc), Status = "b", IrasId = 22 },
-        new() { Id = "3", ProjectPersonnelId = respondentId, Title = "Zeta", CreatedDate = new DateTime(2022, 1, 1, 0 ,0, 0, 0, DateTimeKind.Utc), Status = "c", IrasId = 33 }
-    };
-
-        var spec = new GetRespondentApplicationSpecification(respondentId, null, sortField, sortDirection);
-
-        // Act
-        var result = spec.Evaluate(applications).ToList();
-
-        // Assert
-        result.ShouldNotBeNull();
-        result.Count.ShouldBe(3);
-        result.Select(x => x.Id).ToArray().ShouldBe(expectedOrder);
     }
 }

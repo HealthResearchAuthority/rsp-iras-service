@@ -27,14 +27,10 @@ public class GetRespondentApplicationSpecification : Specification<ProjectRecord
     /// </summary>
     /// <param name="respondentId">Unique Id of the respondent to get associated records for.</param>
     /// <param name="searchQuery">Optional search query to filter projects by title or description.</param>
-    /// <param name="sortField">Optional field name to sort the results by.</param>
-    /// <param name="sortDirection">Optional sort direction: Ascending or Descending.</param>
     public GetRespondentApplicationSpecification
     (
         string respondentId,
-        string? searchQuery,
-        string? sortField,
-        string? sortDirection
+        string? searchQuery
     )
     {
         var builder = Query
@@ -53,46 +49,6 @@ public class GetRespondentApplicationSpecification : Specification<ProjectRecord
                         term => entity.Title.Contains(term)
                     )
                 );
-        }
-
-        // Apply sorting
-        switch ((sortField?.ToLower(), sortDirection?.ToLower()))
-        {
-            case ("title", "asc"):
-                builder.OrderBy(x => x.Title);
-                break;
-
-            case ("title", "desc"):
-                builder.OrderByDescending(x => x.Title);
-                break;
-
-            case ("status", "asc"):
-                builder.OrderBy(x => x.Status);
-                break;
-
-            case ("status", "desc"):
-                builder.OrderByDescending(x => x.Status);
-                break;
-
-            case ("createddate", "asc"):
-                builder.OrderBy(x => x.CreatedDate);
-                break;
-
-            case ("createddate", "desc"):
-                builder.OrderByDescending(x => x.CreatedDate);
-                break;
-
-            case ("irasid", "asc"):
-                builder.OrderBy(x => x.IrasId);
-                break;
-
-            case ("irasid", "desc"):
-                builder.OrderByDescending(x => x.IrasId);
-                break;
-
-            default:
-                builder.OrderByDescending(x => x.CreatedDate);
-                break;
         }
     }
 }

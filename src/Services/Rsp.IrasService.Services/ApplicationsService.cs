@@ -1,14 +1,16 @@
 ﻿using Mapster;
+using Rsp.IrasService.Application.Constants;
 using Rsp.IrasService.Application.Contracts.Repositories;
 using Rsp.IrasService.Application.Contracts.Services;
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.DTOS.Responses;
+using Rsp.IrasService.Application.Settings;
 using Rsp.IrasService.Application.Specifications;
 using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Services;
 
-public class ApplicationsService(IProjectRecordRepository applicationRepository) : IApplicationsService
+public class ApplicationsService(IProjectRecordRepository applicationRepository, AppSettings appSettings) : IApplicationsService
 {
     public async Task<ApplicationResponse> CreateApplication(ApplicationRequest applicationRequest)
     {
@@ -67,9 +69,11 @@ public class ApplicationsService(IProjectRecordRepository applicationRepository)
 
     public async Task<PaginatedResponse<ApplicationResponse>> GetPaginatedRespondentApplications(string respondentId, string? searchQuery, int pageIndex, int? pageSize, string? sortField, string? sortDirection)
     {
-        var specification = new GetRespondentApplicationSpecification(respondentId: respondentId, searchQuery: searchQuery, sortField: sortField, sortDirection: sortDirection);
+        var projectsSpecification = new GetRespondentApplicationSpecification(respondentId: respondentId, searchQuery: searchQuery);
+        var projectTitleQuestionId = appSettings.QuestionIds[QuestionIdKeys.ShortProjectTitle];
+        var projectTitlesSpecification = new GetRespondentProjectsTitlesSpecification(respondentId: respondentId, projectTitleQuestionId: projectTitleQuestionId);
 
-        var (applicationsFromDb, totalCount) = await applicationRepository.GetPaginatedProjectRecords(specification, pageIndex, pageSize);
+        var (applicationsFromDb, totalCount) = await applicationRepository.GetPaginatedProjectRecords(projectsSpecification, projectTitlesSpecification, pageIndex, pageSize, sortField, sortDirection);
 
         return new PaginatedResponse<ApplicationResponse>
         {
