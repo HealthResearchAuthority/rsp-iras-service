@@ -9,6 +9,6 @@ public class GetPaginatedApplicationsWithRespondentHandler(IApplicationsService 
 {
     public async Task<PaginatedResponse<ApplicationResponse>> Handle(GetPaginatedApplicationsWithRespondentQuery request, CancellationToken cancellationToken)
     {
-        return await applicationsService.GetPaginatedRespondentApplications(request.RespondentId, request.SearchQuery, request.PageIndex, request.PageSize);
+        return await applicationsService.GetPaginatedRespondentApplications(request.RespondentId, request.SearchQuery, request.PageIndex, request.PageSize, request.SortField, request.SortDirection);
     }
 }

@@ -26,4 +26,6 @@ public class AppSettings
     /// Gets or sets OneLogin settings
     /// </summary>
     public OneLoginConfiguration OneLogin { get; set; } = null!;
+
+    public Dictionary<string, string> QuestionIds { get; set; } = null!;
 }

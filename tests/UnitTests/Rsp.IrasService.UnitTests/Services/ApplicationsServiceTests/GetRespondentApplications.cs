@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.IrasService.Application.Settings;
 using Rsp.IrasService.Domain.Entities;
 using Rsp.IrasService.Infrastructure;
 using Rsp.IrasService.Infrastructure.Repositories;
@@ -11,6 +12,7 @@ public class GetRespondentApplications : TestServiceBase<ApplicationsService>
 {
     private readonly ProjectRecordRepository _applicationRepository;
     private readonly IrasContext _context;
+    private readonly AppSettings _appSettings;
 
     public GetRespondentApplications()
     {
@@ -20,6 +22,7 @@ public class GetRespondentApplications : TestServiceBase<ApplicationsService>
 
         _context = new IrasContext(options);
         _applicationRepository = new ProjectRecordRepository(_context);
+        _appSettings = new AppSettings();
     }
 
     /// <summary>
@@ -29,7 +32,7 @@ public class GetRespondentApplications : TestServiceBase<ApplicationsService>
     public async Task GetRespondentApplications_ShouldReturnApplicationsForRespondent()
     {
         // Arrange
-        var applicationsService = new ApplicationsService(_applicationRepository);
+        var applicationsService = new ApplicationsService(_applicationRepository, _appSettings);
         var fixedRespondentId = "FixedRespondentId-123"; // Explicit RespondentId
 
         var applicationRequests = new List<ApplicationRequest>
@@ -103,7 +106,7 @@ public class GetRespondentApplications : TestServiceBase<ApplicationsService>
     public async Task GetRespondentApplications_ShouldReturnEmptyList_WhenNoApplicationsExist()
     {
         // Arrange
-        var applicationsService = new ApplicationsService(_applicationRepository);
+        var applicationsService = new ApplicationsService(_applicationRepository, _appSettings);
         var fixedRespondentId = "NonExistentRespondent"; // No applications exist for this ID
 
         // Act

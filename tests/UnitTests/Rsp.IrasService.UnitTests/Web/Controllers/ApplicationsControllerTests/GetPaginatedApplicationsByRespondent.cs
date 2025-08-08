@@ -1,4 +1,5 @@
-﻿using Rsp.IrasService.Application.CQRS.Queries;
+﻿using Microsoft.AspNetCore.Mvc;
+using Rsp.IrasService.Application.CQRS.Queries;
 using Rsp.IrasService.Application.DTOS.Responses;
 using Rsp.IrasService.WebApi.Controllers;
 
@@ -42,8 +43,9 @@ public class GetPaginatedApplicationsByRespondent : TestServiceBase
         var result = await _controller.GetPaginatedApplicationsByRespondent(respondentId, null, 1, 5);
 
         // Assert
-        result.ShouldNotBeNull();
-        result.ShouldBeEquivalentTo(mockResponse);
+        var ok = result.Result.ShouldBeOfType<OkObjectResult>();
+        ok.Value.ShouldNotBeNull();
+        ok.Value.ShouldBeEquivalentTo(mockResponse);
     }
 
     [Theory]
@@ -78,8 +80,34 @@ public class GetPaginatedApplicationsByRespondent : TestServiceBase
         var result = await _controller.GetPaginatedApplicationsByRespondent(respondentId, null, 1, 5);
 
         // Assert
-        result.ShouldNotBeNull();
-        result.Items.ShouldBeEmpty();
-        result.TotalCount.ShouldBe(0);
+        var ok = result.Result.ShouldBeOfType<OkObjectResult>();
+        var paginatedResponse = ok.Value as PaginatedResponse<ApplicationResponse>;
+        paginatedResponse.ShouldNotBeNull();
+        paginatedResponse.Items.ShouldBeEmpty();
+        paginatedResponse.TotalCount.ShouldBe(0);
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    public async Task GetPaginatedApplicationsByRespondent_ShouldReturnBadRequest_WhenPageIndexInvalid(int pageIndex)
+    {
+        var respondentId = "abc";
+        var result = await _controller.GetPaginatedApplicationsByRespondent(respondentId, pageIndex: pageIndex);
+
+        var badRequest = result.Result.ShouldBeOfType<BadRequestObjectResult>();
+        badRequest.Value.ShouldBe("pageIndex must be greater than 0 if specified.");
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-10)]
+    public async Task GetPaginatedApplicationsByRespondent_ShouldReturnBadRequest_WhenPageSizeInvalid(int pageSize)
+    {
+        var respondentId = "abc";
+        var result = await _controller.GetPaginatedApplicationsByRespondent(respondentId, pageSize: pageSize);
+
+        var badRequest = result.Result.ShouldBeOfType<BadRequestObjectResult>();
+        badRequest.Value.ShouldBe("pageSize must be greater than 0 if specified.");
     }
 }

@@ -1,14 +1,16 @@
 ﻿using Mapster;
+using Rsp.IrasService.Application.Constants;
 using Rsp.IrasService.Application.Contracts.Repositories;
 using Rsp.IrasService.Application.Contracts.Services;
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.DTOS.Responses;
+using Rsp.IrasService.Application.Settings;
 using Rsp.IrasService.Application.Specifications;
 using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Services;
 
-public class ApplicationsService(IProjectRecordRepository applicationRepository) : IApplicationsService
+public class ApplicationsService(IProjectRecordRepository applicationRepository, AppSettings appSettings) : IApplicationsService
 {
     public async Task<ApplicationResponse> CreateApplication(ApplicationRequest applicationRequest)
     {
@@ -65,20 +67,18 @@ public class ApplicationsService(IProjectRecordRepository applicationRepository)
         return applicationsFromDb.Adapt<IEnumerable<ApplicationResponse>>();
     }
 
-    public async Task<PaginatedResponse<ApplicationResponse>> GetPaginatedRespondentApplications(string respondentId, string? searchQuery, int pageIndex, int pageSize)
+    public async Task<PaginatedResponse<ApplicationResponse>> GetPaginatedRespondentApplications(string respondentId, string? searchQuery, int pageIndex, int? pageSize, string? sortField, string? sortDirection)
     {
-        var specification = new GetRespondentApplicationSpecification(respondentId: respondentId, searchQuery: searchQuery, pageIndex: pageIndex, pageSize: pageSize);
+        var projectsSpecification = new GetRespondentApplicationSpecification(respondentId: respondentId, searchQuery: searchQuery);
+        var projectTitleQuestionId = appSettings.QuestionIds[QuestionIdKeys.ShortProjectTitle];
+        var projectTitlesSpecification = new GetRespondentProjectsTitlesSpecification(respondentId: respondentId, projectTitleQuestionId: projectTitleQuestionId);
 
-        var applicationsFromDb = await applicationRepository.GetProjectRecords(specification);
-
-        var specificationWithoutPagination = new GetRespondentApplicationSpecification(respondentId: respondentId);
-
-        var applicationsFromDbWithoutPagination = await applicationRepository.GetProjectRecords(specificationWithoutPagination);
+        var (applicationsFromDb, totalCount) = await applicationRepository.GetPaginatedProjectRecords(projectsSpecification, projectTitlesSpecification, pageIndex, pageSize, sortField, sortDirection);
 
         return new PaginatedResponse<ApplicationResponse>
         {
             Items = applicationsFromDb.Adapt<IEnumerable<ApplicationResponse>>(),
-            TotalCount = applicationsFromDbWithoutPagination.Count()
+            TotalCount = totalCount
         };
     }
 
