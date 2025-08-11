@@ -2,6 +2,7 @@
 using Rsp.IrasService.Application.Contracts.Repositories;
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.DTOS.Responses;
+using Rsp.IrasService.Application.Settings;
 using Rsp.IrasService.Domain.Entities;
 using Rsp.IrasService.Infrastructure;
 using Rsp.IrasService.Infrastructure.Repositories;
@@ -16,6 +17,7 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
 {
     private readonly ProjectRecordRepository _applicationRepository;
     private readonly IrasContext _context;
+    private readonly AppSettings _appSettings;
 
     public UpdateApplication()
     {
@@ -24,6 +26,7 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
 
         _context = new IrasContext(options);
         _applicationRepository = new ProjectRecordRepository(_context);
+        _appSettings = new AppSettings();
     }
 
     /// <summary>
@@ -94,7 +97,7 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
     public async Task UpdateApplication_ShouldUpdateAndReturnUpdatedApplication()
     {
         // Arrange
-        var applicationsService = new ApplicationsService(_applicationRepository);
+        var applicationsService = new ApplicationsService(_applicationRepository, _appSettings);
         var fixedRespondentId = "FixedRespondentId-123"; // Explicitly setting RespondentId
 
         var applicationRequest = new ApplicationRequest

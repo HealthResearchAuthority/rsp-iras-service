@@ -17,7 +17,7 @@ public class GetRespondentApplicationSpecificationTests
         var respondentId = applications[0].ProjectPersonnelId;
         var applicationId = applications[0].Id;
 
-        var spec = new GetRespondentApplicationSpecification(respondentId, applicationId);
+        var spec = new GetRespondentApplicationSpecification(respondentId, id: applicationId);
 
         // Act
         var result = spec
@@ -96,7 +96,7 @@ public class GetRespondentApplicationSpecificationTests
 
         var searchQuery = "ABC Alpha";
 
-        var spec = new GetRespondentApplicationSpecification(respondentId, searchQuery, 1, 10);
+        var spec = new GetRespondentApplicationSpecification(respondentId, searchQuery);
 
         // Act
         var result = spec.Evaluate(applications).ToList();
@@ -119,7 +119,7 @@ public class GetRespondentApplicationSpecificationTests
 
         var searchQuery = "XYZ";
 
-        var spec = new GetRespondentApplicationSpecification(respondentId, searchQuery, 1, 10);
+        var spec = new GetRespondentApplicationSpecification(respondentId, searchQuery);
 
         // Act
         var result = spec.Evaluate(applications).ToList();
@@ -127,27 +127,5 @@ public class GetRespondentApplicationSpecificationTests
         // Assert
         result.ShouldNotBeNull();
         result.ShouldBeEmpty();
-    }
-
-    [Theory, AutoData]
-    public void GetRespondentApplicationSpecification_NoPaginationNoSearch_ReturnsAllForRespondent(
-    Generator<ProjectRecord> generator)
-    {
-        // Arrange
-        var applications = generator.Take(10).ToList();
-        var respondentId = applications[0].ProjectPersonnelId;
-
-        foreach (var app in applications)
-            app.ProjectPersonnelId = respondentId;
-
-        var spec = new GetRespondentApplicationSpecification(respondentId, null, 0, 0);
-
-        // Act
-        var result = spec.Evaluate(applications).ToList();
-
-        // Assert
-        result.ShouldNotBeNull();
-        result.Count.ShouldBe(applications.Count);
-        result.ShouldAllBe(app => app.ProjectPersonnelId == respondentId);
     }
 }

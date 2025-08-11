@@ -7,6 +7,8 @@ public class GetPaginatedApplicationsWithRespondentQuery : IRequest<PaginatedRes
 {
     public string RespondentId { get; set; } = null!;
     public string? SearchQuery { get; set; } = null;
-    public int PageIndex { get; set; } = 0;
-    public int PageSize { get; set; } = 0;
+    public int PageIndex { get; set; } = 1;
+    public int? PageSize { get; set; } = null;
+    public string? SortField { get; set; } = null;
+    public string? SortDirection { get; set; } = null;
 }
