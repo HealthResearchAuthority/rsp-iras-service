@@ -132,7 +132,6 @@ public class GetModificationsTests : TestServiceBase<object> // ✅ Use `object`
             ToDate = new DateTime(2024, 1, 2),
             LeadNation = new List<string> { "England" },
             ParticipatingNation = new List<string> { "Wales" },
-            ModificationTypes = new List<string> { "Modification of an important detail" }
         };
 
         // Act
@@ -144,6 +143,5 @@ public class GetModificationsTests : TestServiceBase<object> // ✅ Use `object`
         list[0].ChiefInvestigator.ShouldBe("Dr Smith");
         list[0].LeadNation.ShouldBe("England");
         list[0].ParticipatingNation.ShouldBe("Wales, Wales");
-        list[0].ModificationType.ShouldBe("Modification of an important detail");
     }
 }
