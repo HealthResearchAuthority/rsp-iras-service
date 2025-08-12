@@ -199,8 +199,7 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
                        .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.SponsorOrganisation)
                        .Select(a => a.Response)
                        .FirstOrDefault() ?? string.Empty,
-                   CreatedAt = pm.CreatedDate,
-                   ModificationType = DetermineModificationType(pm)
+                   CreatedAt = pm.CreatedDate
                };
     }
 
@@ -227,6 +226,8 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
                 {
                     mod.ParticipatingNation = string.Empty;
                 }
+
+                mod.ModificationType = DetermineModificationType();
 
                 return mod;
             })
@@ -266,26 +267,15 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
             : modifications.OrderBy(keySelector);
     }
 
-    private static string DetermineModificationType(ProjectModification pm)
+    private static string DetermineModificationType()
     {
-        if (pm.ProjectModificationChanges.Any
-        (
-            c => c.AreaOfChange == ProjectRecordConstants.ParticipatingOrgs &&
-            c.SpecificAreaOfChange == ProjectRecordConstants.MajorModificationAreaOfChange
-        ))
+        var random = new Random();
+        var modificationType = random.Next(1, 3);
+        return modificationType switch
         {
-            return "Modification of an important detail";
-        }
-
-        if (pm.ProjectModificationChanges.Any
-        (
-            c => c.AreaOfChange == ProjectRecordConstants.ParticipatingOrgs &&
-            c.SpecificAreaOfChange == ProjectRecordConstants.MinorModificationAreaOfChange
-        ))
-        {
-            return "Minor modifications";
-        }
-
-        return "Other";
+            1 => "Modification of an important detail",
+            2 => "Minor modification",
+            _ => ""
+        };
     }
 }
