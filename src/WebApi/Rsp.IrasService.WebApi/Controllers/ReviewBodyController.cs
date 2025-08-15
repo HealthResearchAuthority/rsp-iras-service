@@ -28,6 +28,22 @@ public class ReviewBodyController(IMediator mediator, IReviewBodyAuditTrailServi
         return await mediator.Send(query);
     }
 
+    [HttpPost("allactive")]
+    [Produces<AllReviewBodiesResponse>]
+    public async Task<AllReviewBodiesResponse> GetAllActiveReviewBodies(
+        [FromQuery] string sortField,
+        [FromQuery] string sortDirection
+        )
+    {
+         ReviewBodySearchRequest searchQuery =
+        new ReviewBodySearchRequest
+        {
+            Status = true
+        };
+        var query = new GetReviewBodiesQuery(1, int.MaxValue, sortField, sortDirection, searchQuery);
+        return await mediator.Send(query);
+    }
+
     /// <summary>
     ///     Returns review body by ID
     /// </summary>
@@ -102,16 +118,16 @@ public class ReviewBodyController(IMediator mediator, IReviewBodyAuditTrailServi
     }
 
     /// <summary>
-    ///     Add a user to a review body
+    ///     Get review body users by user id
     /// </summary>
     /// <param name="reviewBodyUser">Review Body User Dto</param>
-    [HttpPost("adduser")]
-    public async Task<ReviewBodyUserDto> AddUser(ReviewBodyUserDto reviewBodyUser)
+    [HttpGet("allbyuser/{id}")]
+    public async Task<List<ReviewBodyUserDto>> GetUserReviewBodies(Guid id)
     {
-        var request = new AddReviewBodyUserCommand(reviewBodyUser);
-        var adduser = await mediator.Send(request);
+        var request = new GetReviewBodyUserCommand(id);
+        var reviewBodyUserDtos = await mediator.Send(request);
 
-        return adduser;
+        return reviewBodyUserDtos;
     }
 
     /// <summary>
@@ -125,4 +141,18 @@ public class ReviewBodyController(IMediator mediator, IReviewBodyAuditTrailServi
 
         return removeuser;
     }
+
+    /// <summary>
+    ///     Add a user to a review body
+    /// </summary>
+    /// <param name="reviewBodyUser">Review Body User Dto</param>
+    [HttpPost("adduser")]
+    public async Task<ReviewBodyUserDto> AddUser(ReviewBodyUserDto reviewBodyUser)
+    {
+        var request = new AddReviewBodyUserCommand(reviewBodyUser);
+        var adduser = await mediator.Send(request);
+
+        return adduser;
+    }
+
 }

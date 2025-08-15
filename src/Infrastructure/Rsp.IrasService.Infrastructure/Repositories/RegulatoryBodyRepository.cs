@@ -151,4 +151,13 @@ public class RegulatoryBodyRepository(IrasContext irasContext) : IRegulatoryBody
 
         return query.CountAsync();
     }
+
+    public async Task<List<RegulatoryBodyUser>> GetRegulatoryBodiesUsersByUserId(Guid userId)
+    {
+        return await irasContext.RegulatoryBodiesUsers
+            .AsNoTracking()
+            .Where(x => x.UserId == userId)
+            .ToListAsync();
+    }
+
 }

@@ -73,4 +73,10 @@ public class ReviewBodyService(IRegulatoryBodyRepository reviewBodyRepository) :
         var response = await reviewBodyRepository.RemoveUserFromRegulatoryBody(reviewBodyId, userId);
         return response.Adapt<ReviewBodyUserDto?>();
     }
+
+    public async Task<List<ReviewBodyUserDto>> GetRegulatoryBodiesUsersByUserId(Guid userId)
+    {
+        var response = await reviewBodyRepository.GetRegulatoryBodiesUsersByUserId( userId);
+        return response.Adapt<List<ReviewBodyUserDto>>();
+    }
 }
