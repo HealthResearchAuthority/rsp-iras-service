@@ -4,6 +4,7 @@ public class ProjectModificationResult
 {
     public string ModificationId { get; set; } = null!;
     public string IrasId { get; set; } = null!;
+    public int ModificationNumber { get; set; }
     public string ShortProjectTitle { get; set; } = null!;
     public string ModificationType { get; set; } = null!;
     public string ChiefInvestigator { get; set; } = null!;
