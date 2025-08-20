@@ -3,7 +3,7 @@ using Rsp.IrasService.Application.DTOS.Requests;
 
 namespace Rsp.IrasService.Application.CQRS.Commands;
 
-public class GetReviewBodyUserCommand(Guid userId) : IRequest<List<ReviewBodyUserDto>>
+public class GetReviewBodyUserByIdsCommand(List<Guid> ids) : IRequest<List<ReviewBodyUserDto>>
 {
-    public Guid UserId { get; set; } = userId;
+    public List<Guid> Ids { get; set; } = ids;
 }

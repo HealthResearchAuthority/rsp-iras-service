@@ -79,4 +79,10 @@ public class ReviewBodyService(IRegulatoryBodyRepository reviewBodyRepository) :
         var response = await reviewBodyRepository.GetRegulatoryBodiesUsersByUserId( userId);
         return response.Adapt<List<ReviewBodyUserDto>>();
     }
+
+    public async Task<List<ReviewBodyUserDto>> GetRegulatoryBodiesUsersByIds(List<Guid> ids)
+    {
+        var response = await reviewBodyRepository.GetRegulatoryBodiesUsersByIds(ids);
+        return response.Adapt<List<ReviewBodyUserDto>>();
+    }
 }

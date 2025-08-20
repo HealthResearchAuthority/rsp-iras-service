@@ -160,4 +160,11 @@ public class RegulatoryBodyRepository(IrasContext irasContext) : IRegulatoryBody
             .ToListAsync();
     }
 
+    public async Task<List<RegulatoryBodyUser>> GetRegulatoryBodiesUsersByIds(List<Guid> ids)
+    {
+        return await irasContext.RegulatoryBodiesUsers
+            .AsNoTracking()
+            .Where(x => ids.Contains(x.Id))
+            .ToListAsync();
+    }
 }

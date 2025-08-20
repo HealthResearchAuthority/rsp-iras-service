@@ -25,4 +25,5 @@ public interface IRegulatoryBodyRepository
     Task<int> GetRegulatoryBodyCount(ReviewBodySearchRequest searchQuery );
 
     Task<List<RegulatoryBodyUser>> GetRegulatoryBodiesUsersByUserId(Guid userId);
+    Task<List<RegulatoryBodyUser>> GetRegulatoryBodiesUsersByIds(List<Guid> ids);
 }

@@ -28,4 +28,5 @@ public interface IReviewBodyService : IInterceptable
     Task<ReviewBodyUserDto?> RemoveUserFromReviewBody(Guid reviewBodyId, Guid userId);
 
     Task<List<ReviewBodyUserDto>> GetRegulatoryBodiesUsersByUserId(Guid userId);
+    Task<List<ReviewBodyUserDto>> GetRegulatoryBodiesUsersByIds(List<Guid> ids);
 }
