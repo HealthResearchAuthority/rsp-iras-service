@@ -155,4 +155,14 @@ public class ReviewBodyController(IMediator mediator, IReviewBodyAuditTrailServi
         return adduser;
     }
 
+    /// <summary>
+    ///     Get review body users by a list of ids
+    /// </summary>
+    /// <param name="ids">List of User Ids</param>
+    [HttpPost("reviewbodyusersbyids")]
+    public async Task<List<ReviewBodyUserDto>> GetUserReviewBodiesByIds([FromBody] List<Guid> ids)
+    {
+        var request = new GetReviewBodyUserByIdsCommand(ids);
+        return await mediator.Send(request);
+    }
 }
