@@ -181,6 +181,26 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
     }
 
     /// <summary>
+    /// Gets modification documents matching the given specification.
+    /// </summary>
+    /// <param name="specification">The specification to filter modification documents.</param>
+    /// <returns>A collection of <see cref="ModificationDocument"/> objects.</returns>
+    public Task<ModificationDocument> GetResponse(ISpecification<ModificationDocument> specification)
+    {
+        var result = irasContext
+            .ModificationDocuments
+            .WithSpecification(specification)
+            .FirstOrDefault();
+
+        if (result == null)
+        {
+            throw new InvalidOperationException("No matching ModificationDocument found.");
+        }
+
+        return Task.FromResult(result);
+    }
+
+    /// <summary>
     /// Gets participating organisations for a modification based on specification.
     /// </summary>
     /// <param name="specification">The specification to filter modification participating organisations.</param>
@@ -225,9 +245,6 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
 
         foreach (var answer in respondentAnswers)
         {
-            Guid? documentTypeId = answer.DocumentTypeId == Guid.Empty ? null : answer.DocumentTypeId;
-            answer.DocumentTypeId = documentTypeId;
-
             var existingAnswer = documents.FirstOrDefault(ans => ans.Id == answer.Id);
 
             if (existingAnswer != null)
@@ -236,13 +253,9 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
                 existingAnswer.ProjectModificationChangeId = answer.ProjectModificationChangeId;
                 existingAnswer.ProjectRecordId = answer.ProjectRecordId;
                 existingAnswer.ProjectPersonnelId = answer.ProjectPersonnelId;
-                existingAnswer.DocumentTypeId = documentTypeId;
                 existingAnswer.FileName = answer.FileName;
                 existingAnswer.DocumentStoragePath = answer.DocumentStoragePath;
                 existingAnswer.FileSize = answer.FileSize;
-                existingAnswer.SponsorDocumentVersion = answer.SponsorDocumentVersion;
-                existingAnswer.HasPreviousVersion = answer.HasPreviousVersion;
-                existingAnswer.SponsorDocumentDate = answer.SponsorDocumentDate;
 
                 continue;
             }
@@ -324,6 +337,48 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
         {
             // Add new answer
             await irasContext.ModificationParticipatingOrganisationAnswers.AddAsync(respondentAnswer);
+        }
+
+        await irasContext.SaveChangesAsync();
+    }
+
+    public Task<ModificationDocumentAnswer> GetResponses(ISpecification<ModificationDocumentAnswer> specification)
+    {
+        var result = irasContext
+            .ModificationDocumentAnswers
+            .WithSpecification(specification)
+            .FirstOrDefault();
+
+        return Task.FromResult(result);
+    }
+
+    public async Task SaveModificationDocumentAnswerResponses(ISpecification<ModificationDocumentAnswer> specification, ModificationDocumentAnswer respondentAnswer)
+    {
+        var organisations = irasContext
+            .ModificationDocumentAnswers
+            .WithSpecification(specification);
+
+        var existingAnswer = organisations.FirstOrDefault(ans => ans.Id == respondentAnswer.Id);
+
+        if (existingAnswer != null)
+        {
+            // Delete if answer is empty or options are deselected
+            if ((string.IsNullOrWhiteSpace(existingAnswer.OptionType) && string.IsNullOrWhiteSpace(respondentAnswer.Response)) ||
+                (existingAnswer.OptionType is "Single" or "Multiple" && string.IsNullOrWhiteSpace(respondentAnswer.SelectedOptions)))
+            {
+                irasContext.ModificationDocumentAnswers.Remove(existingAnswer);
+            }
+            else
+            {
+                // Update answer
+                existingAnswer.Response = respondentAnswer.Response;
+                existingAnswer.SelectedOptions = respondentAnswer.SelectedOptions;
+            }
+        }
+        else
+        {
+            // Add new answer
+            await irasContext.ModificationDocumentAnswers.AddAsync(respondentAnswer);
         }
 
         await irasContext.SaveChangesAsync();

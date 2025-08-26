@@ -64,6 +64,18 @@ public class RespondentController(IMediator mediator) : ControllerBase
     }
 
     /// <summary>
+    /// Saves modification participating organisation answers for a project modification change.
+    /// </summary>
+    /// <param name="request">The modification participating organisation answers request.</param>
+    [HttpPost("modificationdocumentanswer")]
+    public async Task SaveModificationDocumentAnswers(ModificationDocumentAnswerDto request)
+    {
+        var command = new SaveModificationDocumentAnswersCommand(request);
+
+        await mediator.Send(command);
+    }
+
+    /// <summary>
     /// Saves modification documents for a project modification change.
     /// </summary>
     /// <param name="request">The modification documents request.</param>
@@ -178,6 +190,30 @@ public class RespondentController(IMediator mediator) : ControllerBase
             ProjectModificationChangeId = modificationChangeId,
             ProjectRecordId = projectRecordId,
             ProjectPersonnelId = projectPersonnelId
+        };
+
+        return await mediator.Send(command);
+    }
+
+    [HttpGet("modificationdocumentdetails/{documentId}")]
+    [Produces<ModificationDocumentDto>]
+    public async Task<ModificationDocumentDto> GetModificationDocumentDetails(Guid documentId)
+    {
+        var command = new GetModificationDocumentDetailsQuery
+        {
+            Id = documentId
+        };
+
+        return await mediator.Send(command);
+    }
+
+    [HttpGet("modificationdocumentanswer/{documentId}")]
+    [Produces<ModificationDocumentAnswerDto>]
+    public async Task<ModificationDocumentAnswerDto> GetModificationDocumentAnswers(Guid documentId)
+    {
+        var command = new GetModificationDocumentAnswersQuery
+        {
+            Id = documentId
         };
 
         return await mediator.Send(command);
