@@ -179,6 +179,7 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
                {
                    ModificationId = pm.ModificationIdentifier,
                    IrasId = pr.IrasId.HasValue ? pr.IrasId.Value.ToString() : string.Empty,
+                   ModificationNumber = pm.ModificationNumber,
                    ChiefInvestigator = projectAnswers
                        .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ChiefInvestigator)
                        .Select(a => a.Response)
@@ -199,8 +200,7 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
                        .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.SponsorOrganisation)
                        .Select(a => a.Response)
                        .FirstOrDefault() ?? string.Empty,
-                   CreatedAt = pm.CreatedDate,
-                   ModificationType = DetermineModificationType(pm)
+                   CreatedAt = pm.CreatedDate
                };
     }
 
@@ -228,20 +228,31 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
                     mod.ParticipatingNation = string.Empty;
                 }
 
+                mod.ModificationType = DetermineModificationType();
+
                 return mod;
             })
             .Where(x =>
-                (string.IsNullOrEmpty(searchQuery.IrasId) || x.IrasId.Contains(searchQuery.IrasId, StringComparison.OrdinalIgnoreCase)) &&
-                (string.IsNullOrEmpty(searchQuery.ChiefInvestigatorName) || x.ChiefInvestigator.Contains(searchQuery.ChiefInvestigatorName, StringComparison.OrdinalIgnoreCase)) &&
-                (string.IsNullOrEmpty(searchQuery.ShortProjectTitle) || x.ShortProjectTitle.Contains(searchQuery.ShortProjectTitle, StringComparison.OrdinalIgnoreCase)) &&
-                (string.IsNullOrEmpty(searchQuery.SponsorOrganisation) || x.SponsorOrganisation.Contains(searchQuery.SponsorOrganisation, StringComparison.OrdinalIgnoreCase)) &&
-                (!searchQuery.FromDate.HasValue || x.CreatedAt >= searchQuery.FromDate.Value) &&
-                (!searchQuery.ToDate.HasValue || x.CreatedAt <= searchQuery.ToDate.Value) &&
-                (searchQuery.LeadNation.Count == 0 || searchQuery.LeadNation.Contains(x.LeadNation, StringComparer.OrdinalIgnoreCase)) &&
-                (searchQuery.ParticipatingNation.Count == 0 || x.ParticipatingNation
+                (string.IsNullOrEmpty(searchQuery.IrasId)
+                    || x.IrasId.Contains(searchQuery.IrasId, StringComparison.OrdinalIgnoreCase))
+                && (string.IsNullOrEmpty(searchQuery.ChiefInvestigatorName)
+                    || x.ChiefInvestigator.Contains(searchQuery.ChiefInvestigatorName, StringComparison.OrdinalIgnoreCase))
+                && (string.IsNullOrEmpty(searchQuery.ShortProjectTitle)
+                    || x.ShortProjectTitle.Contains(searchQuery.ShortProjectTitle, StringComparison.OrdinalIgnoreCase))
+                && (string.IsNullOrEmpty(searchQuery.SponsorOrganisation)
+                    || x.SponsorOrganisation.Contains(searchQuery.SponsorOrganisation, StringComparison.OrdinalIgnoreCase))
+                && (!searchQuery.FromDate.HasValue
+                    || x.CreatedAt >= searchQuery.FromDate.Value)
+                && (!searchQuery.ToDate.HasValue
+                    || x.CreatedAt <= searchQuery.ToDate.Value)
+                && (searchQuery.LeadNation.Count == 0
+                    || searchQuery.LeadNation.Contains(x.LeadNation, StringComparer.OrdinalIgnoreCase))
+                && (searchQuery.ParticipatingNation.Count == 0
+                    || x.ParticipatingNation
                         .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-                        .Any(pn => searchQuery.ParticipatingNation.Contains(pn, StringComparer.OrdinalIgnoreCase))) &&
-                (searchQuery.ModificationTypes.Count == 0 || searchQuery.ModificationTypes.Contains(x.ModificationType, StringComparer.OrdinalIgnoreCase)));
+                        .Any(pn => searchQuery.ParticipatingNation.Contains(pn, StringComparer.OrdinalIgnoreCase)))
+                && (searchQuery.ModificationTypes.Count == 0
+                    || searchQuery.ModificationTypes.Contains(x.ModificationType, StringComparer.OrdinalIgnoreCase)));
     }
 
     private static IEnumerable<ProjectModificationResult> SortModifications(IEnumerable<ProjectModificationResult> modifications, string sortField, string sortDirection)
@@ -261,31 +272,31 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
         if (keySelector == null)
             return modifications;
 
+        if (sortField == nameof(ProjectModificationResult.ModificationId))
+        {
+            return sortDirection == "desc"
+                ? modifications
+                    .OrderByDescending(m => int.TryParse(m.IrasId, out var irasId) ? irasId : 0)
+                    .ThenByDescending(m => m.ModificationNumber)
+                : modifications
+                    .OrderBy(m => int.TryParse(m.IrasId, out var irasId) ? irasId : 0)
+                    .ThenBy(m => m.ModificationNumber);
+        }
+
         return sortDirection == "desc"
             ? modifications.OrderByDescending(keySelector)
             : modifications.OrderBy(keySelector);
     }
 
-    private static string DetermineModificationType(ProjectModification pm)
+    private static string DetermineModificationType()
     {
-        if (pm.ProjectModificationChanges.Any
-        (
-            c => c.AreaOfChange == ProjectRecordConstants.ParticipatingOrgs &&
-            c.SpecificAreaOfChange == ProjectRecordConstants.MajorModificationAreaOfChange
-        ))
+        var random = new Random();
+        var modificationType = random.Next(1, 3);
+        return modificationType switch
         {
-            return "Modification of an important detail";
-        }
-
-        if (pm.ProjectModificationChanges.Any
-        (
-            c => c.AreaOfChange == ProjectRecordConstants.ParticipatingOrgs &&
-            c.SpecificAreaOfChange == ProjectRecordConstants.MinorModificationAreaOfChange
-        ))
-        {
-            return "Minor modifications";
-        }
-
-        return "Other";
+            1 => "Modification of an important detail",
+            2 => "Minor modification",
+            _ => ""
+        };
     }
 }

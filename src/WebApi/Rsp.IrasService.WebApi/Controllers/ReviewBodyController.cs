@@ -28,6 +28,22 @@ public class ReviewBodyController(IMediator mediator, IReviewBodyAuditTrailServi
         return await mediator.Send(query);
     }
 
+    [HttpPost("allactive")]
+    [Produces<AllReviewBodiesResponse>]
+    public async Task<AllReviewBodiesResponse> GetAllActiveReviewBodies(
+        [FromQuery] string sortField,
+        [FromQuery] string sortDirection
+        )
+    {
+         ReviewBodySearchRequest searchQuery =
+        new ReviewBodySearchRequest
+        {
+            Status = true
+        };
+        var query = new GetReviewBodiesQuery(1, int.MaxValue, sortField, sortDirection, searchQuery);
+        return await mediator.Send(query);
+    }
+
     /// <summary>
     ///     Returns review body by ID
     /// </summary>
@@ -102,6 +118,31 @@ public class ReviewBodyController(IMediator mediator, IReviewBodyAuditTrailServi
     }
 
     /// <summary>
+    ///     Get review body users by user id
+    /// </summary>
+    /// <param name="reviewBodyUser">Review Body User Dto</param>
+    [HttpGet("allbyuser/{id}")]
+    public async Task<List<ReviewBodyUserDto>> GetUserReviewBodies(Guid id)
+    {
+        var request = new GetReviewBodyUserCommand(id);
+        var reviewBodyUserDtos = await mediator.Send(request);
+
+        return reviewBodyUserDtos;
+    }
+
+    /// <summary>
+    ///     Remove a user from a review body
+    /// </summary>
+    [HttpPost("removeuser")]
+    public async Task<ReviewBodyUserDto?> RemoveUser(Guid reviewBodyId, Guid userId)
+    {
+        var request = new RemoveReviewBodyUserCommand(reviewBodyId, userId);
+        var removeuser = await mediator.Send(request);
+
+        return removeuser;
+    }
+
+    /// <summary>
     ///     Add a user to a review body
     /// </summary>
     /// <param name="reviewBodyUser">Review Body User Dto</param>
@@ -115,14 +156,13 @@ public class ReviewBodyController(IMediator mediator, IReviewBodyAuditTrailServi
     }
 
     /// <summary>
-    ///     Remove a user from a review body
+    ///     Get review body users by a list of ids
     /// </summary>
-    [HttpPost("removeuser")]
-    public async Task<ReviewBodyUserDto?> RemoveUser(Guid reviewBodyId, Guid userId)
+    /// <param name="ids">List of User Ids</param>
+    [HttpPost("reviewbodyusersbyids")]
+    public async Task<List<ReviewBodyUserDto>> GetUserReviewBodiesByIds([FromBody] List<Guid> ids)
     {
-        var request = new RemoveReviewBodyUserCommand(reviewBodyId, userId);
-        var removeuser = await mediator.Send(request);
-
-        return removeuser;
+        var request = new GetReviewBodyUserByIdsCommand(ids);
+        return await mediator.Send(request);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.DTOS.Responses;
+using Rsp.IrasService.Domain.Entities;
 using Rsp.Logging.Interceptors;
 
 namespace Rsp.IrasService.Application.Contracts.Services;
@@ -25,4 +26,7 @@ public interface IReviewBodyService : IInterceptable
     Task<ReviewBodyUserDto?> AddUserToReviewBody(ReviewBodyUserDto reviewBodyUser);
 
     Task<ReviewBodyUserDto?> RemoveUserFromReviewBody(Guid reviewBodyId, Guid userId);
+
+    Task<List<ReviewBodyUserDto>> GetRegulatoryBodiesUsersByUserId(Guid userId);
+    Task<List<ReviewBodyUserDto>> GetRegulatoryBodiesUsersByIds(List<Guid> ids);
 }

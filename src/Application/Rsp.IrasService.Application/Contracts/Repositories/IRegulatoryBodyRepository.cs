@@ -23,4 +23,7 @@ public interface IRegulatoryBodyRepository
     Task<RegulatoryBodyUser?> RemoveUserFromRegulatoryBody(Guid regulatoryBodyId, Guid userId);
 
     Task<int> GetRegulatoryBodyCount(ReviewBodySearchRequest searchQuery );
+
+    Task<List<RegulatoryBodyUser>> GetRegulatoryBodiesUsersByUserId(Guid userId);
+    Task<List<RegulatoryBodyUser>> GetRegulatoryBodiesUsersByIds(List<Guid> ids);
 }
