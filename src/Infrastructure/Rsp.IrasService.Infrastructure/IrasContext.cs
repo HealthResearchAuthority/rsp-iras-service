@@ -19,6 +19,7 @@ public class IrasContext(DbContextOptions<IrasContext> options) : DbContext(opti
     public DbSet<ProjectModificationAnswer> ProjectModificationAnswers { get; set; }
     public DbSet<DocumentType> DocumentTypes { get; set; }
     public DbSet<ModificationDocument> ModificationDocuments { get; set; }
+    public DbSet<ModificationDocumentAnswer> ModificationDocumentAnswers { get; set; }
     public DbSet<ModificationParticipatingOrganisation> ModificationParticipatingOrganisations { get; set; }
     public DbSet<ModificationParticipatingOrganisationAnswer> ModificationParticipatingOrganisationAnswers { get; set; }
     public DbSet<ModificationAreaOfChange> ModificationAreaOfChanges { get; set; }
@@ -43,6 +44,7 @@ public class IrasContext(DbContextOptions<IrasContext> options) : DbContext(opti
         modelBuilder.ApplyConfiguration(new ProjectModificationAnswerConfiguration());
         modelBuilder.ApplyConfiguration(new DocumentTypeConfiguration());
         modelBuilder.ApplyConfiguration(new ModificationDocumentConfiguration());
+        modelBuilder.ApplyConfiguration(new ModificationDocumentAnswerConfiguration());
         modelBuilder.ApplyConfiguration(new ModificationParticipatingOrganisationConfiguration());
         modelBuilder.ApplyConfiguration(new ModificationParticipatingOrganisationAnswerConfiguration());
         modelBuilder.ApplyConfiguration(new ModificationAreaOfChangeConfiguration());
