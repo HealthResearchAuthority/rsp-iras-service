@@ -10,7 +10,7 @@ namespace Rsp.IrasService.UnitTests.Services.ProjectModifiationServiceTests;
 public class GetModificationsTests : TestServiceBase<object> // ✅ Use `object` to disable AutoMocker resolution
 {
     private readonly IrasContext _context;
-    private readonly ProjectRecordRepository _modificationRepository;
+    private readonly ProjectModificationRepository _modificationRepository;
 
     public GetModificationsTests()
     {
@@ -18,7 +18,7 @@ public class GetModificationsTests : TestServiceBase<object> // ✅ Use `object`
             .UseInMemoryDatabase(Guid.NewGuid().ToString("N")).Options;
 
         _context = new IrasContext(options);
-        _modificationRepository = new ProjectRecordRepository(_context);
+        _modificationRepository = new ProjectModificationRepository(_context);
 
         // Add nation code mappings used in filtering
         ProjectRecordConstants.NationIdMap["OPT0018"] = "England";
@@ -135,13 +135,20 @@ public class GetModificationsTests : TestServiceBase<object> // ✅ Use `object`
         };
 
         // Act
-        var results = _modificationRepository.GetModifications(search, 1, 10, "CreatedAt", "asc");
+        var results1 = _modificationRepository.GetModifications(search, 1, 10, "CreatedAt", "asc");
+        var results2 = _modificationRepository.GetModifications(search, 1, 10, "CreatedAt", "asc", record.Id);
 
         // Assert
-        var list = results.ToList();
-        list.Count.ShouldBe(1);
-        list[0].ChiefInvestigator.ShouldBe("Dr Smith");
-        list[0].LeadNation.ShouldBe("England");
-        list[0].ParticipatingNation.ShouldBe("Wales, Wales");
+        var list1 = results1.ToList();
+        list1.Count.ShouldBe(1);
+        list1[0].ChiefInvestigator.ShouldBe("Dr Smith");
+        list1[0].LeadNation.ShouldBe("England");
+        list1[0].ParticipatingNation.ShouldBe("Wales, Wales");
+
+        var list2 = results1.ToList();
+        list2.Count.ShouldBe(1);
+        list2[0].ChiefInvestigator.ShouldBe("Dr Smith");
+        list2[0].LeadNation.ShouldBe("England");
+        list2[0].ParticipatingNation.ShouldBe("Wales, Wales");
     }
 }

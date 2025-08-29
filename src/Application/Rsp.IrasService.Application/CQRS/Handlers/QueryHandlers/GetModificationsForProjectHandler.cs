@@ -5,12 +5,13 @@ using Rsp.IrasService.Application.DTOS.Responses;
 
 namespace Rsp.IrasService.Application.CQRS.Handlers.QueryHandlers;
 
-public class GetModificationsHandler(IProjectModificationService projectModificationService) : IRequestHandler<GetModificationsQuery, ModificationResponse>
+public class GetModificationsForProjectHandler(IProjectModificationService projectModificationService) : IRequestHandler<GetModificationsForProjectQuery, ModificationResponse>
 {
-    public async Task<ModificationResponse> Handle(GetModificationsQuery request, CancellationToken cancellationToken)
+    public async Task<ModificationResponse> Handle(GetModificationsForProjectQuery request, CancellationToken cancellationToken)
     {
-        return await projectModificationService.GetModifications
+        return await projectModificationService.GetModificationsForProject
         (
+            request.ProjectRecordId,
             request.SearchQuery,
             request.PageNumber,
             request.PageSize,

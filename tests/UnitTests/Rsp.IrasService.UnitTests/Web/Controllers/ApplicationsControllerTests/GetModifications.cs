@@ -7,11 +7,11 @@ namespace Rsp.IrasService.UnitTests.Web.Controllers.ApplicationsControllerTests;
 
 public class GetModifications : TestServiceBase
 {
-    private readonly ApplicationsController _controller;
+    private readonly ProjectModificationsController _controller;
 
     public GetModifications()
     {
-        _controller = Mocker.CreateInstance<ApplicationsController>();
+        _controller = Mocker.CreateInstance<ProjectModificationsController>();
     }
 
     [Theory]
@@ -27,8 +27,6 @@ public class GetModifications : TestServiceBase
     )
     {
         // Arrange
-        var query = new GetModificationsQuery(searchQuery, pageNumber, pageSize, sortField, sortDirection);
-
         var mockMediator = Mocker.GetMock<IMediator>();
         mockMediator
             .Setup(m => m.Send(It.Is<GetModificationsQuery>(q =>
@@ -39,6 +37,36 @@ public class GetModifications : TestServiceBase
 
         // Act
         var result = await _controller.GetModifications(searchQuery, pageNumber, pageSize, sortField, sortDirection);
+
+        // Assert
+        result.Value.ShouldBe(mockResponse);
+    }
+
+    [Theory]
+    [AutoData]
+    public async Task GetModificationsForProject_ShouldReturnOk_WhenModificationsExist
+   (
+       string projectRecordId,
+       ModificationSearchRequest searchQuery,
+       ModificationResponse mockResponse,
+       int pageNumber,
+       int pageSize,
+       string sortField,
+       string sortDirection
+   )
+    {
+        // Arrange
+        var mockMediator = Mocker.GetMock<IMediator>();
+        mockMediator
+            .Setup(m => m.Send(It.Is<GetModificationsForProjectQuery>(q =>
+                q.ProjectRecordId.Equals(projectRecordId) &&
+                q.SearchQuery.Equals(searchQuery) &&
+                q.PageNumber == pageNumber &&
+                q.PageSize == pageSize), default))
+            .ReturnsAsync(mockResponse);
+
+        // Act
+        var result = await _controller.GetModificationsForProject(projectRecordId, searchQuery, pageNumber, pageSize, sortField, sortDirection);
 
         // Assert
         result.Value.ShouldBe(mockResponse);
