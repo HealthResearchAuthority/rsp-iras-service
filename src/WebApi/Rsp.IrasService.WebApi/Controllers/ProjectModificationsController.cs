@@ -22,14 +22,23 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
     /// <param name="sortField">The field name by which the results should be sorted.</param>
     /// <param name="sortDirection">The direction of sorting: "asc" for ascending or "desc" for descending.</param>
     /// <returns>Returns a paginated list of modifications matching the search criteria.</returns>
-    [HttpGet]
-    public async Task<ActionResult<ModificationResponse>> GetModifications(
+    [HttpPost("getallmodifications")]
+    public async Task<ActionResult<ModificationResponse>> GetAllModifications(
         [FromBody] ModificationSearchRequest searchQuery,
         int pageNumber,
         int pageSize,
         string sortField,
         string sortDirection)
     {
+        if (pageNumber <= 0)
+        {
+            return BadRequest("pageIndex must be greater than 0.");
+        }
+        if (pageSize <= 0)
+        {
+            return BadRequest("pageSize must be greater than 0.");
+        }
+
         var query = new GetModificationsQuery(searchQuery, pageNumber, pageSize, sortField, sortDirection);
 
         return await mediator.Send(query);
@@ -45,7 +54,7 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
     /// <param name="sortField">The field name by which the results should be sorted.</param>
     /// <param name="sortDirection">The direction of sorting: "asc" for ascending or "desc" for descending.</param>
     /// <returns>Returns a paginated list of modifications related to the specified project record.</returns>
-    [HttpGet("modificationsforproject")]
+    [HttpPost("getmodificationsforproject")]
     public async Task<ActionResult<ModificationResponse>> GetModificationsForProject(
         string projectRecordId,
         [FromBody] ModificationSearchRequest searchQuery,
@@ -54,6 +63,15 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
         string sortField,
         string sortDirection)
     {
+        if (pageNumber <= 0)
+        {
+            return BadRequest("pageIndex must be greater than 0.");
+        }
+        if (pageSize <= 0)
+        {
+            return BadRequest("pageSize must be greater than 0.");
+        }
+
         var query = new GetModificationsForProjectQuery(projectRecordId, searchQuery, pageNumber, pageSize, sortField, sortDirection);
 
         return await mediator.Send(query);
