@@ -47,8 +47,8 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
     /// <returns>Returns a paginated list of modifications related to the specified project record.</returns>
     [HttpGet("modificationsforproject")]
     public async Task<ActionResult<ModificationResponse>> GetModificationsForProject(
-        [FromBody] string projectRecordId,
-        ModificationSearchRequest searchQuery,
+        string projectRecordId,
+        [FromBody] ModificationSearchRequest searchQuery,
         int pageNumber,
         int pageSize,
         string sortField,
