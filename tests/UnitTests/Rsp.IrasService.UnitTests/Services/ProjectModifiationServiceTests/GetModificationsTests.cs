@@ -1,13 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Application.Constants;
+using Rsp.IrasService.Application.Contracts.Repositories;
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Domain.Entities;
 using Rsp.IrasService.Infrastructure;
 using Rsp.IrasService.Infrastructure.Repositories;
+using Rsp.IrasService.Services;
 
 namespace Rsp.IrasService.UnitTests.Services.ProjectModifiationServiceTests;
 
-public class GetModificationsTests : TestServiceBase<object> // ✅ Use `object` to disable AutoMocker resolution
+public class GetModificationsTests : TestServiceBase<ProjectModificationService>
 {
     private readonly IrasContext _context;
     private readonly ProjectModificationRepository _modificationRepository;
@@ -150,5 +152,65 @@ public class GetModificationsTests : TestServiceBase<object> // ✅ Use `object`
         list2[0].ChiefInvestigator.ShouldBe("Dr Smith");
         list2[0].LeadNation.ShouldBe("England");
         list2[0].ParticipatingNation.ShouldBe("Wales, Wales");
+    }
+
+    [Theory]
+    [AutoData]
+    public async Task GetModifications_ShouldReturnMappedResponse(
+    ModificationSearchRequest searchRequest,
+    List<ProjectModificationResult> domainModifications,
+    int pageNumber,
+    int pageSize,
+    string sortField,
+    string sortDirection)
+    {
+        // Arrange
+        var mockRepo = new Mock<IProjectModificationRepository>();
+        mockRepo.Setup(r => r.GetModifications(searchRequest, pageNumber, pageSize, sortField, sortDirection, null))
+                .Returns(domainModifications);
+
+        mockRepo.Setup(r => r.GetModificationsCount(searchRequest, null))
+                .Returns(domainModifications.Count);
+
+        var service = new ProjectModificationService(mockRepo.Object);
+
+        // Act
+        var result = await service.GetModifications(searchRequest, pageNumber, pageSize, sortField, sortDirection);
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.Modifications.Count().ShouldBe(domainModifications.Count);
+        result.TotalCount.ShouldBe(domainModifications.Count);
+    }
+
+    [Theory]
+    [AutoData]
+    public async Task GetModificationsForProject_ShouldReturnMappedResponseWithProjectId(
+    string projectRecordId,
+    ModificationSearchRequest searchRequest,
+    List<ProjectModificationResult> domainModifications,
+    int pageNumber,
+    int pageSize,
+    string sortField,
+    string sortDirection)
+    {
+        // Arrange
+        var mockRepo = new Mock<IProjectModificationRepository>();
+        mockRepo.Setup(r => r.GetModifications(searchRequest, pageNumber, pageSize, sortField, sortDirection, projectRecordId))
+                .Returns(domainModifications);
+
+        mockRepo.Setup(r => r.GetModificationsCount(searchRequest, projectRecordId))
+                .Returns(domainModifications.Count);
+
+        var service = new ProjectModificationService(mockRepo.Object);
+
+        // Act
+        var result = await service.GetModificationsForProject(projectRecordId, searchRequest, pageNumber, pageSize, sortField, sortDirection);
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.Modifications.Count().ShouldBe(domainModifications.Count);
+        result.TotalCount.ShouldBe(domainModifications.Count);
+        result.ProjectRecordId.ShouldBe(projectRecordId);
     }
 }
