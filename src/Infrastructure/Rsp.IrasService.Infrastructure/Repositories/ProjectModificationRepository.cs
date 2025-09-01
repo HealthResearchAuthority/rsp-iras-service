@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Security.Cryptography;
+using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Application.Constants;
 using Rsp.IrasService.Application.Contracts.Repositories;
 using Rsp.IrasService.Application.DTOS.Requests;
@@ -204,8 +205,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
 
     private static string DetermineModificationType()
     {
-        var random = new Random();
-        var modificationType = random.Next(1, 3);
+        var modificationType = RandomNumberGenerator.GetInt32(1, 3);
         return modificationType switch
         {
             1 => "Modification of an important detail",
