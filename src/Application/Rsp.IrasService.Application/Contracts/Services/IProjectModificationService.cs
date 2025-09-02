@@ -23,4 +23,23 @@ public interface IProjectModificationService : IInterceptable
     /// <param name="modificationRequest">The modification change request containing change details.</param>
     /// <returns>A <see cref="ModificationChangeResponse"/> containing details of the created or updated modification change.</returns>
     Task<ModificationChangeResponse> CreateOrUpdateModificationChange(ModificationChangeRequest modificationRequest);
+
+    Task<ModificationResponse> GetModifications
+    (
+        ModificationSearchRequest searchQuery,
+        int pageNumber,
+        int pageSize,
+        string sortField,
+        string sortDirection
+    );
+
+    Task<ModificationResponse> GetModificationsForProject
+   (
+       string projectRecordId,
+       ModificationSearchRequest searchQuery,
+       int pageNumber,
+       int pageSize,
+       string sortField,
+       string sortDirection
+   );
 }

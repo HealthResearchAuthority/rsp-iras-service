@@ -45,4 +45,44 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
         // Map the created entity to the response DTO
         return createdModificationChange.Adapt<ModificationChangeResponse>();
     }
+
+    public Task<ModificationResponse> GetModifications
+    (
+        ModificationSearchRequest searchQuery,
+        int pageNumber,
+        int pageSize,
+        string sortField,
+        string sortDirection
+    )
+    {
+        var modifications = projectModificationRepository.GetModifications(searchQuery, pageNumber, pageSize, sortField, sortDirection);
+        var totalCount = projectModificationRepository.GetModificationsCount(searchQuery);
+
+        return Task.FromResult(new ModificationResponse
+        {
+            Modifications = modifications.Adapt<IEnumerable<ModificationDto>>(),
+            TotalCount = totalCount
+        });
+    }
+
+    public Task<ModificationResponse> GetModificationsForProject
+    (
+        string projectRecordId,
+        ModificationSearchRequest searchQuery,
+        int pageNumber,
+        int pageSize,
+        string sortField,
+        string sortDirection
+    )
+    {
+        var modifications = projectModificationRepository.GetModifications(searchQuery, pageNumber, pageSize, sortField, sortDirection, projectRecordId);
+        var totalCount = projectModificationRepository.GetModificationsCount(searchQuery, projectRecordId);
+
+        return Task.FromResult(new ModificationResponse
+        {
+            Modifications = modifications.Adapt<IEnumerable<ModificationDto>>(),
+            TotalCount = totalCount,
+            ProjectRecordId = projectRecordId
+        });
+    }
 }

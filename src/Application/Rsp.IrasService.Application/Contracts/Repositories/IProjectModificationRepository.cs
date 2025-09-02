@@ -1,4 +1,5 @@
-﻿using Rsp.IrasService.Domain.Entities;
+﻿using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Application.Contracts.Repositories;
 
@@ -20,4 +21,16 @@ public interface IProjectModificationRepository
     /// <param name="projectModificationChange">The project modification change entity to add.</param>
     /// <returns>The created <see cref="ProjectModificationChange"/> entity.</returns>
     Task<ProjectModificationChange> CreateModificationChange(ProjectModificationChange projectModificationChange);
+
+    IEnumerable<ProjectModificationResult> GetModifications
+    (
+        ModificationSearchRequest searchQuery,
+        int pageNumber,
+        int pageSize,
+        string sortField,
+        string sortDirection,
+        string? projectRecordId = null
+    );
+
+    int GetModificationsCount(ModificationSearchRequest searchQuery, string? projectRecordId = null);
 }
