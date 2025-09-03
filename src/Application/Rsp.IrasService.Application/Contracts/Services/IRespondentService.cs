@@ -66,6 +66,13 @@ public interface IRespondentService : IInterceptable
     Task<ModificationDocumentDto> GetModificationDocumentDetailsResponses(Guid documentId);
 
     /// <summary>
+    /// Retrieves modification documents matching the given specification.
+    /// </summary>
+    /// <param name="documentId">The modification change identifier.</param>
+    /// <returns>A collection of <see cref="ModificationDocument"/> objects.</returns>
+    Task<IEnumerable<ModificationDocumentAnswerDto>> GetModificationDocumentAnswersResponses(Guid documentId);
+
+    /// <summary>
     /// Retrieves modification participating organisations matching the given specification.
     /// </summary>
     /// <param name="projectModificationChangeId">The modification change identifier.</param>
@@ -119,5 +126,5 @@ public interface IRespondentService : IInterceptable
     /// <param name="respondentAnswer">The modification participating oraganisation answer to save.</param>
     Task SaveModificationParticipatingOrganisationAnswerResponses(ModificationParticipatingOrganisationAnswerDto respondentAnswer);
 
-    Task SaveModificationDocumentAnswerResponses(ModificationDocumentAnswerDto respondentAnswer);
+    Task SaveModificationDocumentAnswerResponses(List<ModificationDocumentAnswerDto> respondentAnswer);
 }

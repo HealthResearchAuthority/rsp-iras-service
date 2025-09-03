@@ -11,9 +11,9 @@ public class ModificationDocumentAnswerDto
     public Guid Id { get; set; } = Guid.NewGuid();
 
     /// <summary>
-    /// Modification Participating Organisation Id
+    /// Modification Document Id
     /// </summary>
-    public Guid ModificationDocumentAnswerId { get; set; }
+    public Guid ModificationDocumentId { get; set; }
 
     /// <summary>
     /// Question Id
@@ -38,7 +38,7 @@ public class ModificationDocumentAnswerDto
     /// <summary>
     /// Question Response text
     /// </summary>
-    public string ResponseText { get; set; }
+    public string Response { get; set; }
 
     /// <summary>
     /// Indiciates a single or multiple selection for the SelectionOption

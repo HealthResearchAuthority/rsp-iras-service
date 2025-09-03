@@ -68,7 +68,7 @@ public class RespondentController(IMediator mediator) : ControllerBase
     /// </summary>
     /// <param name="request">The modification participating organisation answers request.</param>
     [HttpPost("modificationdocumentanswer")]
-    public async Task SaveModificationDocumentAnswers(ModificationDocumentAnswerDto request)
+    public async Task SaveModificationDocumentAnswers(List<ModificationDocumentAnswerDto> request)
     {
         var command = new SaveModificationDocumentAnswersCommand(request);
 
@@ -209,7 +209,7 @@ public class RespondentController(IMediator mediator) : ControllerBase
 
     [HttpGet("modificationdocumentanswer/{documentId}")]
     [Produces<ModificationDocumentAnswerDto>]
-    public async Task<ModificationDocumentAnswerDto> GetModificationDocumentAnswers(Guid documentId)
+    public async Task<IEnumerable<ModificationDocumentAnswerDto>> GetModificationDocumentAnswers(Guid documentId)
     {
         var command = new GetModificationDocumentAnswersQuery
         {
