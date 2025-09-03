@@ -22,15 +22,17 @@ public interface IProjectModificationRepository
     /// <returns>The created <see cref="ProjectModificationChange"/> entity.</returns>
     Task<ProjectModificationChange> CreateModificationChange(ProjectModificationChange projectModificationChange);
 
-    IEnumerable<ProjectModificationResult> GetModifications
-    (
+    IEnumerable<ProjectModificationResult> GetModifications(
         ModificationSearchRequest searchQuery,
         int pageNumber,
         int pageSize,
         string sortField,
         string sortDirection,
-        string? projectRecordId = null
-    );
+        string? projectRecordId = null);
 
     int GetModificationsCount(ModificationSearchRequest searchQuery, string? projectRecordId = null);
+
+    IEnumerable<ProjectModificationResult> GetModificationsByIds(List<string> Ids);
+
+    Task AssignModificationsToReviewer(List<string> modificationIds, string reviewerId);
 }

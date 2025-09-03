@@ -213,4 +213,28 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
         result.TotalCount.ShouldBe(domainModifications.Count);
         result.ProjectRecordId.ShouldBe(projectRecordId);
     }
+
+    [Theory, AutoData]
+    public async Task GetModificationsByIds_ShouldReturnMappedResult
+    (
+        List<string> ids,
+        List<ProjectModificationResult> domainModifications
+    )
+    {
+        // Arrange
+        var mockRepo = new Mock<IProjectModificationRepository>();
+
+        mockRepo
+            .Setup(r => r.GetModificationsByIds(ids))
+            .Returns(domainModifications);
+
+        var service = new ProjectModificationService(mockRepo.Object);
+
+        // Act
+        var result = await service.GetModificationsByIds(ids);
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.Modifications.Count().ShouldBe(domainModifications.Count);
+    }
 }

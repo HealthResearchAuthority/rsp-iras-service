@@ -2,6 +2,8 @@
 
 public class ProjectModificationResult
 {
+    public string Id { get; set; } = null!;
+    public string ProjectRecordId { get; set; } = null!;
     public string ModificationId { get; set; } = null!;
     public string IrasId { get; set; } = null!;
     public int ModificationNumber { get; set; }

@@ -46,14 +46,12 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
         return createdModificationChange.Adapt<ModificationChangeResponse>();
     }
 
-    public Task<ModificationResponse> GetModifications
-    (
+    public Task<ModificationResponse> GetModifications(
         ModificationSearchRequest searchQuery,
         int pageNumber,
         int pageSize,
         string sortField,
-        string sortDirection
-    )
+        string sortDirection)
     {
         var modifications = projectModificationRepository.GetModifications(searchQuery, pageNumber, pageSize, sortField, sortDirection);
         var totalCount = projectModificationRepository.GetModificationsCount(searchQuery);
@@ -65,15 +63,13 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
         });
     }
 
-    public Task<ModificationResponse> GetModificationsForProject
-    (
+    public Task<ModificationResponse> GetModificationsForProject(
         string projectRecordId,
         ModificationSearchRequest searchQuery,
         int pageNumber,
         int pageSize,
         string sortField,
-        string sortDirection
-    )
+        string sortDirection)
     {
         var modifications = projectModificationRepository.GetModifications(searchQuery, pageNumber, pageSize, sortField, sortDirection, projectRecordId);
         var totalCount = projectModificationRepository.GetModificationsCount(searchQuery, projectRecordId);
@@ -84,5 +80,20 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
             TotalCount = totalCount,
             ProjectRecordId = projectRecordId
         });
+    }
+
+    public Task<ModificationResponse> GetModificationsByIds(List<string> Ids)
+    {
+        var modifications = projectModificationRepository.GetModificationsByIds(Ids);
+
+        return Task.FromResult(new ModificationResponse
+        {
+            Modifications = modifications.Adapt<IEnumerable<ModificationDto>>(),
+        });
+    }
+
+    public Task AssignModificationsToReviewer(List<string> modificationIds, string reviewerId)
+    {
+        return projectModificationRepository.AssignModificationsToReviewer(modificationIds, reviewerId);
     }
 }
