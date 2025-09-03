@@ -78,6 +78,24 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
     }
 
     /// <summary>
+    /// Retrieves modifications by a list of modification IDs.
+    /// </summary>
+    /// <param name="Ids">A list of IDs relating to modifications</param>
+    /// <returns>A list of modifications corresponding to the provided IDs</returns>
+    [HttpPost("getmodificationsbyids")]
+    public async Task<ActionResult<ModificationResponse>> GetModificationsByIds([FromBody] List<string> Ids)
+    {
+        if (Ids is null || Ids.Count == 0)
+        {
+            return BadRequest("no IDs provided.");
+        }
+
+        var query = new GetModificationsByIdsQuery(Ids);
+
+        return await mediator.Send(query);
+    }
+
+    /// <summary>
     /// Creates a new project modification.
     /// </summary>
     /// <param name="modificationRequest">The request object containing modification details.</param>
@@ -126,5 +144,12 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
         var request = new SaveModificationDocumentsCommand(modificationChangeRequest);
 
         await mediator.Send(request);
+    }
+
+    [HttpPost("assignmodificationstoreviewer")]
+    public async Task AssignModificationsToReviewer(List<string> modificationsIds, string reviewerId)
+    {
+        var command = new AssignModificationsToReviewerCommand(modificationsIds, reviewerId);
+        await mediator.Send(command);
     }
 }

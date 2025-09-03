@@ -24,22 +24,22 @@ public interface IProjectModificationService : IInterceptable
     /// <returns>A <see cref="ModificationChangeResponse"/> containing details of the created or updated modification change.</returns>
     Task<ModificationChangeResponse> CreateOrUpdateModificationChange(ModificationChangeRequest modificationRequest);
 
-    Task<ModificationResponse> GetModifications
-    (
+    Task<ModificationResponse> GetModifications(
         ModificationSearchRequest searchQuery,
         int pageNumber,
         int pageSize,
         string sortField,
-        string sortDirection
-    );
+        string sortDirection);
 
-    Task<ModificationResponse> GetModificationsForProject
-   (
+    Task<ModificationResponse> GetModificationsForProject(
        string projectRecordId,
        ModificationSearchRequest searchQuery,
        int pageNumber,
        int pageSize,
        string sortField,
-       string sortDirection
-   );
+       string sortDirection);
+
+    Task<ModificationResponse> GetModificationsByIds(List<string> Ids);
+
+    Task AssignModificationsToReviewer(List<string> modificationIds, string reviewerId);
 }

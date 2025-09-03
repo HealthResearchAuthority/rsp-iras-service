@@ -4,8 +4,7 @@ using Rsp.IrasService.Application.DTOS.Responses;
 
 namespace Rsp.IrasService.Application.CQRS.Queries;
 
-public class GetModificationsQuery
-(
+public class GetModificationsQuery(
     ModificationSearchRequest searchQuery,
     int pageNumber,
     int pageSize,

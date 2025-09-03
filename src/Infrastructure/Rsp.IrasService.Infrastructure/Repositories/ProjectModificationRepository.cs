@@ -56,15 +56,13 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         return entity.Entity;
     }
 
-    public IEnumerable<ProjectModificationResult> GetModifications
-    (
+    public IEnumerable<ProjectModificationResult> GetModifications(
         ModificationSearchRequest searchQuery,
         int pageNumber,
         int pageSize,
         string sortField,
         string sortDirection,
-        string? projectRecordId = null
-    )
+        string? projectRecordId = null)
     {
         var modifications = ProjectModificationQuery(projectRecordId);
 
@@ -82,6 +80,38 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         return FilterModifications(modifications, searchQuery).Count();
     }
 
+    public IEnumerable<ProjectModificationResult> GetModificationsByIds(List<string> Ids)
+    {
+        var results = from pm in irasContext.ProjectModifications.Include(pm => pm.ProjectModificationChanges)
+                      join pr in irasContext.ProjectRecords on pm.ProjectRecordId equals pr.Id
+                      where Ids.Contains(pm.Id.ToString())
+                      select new ProjectModificationResult
+                      {
+                          Id = pm.Id.ToString(),
+                          ModificationId = pm.ModificationIdentifier,
+                          ShortProjectTitle = irasContext.ProjectRecordAnswers
+                              .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ShortProjectTitle)
+                              .Select(a => a.Response)
+                              .FirstOrDefault() ?? string.Empty,
+                      };
+
+        return results.OrderBy(r => r.ShortProjectTitle);
+    }
+
+    public async Task AssignModificationsToReviewer(List<string> modificationIds, string reviewerId)
+    {
+        var modifications = await irasContext.ProjectModifications
+            .Where(pm => modificationIds.Contains(pm.Id.ToString()))
+            .ToListAsync();
+
+        foreach (var modification in modifications)
+        {
+            modification.ReviewerId = reviewerId;
+        }
+
+        await irasContext.SaveChangesAsync();
+    }
+
     private IQueryable<ProjectModificationResult> ProjectModificationQuery(string? projectRecordId = null)
     {
         var projectRecords = irasContext.ProjectRecords.AsQueryable();
@@ -92,6 +122,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                where string.IsNullOrEmpty(projectRecordId) || pr.Id == projectRecordId
                select new ProjectModificationResult
                {
+                   Id = pm.Id.ToString(),
+                   ProjectRecordId = pr.Id,
                    ModificationId = pm.ModificationIdentifier,
                    IrasId = pr.IrasId.HasValue ? pr.IrasId.Value.ToString() : string.Empty,
                    ModificationNumber = pm.ModificationNumber,

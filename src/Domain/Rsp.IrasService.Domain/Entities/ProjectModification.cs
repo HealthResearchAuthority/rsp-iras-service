@@ -50,6 +50,11 @@ public class ProjectModification
     /// </summary>
     public string UpdatedBy { get; set; } = null!;
 
+    /// <summary>
+    /// Gets or sets the identifier of the reviewer assigned to this modification, if any.
+    /// </summary>
+    public string? ReviewerId { get; set; }
+
     // Navigation property for the changes associated with this project modification.
     public ICollection<ProjectModificationChange> ProjectModificationChanges { get; set; } = [];
 }
