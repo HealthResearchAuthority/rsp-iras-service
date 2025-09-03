@@ -11,13 +11,9 @@ public class SaveModificationDocumentAnswerSpecification : Specification<Modific
     /// for the specified modificationParticipatingOrganisationId.
     /// </summary>
     /// <param name="modificationDocumentId">Unique identifier of the modification participating organisation.</param>
-    public SaveModificationDocumentAnswerSpecification(Guid modificationDocumentId)
+    public SaveModificationDocumentAnswerSpecification()
     {
         Query
-            .Where
-            (
-                entity =>
-                entity.ModificationDocumentId == modificationDocumentId
-            );
+            .AsNoTracking();
     }
 }

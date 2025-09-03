@@ -352,33 +352,36 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
         return Task.FromResult(result);
     }
 
-    public async Task SaveModificationDocumentAnswerResponses(ISpecification<ModificationDocumentAnswer> specification, ModificationDocumentAnswer respondentAnswer)
+    public async Task SaveModificationDocumentAnswerResponses(ISpecification<ModificationDocumentAnswer> specification, List<ModificationDocumentAnswer> respondentAnswers)
     {
         var organisations = irasContext
             .ModificationDocumentAnswers
             .WithSpecification(specification);
 
-        var existingAnswer = organisations.FirstOrDefault(ans => ans.Id == respondentAnswer.Id);
-
-        if (existingAnswer != null)
+        foreach (var respondentAnswer in respondentAnswers)
         {
-            // Delete if answer is empty or options are deselected
-            if ((string.IsNullOrWhiteSpace(existingAnswer.OptionType) && string.IsNullOrWhiteSpace(respondentAnswer.Response)) ||
-                (existingAnswer.OptionType is "Single" or "Multiple" && string.IsNullOrWhiteSpace(respondentAnswer.SelectedOptions)))
+            var existingAnswer = organisations.FirstOrDefault(ans => ans.Id == respondentAnswer.Id);
+
+            if (existingAnswer != null)
             {
-                irasContext.ModificationDocumentAnswers.Remove(existingAnswer);
+                // Delete if answer is empty or options are deselected
+                if ((string.IsNullOrWhiteSpace(existingAnswer.OptionType) && string.IsNullOrWhiteSpace(respondentAnswer.Response)) ||
+                    (existingAnswer.OptionType is "Single" or "Multiple" && string.IsNullOrWhiteSpace(respondentAnswer.SelectedOptions)))
+                {
+                    irasContext.ModificationDocumentAnswers.Remove(existingAnswer);
+                }
+                else
+                {
+                    // Update answer
+                    existingAnswer.Response = respondentAnswer.Response;
+                    existingAnswer.SelectedOptions = respondentAnswer.SelectedOptions;
+                }
             }
             else
             {
-                // Update answer
-                existingAnswer.Response = respondentAnswer.Response;
-                existingAnswer.SelectedOptions = respondentAnswer.SelectedOptions;
+                // Add new answer
+                await irasContext.ModificationDocumentAnswers.AddAsync(respondentAnswer);
             }
-        }
-        else
-        {
-            // Add new answer
-            await irasContext.ModificationDocumentAnswers.AddAsync(respondentAnswer);
         }
 
         await irasContext.SaveChangesAsync();
