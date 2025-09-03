@@ -162,12 +162,4 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
 
         return await mediator.Send(request);
     }
-
-    [HttpGet("modifications")]
-    public async Task<ActionResult<ModificationResponse>> GetModifications([FromBody] ModificationSearchRequest searchQuery, int pageNumber, int pageSize, string sortField, string sortDirection)
-    {
-        var query = new GetModificationsQuery(searchQuery, pageNumber, pageSize, sortField, sortDirection);
-
-        return await mediator.Send(query);
-    }
 }

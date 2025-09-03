@@ -1,16 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Application.Constants;
+using Rsp.IrasService.Application.Contracts.Repositories;
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Domain.Entities;
 using Rsp.IrasService.Infrastructure;
 using Rsp.IrasService.Infrastructure.Repositories;
+using Rsp.IrasService.Services;
 
 namespace Rsp.IrasService.UnitTests.Services.ProjectModifiationServiceTests;
 
-public class GetModificationsTests : TestServiceBase<object> // ✅ Use `object` to disable AutoMocker resolution
+public class GetModificationsTests : TestServiceBase<ProjectModificationService>
 {
     private readonly IrasContext _context;
-    private readonly ProjectRecordRepository _modificationRepository;
+    private readonly ProjectModificationRepository _modificationRepository;
 
     public GetModificationsTests()
     {
@@ -18,7 +20,7 @@ public class GetModificationsTests : TestServiceBase<object> // ✅ Use `object`
             .UseInMemoryDatabase(Guid.NewGuid().ToString("N")).Options;
 
         _context = new IrasContext(options);
-        _modificationRepository = new ProjectRecordRepository(_context);
+        _modificationRepository = new ProjectModificationRepository(_context);
 
         // Add nation code mappings used in filtering
         ProjectRecordConstants.NationIdMap["OPT0018"] = "England";
@@ -135,13 +137,104 @@ public class GetModificationsTests : TestServiceBase<object> // ✅ Use `object`
         };
 
         // Act
-        var results = _modificationRepository.GetModifications(search, 1, 10, "CreatedAt", "asc");
+        var results1 = _modificationRepository.GetModifications(search, 1, 10, "CreatedAt", "asc");
+        var results2 = _modificationRepository.GetModifications(search, 1, 10, "CreatedAt", "asc", record.Id);
 
         // Assert
-        var list = results.ToList();
-        list.Count.ShouldBe(1);
-        list[0].ChiefInvestigator.ShouldBe("Dr Smith");
-        list[0].LeadNation.ShouldBe("England");
-        list[0].ParticipatingNation.ShouldBe("Wales, Wales");
+        var list1 = results1.ToList();
+        list1.Count.ShouldBe(1);
+        list1[0].ChiefInvestigator.ShouldBe("Dr Smith");
+        list1[0].LeadNation.ShouldBe("England");
+        list1[0].ParticipatingNation.ShouldBe("Wales, Wales");
+
+        var list2 = results1.ToList();
+        list2.Count.ShouldBe(1);
+        list2[0].ChiefInvestigator.ShouldBe("Dr Smith");
+        list2[0].LeadNation.ShouldBe("England");
+        list2[0].ParticipatingNation.ShouldBe("Wales, Wales");
+    }
+
+    [Theory]
+    [AutoData]
+    public async Task GetModifications_ShouldReturnMappedResponse(
+    ModificationSearchRequest searchRequest,
+    List<ProjectModificationResult> domainModifications,
+    int pageNumber,
+    int pageSize,
+    string sortField,
+    string sortDirection)
+    {
+        // Arrange
+        var mockRepo = new Mock<IProjectModificationRepository>();
+        mockRepo.Setup(r => r.GetModifications(searchRequest, pageNumber, pageSize, sortField, sortDirection, null))
+                .Returns(domainModifications);
+
+        mockRepo.Setup(r => r.GetModificationsCount(searchRequest, null))
+                .Returns(domainModifications.Count);
+
+        var service = new ProjectModificationService(mockRepo.Object);
+
+        // Act
+        var result = await service.GetModifications(searchRequest, pageNumber, pageSize, sortField, sortDirection);
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.Modifications.Count().ShouldBe(domainModifications.Count);
+        result.TotalCount.ShouldBe(domainModifications.Count);
+    }
+
+    [Theory]
+    [AutoData]
+    public async Task GetModificationsForProject_ShouldReturnMappedResponseWithProjectId(
+    string projectRecordId,
+    ModificationSearchRequest searchRequest,
+    List<ProjectModificationResult> domainModifications,
+    int pageNumber,
+    int pageSize,
+    string sortField,
+    string sortDirection)
+    {
+        // Arrange
+        var mockRepo = new Mock<IProjectModificationRepository>();
+        mockRepo.Setup(r => r.GetModifications(searchRequest, pageNumber, pageSize, sortField, sortDirection, projectRecordId))
+                .Returns(domainModifications);
+
+        mockRepo.Setup(r => r.GetModificationsCount(searchRequest, projectRecordId))
+                .Returns(domainModifications.Count);
+
+        var service = new ProjectModificationService(mockRepo.Object);
+
+        // Act
+        var result = await service.GetModificationsForProject(projectRecordId, searchRequest, pageNumber, pageSize, sortField, sortDirection);
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.Modifications.Count().ShouldBe(domainModifications.Count);
+        result.TotalCount.ShouldBe(domainModifications.Count);
+        result.ProjectRecordId.ShouldBe(projectRecordId);
+    }
+
+    [Theory, AutoData]
+    public async Task GetModificationsByIds_ShouldReturnMappedResult
+    (
+        List<string> ids,
+        List<ProjectModificationResult> domainModifications
+    )
+    {
+        // Arrange
+        var mockRepo = new Mock<IProjectModificationRepository>();
+
+        mockRepo
+            .Setup(r => r.GetModificationsByIds(ids))
+            .Returns(domainModifications);
+
+        var service = new ProjectModificationService(mockRepo.Object);
+
+        // Act
+        var result = await service.GetModificationsByIds(ids);
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.Modifications.Count().ShouldBe(domainModifications.Count);
     }
 }
