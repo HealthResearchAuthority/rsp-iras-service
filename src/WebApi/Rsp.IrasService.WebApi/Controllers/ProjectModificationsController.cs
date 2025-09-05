@@ -11,7 +11,7 @@ namespace Rsp.IrasService.WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-[Authorize]
+//[Authorize]
 public class ProjectModificationsController(IMediator mediator) : ControllerBase
 {
     /// <summary>

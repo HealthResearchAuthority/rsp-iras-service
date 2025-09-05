@@ -147,7 +147,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                        .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.SponsorOrganisation)
                        .Select(a => a.Response)
                        .FirstOrDefault() ?? string.Empty,
-                   CreatedAt = pm.CreatedDate
+                   CreatedAt = pm.CreatedDate,
+                   ReviewerId = pm.ReviewerId
                };
     }
 
@@ -199,7 +200,10 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                         .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
                         .Any(pn => searchQuery.ParticipatingNation.Contains(pn, StringComparer.OrdinalIgnoreCase)))
                 && (searchQuery.ModificationTypes.Count == 0
-                    || searchQuery.ModificationTypes.Contains(x.ModificationType, StringComparer.OrdinalIgnoreCase)));
+                    || searchQuery.ModificationTypes.Contains(x.ModificationType, StringComparer.OrdinalIgnoreCase))
+                && (searchQuery.ReviewerId != null
+                    ? x.ReviewerId == searchQuery.ReviewerId
+                    : string.IsNullOrEmpty(x.ReviewerId) ));
     }
 
     private static IEnumerable<ProjectModificationResult> SortModifications(IEnumerable<ProjectModificationResult> modifications, string sortField, string sortDirection)
