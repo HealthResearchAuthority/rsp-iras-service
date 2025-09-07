@@ -1,5 +1,6 @@
 ﻿using Ardalis.Specification;
 using Ardalis.Specification.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Application.Contracts.Repositories;
 using Rsp.IrasService.Domain.Entities;
 
@@ -342,48 +343,64 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
         await irasContext.SaveChangesAsync();
     }
 
-    public Task<ModificationDocumentAnswer> GetResponses(ISpecification<ModificationDocumentAnswer> specification)
+    public Task<IEnumerable<ModificationDocumentAnswer>> GetResponses(ISpecification<ModificationDocumentAnswer> specification)
     {
         var result = irasContext
             .ModificationDocumentAnswers
             .WithSpecification(specification)
-            .FirstOrDefault();
+            .AsEnumerable();
 
         return Task.FromResult(result);
     }
 
-    public async Task SaveModificationDocumentAnswerResponses(ISpecification<ModificationDocumentAnswer> specification, List<ModificationDocumentAnswer> respondentAnswers)
+    public async Task SaveModificationDocumentAnswerResponses(
+    ISpecification<ModificationDocumentAnswer> specification,
+    List<ModificationDocumentAnswer> respondentAnswers)
     {
-        var organisations = irasContext
+        // Query tracked entities directly (no .ToList() yet)
+        var existingAnswersQuery = irasContext
             .ModificationDocumentAnswers
             .WithSpecification(specification);
 
         foreach (var respondentAnswer in respondentAnswers)
         {
-            var existingAnswer = organisations.FirstOrDefault(ans => ans.Id == respondentAnswer.Id);
+            // Try to find existing by Id (ignore if Guid.Empty)
+            ModificationDocumentAnswer? existingAnswer = null;
+            if (respondentAnswer.Id != Guid.Empty)
+            {
+                existingAnswer = await existingAnswersQuery
+                    .FirstOrDefaultAsync(ans => ans.Id == respondentAnswer.Id);
+            }
 
             if (existingAnswer != null)
             {
-                // Delete if answer is empty or options are deselected
-                if ((string.IsNullOrWhiteSpace(existingAnswer.OptionType) && string.IsNullOrWhiteSpace(respondentAnswer.Response)) ||
-                    (existingAnswer.OptionType is "Single" or "Multiple" && string.IsNullOrWhiteSpace(respondentAnswer.SelectedOptions)))
+                // Delete if empty
+                if (string.IsNullOrWhiteSpace(respondentAnswer.Response) &&
+                    string.IsNullOrWhiteSpace(respondentAnswer.SelectedOptions))
                 {
                     irasContext.ModificationDocumentAnswers.Remove(existingAnswer);
+                    continue;
                 }
-                else
-                {
-                    // Update answer
-                    existingAnswer.Response = respondentAnswer.Response;
-                    existingAnswer.SelectedOptions = respondentAnswer.SelectedOptions;
-                }
+
+                // Update tracked entity
+                existingAnswer.Response = respondentAnswer.Response;
+                existingAnswer.SelectedOptions = respondentAnswer.SelectedOptions;
             }
             else
             {
-                // Add new answer
+                // Skip insert if no values
+                if (string.IsNullOrWhiteSpace(respondentAnswer.Response) &&
+                    string.IsNullOrWhiteSpace(respondentAnswer.SelectedOptions))
+                {
+                    continue;
+                }
+
+                // Insert new
                 await irasContext.ModificationDocumentAnswers.AddAsync(respondentAnswer);
             }
         }
 
+        // Save to DB
         await irasContext.SaveChangesAsync();
     }
 }

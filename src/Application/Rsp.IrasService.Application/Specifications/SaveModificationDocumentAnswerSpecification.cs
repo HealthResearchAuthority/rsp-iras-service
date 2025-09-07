@@ -13,7 +13,5 @@ public class SaveModificationDocumentAnswerSpecification : Specification<Modific
     /// <param name="modificationDocumentId">Unique identifier of the modification participating organisation.</param>
     public SaveModificationDocumentAnswerSpecification()
     {
-        Query
-            .AsNoTracking();
     }
 }

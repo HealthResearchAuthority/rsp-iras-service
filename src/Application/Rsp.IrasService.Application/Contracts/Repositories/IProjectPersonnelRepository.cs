@@ -41,7 +41,7 @@ public interface IProjectPersonnelRepository
     /// </summary>
     /// <param name="specification">The specification to filter project document types.</param>
     /// <returns>A collection of <see cref="DocumentType"/> objects.</returns>
-    Task<ModificationDocumentAnswer> GetResponses(ISpecification<ModificationDocumentAnswer> specification);
+    Task<IEnumerable<ModificationDocumentAnswer>> GetResponses(ISpecification<ModificationDocumentAnswer> specification);
 
     /// <summary>
     /// Retrieves modification documents matching the given specification.

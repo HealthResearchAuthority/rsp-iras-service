@@ -8,7 +8,7 @@ public class ModificationDocumentAnswerDto
     /// <summary>
     /// Gets or sets the unique identifier for the modification.
     /// </summary>
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid? Id { get; set; } = Guid.NewGuid();
 
     /// <summary>
     /// Modification Document Id
@@ -21,27 +21,27 @@ public class ModificationDocumentAnswerDto
     public string QuestionId { get; set; } = null!;
 
     /// <summary>
-    /// Version Id
+    /// Question Version Id
     /// </summary>
     public string VersionId { get; set; } = null!;
 
     /// <summary>
-    /// Question Category
+    /// Question Category Id
     /// </summary>
-    public string Category { get; set; } = null!;
+    public string CategoryId { get; set; } = null!;
 
     /// <summary>
-    /// Question Section
+    /// Question Section Id
     /// </summary>
-    public string Section { get; set; } = null!;
+    public string SectionId { get; set; } = null!;
 
     /// <summary>
-    /// Question Response text
+    /// Freetext response of answer
     /// </summary>
-    public string Response { get; set; }
+    public string? AnswerText { get; set; }
 
     /// <summary>
-    /// Indiciates a single or multiple selection for the SelectionOption
+    /// Indicates if the SelectedOption was a single or multiple choice option
     /// </summary>
     public string? OptionType { get; set; }
 
@@ -53,5 +53,5 @@ public class ModificationDocumentAnswerDto
     /// <summary>
     /// Multiple answers
     /// </summary>
-    public List<string> Responses { get; set; } = [];
+    public List<string> Answers { get; set; } = [];
 }
