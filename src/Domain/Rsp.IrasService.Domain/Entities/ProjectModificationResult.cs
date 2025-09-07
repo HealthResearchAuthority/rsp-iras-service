@@ -14,4 +14,5 @@ public class ProjectModificationResult
     public string ParticipatingNation { get; set; } = null!;
     public string SponsorOrganisation { get; set; } = null!;
     public DateTime CreatedAt { get; set; }
+    public string? ReviewerId { get; set; } = null;
 }
