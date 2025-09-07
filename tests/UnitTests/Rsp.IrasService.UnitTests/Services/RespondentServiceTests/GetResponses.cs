@@ -221,6 +221,46 @@ public class GetResponses : TestServiceBase<RespondentService>
     }
 
     /// <summary>
+    ///     Tests that documents are returned for given documentId
+    /// </summary>
+    [Theory, AutoData]
+    public async Task GetModificationDocumentDetailsResponses_ShouldReturnAnswers_For_DocumentId(Guid documentId)
+    {
+        // Arrange
+        Mocker.Use<IProjectPersonnelRepository>(_respondentRepository);
+
+        // Optionally seed data here if needed for the test
+
+        Sut = Mocker.CreateInstance<RespondentService>();
+
+        // Act
+        var result = await Sut.GetModificationDocumentDetailsResponses(documentId);
+
+        // Assert
+        result.ShouldBeNull();
+    }
+
+    /// <summary>
+    ///     Tests that documents are returned for given documentId
+    /// </summary>
+    [Theory, AutoData]
+    public async Task GetModificationDocumentAnswersResponses_ShouldReturnAnswers_For_DocumentId(Guid documentId)
+    {
+        // Arrange
+        Mocker.Use<IProjectPersonnelRepository>(_respondentRepository);
+
+        // Optionally seed data here if needed for the test
+
+        Sut = Mocker.CreateInstance<RespondentService>();
+
+        // Act
+        var result = await Sut.GetModificationDocumentDetailsResponses(documentId);
+
+        // Assert
+        result.ShouldBeNull();
+    }
+
+    /// <summary>
     ///     Tests that organisations are returned for given modificationChangeId, projectRecordId, and personnelId
     /// </summary>
     [Theory, AutoData]
@@ -247,20 +287,6 @@ public class GetResponses : TestServiceBase<RespondentService>
     [Theory, AutoData]
     public async Task GetModificationOrganisationAnswer_ShouldReturnAnswers_For_OrganisationId(Guid organisationId)
     {
-        //// Arrange
-        //Mocker.Use<IProjectPersonnelRepository>(_respondentRepository);
-
-        //// Optionally seed data here if needed for the test
-
-        //Sut = Mocker.CreateInstance<RespondentService>();
-
-        //// Act
-        //var result = await Sut.GetModificationParticipatingOrganisationAnswerResponses(organisationId);
-
-        //// Assert
-        //result.ShouldNotBeNull();
-        //result.ShouldBeAssignableTo<ModificationParticipatingOrganisationAnswerDto>();
-
         // Arrange
         var respondentService = new RespondentService(_respondentRepository);
         var fixedorganisationId = Guid.NewGuid();

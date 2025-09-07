@@ -193,11 +193,6 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
             .WithSpecification(specification)
             .FirstOrDefault();
 
-        if (result == null)
-        {
-            throw new InvalidOperationException("No matching ModificationDocument found.");
-        }
-
         return Task.FromResult(result);
     }
 
