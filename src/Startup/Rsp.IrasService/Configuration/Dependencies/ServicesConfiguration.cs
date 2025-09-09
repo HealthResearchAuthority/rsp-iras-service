@@ -45,6 +45,7 @@ public static class ServicesConfiguration
 
         // handlers and interceptors
         services.AddTransient<IAuditTrailHandler, ReviewBodyAuditTrailHandler>();
+        services.AddTransient<IAuditTrailHandler, RegulatoryBodyUserAuditTrailHandler>();
         services.AddTransient<AuditTrailInterceptor>();
 
         services.AddMediatR(option => option.RegisterServicesFromAssemblyContaining<IApplication>());
