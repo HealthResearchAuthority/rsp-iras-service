@@ -165,9 +165,11 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                 // Map ParticipatingNation codes to names
                 if (!string.IsNullOrWhiteSpace(mod.ParticipatingNation))
                 {
-                    var parts = mod.ParticipatingNation.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                    var parts = mod.ParticipatingNation.Split(',',
+                        StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
                     var mapped = parts
-                        .Select(code => ProjectRecordConstants.NationIdMap.TryGetValue(code, out var name) ? name : null)
+                        .Select(code =>
+                            ProjectRecordConstants.NationIdMap.TryGetValue(code, out var name) ? name : null)
                         .Where(n => !string.IsNullOrEmpty(n));
                     mod.ParticipatingNation = string.Join(", ", mapped);
                 }
@@ -182,13 +184,15 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             })
             .Where(x =>
                 (string.IsNullOrEmpty(searchQuery.IrasId)
-                    || x.IrasId.Contains(searchQuery.IrasId, StringComparison.OrdinalIgnoreCase))
+                 || x.IrasId.Contains(searchQuery.IrasId, StringComparison.OrdinalIgnoreCase))
                 && (string.IsNullOrEmpty(searchQuery.ChiefInvestigatorName)
-                    || x.ChiefInvestigator.Contains(searchQuery.ChiefInvestigatorName, StringComparison.OrdinalIgnoreCase))
+                    || x.ChiefInvestigator.Contains(searchQuery.ChiefInvestigatorName,
+                        StringComparison.OrdinalIgnoreCase))
                 && (string.IsNullOrEmpty(searchQuery.ShortProjectTitle)
                     || x.ShortProjectTitle.Contains(searchQuery.ShortProjectTitle, StringComparison.OrdinalIgnoreCase))
                 && (string.IsNullOrEmpty(searchQuery.SponsorOrganisation)
-                    || x.SponsorOrganisation.Contains(searchQuery.SponsorOrganisation, StringComparison.OrdinalIgnoreCase))
+                    || x.SponsorOrganisation.Contains(searchQuery.SponsorOrganisation,
+                        StringComparison.OrdinalIgnoreCase))
                 && (!searchQuery.FromDate.HasValue
                     || x.CreatedAt >= searchQuery.FromDate.Value)
                 && (!searchQuery.ToDate.HasValue
@@ -201,9 +205,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                         .Any(pn => searchQuery.ParticipatingNation.Contains(pn, StringComparer.OrdinalIgnoreCase)))
                 && (searchQuery.ModificationTypes.Count == 0
                     || searchQuery.ModificationTypes.Contains(x.ModificationType, StringComparer.OrdinalIgnoreCase))
-                && (searchQuery.ReviewerId != null
-                    ? x.ReviewerId == searchQuery.ReviewerId
-                    : string.IsNullOrEmpty(x.ReviewerId) ));
+                && (!searchQuery.IncludeReviewerId
+                    || x.ReviewerId == searchQuery.ReviewerId));
     }
 
     private static IEnumerable<ProjectModificationResult> SortModifications(IEnumerable<ProjectModificationResult> modifications, string sortField, string sortDirection)
