@@ -163,6 +163,7 @@ stages:
   - stage: uat
     variables: 
     - group: 'UATEnvironment'
+    condition: eq('${{ parameters.env }}', 'uat')
     jobs:
       - template: jobs/deploy.yaml@library
         parameters:
