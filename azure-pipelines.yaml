@@ -71,6 +71,8 @@ variables:
         value: "ARM Automated Test Connection"
     ${{ if in(parameters.env, 'systemtest_manual') }}:
         value: "ARM Manual Test Connection"
+    ${{ if in(parameters.env, 'uat') }}:
+        value: "ARM UAT Connection"
 
 resources:
   repositories:
