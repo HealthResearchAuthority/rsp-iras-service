@@ -34,6 +34,20 @@ public interface IProjectPersonnelRepository
     /// </summary>
     /// <param name="specification">The specification to filter project modification documents.</param>
     /// <returns>A collection of <see cref="ModificationDocument"/> objects.</returns>
+    Task<ModificationDocument> GetResponse(ISpecification<ModificationDocument> specification);
+
+    /// <summary>
+    /// Retrieves document types matching the given specification.
+    /// </summary>
+    /// <param name="specification">The specification to filter project document types.</param>
+    /// <returns>A collection of <see cref="DocumentType"/> objects.</returns>
+    Task<IEnumerable<ModificationDocumentAnswer>> GetResponses(ISpecification<ModificationDocumentAnswer> specification);
+
+    /// <summary>
+    /// Retrieves modification documents matching the given specification.
+    /// </summary>
+    /// <param name="specification">The specification to filter project modification documents.</param>
+    /// <returns>A collection of <see cref="ModificationDocument"/> objects.</returns>
     Task<IEnumerable<ModificationDocument>> GetResponses(ISpecification<ModificationDocument> specification);
 
     /// <summary>
@@ -91,4 +105,11 @@ public interface IProjectPersonnelRepository
     /// <param name="specification">The specification to filter which modification participating oraganisation answer to save.</param>
     /// <param name="respondentAnswer">The modification participating oraganisation answer to save.</param>
     Task SaveModificationParticipatingOrganisationAnswerResponses(ISpecification<ModificationParticipatingOrganisationAnswer> specification, ModificationParticipatingOrganisationAnswer respondentAnswer);
+
+    /// <summary>
+    /// Saves the provided modification participating oraganisation answer that match the given specification.
+    /// </summary>
+    /// <param name="specification">The specification to filter which modification participating oraganisation answer to save.</param>
+    /// <param name="respondentAnswer">The modification participating oraganisation answer to save.</param>
+    Task SaveModificationDocumentAnswerResponses(ISpecification<ModificationDocumentAnswer> specification, List<ModificationDocumentAnswer> respondentAnswer);
 }
