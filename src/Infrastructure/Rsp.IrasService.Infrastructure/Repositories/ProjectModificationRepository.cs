@@ -148,7 +148,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                        .Select(a => a.Response)
                        .FirstOrDefault() ?? string.Empty,
                    CreatedAt = pm.CreatedDate,
-                   ReviewerId = pm.ReviewerId
+                   ReviewerId = pm.ReviewerId,
+                   Status = pm.Status
                };
     }
 
