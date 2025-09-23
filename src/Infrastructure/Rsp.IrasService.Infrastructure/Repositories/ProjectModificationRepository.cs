@@ -155,6 +155,9 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
 
     private static IEnumerable<ProjectModificationResult> FilterModifications(IQueryable<ProjectModificationResult> modifications, ModificationSearchRequest searchQuery)
     {
+        var fromDate = searchQuery.FromDate?.Date;
+        var toDate = searchQuery.ToDate?.Date;
+
         return modifications
             .AsEnumerable()
             .Select(mod =>
@@ -187,17 +190,14 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                 (string.IsNullOrEmpty(searchQuery.IrasId)
                  || x.IrasId.Contains(searchQuery.IrasId, StringComparison.OrdinalIgnoreCase))
                 && (string.IsNullOrEmpty(searchQuery.ChiefInvestigatorName)
-                    || x.ChiefInvestigator.Contains(searchQuery.ChiefInvestigatorName,
-                        StringComparison.OrdinalIgnoreCase))
+                    || x.ChiefInvestigator.Contains(searchQuery.ChiefInvestigatorName, StringComparison.OrdinalIgnoreCase))
                 && (string.IsNullOrEmpty(searchQuery.ShortProjectTitle)
                     || x.ShortProjectTitle.Contains(searchQuery.ShortProjectTitle, StringComparison.OrdinalIgnoreCase))
                 && (string.IsNullOrEmpty(searchQuery.SponsorOrganisation)
-                    || x.SponsorOrganisation.Contains(searchQuery.SponsorOrganisation,
-                        StringComparison.OrdinalIgnoreCase))
-                && (!searchQuery.FromDate.HasValue
-                    || x.CreatedAt >= searchQuery.FromDate.Value)
-                && (!searchQuery.ToDate.HasValue
-                    || x.CreatedAt <= searchQuery.ToDate.Value)
+                    || x.SponsorOrganisation.Contains(searchQuery.SponsorOrganisation, StringComparison.OrdinalIgnoreCase))
+                // ✅ Date-only filtering (ignore time)
+                && (!fromDate.HasValue || x.CreatedAt.Date >= fromDate.Value)
+                && (!toDate.HasValue || x.CreatedAt.Date <= toDate.Value)
                 && (searchQuery.LeadNation.Count == 0
                     || searchQuery.LeadNation.Contains(x.LeadNation, StringComparer.OrdinalIgnoreCase))
                 && (searchQuery.ParticipatingNation.Count == 0
