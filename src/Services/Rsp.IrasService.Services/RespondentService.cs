@@ -155,6 +155,24 @@ public class RespondentService(IProjectPersonnelRepository projectPersonnelRepos
         return responses.Adapt<IEnumerable<ModificationDocumentDto>>();
     }
 
+    public async Task<ModificationDocumentDto> GetModificationDocumentDetailsResponses(Guid documentId)
+    {
+        var specification = new GetModificationDocumentDetailsSpecification(documentId);
+
+        var responses = await projectPersonnelRepository.GetResponse(specification);
+
+        return responses.Adapt<ModificationDocumentDto>();
+    }
+
+    public async Task<IEnumerable<ModificationDocumentAnswerDto>> GetModificationDocumentAnswersResponses(Guid documentId)
+    {
+        var specification = new GetModificationDocumentAnswersSpecification(documentId);
+
+        var responses = await projectPersonnelRepository.GetResponses(specification);
+
+        return responses.Adapt<IEnumerable<ModificationDocumentAnswerDto>>();
+    }
+
     /// <summary>
     /// Retrieves the list of organisations participating in a specific modification change.
     /// </summary>
@@ -226,6 +244,32 @@ public class RespondentService(IProjectPersonnelRepository projectPersonnelRepos
         }
 
         await projectPersonnelRepository.SaveModificationDocumentResponses(specification, respondentDocuments);
+    }
+
+    /// <summary>
+    /// Saves the list of document responses associated with a modification change.
+    /// </summary>
+    /// <param name="respondentAnswer">A list of document DTOs to be saved for the specified modification.</param>
+    /// <returns>A task that represents the asynchronous save operation.</returns>
+    public async Task SaveModificationDocumentAnswerResponses(List<ModificationDocumentAnswerDto> respondentAnswers)
+    {
+        if (respondentAnswers == null)
+        {
+            return; // Exit early if null
+        }
+
+        // Create the specification based on the first document's identifiers
+        var specification = new SaveModificationDocumentAnswerSpecification();
+
+        var respondentDocumentAnswers = new List<ModificationDocumentAnswer>();
+        foreach (var answer in respondentAnswers)
+        {
+            var respondentAnswer = answer.Adapt<ModificationDocumentAnswer>();
+
+            respondentDocumentAnswers.Add(respondentAnswer);
+        }
+
+        await projectPersonnelRepository.SaveModificationDocumentAnswerResponses(specification, respondentDocumentAnswers);
     }
 
     /// <summary>

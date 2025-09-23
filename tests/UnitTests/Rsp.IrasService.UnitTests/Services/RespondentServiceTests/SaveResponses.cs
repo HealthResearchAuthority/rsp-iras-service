@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Rsp.IrasService.Application.Contracts.Repositories;
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Infrastructure;
 using Rsp.IrasService.Infrastructure.Repositories;
@@ -108,5 +109,23 @@ public class SaveResponses : TestServiceBase<RespondentService>
         // Assert
         var savedResponses = await _context.ProjectRecordAnswers.ToListAsync();
         savedResponses.ShouldBeEmpty();
+    }
+
+    /// <summary>
+    ///     Tests that modification documents are saved
+    /// </summary>
+    [Theory, AutoData]
+    public async Task Persists_ModificationDocumentAnswerResponses(List<ModificationDocumentAnswerDto> request)
+    {
+        // Arrange
+        Mocker.Use<IProjectPersonnelRepository>(_respondentRepository);
+
+        Sut = Mocker.CreateInstance<RespondentService>();
+
+        // Act
+        await Sut.SaveModificationDocumentAnswerResponses(request);
+
+        // Assert
+        (await _context.ModificationDocumentAnswers.CountAsync()).ShouldBe(request.Count);
     }
 }

@@ -23,11 +23,6 @@ public class ModificationDocument
     public string ProjectRecordId { get; set; } = null!;
 
     /// <summary>
-    /// Gets or sets the unique identifier for this document type.
-    /// </summary>
-    public Guid? DocumentTypeId { get; set; }
-
-    /// <summary>
     /// Gets or sets the document storage path.
     /// </summary>
     public string? DocumentStoragePath { get; set; }
@@ -43,21 +38,6 @@ public class ModificationDocument
     public int? FileSize { get; set; }
 
     /// <summary>
-    /// Gets or sets the version of the document.
-    /// </summary>
-    public string? SponsorDocumentVersion { get; set; }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether this document has previous version.
-    /// </summary>
-    public bool? HasPreviousVersion { get; set; }
-
-    /// <summary>
-    /// Gets or sets the date and time for the sponsor document.
-    /// </summary>
-    public DateTime? SponsorDocumentDate { get; set; }
-
-    /// <summary>
     /// Navigation property to the related project personnel.
     /// </summary>
     public ProjectPersonnel? ProjectPersonnel { get; set; }
@@ -71,9 +51,4 @@ public class ModificationDocument
     /// Navigation property to the related project modification change.
     /// </summary>
     public ProjectModificationChange? ProjectModificationChange { get; set; }
-
-    /// <summary>
-    /// Navigation property to the related document type.
-    /// </summary>
-    public DocumentType? DocumentType { get; set; }
 }
