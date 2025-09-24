@@ -1,8 +1,11 @@
-﻿using Rsp.IrasService.Application.Contracts.Services;
+﻿using Rsp.IrasService.Application.Contracts.Repositories;
+using Rsp.IrasService.Application.Contracts.Services;
 using Rsp.IrasService.Application.CQRS.Handlers.QueryHandlers;
 using Rsp.IrasService.Application.CQRS.Queries;
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.DTOS.Responses;
+using Rsp.IrasService.Domain.Entities;
+using Rsp.IrasService.Services;
 
 namespace Rsp.IrasService.UnitTests.Application.CQRS.Handlers.QueryHandlers;
 
@@ -77,5 +80,36 @@ public class GetDocumentsForProjectOverviewTests
                 query.SortField,
                 query.SortDirection),
             Times.Once);
+    }
+
+    [Theory]
+    [AutoData]
+    public async Task GetDocumentsForProjectOverview_ShouldReturnMappedResponseWithProjectId(
+    string projectRecordId,
+    ProjectOverviewDocumentSearchRequest searchRequest,
+    List<ProjectOverviewDocumentResult> domainDocuments,
+    int pageNumber,
+    int pageSize,
+    string sortField,
+    string sortDirection)
+    {
+        // Arrange
+        var mockRepo = new Mock<IProjectModificationRepository>();
+        mockRepo.Setup(r => r.GetDocumentsForProjectOverview(searchRequest, pageNumber, pageSize, sortField, sortDirection, projectRecordId))
+                .Returns(domainDocuments);
+
+        mockRepo.Setup(r => r.GetDocumentsForProjectOverviewCount(searchRequest, projectRecordId))
+                .Returns(domainDocuments.Count);
+
+        var service = new ProjectModificationService(mockRepo.Object);
+
+        // Act
+        var result = await service.GetDocumentsForProjectOverview(projectRecordId, searchRequest, pageNumber, pageSize, sortField, sortDirection);
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.Documents.Count().ShouldBe(domainDocuments.Count);
+        result.TotalCount.ShouldBe(domainDocuments.Count);
+        result.ProjectRecordId.ShouldBe(projectRecordId);
     }
 }
