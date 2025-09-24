@@ -282,7 +282,9 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
     /// Builds an IQueryable of project overview documents by walking down
     /// ProjectModifications → ProjectModificationChanges → ModificationDocuments → ModificationDocumentAnswers.
     /// </summary>
-    private IQueryable<ProjectOverviewDocumentResult> ProjectOverviewDocumentsQuery(ProjectOverviewDocumentSearchRequest searchQuery, string? projectRecordId = null)
+    private IQueryable<ProjectOverviewDocumentResult> ProjectOverviewDocumentsQuery(
+    ProjectOverviewDocumentSearchRequest searchQuery,
+    string? projectRecordId = null)
     {
         var projectRecords = irasContext.ProjectRecords.AsQueryable();
         var modificationDocuments = irasContext.ModificationDocuments.AsQueryable();
@@ -293,10 +295,10 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                     join pmc in irasContext.ProjectModificationChanges on pm.Id equals pmc.ProjectModificationId
                     join md in modificationDocuments on pmc.Id equals md.ProjectModificationChangeId
                     where string.IsNullOrEmpty(projectRecordId) || pr.Id == projectRecordId
-                    select new ProjectOverviewDocumentResult
+                    select new
                     {
-                        FileName = md.FileName,
-                        DocumentStoragePath = md.DocumentStoragePath,
+                        md.FileName,
+                        md.DocumentStoragePath,
                         DocumentType = modificationDocumentAnswers
                             .Where(a => a.ModificationDocumentId == md.Id && a.QuestionId == ModificationQuestionIds.DocumentType)
                             .Select(a => a.SelectedOptions)
@@ -305,35 +307,47 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                             .Where(a => a.ModificationDocumentId == md.Id && a.QuestionId == ModificationQuestionIds.DocumentVersion)
                             .Select(a => a.Response)
                             .FirstOrDefault(),
-                        DocumentDate = modificationDocumentAnswers
+                        DocumentDateRaw = modificationDocumentAnswers
                             .Where(a => a.ModificationDocumentId == md.Id && a.QuestionId == ModificationQuestionIds.DocumentDate)
                             .Select(a => a.Response)
                             .FirstOrDefault(),
                         Status = pmc.Status ?? string.Empty,
-                        ModificationIdentifier = pm.ModificationIdentifier
+                        pm.ModificationIdentifier
                     };
 
         return query
-            .AsEnumerable()
-            .Select(x => new ProjectOverviewDocumentResult
+            .AsEnumerable() // switch to in-memory for parsing
+            .Select(x =>
             {
-                FileName = x.FileName,
-                DocumentStoragePath = x.DocumentStoragePath,
+                DateTime? parsedDate = null;
 
-                // Lookup dictionary: if key not found, fall back to code
-                DocumentType = !string.IsNullOrEmpty(x.DocumentType) &&
-                               searchQuery.DocumentTypes.TryGetValue(x.DocumentType, out var friendlyName)
-                    ? friendlyName
-                    : x.DocumentType ?? string.Empty,
+                if (!string.IsNullOrWhiteSpace(x.DocumentDateRaw) && DateTime.TryParseExact(
+                            x.DocumentDateRaw,
+                            "yyyy-MM-dd",
+                            null,
+                            System.Globalization.DateTimeStyles.None,
+                            out var dt))
+                {
+                    parsedDate = dt;
+                }
 
-                DocumentVersion = x.DocumentVersion ?? string.Empty,
-                DocumentDate = DateTime.TryParse(x.DocumentDate, out var parsedDate)
-                    ? parsedDate.ToString("dd MMMM yyyy")
-                    : string.Empty,
+                return new ProjectOverviewDocumentResult
+                {
+                    FileName = x.FileName,
+                    DocumentStoragePath = x.DocumentStoragePath,
 
-                Status = x.Status ?? string.Empty,
-                ModificationIdentifier = x.ModificationIdentifier
-            }).AsQueryable();
+                    DocumentType = !string.IsNullOrEmpty(x.DocumentType) &&
+                                   searchQuery.DocumentTypes.TryGetValue(x.DocumentType, out var friendlyName)
+                        ? friendlyName
+                        : x.DocumentType ?? string.Empty,
+
+                    DocumentVersion = x.DocumentVersion ?? string.Empty,
+                    DocumentDate = parsedDate, // will be null if not found or invalid
+                    Status = x.Status ?? string.Empty,
+                    ModificationIdentifier = x.ModificationIdentifier
+                };
+            })
+            .AsQueryable();
     }
 
     private static IEnumerable<ProjectOverviewDocumentResult> FilterProjectOverviewDocuments(IQueryable<ProjectOverviewDocumentResult> modifications, ProjectOverviewDocumentSearchRequest searchQuery)
@@ -358,7 +372,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             nameof(ProjectOverviewDocumentResult.DocumentType) => x => x.DocumentType.ToLowerInvariant(),
             nameof(ProjectOverviewDocumentResult.FileName) => x => x.FileName.ToLowerInvariant(),
             nameof(ProjectOverviewDocumentResult.DocumentVersion) => x => x.DocumentVersion.ToLowerInvariant(),
-            nameof(ProjectOverviewDocumentResult.DocumentDate) => x => x.DocumentDate.ToLowerInvariant(),
+            nameof(ProjectOverviewDocumentResult.DocumentDate) => x => x.DocumentDate ?? DateTime.MinValue,
             nameof(ProjectOverviewDocumentResult.Status) => x => x.Status.ToLowerInvariant(),
             nameof(ProjectOverviewDocumentResult.ModificationIdentifier) => x => x.ModificationIdentifier.ToLowerInvariant(),
             _ => null
