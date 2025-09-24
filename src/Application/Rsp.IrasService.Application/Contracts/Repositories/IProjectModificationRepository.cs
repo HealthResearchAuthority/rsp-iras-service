@@ -35,4 +35,14 @@ public interface IProjectModificationRepository
     IEnumerable<ProjectModificationResult> GetModificationsByIds(List<string> Ids);
 
     Task AssignModificationsToReviewer(List<string> modificationIds, string reviewerId);
+
+    IEnumerable<ProjectOverviewDocumentResult> GetDocumentsForProjectOverview(
+        ProjectOverviewDocumentSearchRequest searchQuery,
+        int pageNumber,
+        int pageSize,
+        string sortField,
+        string sortDirection,
+        string? projectRecordId = null);
+
+    int GetDocumentsForProjectOverviewCount(ProjectOverviewDocumentSearchRequest searchQuery, string? projectRecordId = null);
 }
