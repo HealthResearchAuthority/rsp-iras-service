@@ -22,8 +22,6 @@ public class IrasContext(DbContextOptions<IrasContext> options) : DbContext(opti
     public DbSet<ModificationDocumentAnswer> ModificationDocumentAnswers { get; set; }
     public DbSet<ModificationParticipatingOrganisation> ModificationParticipatingOrganisations { get; set; }
     public DbSet<ModificationParticipatingOrganisationAnswer> ModificationParticipatingOrganisationAnswers { get; set; }
-    public DbSet<ModificationAreaOfChange> ModificationAreaOfChanges { get; set; }
-    public DbSet<ModificationSpecificAreaOfChange> ModificationSpecificAreaOfChanges { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -47,7 +45,5 @@ public class IrasContext(DbContextOptions<IrasContext> options) : DbContext(opti
         modelBuilder.ApplyConfiguration(new ModificationDocumentAnswerConfiguration());
         modelBuilder.ApplyConfiguration(new ModificationParticipatingOrganisationConfiguration());
         modelBuilder.ApplyConfiguration(new ModificationParticipatingOrganisationAnswerConfiguration());
-        modelBuilder.ApplyConfiguration(new ModificationAreaOfChangeConfiguration());
-        modelBuilder.ApplyConfiguration(new ModificationSpecificAreaOfChangeConfiguration());
     }
 }

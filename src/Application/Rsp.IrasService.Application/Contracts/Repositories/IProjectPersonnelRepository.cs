@@ -30,13 +30,6 @@ public interface IProjectPersonnelRepository
     Task<IEnumerable<DocumentType>> GetResponses(ISpecification<DocumentType> specification);
 
     /// <summary>
-    /// Retrieves modification documents matching the given specification.
-    /// </summary>
-    /// <param name="specification">The specification to filter project modification documents.</param>
-    /// <returns>A collection of <see cref="ModificationDocument"/> objects.</returns>
-    Task<ModificationDocument> GetResponse(ISpecification<ModificationDocument> specification);
-
-    /// <summary>
     /// Retrieves document types matching the given specification.
     /// </summary>
     /// <param name="specification">The specification to filter project document types.</param>
@@ -65,11 +58,11 @@ public interface IProjectPersonnelRepository
     Task<ModificationParticipatingOrganisationAnswer> GetResponses(ISpecification<ModificationParticipatingOrganisationAnswer> specification);
 
     /// <summary>
-    /// Retrieves modification area of changes and specific area of changes matching the given specification.
+    /// Retrieves modification documents matching the given specification.
     /// </summary>
-    /// <param name="specification">The specification to filter area of changes and specific area of changes.</param>
-    /// <returns>A <see cref="ModificationAreaOfChange"/> object.</returns>
-    Task<IEnumerable<ModificationAreaOfChange>> GetResponses(ISpecification<ModificationAreaOfChange> specification);
+    /// <param name="specification">The specification to filter project modification documents.</param>
+    /// <returns>A collection of <see cref="ModificationDocument"/> objects.</returns>
+    Task<ModificationDocument> GetResponse(ISpecification<ModificationDocument> specification);
 
     /// <summary>
     /// Saves the provided project record answers that match the given specification.

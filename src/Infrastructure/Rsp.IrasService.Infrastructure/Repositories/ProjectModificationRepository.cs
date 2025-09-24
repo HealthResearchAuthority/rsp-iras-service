@@ -1,8 +1,10 @@
 ﻿using System.Security.Cryptography;
+using Ardalis.Specification.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Application.Constants;
 using Rsp.IrasService.Application.Contracts.Repositories;
 using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.IrasService.Application.Specifications;
 using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Infrastructure.Repositories;
@@ -56,7 +58,26 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         return entity.Entity;
     }
 
-    public IEnumerable<ProjectModificationResult> GetModifications(
+    public async Task<ProjectModificationChange?> GetModificationChange(GetModificationChangeSpecification specification)
+    {
+        return await irasContext
+            .ProjectModificationChanges
+            .WithSpecification(specification)
+            .SingleOrDefaultAsync();
+    }
+
+    public Task<IEnumerable<ProjectModificationChange>> GetModificationChanges(GetModificationChangesSpecification specification)
+    {
+        var result = irasContext
+            .ProjectModificationChanges
+            .WithSpecification(specification)
+            .AsEnumerable();
+
+        return Task.FromResult(result);
+    }
+
+    public IEnumerable<ProjectModificationResult> GetModifications
+    (
         ModificationSearchRequest searchQuery,
         int pageNumber,
         int pageSize,
@@ -93,6 +114,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                               .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ShortProjectTitle)
                               .Select(a => a.Response)
                               .FirstOrDefault() ?? string.Empty,
+                          Status = pm.Status
                       };
 
         return results.OrderBy(r => r.ShortProjectTitle);
