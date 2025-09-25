@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.FeatureManagement;
@@ -23,6 +24,7 @@ public static class AuthConfiguration
     /// <param name="config"><see cref="IConfiguration"/></param>
     public static IServiceCollection AddAuthenticationAndAuthorization(this IServiceCollection services, AppSettings appSettings, IConfiguration config)
     {
+        //Check if there is a 
         ConfigureJwt(services, appSettings, config);
 
         ConfigureAuthorization(services);
@@ -76,9 +78,48 @@ public static class AuthConfiguration
 
         // Enable built-in authentication of Jwt bearer token
         services
-            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddAuthentication("defaultBearer")
             // using the scheme JwtBearerDefaults.AuthenticationScheme (Bearer)
-            .AddJwtBearer(async authOptions => await JwtBearerConfiguration.Configure(authOptions, appSettings, events, featureManager));
+            .AddJwtBearer(async authOptions => await JwtBearerConfiguration.Configure(authOptions, appSettings, events, featureManager))
+            .AddJwtBearer("APIBearer", options =>
+            {
+                options.Authority = "https://login.microsoftonline.com/8e1f0aca-d87d-4f20-939e-36243d574267/v2.0";
+                options.Audience = "api://a64530ca-1bf5-4ba9-a3c7-7340c602146e";
+                options.Events = events;
+            })
+            .AddPolicyScheme("defaultBearer", null, options =>
+            {
+                options.ForwardDefaultSelector = context =>
+                {
+                    var tokenHelper = context.Request.HttpContext.RequestServices.GetRequiredService<ITokenHelper>();
+                        var authToken = context.Request.Headers[HeaderNames.Authorization];
+
+                        // if we don't have token, there is nothing to forward to
+                        if (string.IsNullOrWhiteSpace(authToken))
+                        {
+                            return JwtBearerDefaults.AuthenticationScheme;
+                        }
+
+                        // replace the "Bearer " if present in the token
+                        var token = tokenHelper.DeBearerizeAuthToken(authToken);
+                        var jwtHandler = new JwtSecurityTokenHandler();
+
+                        // if we can't read the token, return the empty scheme
+                        if (!jwtHandler.CanReadToken(token))
+                        {
+                            return JwtBearerDefaults.AuthenticationScheme;
+                        }
+
+                        // get the token to verify the issuer
+                        var jwtSecurityToken = jwtHandler.ReadJwtToken(token);
+                    return jwtSecurityToken.Issuer switch
+                    {
+                        "https://login.microsoftonline.com/8e1f0aca-d87d-4f20-939e-36243d574267/v2.0" => "APIBearer",
+                        _ => JwtBearerDefaults.AuthenticationScheme
+                    };
+
+                };
+            });
     }
 
     private static void ConfigureAuthorization(IServiceCollection services)
