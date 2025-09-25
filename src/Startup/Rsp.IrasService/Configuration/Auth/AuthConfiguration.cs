@@ -81,10 +81,10 @@ public static class AuthConfiguration
             .AddAuthentication("defaultBearer")
             // using the scheme JwtBearerDefaults.AuthenticationScheme (Bearer)
             .AddJwtBearer(async authOptions => await JwtBearerConfiguration.Configure(authOptions, appSettings, events, featureManager))
-            .AddJwtBearer("APIBearer", options =>
+            .AddJwtBearer("FunctionAppBearer", options =>
             {
-                options.Authority = "https://login.microsoftonline.com/8e1f0aca-d87d-4f20-939e-36243d574267/v2.0";
-                options.Audience = "api://a64530ca-1bf5-4ba9-a3c7-7340c602146e";
+                options.Authority = appSettings.MicrosoftEntraSettings.Authority;
+                options.Audience = appSettings.MicrosoftEntraSettings.IrasServiceAPIID; 
                 options.Events = events;
             })
             .AddPolicyScheme("defaultBearer", null, options =>
@@ -112,12 +112,11 @@ public static class AuthConfiguration
 
                         // get the token to verify the issuer
                         var jwtSecurityToken = jwtHandler.ReadJwtToken(token);
-                    return jwtSecurityToken.Issuer switch
-                    {
-                        "https://login.microsoftonline.com/8e1f0aca-d87d-4f20-939e-36243d574267/v2.0" => "APIBearer",
-                        _ => JwtBearerDefaults.AuthenticationScheme
-                    };
 
+                    // based on the issuer, we will forward the request to the appropriate scheme
+                    // if the token issuer is the one for OneLogin, use the default JwtBearer scheme
+                    // if the issuer is the one for Microsoft Entra ID, use the FunctionAppBearer scheme
+                    return jwtSecurityToken.Issuer == appSettings.MicrosoftEntraSettings.Authority ? "FunctionAppBearer" : JwtBearerDefaults.AuthenticationScheme;
                 };
             });
     }

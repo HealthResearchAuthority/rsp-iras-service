@@ -96,6 +96,8 @@ services
         {
             options.Filters.Add<LogActionFilter>();
         }
+        options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+
     })
     .AddJsonOptions(options =>
     {

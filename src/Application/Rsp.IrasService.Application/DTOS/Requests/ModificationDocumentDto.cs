@@ -15,12 +15,12 @@ public class ModificationDocumentDto
     /// <summary>
     /// Gets or sets the project record identifier.
     /// </summary>
-    public string ProjectRecordId { get; set; } = null!;
+    public string ProjectRecordId { get; set; }
 
     /// <summary>
     /// Gets or sets the project personnel identifier.
     /// </summary>
-    public string ProjectPersonnelId { get; set; } = null!;
+    public string ProjectPersonnelId { get; set; }
 
     /// <summary>
     /// Gets or sets the document file name.
@@ -36,4 +36,9 @@ public class ModificationDocumentDto
     /// Gets or sets the document file size.
     /// </summary>
     public long? FileSize { get; set; }
+
+    /// <summary>
+    /// Gets or sets the document scan status.
+    /// </summary>
+    public string? DocumentStatus { get; set; }
 }

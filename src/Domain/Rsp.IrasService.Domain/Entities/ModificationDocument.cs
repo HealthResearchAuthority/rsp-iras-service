@@ -38,6 +38,11 @@ public class ModificationDocument
     public int? FileSize { get; set; }
 
     /// <summary>
+    /// Gets or sets the document scan status.
+    /// </summary>
+    public string? DocumentStatus { get; set; }
+
+    /// <summary>
     /// Navigation property to the related project personnel.
     /// </summary>
     public ProjectPersonnel? ProjectPersonnel { get; set; }
