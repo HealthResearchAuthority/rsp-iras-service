@@ -12,6 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Data\DocumentTypes.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Data\ModificationAreaOfChanges.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
