@@ -2,10 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Rsp.IrasService.Application.CQRS.Commands;
-using Rsp.IrasService.Application.CQRS.Queries;
 using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Application.DTOS.Responses;
-using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.WebApi.Controllers;
 
@@ -15,32 +12,25 @@ namespace Rsp.IrasService.WebApi.Controllers;
 public class DocumentsController(IMediator mediator) : ControllerBase
 {
     /// <summary>
-    /// Gets all modifications with filtering, sorting and pagination
-    /// <param name="searchQuery">Object containing filtering criteria for modifications.</param>
-    /// <param name="pageNumber">The number of the page to retrieve (used for pagination - 1-based).</param>
-    /// <param name="pageSize">The number of items per page (used for pagination).</param>
-    /// <param name="sortField">The field name by which the results should be sorted.</param>
-    /// <param name="sortDirection">The direction of sorting: "asc" for ascending or "desc" for descending.</param>
-    /// <returns>Returns a paginated list of modifications matching the search criteria.</returns>
+    ///     Gets all modifications with filtering, sorting and pagination
+    ///     <param name="searchQuery">Object containing filtering criteria for modifications.</param>
+    ///     <param name="pageNumber">The number of the page to retrieve (used for pagination - 1-based).</param>
+    ///     <param name="pageSize">The number of items per page (used for pagination).</param>
+    ///     <param name="sortField">The field name by which the results should be sorted.</param>
+    ///     <param name="sortDirection">The direction of sorting: "asc" for ascending or "desc" for descending.</param>
+    ///     <returns>Returns a paginated list of modifications matching the search criteria.</returns>
     [HttpPost("updatedocumentscanstatus")]
-    public async Task<ActionResult<ModificationResponse>> updatedocumentscanstatus(
-        [FromBody] ModificationSearchRequest searchQuery,
-        int pageNumber,
-        int pageSize,
-        string sortField,
-        string sortDirection)
+    public async Task<IActionResult> UpdateDocumentScanStatus(
+        [FromBody] ModificationDocumentDto searchQuery)
     {
-        if (pageNumber <= 0)
+        if (searchQuery.Id == Guid.Empty || string.IsNullOrWhiteSpace(searchQuery.DocumentStoragePath))
         {
-            return BadRequest("pageIndex must be greater than 0.");
-        }
-        if (pageSize <= 0)
-        {
-            return BadRequest("pageSize must be greater than 0.");
+            return BadRequest("Either Id or DocumentStoragePath must be provided.");
         }
 
-        var query = new GetModificationsQuery(searchQuery, pageNumber, pageSize, sortField, sortDirection);
+        var query = new UpdateModificationDocumentCommand(searchQuery);
+        await mediator.Send(query);
 
-        return await mediator.Send(query);
+        return Ok();
     }
 }
