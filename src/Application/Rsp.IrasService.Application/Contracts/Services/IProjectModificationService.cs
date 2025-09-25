@@ -42,4 +42,12 @@ public interface IProjectModificationService : IInterceptable
     Task<ModificationResponse> GetModificationsByIds(List<string> Ids);
 
     Task AssignModificationsToReviewer(List<string> modificationIds, string reviewerId);
+
+    Task<ProjectOverviewDocumentResponse> GetDocumentsForProjectOverview(
+       string projectRecordId,
+       ProjectOverviewDocumentSearchRequest searchQuery,
+       int pageNumber,
+       int pageSize,
+       string sortField,
+       string sortDirection);
 }
