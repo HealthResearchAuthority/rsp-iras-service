@@ -112,6 +112,30 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         await irasContext.SaveChangesAsync();
     }
 
+    public IEnumerable<ProjectOverviewDocumentResult> GetDocumentsForProjectOverview(
+        ProjectOverviewDocumentSearchRequest searchQuery,
+        int pageNumber,
+        int pageSize,
+        string sortField,
+        string sortDirection,
+        string? projectRecordId = null)
+    {
+        var modifications = ProjectOverviewDocumentsQuery(searchQuery, projectRecordId);
+
+        var filtered = FilterProjectOverviewDocuments(modifications, searchQuery);
+        var sorted = SortProjectOverviewDocuments(filtered, sortField, sortDirection);
+
+        return sorted
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize);
+    }
+
+    public int GetDocumentsForProjectOverviewCount(ProjectOverviewDocumentSearchRequest searchQuery, string? projectRecordId = null)
+    {
+        var modifications = ProjectOverviewDocumentsQuery(searchQuery, projectRecordId);
+        return FilterProjectOverviewDocuments(modifications, searchQuery).Count();
+    }
+
     private IQueryable<ProjectModificationResult> ProjectModificationQuery(string? projectRecordId = null)
     {
         var projectRecords = irasContext.ProjectRecords.AsQueryable();
@@ -252,5 +276,113 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             2 => "Minor modification",
             _ => ""
         };
+    }
+
+    /// <summary>
+    /// Builds an IQueryable of project overview documents by walking down
+    /// ProjectModifications → ProjectModificationChanges → ModificationDocuments → ModificationDocumentAnswers.
+    /// </summary>
+    private IQueryable<ProjectOverviewDocumentResult> ProjectOverviewDocumentsQuery(
+    ProjectOverviewDocumentSearchRequest searchQuery,
+    string? projectRecordId = null)
+    {
+        var projectRecords = irasContext.ProjectRecords.AsQueryable();
+        var modificationDocuments = irasContext.ModificationDocuments.AsQueryable();
+        var modificationDocumentAnswers = irasContext.ModificationDocumentAnswers.AsQueryable();
+
+        var query = from pm in irasContext.ProjectModifications
+                    join pr in projectRecords on pm.ProjectRecordId equals pr.Id
+                    join pmc in irasContext.ProjectModificationChanges on pm.Id equals pmc.ProjectModificationId
+                    join md in modificationDocuments on pmc.Id equals md.ProjectModificationChangeId
+                    where string.IsNullOrEmpty(projectRecordId) || pr.Id == projectRecordId
+                    select new
+                    {
+                        md.FileName,
+                        md.DocumentStoragePath,
+                        DocumentType = modificationDocumentAnswers
+                            .Where(a => a.ModificationDocumentId == md.Id && a.QuestionId == ModificationQuestionIds.DocumentType)
+                            .Select(a => a.SelectedOptions)
+                            .FirstOrDefault(),
+                        DocumentVersion = modificationDocumentAnswers
+                            .Where(a => a.ModificationDocumentId == md.Id && a.QuestionId == ModificationQuestionIds.DocumentVersion)
+                            .Select(a => a.Response)
+                            .FirstOrDefault(),
+                        DocumentDateRaw = modificationDocumentAnswers
+                            .Where(a => a.ModificationDocumentId == md.Id && a.QuestionId == ModificationQuestionIds.DocumentDate)
+                            .Select(a => a.Response)
+                            .FirstOrDefault(),
+                        Status = pmc.Status ?? string.Empty,
+                        pm.ModificationIdentifier
+                    };
+
+        return query
+            .AsEnumerable() // switch to in-memory for parsing
+            .Select(x =>
+            {
+                DateTime? parsedDate = null;
+
+                if (!string.IsNullOrWhiteSpace(x.DocumentDateRaw) && DateTime.TryParseExact(
+                            x.DocumentDateRaw,
+                            "yyyy-MM-dd",
+                            null,
+                            System.Globalization.DateTimeStyles.None,
+                            out var dt))
+                {
+                    parsedDate = dt;
+                }
+
+                return new ProjectOverviewDocumentResult
+                {
+                    FileName = x.FileName,
+                    DocumentStoragePath = x.DocumentStoragePath,
+
+                    DocumentType = !string.IsNullOrEmpty(x.DocumentType) &&
+                                   searchQuery.DocumentTypes.TryGetValue(x.DocumentType, out var friendlyName)
+                        ? friendlyName
+                        : x.DocumentType ?? string.Empty,
+
+                    DocumentVersion = x.DocumentVersion ?? string.Empty,
+                    DocumentDate = parsedDate, // will be null if not found or invalid
+                    Status = x.Status ?? string.Empty,
+                    ModificationIdentifier = x.ModificationIdentifier
+                };
+            })
+            .AsQueryable();
+    }
+
+    private static IEnumerable<ProjectOverviewDocumentResult> FilterProjectOverviewDocuments(IQueryable<ProjectOverviewDocumentResult> modifications, ProjectOverviewDocumentSearchRequest searchQuery)
+    {
+        return modifications
+            .AsEnumerable()
+            .Select(mod => mod)
+            .Where(x =>
+                (string.IsNullOrEmpty(searchQuery.IrasId)
+                 || x.DocumentType.Contains(searchQuery.IrasId, StringComparison.OrdinalIgnoreCase)));
+    }
+
+    private static IEnumerable<ProjectOverviewDocumentResult> SortProjectOverviewDocuments(IEnumerable<ProjectOverviewDocumentResult> modifications, string sortField, string sortDirection)
+    {
+        if (string.IsNullOrWhiteSpace(sortField))
+        {
+            return modifications.OrderBy(x => x.DocumentType.ToLowerInvariant());
+        }
+
+        Func<ProjectOverviewDocumentResult, object>? keySelector = sortField switch
+        {
+            nameof(ProjectOverviewDocumentResult.DocumentType) => x => x.DocumentType.ToLowerInvariant(),
+            nameof(ProjectOverviewDocumentResult.FileName) => x => x.FileName.ToLowerInvariant(),
+            nameof(ProjectOverviewDocumentResult.DocumentVersion) => x => x.DocumentVersion.ToLowerInvariant(),
+            nameof(ProjectOverviewDocumentResult.DocumentDate) => x => x.DocumentDate ?? DateTime.MinValue,
+            nameof(ProjectOverviewDocumentResult.Status) => x => x.Status.ToLowerInvariant(),
+            nameof(ProjectOverviewDocumentResult.ModificationIdentifier) => x => x.ModificationIdentifier.ToLowerInvariant(),
+            _ => null
+        };
+
+        if (keySelector == null)
+            return modifications.OrderBy(x => x.DocumentType.ToLowerInvariant());
+
+        return string.Equals(sortDirection, "desc", StringComparison.OrdinalIgnoreCase)
+        ? modifications.OrderByDescending(keySelector)
+        : modifications.OrderBy(keySelector);
     }
 }

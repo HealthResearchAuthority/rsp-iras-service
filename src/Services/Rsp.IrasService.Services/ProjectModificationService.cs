@@ -96,4 +96,23 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
     {
         return projectModificationRepository.AssignModificationsToReviewer(modificationIds, reviewerId);
     }
+
+    public Task<ProjectOverviewDocumentResponse> GetDocumentsForProjectOverview(
+        string projectRecordId,
+        ProjectOverviewDocumentSearchRequest searchQuery,
+        int pageNumber,
+        int pageSize,
+        string sortField,
+        string sortDirection)
+    {
+        var modifications = projectModificationRepository.GetDocumentsForProjectOverview(searchQuery, pageNumber, pageSize, sortField, sortDirection, projectRecordId);
+        var totalCount = projectModificationRepository.GetDocumentsForProjectOverviewCount(searchQuery, projectRecordId);
+
+        return Task.FromResult(new ProjectOverviewDocumentResponse
+        {
+            Documents = modifications.Adapt<IEnumerable<ProjectOverviewDocumentDto>>(),
+            TotalCount = totalCount,
+            ProjectRecordId = projectRecordId
+        });
+    }
 }
