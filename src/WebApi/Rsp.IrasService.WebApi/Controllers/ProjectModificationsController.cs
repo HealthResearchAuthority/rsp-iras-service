@@ -198,4 +198,29 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
 
         return await mediator.Send(query);
     }
+
+    /// <summary>
+    /// Deletes a modification change by its unique identifier.
+    /// </summary>
+    /// <param name="modificationChangeId">The unique identifier of the modification change to delete.</param>
+    [HttpDelete("remove")]
+    public async Task RemoveModificationChange(Guid modificationChangeId)
+    {
+        var request = new RemoveModificationChangeCommand(modificationChangeId);
+
+        await mediator.Send(request);
+    }
+
+    /// <summary>
+    /// Updates a modification by its unique identifier.
+    /// </summary>
+    /// <param name="modificationId">The unique identifier of the modification to update.</param>
+    /// <param name="status">The new status for modification to update.</param>
+    [HttpPost("update")]
+    public async Task UpdateModificationStatus(Guid modificationId, string status)
+    {
+        var request = new UpdateModificationStatusCommand(modificationId, status);
+
+        await mediator.Send(request);
+    }
 }

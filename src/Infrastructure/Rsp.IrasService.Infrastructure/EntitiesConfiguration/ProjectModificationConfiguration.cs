@@ -11,12 +11,6 @@ public class ProjectModificationConfiguration : IEntityTypeConfiguration<Project
     {
         builder.HasKey(r => r.Id);
 
-        //builder
-        //   .HasOne(ra => ra.ProjectRecord)
-        //   .WithMany()
-        //   .HasForeignKey(r => r.ProjectRecordId)
-        //   .OnDelete(DeleteBehavior.Cascade);
-
         builder.HasData(JsonHelper.Parse<ProjectModification>("ProjectModifications.json"));
     }
 }

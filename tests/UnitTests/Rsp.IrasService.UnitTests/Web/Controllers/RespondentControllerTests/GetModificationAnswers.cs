@@ -18,7 +18,7 @@ public class GetModificationAnswers : TestServiceBase<RespondentController>
         var mediator = Mocker.GetMock<IMediator>();
 
         mediator
-            .Setup(m => m.Send(It.IsAny<GetModificationAnswersQuery>(), It.IsAny<CancellationToken>()))
+            .Setup(m => m.Send(It.IsAny<GetModificationChangeAnswersQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(expected);
 
         // Act
@@ -32,7 +32,7 @@ public class GetModificationAnswers : TestServiceBase<RespondentController>
             (m => m
                 .Send
                 (
-                    It.Is<GetModificationAnswersQuery>
+                    It.Is<GetModificationChangeAnswersQuery>
                     (q =>
                         q.ProjectModificationChangeId == modificationChangeId &&
                         q.ProjectRecordId == projectRecordId &&
@@ -56,7 +56,7 @@ public class GetModificationAnswers : TestServiceBase<RespondentController>
         var mediator = Mocker.GetMock<IMediator>();
 
         mediator
-            .Setup(m => m.Send(It.IsAny<GetModificationAnswersQuery>(), It.IsAny<CancellationToken>()))
+            .Setup(m => m.Send(It.IsAny<GetModificationChangeAnswersQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(expected);
 
         // Act
@@ -70,7 +70,7 @@ public class GetModificationAnswers : TestServiceBase<RespondentController>
             (m => m
                 .Send
                 (
-                    It.Is<GetModificationAnswersQuery>
+                    It.Is<GetModificationChangeAnswersQuery>
                     (q =>
                         q.ProjectModificationChangeId == modificationChangeId &&
                         q.ProjectRecordId == projectRecordId &&

@@ -139,4 +139,27 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
             ProjectRecordId = projectRecordId
         });
     }
+
+    /// <summary>
+    /// Removes an existing modification change by its unique identifier.
+    /// </summary>
+    /// <param name="modificationChangeId">The unique identifier of the modification change to remove.</param>
+    public async Task RemoveModificationChange(Guid modificationChangeId)
+    {
+        var specification = new GetModificationChangeSpecification(modificationChangeId);
+
+        await projectModificationRepository.RemoveModificationChange(specification);
+    }
+
+    /// <summary>
+    /// Updates an existing modification status by its unique identifier. And also updates
+    /// the status of the associated modification changes.
+    /// </summary>
+    /// <param name="modificationId">The unique identifier of the modification change to remove.</param>
+    public async Task UpdateModificationStatus(Guid modificationId, string status)
+    {
+        var specification = new GetModificationSpecification(modificationId);
+
+        await projectModificationRepository.UpdateModificationStatus(specification, status);
+    }
 }

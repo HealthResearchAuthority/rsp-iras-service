@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rsp.IrasService.Infrastructure;
 
@@ -11,9 +12,11 @@ using Rsp.IrasService.Infrastructure;
 namespace Rsp.IrasService.Infrastructure.Migrations
 {
     [DbContext(typeof(IrasContext))]
-    partial class IrasContextModelSnapshot : ModelSnapshot
+    [Migration("20250926091747_RenameProjectModificationAnswersTable")]
+    partial class RenameProjectModificationAnswersTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -909,53 +912,6 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                             UpdatedBy = "Test Personnel",
                             UpdatedDate = new DateTime(2009, 1, 26, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
-                });
-
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModificationAnswer", b =>
-                {
-                    b.Property<Guid>("ProjectModificationId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("QuestionId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ProjectPersonnelId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OptionType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProjectRecordId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Response")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Section")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SelectedOptions")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("VersionId")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("published version");
-
-                    b.HasKey("ProjectModificationId", "QuestionId", "ProjectPersonnelId");
-
-                    b.HasIndex("ProjectPersonnelId");
-
-                    b.HasIndex("ProjectRecordId");
-
-                    b.ToTable("ProjectModificationAnswers");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModificationChange", b =>
@@ -3870,33 +3826,6 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         .HasForeignKey("ProjectRecordId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModificationAnswer", b =>
-                {
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectModificationChange", "ProjectModification")
-                        .WithMany()
-                        .HasForeignKey("ProjectModificationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectPersonnel", "ProjectPersonnel")
-                        .WithMany()
-                        .HasForeignKey("ProjectPersonnelId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectRecord", "ProjectRecord")
-                        .WithMany()
-                        .HasForeignKey("ProjectRecordId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("ProjectModification");
-
-                    b.Navigation("ProjectPersonnel");
-
-                    b.Navigation("ProjectRecord");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModificationChange", b =>

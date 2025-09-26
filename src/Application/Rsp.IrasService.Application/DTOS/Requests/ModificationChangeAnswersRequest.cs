@@ -1,14 +1,14 @@
 ﻿namespace Rsp.IrasService.Application.DTOS.Requests;
 
 /// <summary>
-/// Request DTO containing answers for a project modification.
+/// Request DTO containing answers for a project modification change.
 /// </summary>
-public record ModificationAnswersRequest
+public record ModificationChangeAnswersRequest
 {
     /// <summary>
-    /// Gets or sets the project modification identifier.
+    /// Gets or sets the project modification change identifier.
     /// </summary>
-    public Guid ProjectModificationId { get; set; }
+    public Guid ProjectModificationChangeId { get; set; }
 
     /// <summary>
     /// Gets or sets the project record identifier.
@@ -23,5 +23,5 @@ public record ModificationAnswersRequest
     /// <summary>
     /// Gets or sets the list of respondent answers for the modification.
     /// </summary>
-    public List<RespondentAnswerDto> ModificationAnswers { get; set; } = [];
+    public List<RespondentAnswerDto> ModificationChangeAnswers { get; set; } = [];
 }

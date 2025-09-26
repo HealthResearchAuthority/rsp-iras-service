@@ -23,6 +23,13 @@ public interface IProjectPersonnelRepository
     Task<IEnumerable<ProjectModificationAnswer>> GetResponses(ISpecification<ProjectModificationAnswer> specification);
 
     /// <summary>
+    /// Retrieves project modification change answers matching the given specification.
+    /// </summary>
+    /// <param name="specification">The specification to filter project modification answers.</param>
+    /// <returns>A collection of <see cref="ProjectModificationChangeAnswer"/> objects.</returns>
+    Task<IEnumerable<ProjectModificationChangeAnswer>> GetResponses(ISpecification<ProjectModificationChangeAnswer> specification);
+
+    /// <summary>
     /// Retrieves document types matching the given specification.
     /// </summary>
     /// <param name="specification">The specification to filter project document types.</param>
@@ -77,6 +84,13 @@ public interface IProjectPersonnelRepository
     /// <param name="specification">The specification to filter which modification answers to save.</param>
     /// <param name="respondentAnswers">The list of modification answers to save.</param>
     Task SaveModificationResponses(ISpecification<ProjectModificationAnswer> specification, List<ProjectModificationAnswer> respondentAnswers);
+
+    /// <summary>
+    /// Saves the provided project modification answers that match the given specification.
+    /// </summary>
+    /// <param name="specification">The specification to filter which modification answers to save.</param>
+    /// <param name="respondentAnswers">The list of modification answers to save.</param>
+    Task SaveModificationChangeResponses(ISpecification<ProjectModificationChangeAnswer> specification, List<ProjectModificationChangeAnswer> respondentAnswers);
 
     /// <summary>
     /// Saves the provided project modification documents that match the given specification.

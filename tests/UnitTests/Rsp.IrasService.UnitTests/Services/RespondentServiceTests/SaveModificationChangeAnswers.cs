@@ -8,14 +8,14 @@ using Rsp.IrasService.Services;
 namespace Rsp.IrasService.UnitTests.Services.RespondentServiceTests;
 
 /// <summary>
-///     Covers the tests for SaveModificationAnswers method
+///     Covers the tests for SaveModificationChangeAnswers method
 /// </summary>
-public class SaveModificationAnswers : TestServiceBase<RespondentService>
+public class SaveModificationChangeAnswers : TestServiceBase<RespondentService>
 {
     private readonly RespondentRepository _personnelRepository;
     private readonly IrasContext _context;
 
-    public SaveModificationAnswers()
+    public SaveModificationChangeAnswers()
     {
         var options = new DbContextOptionsBuilder<IrasContext>()
             .UseInMemoryDatabase(Guid.NewGuid().ToString("N")).Options;
@@ -28,7 +28,7 @@ public class SaveModificationAnswers : TestServiceBase<RespondentService>
     ///     Tests that modification answers are saved
     /// </summary>
     [Theory, AutoData]
-    public async Task Persists_ModificationAnswers(ModificationAnswersRequest request)
+    public async Task Persists_ModificationAnswers(ModificationChangeAnswersRequest request)
     {
         // Arrange
         Mocker.Use<IProjectPersonnelRepository>(_personnelRepository);
@@ -36,9 +36,9 @@ public class SaveModificationAnswers : TestServiceBase<RespondentService>
         Sut = Mocker.CreateInstance<RespondentService>();
 
         // Act
-        await Sut.SaveModificationAnswers(request);
+        await Sut.SaveModificationChangeAnswers(request);
 
         // Assert
-        (await _context.ProjectModificationAnswers.CountAsync()).ShouldBe(request.ModificationAnswers.Count);
+        (await _context.ProjectModificationChangeAnswers.CountAsync()).ShouldBe(request.ModificationChangeAnswers.Count);
     }
 }

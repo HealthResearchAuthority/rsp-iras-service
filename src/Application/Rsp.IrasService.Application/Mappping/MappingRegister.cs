@@ -57,7 +57,7 @@ public class MappingRegister : IRegister
 
         // RespondentAnswerDto -> ProjectModificationAnswer mapping
         config
-            .NewConfig<RespondentAnswerDto, ProjectModificationAnswer>()
+            .NewConfig<RespondentAnswerDto, ProjectModificationChangeAnswer>()
             .Ignore(ra => ra.ProjectModificationChangeId)
             .Ignore(ra => ra.ProjectPersonnelId)
             .Ignore(ra => ra.ProjectRecordId)
@@ -70,7 +70,7 @@ public class MappingRegister : IRegister
 
         // ProjectModificationAnswer -> RespondentAnswerDto mapping
         config
-            .NewConfig<ProjectModificationAnswer, RespondentAnswerDto>()
+            .NewConfig<ProjectModificationChangeAnswer, RespondentAnswerDto>()
             .Map(dest => dest.VersionId, source => source.VersionId)
             .Map(dest => dest.CategoryId, source => source.Category)
             .Map(dest => dest.SectionId, source => source.Section)

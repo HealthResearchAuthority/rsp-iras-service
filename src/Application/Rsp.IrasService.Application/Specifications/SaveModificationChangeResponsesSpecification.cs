@@ -3,23 +3,23 @@ using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Application.Specifications;
 
-public class SaveModificationResponsesSpecification : Specification<ProjectModificationAnswer>
+public class SaveModificationChangeResponsesSpecification : Specification<ProjectModificationChangeAnswer>
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="SaveModificationResponsesSpecification"/> class.
-    /// Defines a specification to return all <see cref="ProjectModificationAnswer"/> records
+    /// Initializes a new instance of the <see cref="SaveModificationChangeResponsesSpecification"/> class.
+    /// Defines a specification to return all <see cref="ProjectModificationChangeAnswer"/> records
     /// for the specified modificationChangeId, projectRecordId, and projectPersonnelId.
     /// </summary>
     /// <param name="modificationChangeId">Unique identifier of the project modification change.</param>
     /// <param name="projectRecordId">Unique identifier of the project record.</param>
     /// <param name="projectPersonnelId">Identifier of the project personnel who submitted the change.</param>
-    public SaveModificationResponsesSpecification(Guid modificationId, string projectRecordId, string projectPersonnelId)
+    public SaveModificationChangeResponsesSpecification(Guid modificationChangeId, string projectRecordId, string projectPersonnelId)
     {
         Query
             .Where
             (
                 entity =>
-                entity.ProjectModificationId == modificationId &&
+                entity.ProjectModificationChangeId == modificationChangeId &&
                 entity.ProjectRecordId == projectRecordId &&
                 entity.ProjectPersonnelId == projectPersonnelId
             );

@@ -11,15 +11,15 @@ public class GetModificationAnswersSpecification : Specification<ProjectModifica
     /// <summary>
     /// Initializes a new instance of the <see cref="GetModificationAnswersSpecification"/> class to return all records for the specified modification change, project record, and category.
     /// </summary>
-    /// <param name="modificationChangeId">Unique Id of the change added to the modification.</param>
+    /// <param name="modificationId">Unique Id of the change added to the modification.</param>
     /// <param name="projectRecordId">Unique Id of the application to get. Default: null for all records.</param>
     /// <param name="categoryId">Category Id of the questions to be returned.</param>
-    public GetModificationAnswersSpecification(Guid modificationChangeId, string projectRecordId, string categoryId)
+    public GetModificationAnswersSpecification(Guid modificationId, string projectRecordId, string categoryId)
     {
         Query
             .AsNoTracking()
             .Where(entity =>
-                entity.ProjectModificationChangeId == modificationChangeId &&
+                entity.ProjectModificationId == modificationId &&
                 entity.ProjectRecordId == projectRecordId &&
                 entity.Category == categoryId
             );
@@ -28,14 +28,14 @@ public class GetModificationAnswersSpecification : Specification<ProjectModifica
     /// <summary>
     /// Initializes a new instance of the <see cref="GetModificationAnswersSpecification"/> class to return all records for the specified modification change and project record.
     /// </summary>
-    /// <param name="modificationChangeId">Unique Id of the change added to the modification.</param>
+    /// <param name="modificationId">Unique Id of the change added to the modification.</param>
     /// <param name="projectRecordId">Unique Id of the application to get.</param>
-    public GetModificationAnswersSpecification(Guid modificationChangeId, string projectRecordId)
+    public GetModificationAnswersSpecification(Guid modificationId, string projectRecordId)
     {
         Query
             .AsNoTracking()
             .Where(entity =>
-                entity.ProjectModificationChangeId == modificationChangeId &&
+                entity.ProjectModificationId == modificationId &&
                 entity.ProjectRecordId == projectRecordId
             );
     }

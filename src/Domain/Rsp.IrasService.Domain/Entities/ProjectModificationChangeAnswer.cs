@@ -3,12 +3,12 @@
 /// <summary>
 /// Represents an answer to a project modification question.
 /// </summary>
-public class ProjectModificationAnswer
+public class ProjectModificationChangeAnswer
 {
     /// <summary>
     /// Gets or sets the unique identifier for the project modification change.
     /// </summary>
-    public Guid ProjectModificationId { get; set; }
+    public Guid ProjectModificationChangeId { get; set; }
 
     /// <summary>
     /// Gets or sets the identifier of the question being answered.
@@ -68,5 +68,5 @@ public class ProjectModificationAnswer
     /// <summary>
     /// Navigation property to the related project modification change.
     /// </summary>
-    public ProjectModificationChange? ProjectModification { get; set; }
+    public ProjectModificationChange? ProjectModificationChange { get; set; }
 }

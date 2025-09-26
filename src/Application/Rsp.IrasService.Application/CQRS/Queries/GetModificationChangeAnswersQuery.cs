@@ -4,14 +4,14 @@ using Rsp.IrasService.Application.DTOS.Requests;
 namespace Rsp.IrasService.Application.CQRS.Queries;
 
 /// <summary>
-/// Query to retrieve respondent answers for a specific project modification.
+/// Query to retrieve respondent answers for a specific project modification change.
 /// </summary>
-public class GetModificationAnswersQuery : IRequest<IEnumerable<RespondentAnswerDto>>
+public class GetModificationChangeAnswersQuery : IRequest<IEnumerable<RespondentAnswerDto>>
 {
     /// <summary>
     /// Gets or sets the project modification change identifier.
     /// </summary>
-    public Guid ProjectModificationId { get; set; }
+    public Guid ProjectModificationChangeId { get; set; }
 
     /// <summary>
     /// Gets or sets the project record identifier.

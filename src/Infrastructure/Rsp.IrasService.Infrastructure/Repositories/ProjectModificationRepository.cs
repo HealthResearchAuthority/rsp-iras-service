@@ -1,4 +1,5 @@
 ﻿using System.Security.Cryptography;
+using Ardalis.Specification;
 using Ardalis.Specification.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Application.Constants;
@@ -406,5 +407,66 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         return string.Equals(sortDirection, "desc", StringComparison.OrdinalIgnoreCase)
         ? modifications.OrderByDescending(keySelector)
         : modifications.OrderBy(keySelector);
+    }
+
+    /// <summary>
+    /// Removes a single <see cref="ProjectModificationChange"/> that matches the provided specification.
+    /// If no matching entity is found, the method completes without making any changes.
+    /// </summary>
+    /// <param name="specification">The specification used to locate the modification change to remove.</param>
+    public async Task RemoveModificationChange(ISpecification<ProjectModificationChange> specification)
+    {
+        // Attempt to find a single ProjectModificationChange matching the given specification.
+        // Using FirstOrDefaultAsync to avoid exceptions if no entity matches the criteria.
+        var modificationChange = await irasContext
+            .ProjectModificationChanges
+            .WithSpecification(specification)
+            .FirstOrDefaultAsync();
+
+        // If no entity was found, there is nothing to remove.
+        if (modificationChange == null)
+        {
+            return;
+        }
+
+        // Mark the entity for deletion and persist changes.
+        irasContext.ProjectModificationChanges.Remove(modificationChange);
+
+        // Save the changes to the database.
+        await irasContext.SaveChangesAsync();
+    }
+
+    /// <summary>
+    /// Updates the status <see cref="ProjectModification"/> of the modification that matches the provided specification.
+    /// It also updates the status of the modification changes for this modification, to keep in sync
+    /// If no matching entity is found, the method completes without making any changes.
+    /// </summary>
+    /// <param name="specification">The specification used to locate the modification to update.</param>
+    public async Task UpdateModificationStatus(ISpecification<ProjectModification> specification, string status)
+    {
+        // Attempt to find a single ProjectModification matching the given specification.
+        // Using FirstOrDefaultAsync to avoid exceptions if no entity matches the criteria.
+        var modification = await irasContext
+            .ProjectModifications
+            .Include(pm => pm.ProjectModificationChanges)
+            .WithSpecification(specification)
+            .FirstOrDefaultAsync();
+
+        // If no entity was found, there is nothing to remove.
+        if (modification == null)
+        {
+            return;
+        }
+
+        // update the modification changes status as well
+        foreach (var change in modification.ProjectModificationChanges)
+        {
+            change.Status = status;
+        }
+
+        modification.Status = status;
+
+        // Save the changes to the database.
+        await irasContext.SaveChangesAsync();
     }
 }

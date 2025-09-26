@@ -1,4 +1,5 @@
-﻿using Rsp.IrasService.Application.DTOS.Requests;
+﻿using Ardalis.Specification;
+using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.Specifications;
 using Rsp.IrasService.Domain.Entities;
 
@@ -101,4 +102,24 @@ public interface IProjectModificationRepository
         string? projectRecordId = null);
 
     int GetDocumentsForProjectOverviewCount(ProjectOverviewDocumentSearchRequest searchQuery, string? projectRecordId = null);
+
+    /// <summary>
+    /// Removes one or more <see cref="ProjectModificationChange"/> entities that satisfy the provided specification.
+    /// </summary>
+    /// <param name="specification">Specification that identifies the change(s) to remove. Must not be null.</param>
+    /// <returns>Task representing the asynchronous delete operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="specification"/> is null.</exception>
+    /// <remarks>
+    /// Implementations should treat this as an idempotent operation: if no entities match, the method completes without error.
+    /// Implementations may choose to remove all matches or enforce that the specification uniquely identifies a single entity.
+    /// </remarks>
+    Task RemoveModificationChange(ISpecification<ProjectModificationChange> specification);
+
+    /// <summary>
+    /// Updates the status <see cref="ProjectModification"/> of the modification that matches the provided specification.
+    /// It also updates the status of the modification changes for this modification, to keep in sync
+    /// If no matching entity is found, the method completes without making any changes.
+    /// </summary>
+    /// <param name="specification">The specification used to locate the modification to update.</param>
+    Task UpdateModificationStatus(ISpecification<ProjectModification> specification, string status);
 }

@@ -4,20 +4,20 @@ using Rsp.IrasService.WebApi.Controllers;
 
 namespace Rsp.IrasService.UnitTests.Web.Controllers.RespondentControllerTests;
 
-public class SaveModificationAnswers : TestServiceBase<RespondentController>
+public class SaveModificationChangeAnswers : TestServiceBase<RespondentController>
 {
     [Theory, AutoData]
-    public async Task SaveModificationAnswers_SendsCommand(ModificationAnswersRequest request)
+    public async Task SaveModificationChangeAnswers_SendsCommand(ModificationChangeAnswersRequest request)
     {
         // Arrange
         var mediator = Mocker.GetMock<IMediator>();
 
         mediator
-            .Setup(m => m.Send(It.IsAny<SaveModificationAnswersCommand>(), It.IsAny<CancellationToken>()))
+            .Setup(m => m.Send(It.IsAny<SaveModificationChangeAnswersCommand>(), It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
 
         // Act
-        await Sut.SaveModificationAnswers(request);
+        await Sut.SaveModificationChangeAnswers(request);
 
         // Assert
         mediator
@@ -25,7 +25,7 @@ public class SaveModificationAnswers : TestServiceBase<RespondentController>
             (m => m
                 .Send
                 (
-                    It.Is<SaveModificationAnswersCommand>(cmd => cmd.ModificationAnswersRequest == request),
+                    It.Is<SaveModificationChangeAnswersCommand>(cmd => cmd.ModificationAnswersRequest == request),
                     It.IsAny<CancellationToken>()
                 ),
                 Times.Once

@@ -99,4 +99,18 @@ public interface IProjectModificationService : IInterceptable
        int pageSize,
        string sortField,
        string sortDirection);
+
+    /// <summary>
+    /// Removes an existing modification change by its unique identifier.
+    /// </summary>
+    /// <param name="modificationChangeId">The unique identifier of the modification change to remove.</param>
+    /// <returns>A task representing the asynchronous remove operation.</returns>
+    Task RemoveModificationChange(Guid modificationChangeId);
+
+    /// <summary>
+    /// Updates an existing modification status by its unique identifier. And also updates
+    /// the status of the associated modification changes.
+    /// </summary>
+    /// <param name="modificationId">The unique identifier of the modification change to remove.</param>
+    Task UpdateModificationStatus(Guid modificationId, string status);
 }
