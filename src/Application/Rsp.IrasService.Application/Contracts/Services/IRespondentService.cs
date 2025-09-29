@@ -145,4 +145,10 @@ public interface IRespondentService : IInterceptable
     Task SaveModificationParticipatingOrganisationAnswerResponses(ModificationParticipatingOrganisationAnswerDto respondentAnswer);
 
     Task SaveModificationDocumentAnswerResponses(List<ModificationDocumentAnswerDto> respondentAnswer);
+
+    /// <summary>
+    /// Saves the provided project modification documents that match the given specification.
+    /// </summary>
+    /// <param name="respondentAnswers">The list of modification documents to save.</param>
+    Task DeleteModificationDocumentResponses(List<ModificationDocumentDto> respondentAnswers);
 }

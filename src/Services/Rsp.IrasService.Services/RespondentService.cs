@@ -369,4 +369,30 @@ public class RespondentService(IProjectPersonnelRepository projectPersonnelRepos
 
         await projectPersonnelRepository.SaveModificationParticipatingOrganisationAnswerResponses(specification, respondentOrganisationAnswer);
     }
+
+    /// <summary>
+    /// Saves the list of document responses associated with a modification change.
+    /// </summary>
+    /// <param name="respondentAnswers">A list of document DTOs to be saved for the specified modification.</param>
+    /// <returns>A task that represents the asynchronous save operation.</returns>
+    public async Task DeleteModificationDocumentResponses(List<ModificationDocumentDto> respondentAnswers)
+    {
+        if (respondentAnswers == null || !respondentAnswers.Any())
+        {
+            return; // Exit early if the list is null or empty
+        }
+
+        // Extract all document Ids
+        var ids = respondentAnswers.Select(a => a.Id).ToList();
+
+        // Create the specification to fetch all docs + their answers
+        var specification = new DeleteModificationDocumentsSpecification(ids);
+
+        // Map DTOs into entities (for deletion tracking in the repo)
+        var respondentDocuments = respondentAnswers
+            .Select(answer => answer.Adapt<ModificationDocument>())
+            .ToList();
+
+        await projectPersonnelRepository.DeleteModificationDocumentResponses(specification, respondentDocuments);
+    }
 }

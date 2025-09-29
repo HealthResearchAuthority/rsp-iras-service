@@ -3,6 +3,11 @@
 public class ProjectOverviewDocumentResult
 {
     /// <summary>
+    /// Gets or sets the unique identifier for this project modification change.
+    /// </summary>
+    public Guid Id { get; set; }
+
+    /// <summary>
     /// Gets or sets the name of the uploaded file.
     /// </summary>
     public string FileName { get; set; } = string.Empty;

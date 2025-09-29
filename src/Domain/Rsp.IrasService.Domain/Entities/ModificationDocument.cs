@@ -38,6 +38,11 @@ public class ModificationDocument
     public int? FileSize { get; set; }
 
     /// <summary>
+    /// Gets or sets the current status of this document (e.g., Pending, Approved, Rejected).
+    /// </summary>
+    public string? Status { get; set; }
+
+    /// <summary>
     /// Navigation property to the related project personnel.
     /// </summary>
     public ProjectPersonnel? ProjectPersonnel { get; set; }
