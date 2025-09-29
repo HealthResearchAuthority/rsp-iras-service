@@ -3,7 +3,7 @@
 public class ProjectOverviewDocumentDto
 {
     /// <summary>
-    /// Gets or sets the unique identifier for this project modification change.
+    /// Gets or sets the unique identifier for this project document.
     /// </summary>
     public Guid Id { get; set; }
 
