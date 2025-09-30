@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Rsp.IrasService.Application.CQRS.Commands;
 using Rsp.IrasService.Application.DTOS.Requests;
@@ -8,7 +9,7 @@ namespace Rsp.IrasService.WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-//[Authorize]
+[Authorize]
 public class DocumentsController(IMediator mediator) : ControllerBase
 {
     [HttpPost("updatedocumentscanstatus")]
