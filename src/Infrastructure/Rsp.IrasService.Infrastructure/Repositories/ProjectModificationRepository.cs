@@ -89,6 +89,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                       {
                           Id = pm.Id.ToString(),
                           ModificationId = pm.ModificationIdentifier,
+                          ProjectRecordId = pm.ProjectRecordId,
                           ShortProjectTitle = irasContext.ProjectRecordAnswers
                               .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ShortProjectTitle)
                               .Select(a => a.Response)
