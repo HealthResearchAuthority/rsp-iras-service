@@ -55,10 +55,33 @@ public class MappingRegister : IRegister
             .Map(dest => dest.SelectedOption, source => source.SelectedOptions, source => source.OptionType == "Single")
             .Map(dest => dest.Answers, source => source.SelectedOptions!.Split(',', StringSplitOptions.RemoveEmptyEntries), source => source.OptionType == "Multiple");
 
+        // RespondentAnswerDto -> ProjectModificationChangeAnswer mapping
+        config
+            .NewConfig<RespondentAnswerDto, ProjectModificationChangeAnswer>()
+            .Ignore(ra => ra.ProjectModificationChangeId)
+            .Ignore(ra => ra.ProjectPersonnelId)
+            .Ignore(ra => ra.ProjectRecordId)
+            .Map(dest => dest.VersionId, source => source.VersionId)
+            .Map(dest => dest.Category, source => source.CategoryId)
+            .Map(dest => dest.Section, source => source.SectionId)
+            .Map(dest => dest.Response, source => source.AnswerText)
+            .Map(dest => dest.SelectedOptions, source => source.SelectedOption, source => !string.IsNullOrWhiteSpace(source.SelectedOption))
+            .Map(dest => dest.SelectedOptions, source => string.Join(',', source.Answers), source => source.Answers.Count > 0);
+
+        // ProjectModificationChangeAnswer -> RespondentAnswerDto mapping
+        config
+            .NewConfig<ProjectModificationChangeAnswer, RespondentAnswerDto>()
+            .Map(dest => dest.VersionId, source => source.VersionId)
+            .Map(dest => dest.CategoryId, source => source.Category)
+            .Map(dest => dest.SectionId, source => source.Section)
+            .Map(dest => dest.AnswerText, source => source.Response)
+            .Map(dest => dest.SelectedOption, source => source.SelectedOptions, source => source.OptionType == "Single")
+            .Map(dest => dest.Answers, source => source.SelectedOptions!.Split(',', StringSplitOptions.RemoveEmptyEntries), source => source.OptionType == "Multiple");
+
         // RespondentAnswerDto -> ProjectModificationAnswer mapping
         config
             .NewConfig<RespondentAnswerDto, ProjectModificationAnswer>()
-            .Ignore(ra => ra.ProjectModificationChangeId)
+            .Ignore(ra => ra.ProjectModificationId)
             .Ignore(ra => ra.ProjectPersonnelId)
             .Ignore(ra => ra.ProjectRecordId)
             .Map(dest => dest.VersionId, source => source.VersionId)

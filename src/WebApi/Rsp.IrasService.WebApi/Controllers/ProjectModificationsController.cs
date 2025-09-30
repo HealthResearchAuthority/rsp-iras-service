@@ -5,7 +5,6 @@ using Rsp.IrasService.Application.CQRS.Commands;
 using Rsp.IrasService.Application.CQRS.Queries;
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.DTOS.Responses;
-using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.WebApi.Controllers;
 
@@ -122,15 +121,29 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
     }
 
     /// <summary>
-    /// Returns all area of changes and specific area of changes for a project modification change.
+    /// Retrieves a modification change by its unique identifier.
     /// </summary>
-    [HttpGet("areaofchanges")]
-    [Produces<IEnumerable<ModificationAreaOfChange>>]
-    public async Task<IEnumerable<ModificationAreaOfChangeDto>> GetAreaOfChanges()
+    /// <param name="modificationChangeId">The unique identifier of the modification change to retrieve.</param>
+    /// <returns>The modification change that matches the provided identifier.</returns>
+    [HttpGet("change")]
+    public async Task<ModificationChangeResponse> GetModificationChange(Guid modificationChangeId)
     {
-        var query = new GetModificationAreaOfChangeQuery();
+        var request = new GetModificationChangeQuery(modificationChangeId);
 
-        return await mediator.Send(query);
+        return await mediator.Send(request);
+    }
+
+    /// <summary>
+    /// Retrieves all modification changes associated with the specified project modification.
+    /// </summary>
+    /// <param name="projectModificationId">The unique identifier of the project modification whose changes are being retrieved.</param>
+    /// <returns>A collection of modification change responses linked to the specified project modification.</returns>
+    [HttpGet("changes")]
+    public async Task<IEnumerable<ModificationChangeResponse>> GetModificationChanges(Guid projectModificationId)
+    {
+        var request = new GetModificationChangesQuery(projectModificationId);
+
+        return await mediator.Send(request);
     }
 
     /// <summary>
@@ -184,5 +197,30 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
         var query = new GetDocumentsForProjectOverviewQuery(projectRecordId, searchQuery, pageNumber, pageSize, sortField, sortDirection);
 
         return await mediator.Send(query);
+    }
+
+    /// <summary>
+    /// Deletes a modification change by its unique identifier.
+    /// </summary>
+    /// <param name="modificationChangeId">The unique identifier of the modification change to delete.</param>
+    [HttpDelete("remove")]
+    public async Task RemoveModificationChange(Guid modificationChangeId)
+    {
+        var request = new RemoveModificationChangeCommand(modificationChangeId);
+
+        await mediator.Send(request);
+    }
+
+    /// <summary>
+    /// Updates a modification by its unique identifier.
+    /// </summary>
+    /// <param name="modificationId">The unique identifier of the modification to update.</param>
+    /// <param name="status">The new status for modification to update.</param>
+    [HttpPost("update")]
+    public async Task UpdateModificationStatus(Guid modificationId, string status)
+    {
+        var request = new UpdateModificationStatusCommand(modificationId, status);
+
+        await mediator.Send(request);
     }
 }

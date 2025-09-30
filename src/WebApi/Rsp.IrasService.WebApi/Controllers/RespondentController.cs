@@ -28,13 +28,25 @@ public class RespondentController(IMediator mediator) : ControllerBase
     }
 
     /// <summary>
-    /// Saves modification answers for a project modification change.
+    /// Saves modification answers for a project modification.
     /// </summary>
     /// <param name="request">The modification answers request.</param>
     [HttpPost("modification")]
     public async Task SaveModificationAnswers(ModificationAnswersRequest request)
     {
         var command = new SaveModificationAnswersCommand(request);
+
+        await mediator.Send(command);
+    }
+
+    /// <summary>
+    /// Saves modification answers for a project modification change.
+    /// </summary>
+    /// <param name="request">The modification change answers request.</param>
+    [HttpPost("modificationchange")]
+    public async Task SaveModificationChangeAnswers(ModificationChangeAnswersRequest request)
+    {
+        var command = new SaveModificationChangeAnswersCommand(request);
 
         await mediator.Send(command);
     }
@@ -124,16 +136,56 @@ public class RespondentController(IMediator mediator) : ControllerBase
     }
 
     /// <summary>
+    /// Gets modification answers for a specific modification and project record.
+    /// </summary>
+    /// <param name="modificationId">The modification identifier.</param>
+    /// <param name="projectRecordId">The project record identifier.</param>
+    /// <returns>A collection of respondent answers for the modification.</returns>
+    [HttpGet("modification/{modificationId}/{projectRecordId}")]
+    [Produces<IEnumerable<RespondentAnswerDto>>]
+    public async Task<IEnumerable<RespondentAnswerDto>> GetModificationAnswers(Guid modificationId, string projectRecordId)
+    {
+        var command = new GetModificationAnswersQuery
+        {
+            ProjectModificationId = modificationId,
+            ProjectRecordId = projectRecordId
+        };
+
+        return await mediator.Send(command);
+    }
+
+    /// <summary>
+    /// Gets modification answers for a specific modification change, project record, and category.
+    /// </summary>
+    /// <param name="modificationId">The modification identifier.</param>
+    /// <param name="projectRecordId">The project record identifier.</param>
+    /// <param name="categoryId">The category identifier.</param>
+    /// <returns>A collection of respondent answers for the modification and category.</returns>
+    [HttpGet("modification/{modificationId}/{projectRecordId}/{categoryId}")]
+    [Produces<IEnumerable<RespondentAnswerDto>>]
+    public async Task<IEnumerable<RespondentAnswerDto>> GetModificationAnswers(Guid modificationId, string projectRecordId, string categoryId)
+    {
+        var command = new GetModificationAnswersQuery
+        {
+            ProjectModificationId = modificationId,
+            ProjectRecordId = projectRecordId,
+            CategoryId = categoryId
+        };
+
+        return await mediator.Send(command);
+    }
+
+    /// <summary>
     /// Gets modification answers for a specific modification change and project record.
     /// </summary>
     /// <param name="modificationChangeId">The modification change identifier.</param>
     /// <param name="projectRecordId">The project record identifier.</param>
     /// <returns>A collection of respondent answers for the modification.</returns>
-    [HttpGet("modification/{modificationChangeId}/{projectRecordId}")]
+    [HttpGet("modificationchange/{modificationChangeId}/{projectRecordId}")]
     [Produces<IEnumerable<RespondentAnswerDto>>]
-    public async Task<IEnumerable<RespondentAnswerDto>> GetModificationAnswers(Guid modificationChangeId, string projectRecordId)
+    public async Task<IEnumerable<RespondentAnswerDto>> GetModificationChangeAnswers(Guid modificationChangeId, string projectRecordId)
     {
-        var command = new GetModificationAnswersQuery
+        var command = new GetModificationChangeAnswersQuery
         {
             ProjectModificationChangeId = modificationChangeId,
             ProjectRecordId = projectRecordId
@@ -149,11 +201,11 @@ public class RespondentController(IMediator mediator) : ControllerBase
     /// <param name="projectRecordId">The project record identifier.</param>
     /// <param name="categoryId">The category identifier.</param>
     /// <returns>A collection of respondent answers for the modification and category.</returns>
-    [HttpGet("modification/{modificationChangeId}/{projectRecordId}/{categoryId}")]
+    [HttpGet("modificationchange/{modificationChangeId}/{projectRecordId}/{categoryId}")]
     [Produces<IEnumerable<RespondentAnswerDto>>]
-    public async Task<IEnumerable<RespondentAnswerDto>> GetModificationAnswers(Guid modificationChangeId, string projectRecordId, string categoryId)
+    public async Task<IEnumerable<RespondentAnswerDto>> GetModificationChangeAnswers(Guid modificationChangeId, string projectRecordId, string categoryId)
     {
-        var command = new GetModificationAnswersQuery
+        var command = new GetModificationChangeAnswersQuery
         {
             ProjectModificationChangeId = modificationChangeId,
             ProjectRecordId = projectRecordId,
