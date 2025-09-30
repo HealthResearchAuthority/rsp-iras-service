@@ -8,12 +8,12 @@ public class ProjectModificationAnswerConfiguration : IEntityTypeConfiguration<P
 {
     public void Configure(EntityTypeBuilder<ProjectModificationAnswer> builder)
     {
-        builder.HasKey(ra => new { ra.ProjectModificationChangeId, ra.QuestionId, ra.ProjectPersonnelId });
+        builder.HasKey(ra => new { ra.ProjectModificationId, ra.QuestionId, ra.ProjectPersonnelId });
 
         builder
-            .HasOne(ra => ra.ProjectModificationChange)
+            .HasOne(ra => ra.ProjectModification)
             .WithMany()
-            .HasForeignKey(r => r.ProjectModificationChangeId)
+            .HasForeignKey(r => r.ProjectModificationId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder

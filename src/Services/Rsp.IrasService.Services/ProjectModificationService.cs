@@ -3,6 +3,7 @@ using Rsp.IrasService.Application.Contracts.Repositories;
 using Rsp.IrasService.Application.Contracts.Services;
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.DTOS.Responses;
+using Rsp.IrasService.Application.Specifications;
 using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Services;
@@ -46,12 +47,33 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
         return createdModificationChange.Adapt<ModificationChangeResponse>();
     }
 
-    public Task<ModificationResponse> GetModifications(
+    public async Task<ModificationChangeResponse> GetModificationChange(Guid modificationChangeId)
+    {
+        var specification = new GetModificationChangeSpecification(modificationChangeId);
+
+        // Get the new modification change
+        var modificationChange = await projectModificationRepository.GetModificationChange(specification);
+
+        return modificationChange.Adapt<ModificationChangeResponse>();
+    }
+
+    public async Task<IEnumerable<ModificationChangeResponse>> GetModificationChanges(Guid projectModificationId)
+    {
+        var specification = new GetModificationChangesSpecification(projectModificationId);
+
+        var modificationChanges = await projectModificationRepository.GetModificationChanges(specification);
+
+        return modificationChanges.Adapt<IEnumerable<ModificationChangeResponse>>();
+    }
+
+    public Task<ModificationResponse> GetModifications
+    (
         ModificationSearchRequest searchQuery,
         int pageNumber,
         int pageSize,
         string sortField,
-        string sortDirection)
+        string sortDirection
+    )
     {
         var modifications = projectModificationRepository.GetModifications(searchQuery, pageNumber, pageSize, sortField, sortDirection);
         var totalCount = projectModificationRepository.GetModificationsCount(searchQuery);
@@ -63,13 +85,15 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
         });
     }
 
-    public Task<ModificationResponse> GetModificationsForProject(
+    public Task<ModificationResponse> GetModificationsForProject
+    (
         string projectRecordId,
         ModificationSearchRequest searchQuery,
         int pageNumber,
         int pageSize,
         string sortField,
-        string sortDirection)
+        string sortDirection
+    )
     {
         var modifications = projectModificationRepository.GetModifications(searchQuery, pageNumber, pageSize, sortField, sortDirection, projectRecordId);
         var totalCount = projectModificationRepository.GetModificationsCount(searchQuery, projectRecordId);
@@ -114,5 +138,28 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
             TotalCount = totalCount,
             ProjectRecordId = projectRecordId
         });
+    }
+
+    /// <summary>
+    /// Removes an existing modification change by its unique identifier.
+    /// </summary>
+    /// <param name="modificationChangeId">The unique identifier of the modification change to remove.</param>
+    public async Task RemoveModificationChange(Guid modificationChangeId)
+    {
+        var specification = new GetModificationChangeSpecification(modificationChangeId);
+
+        await projectModificationRepository.RemoveModificationChange(specification);
+    }
+
+    /// <summary>
+    /// Updates an existing modification status by its unique identifier. And also updates
+    /// the status of the associated modification changes.
+    /// </summary>
+    /// <param name="modificationId">The unique identifier of the modification change to remove.</param>
+    public async Task UpdateModificationStatus(Guid modificationId, string status)
+    {
+        var specification = new GetModificationSpecification(modificationId);
+
+        await projectModificationRepository.UpdateModificationStatus(specification, status);
     }
 }
