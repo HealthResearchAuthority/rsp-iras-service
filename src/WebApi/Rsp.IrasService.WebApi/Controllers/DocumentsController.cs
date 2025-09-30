@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Rsp.IrasService.Application.CQRS.Commands;
 using Rsp.IrasService.Application.DTOS.Requests;
@@ -15,7 +16,6 @@ public class DocumentsController(IMediator mediator) : ControllerBase
     [HttpPost("updatedocumentscanstatus")]
     public async Task<IActionResult> UpdateDocumentScanStatus([FromBody] ModificationDocumentDto dto)
     {
-        // Validation failure → 400
         if (dto.Id == Guid.Empty || string.IsNullOrWhiteSpace(dto.DocumentStoragePath))
         {
             var bad = new UpdateDocumentScanStatusResponse
@@ -36,34 +36,54 @@ public class DocumentsController(IMediator mediator) : ControllerBase
             return BadRequest(bad);
         }
 
-        var request = new UpdateModificationDocumentCommand(dto);
-        var result = await mediator.Send(request);
-
-        if (result != null)
+        try
         {
-            // Success → 200 (no ErrorResponse serialized)
-            return Ok(new UpdateDocumentScanStatusResponse
+            var request = new UpdateModificationDocumentCommand(dto);
+            var result = await mediator.Send(request);
+
+            return result switch
             {
-                Id = dto.Id,
-                CorellationId = dto.CorellationId,
-                Status = "success",
-                Timestamp = DateTime.UtcNow,
-                Message = "Malware scan completed successfully. Document is clean."
-            });
+                StatusCodes.Status200OK => Ok(new UpdateDocumentScanStatusResponse
+                {
+                    Id = dto.Id,
+                    CorellationId = dto.CorellationId,
+                    Status = "success",
+                    Timestamp = DateTime.UtcNow,
+                    Message = "Malware scan completed successfully. Document is clean."
+                }),
+                StatusCodes.Status404NotFound => NotFound(new UpdateDocumentScanStatusResponse
+                {
+                    Id = dto.Id,
+                    CorellationId = dto.CorellationId,
+                    Status = "failure",
+                    Timestamp = DateTime.UtcNow,
+                    Message = "An unexpected error occurred. Malware scan was not completed",
+                    ErrorResponse = new ErrorResponse
+                    {
+                        Code = "NOT_FOUND",
+                        Message = "Document could not be found using document storage path."
+                    }
+                }),
+                _ => throw new InvalidOperationException($"Unhandled status code: {result}")
+            };
         }
-
-        return BadRequest(new UpdateDocumentScanStatusResponse
+        catch (Exception ex)
         {
-            Id = dto.Id,
-            CorellationId = dto.CorellationId,
-            Status = "failure",
-            Timestamp = DateTime.UtcNow,
-            Message = "An unexpected error occurred. Malware scan was not completed",
-            ErrorResponse = new ErrorResponse
-            {
-                Code = "SERVER_ERROR",
-                Message = "Unexpected server error."
-            }
-        });
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                new UpdateDocumentScanStatusResponse
+                {
+                    Id = dto.Id,
+                    CorellationId = dto.CorellationId,
+                    Status = "failure",
+                    Timestamp = DateTime.UtcNow,
+                    Message = "Internal server error occurred while updating document scan status.",
+                    ErrorResponse = new ErrorResponse
+                    {
+                        Code = "INTERNAL_SERVER_ERROR",
+                        Message = ex.Message,
+                        Details = ex.ToString() // stack trace & more details
+                    }
+                });
+        }
     }
 }

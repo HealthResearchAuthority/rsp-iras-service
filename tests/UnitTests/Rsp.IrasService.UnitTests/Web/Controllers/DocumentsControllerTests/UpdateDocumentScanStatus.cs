@@ -1,4 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using AutoFixture.Xunit2;
+using MediatR;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
+using Shouldly;
 using Rsp.IrasService.Application.CQRS.Commands;
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.DTOS.Responses;
@@ -10,7 +18,7 @@ public class UpdateDocumentScanStatusTests : TestServiceBase<DocumentsController
 {
     [Theory]
     [AutoData]
-    public async Task UpdateDocumentScanStatus_ReturnsOk_OnSuccess(ModificationDocumentDto dto)
+    public async Task UpdateDocumentScanStatus_ReturnsOk_OnMediator200(ModificationDocumentDto dto)
     {
         // Arrange
         dto.Id = Guid.NewGuid();
@@ -22,7 +30,7 @@ public class UpdateDocumentScanStatusTests : TestServiceBase<DocumentsController
             .Setup(m => m.Send(
                 It.Is<UpdateModificationDocumentCommand>(c => c.ModificationDocumentsRequest == dto),
                 CancellationToken.None))
-            .ReturnsAsync(1); // non-null → success
+            .ReturnsAsync(StatusCodes.Status200OK);
 
         // Act
         var result = await Sut.UpdateDocumentScanStatus(dto);
@@ -37,11 +45,46 @@ public class UpdateDocumentScanStatusTests : TestServiceBase<DocumentsController
         payload.CorellationId.ShouldBe(dto.CorellationId);
         payload.Status.ShouldBe("success");
 
-        // Verify mediator call
         mockMediator.Verify(m => m.Send(
+            It.Is<UpdateModificationDocumentCommand>(c => c.ModificationDocumentsRequest == dto),
+            CancellationToken.None), Times.Once);
+    }
+
+    [Theory]
+    [AutoData]
+    public async Task UpdateDocumentScanStatus_ReturnsNotFound_OnMediator404(ModificationDocumentDto dto)
+    {
+        // Arrange
+        dto.Id = Guid.NewGuid();
+        dto.DocumentStoragePath = "folder/file.pdf";
+        dto.CorellationId = Guid.NewGuid().ToString();
+
+        var mockMediator = Mocker.GetMock<IMediator>();
+        mockMediator
+            .Setup(m => m.Send(
                 It.Is<UpdateModificationDocumentCommand>(c => c.ModificationDocumentsRequest == dto),
-                CancellationToken.None),
-            Times.Once);
+                CancellationToken.None))
+            .ReturnsAsync(StatusCodes.Status404NotFound);
+
+        // Act
+        var result = await Sut.UpdateDocumentScanStatus(dto);
+
+        // Assert
+        result.ShouldBeOfType<NotFoundObjectResult>();
+        var nf = (NotFoundObjectResult)result;
+        nf.Value.ShouldBeOfType<UpdateDocumentScanStatusResponse>();
+
+        var payload = (UpdateDocumentScanStatusResponse)nf.Value!;
+        payload.Id.ShouldBe(dto.Id);
+        payload.CorellationId.ShouldBe(dto.CorellationId);
+        payload.Status.ShouldBe("failure");
+        payload.ErrorResponse.ShouldNotBeNull();
+        payload.ErrorResponse!.Code.ShouldBe("NOT_FOUND");
+        payload.ErrorResponse!.Message.ShouldBe("Document could not be found using document storage path.");
+
+        mockMediator.Verify(m => m.Send(
+            It.Is<UpdateModificationDocumentCommand>(c => c.ModificationDocumentsRequest == dto),
+            CancellationToken.None), Times.Once);
     }
 
     [Theory]
@@ -77,65 +120,64 @@ public class UpdateDocumentScanStatusTests : TestServiceBase<DocumentsController
 
     [Theory]
     [AutoData]
-    public async Task UpdateDocumentScanStatus_ReturnsBadRequest_WhenMediatorReturnsNull(ModificationDocumentDto dto)
+    public async Task UpdateDocumentScanStatus_ReturnsInternalServerError_OnMediatorThrows(ModificationDocumentDto dto)
     {
-        // Arrange (valid dto but mediator returns null → server error path)
+        // Arrange
         dto.Id = Guid.NewGuid();
         dto.DocumentStoragePath = "folder/file.pdf";
         dto.CorellationId = Guid.NewGuid().ToString();
 
+        var ex = new InvalidOperationException("Boom!");
         var mockMediator = Mocker.GetMock<IMediator>();
         mockMediator
             .Setup(m => m.Send(
                 It.Is<UpdateModificationDocumentCommand>(c => c.ModificationDocumentsRequest == dto),
-                CancellationToken.None));
+                CancellationToken.None))
+            .ThrowsAsync(ex);
 
         // Act
         var result = await Sut.UpdateDocumentScanStatus(dto);
 
         // Assert
-        result.ShouldBeOfType<BadRequestObjectResult>();
-        var bad = (BadRequestObjectResult)result;
-        bad.Value.ShouldBeOfType<UpdateDocumentScanStatusResponse>();
+        result.ShouldBeOfType<ObjectResult>();
+        var obj = (ObjectResult)result;
+        obj.StatusCode.ShouldBe(StatusCodes.Status500InternalServerError);
 
-        var payload = (UpdateDocumentScanStatusResponse)bad.Value!;
+        obj.Value.ShouldBeOfType<UpdateDocumentScanStatusResponse>();
+        var payload = (UpdateDocumentScanStatusResponse)obj.Value!;
         payload.Id.ShouldBe(dto.Id);
         payload.CorellationId.ShouldBe(dto.CorellationId);
         payload.Status.ShouldBe("failure");
         payload.ErrorResponse.ShouldNotBeNull();
-        payload.ErrorResponse!.Code.ShouldBe("SERVER_ERROR");
-        payload.ErrorResponse!.Message.ShouldBe("Unexpected server error.");
+        payload.ErrorResponse!.Code.ShouldBe("INTERNAL_SERVER_ERROR");
+        payload.ErrorResponse!.Message.ShouldBe("Boom!");
+        payload.ErrorResponse!.Details.ShouldContain("InvalidOperationException");
 
-        // Verify mediator call happened once
         mockMediator.Verify(m => m.Send(
-                It.Is<UpdateModificationDocumentCommand>(c => c.ModificationDocumentsRequest == dto),
-                CancellationToken.None),
-            Times.Once);
+            It.Is<UpdateModificationDocumentCommand>(c => c.ModificationDocumentsRequest == dto),
+            CancellationToken.None), Times.Once);
     }
 
     [Theory]
     [AutoData]
     public async Task UpdateDocumentScanStatus_SendsCommand_WithExactDto(ModificationDocumentDto dto)
     {
-        // Arrange (pure interaction test)
+        // Arrange (interaction test)
         dto.Id = Guid.NewGuid();
         dto.DocumentStoragePath = "folder/file.pdf";
         dto.CorellationId = Guid.NewGuid().ToString();
 
         var mockMediator = Mocker.GetMock<IMediator>();
         mockMediator
-            .Setup(m => m.Send(
-                It.IsAny<UpdateModificationDocumentCommand>(),
-                CancellationToken.None))
-            .ReturnsAsync(1);
+            .Setup(m => m.Send(It.IsAny<UpdateModificationDocumentCommand>(), CancellationToken.None))
+            .ReturnsAsync(StatusCodes.Status200OK);
 
         // Act
         await Sut.UpdateDocumentScanStatus(dto);
 
         // Assert
         mockMediator.Verify(m => m.Send(
-                It.Is<UpdateModificationDocumentCommand>(c => c.ModificationDocumentsRequest == dto),
-                CancellationToken.None),
-            Times.Once);
+            It.Is<UpdateModificationDocumentCommand>(c => c.ModificationDocumentsRequest == dto),
+            CancellationToken.None), Times.Once);
     }
 }

@@ -11,22 +11,13 @@ public class DocumentRepository(IrasContext irasContext) : IDocumentRepository
 {
     public async Task<int?> UpdateModificationDocument(ModificationDocument modificationDocument)
     {
-        ModificationDocument? existing;
-
-        if (modificationDocument.Id != Guid.Empty)
-        {
-            existing = await irasContext.ModificationDocuments
-                .FirstOrDefaultAsync(d => d.Id == modificationDocument.Id);
-        }
-        else
-        {
-            existing = await irasContext.ModificationDocuments
-                .FirstOrDefaultAsync(d => d.DocumentStoragePath == modificationDocument.DocumentStoragePath);
-        }
+        // change to status code
+         var existing = await irasContext.ModificationDocuments
+            .FirstOrDefaultAsync(d => d.DocumentStoragePath == modificationDocument.DocumentStoragePath);
 
         if (existing is null)
         {
-            return null;
+            return 404;
         }
 
         if (!string.IsNullOrWhiteSpace(modificationDocument.DocumentStatus))
@@ -39,6 +30,7 @@ public class DocumentRepository(IrasContext irasContext) : IDocumentRepository
             existing.DocumentStoragePath = modificationDocument.DocumentStoragePath;
         }
 
-        return await irasContext.SaveChangesAsync();
+        await irasContext.SaveChangesAsync();
+        return 200;
     }
 }
