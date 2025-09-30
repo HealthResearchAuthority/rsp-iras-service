@@ -11,7 +11,7 @@ namespace Rsp.IrasService.Services;
 /// </summary>
 public class DocumentService(IDocumentRepository documentRepository) : IDocumentService
 {
-    public Task UpdateModificationDocument(ModificationDocumentDto modificationDocumentDto)
+    public Task<int?> UpdateModificationDocument(ModificationDocumentDto modificationDocumentDto)
     {
         // Map the request DTO to the domain entity
         var modificationDocument = modificationDocumentDto.Adapt<ModificationDocument>();

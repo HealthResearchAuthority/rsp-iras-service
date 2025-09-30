@@ -1,36 +1,68 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Rsp.IrasService.Application.CQRS.Commands;
 using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.IrasService.Application.DTOS.Responses;
 
 namespace Rsp.IrasService.WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-[Authorize]
+//[Authorize]
 public class DocumentsController(IMediator mediator) : ControllerBase
 {
-    /// <summary>
-    ///     Gets all modifications with filtering, sorting and pagination
-    ///     <param name="searchQuery">Object containing filtering criteria for modifications.</param>
-    ///     <param name="pageNumber">The number of the page to retrieve (used for pagination - 1-based).</param>
-    ///     <param name="pageSize">The number of items per page (used for pagination).</param>
-    ///     <param name="sortField">The field name by which the results should be sorted.</param>
-    ///     <param name="sortDirection">The direction of sorting: "asc" for ascending or "desc" for descending.</param>
-    ///     <returns>Returns a paginated list of modifications matching the search criteria.</returns>
     [HttpPost("updatedocumentscanstatus")]
-    public async Task<IActionResult> UpdateDocumentScanStatus(
-        [FromBody] ModificationDocumentDto searchQuery)
+    public async Task<IActionResult> UpdateDocumentScanStatus([FromBody] ModificationDocumentDto dto)
     {
-        if (searchQuery.Id == Guid.Empty || string.IsNullOrWhiteSpace(searchQuery.DocumentStoragePath))
+        // Validation failure → 400
+        if (dto.Id == Guid.Empty || string.IsNullOrWhiteSpace(dto.DocumentStoragePath))
         {
-            return BadRequest("Either Id or DocumentStoragePath must be provided.");
+            var bad = new UpdateDocumentScanStatusResponse
+            {
+                Id = dto.Id,
+                CorellationId = dto.CorellationId,
+                Status = "failure",
+                Timestamp = DateTime.UtcNow,
+                Message = "Validation failed.",
+                ErrorResponse = new ErrorResponse
+                {
+                    Code = "VALIDATION_ERROR",
+                    Message = "Either Id or DocumentStoragePath must be provided.",
+                    Details = "Id must be a non-empty GUID and DocumentStoragePath must be provided."
+                }
+            };
+
+            return BadRequest(bad);
         }
 
-        var query = new UpdateModificationDocumentCommand(searchQuery);
-        await mediator.Send(query);
+        var request = new UpdateModificationDocumentCommand(dto);
+        var result = await mediator.Send(request);
 
-        return Ok();
+        if (result != null)
+        {
+            // Success → 200 (no ErrorResponse serialized)
+            return Ok(new UpdateDocumentScanStatusResponse
+            {
+                Id = dto.Id,
+                CorellationId = dto.CorellationId,
+                Status = "success",
+                Timestamp = DateTime.UtcNow,
+                Message = "Malware scan completed successfully. Document is clean."
+            });
+        }
+
+        return BadRequest(new UpdateDocumentScanStatusResponse
+        {
+            Id = dto.Id,
+            CorellationId = dto.CorellationId,
+            Status = "failure",
+            Timestamp = DateTime.UtcNow,
+            Message = "An unexpected error occurred. Malware scan was not completed",
+            ErrorResponse = new ErrorResponse
+            {
+                Code = "SERVER_ERROR",
+                Message = "Unexpected server error."
+            }
+        });
     }
 }

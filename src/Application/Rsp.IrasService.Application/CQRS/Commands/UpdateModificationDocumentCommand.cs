@@ -6,7 +6,7 @@ namespace Rsp.IrasService.Application.CQRS.Commands;
 /// <summary>
 /// Command to update a modification document.
 /// </summary>
-public class UpdateModificationDocumentCommand(ModificationDocumentDto request) : IRequest
+public class UpdateModificationDocumentCommand(ModificationDocumentDto request) : IRequest<int?>
 {
     /// <summary>
     /// Gets the modification documents request containing the data to update.
