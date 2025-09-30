@@ -9,7 +9,7 @@ namespace Rsp.IrasService.Infrastructure.Repositories;
 /// </summary>
 public class DocumentRepository(IrasContext irasContext) : IDocumentRepository
 {
-    public async Task UpdateModificationDocument(ModificationDocument modificationDocument)
+    public async Task<int?> UpdateModificationDocument(ModificationDocument modificationDocument)
     {
         ModificationDocument? existing;
 
@@ -26,7 +26,7 @@ public class DocumentRepository(IrasContext irasContext) : IDocumentRepository
 
         if (existing is null)
         {
-            return;
+            return null;
         }
 
         if (!string.IsNullOrWhiteSpace(modificationDocument.DocumentStatus))
@@ -39,6 +39,6 @@ public class DocumentRepository(IrasContext irasContext) : IDocumentRepository
             existing.DocumentStoragePath = modificationDocument.DocumentStoragePath;
         }
 
-        await irasContext.SaveChangesAsync();
+        return await irasContext.SaveChangesAsync();
     }
 }

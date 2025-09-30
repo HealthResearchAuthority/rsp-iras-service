@@ -9,5 +9,5 @@ namespace Rsp.IrasService.Application.Contracts.Services;
 /// </summary>
 public interface IDocumentService : IInterceptable
 {
-    Task UpdateModificationDocument(ModificationDocumentDto modificationDocumentDto);
+    Task<int?> UpdateModificationDocument(ModificationDocumentDto modificationDocumentDto);
 }

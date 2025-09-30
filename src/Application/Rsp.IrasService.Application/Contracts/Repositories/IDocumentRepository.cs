@@ -7,5 +7,5 @@ namespace Rsp.IrasService.Application.Contracts.Repositories;
 /// </summary>
 public interface IDocumentRepository
 {
-    Task UpdateModificationDocument(ModificationDocument modificationDocument);
+    Task<int?> UpdateModificationDocument(ModificationDocument modificationDocument);
 }

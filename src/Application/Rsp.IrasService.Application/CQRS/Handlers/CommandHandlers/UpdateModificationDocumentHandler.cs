@@ -7,10 +7,11 @@ namespace Rsp.IrasService.Application.CQRS.Handlers.CommandHandlers;
 /// <summary>
 /// Handler for updating modification documents.
 /// </summary>
-public class UpdateModificationDocumentHandler(IDocumentService documentService) : IRequestHandler<UpdateModificationDocumentCommand>
+public class UpdateModificationDocumentHandler(IDocumentService documentService)
+    : IRequestHandler<UpdateModificationDocumentCommand, int?>
 {
-    public async Task Handle(UpdateModificationDocumentCommand request, CancellationToken cancellationToken)
+    public async Task<int?> Handle(UpdateModificationDocumentCommand request, CancellationToken cancellationToken)
     {
-        await documentService.UpdateModificationDocument(request.ModificationDocumentsRequest);
+        return await documentService.UpdateModificationDocument(request.ModificationDocumentsRequest);
     }
 }

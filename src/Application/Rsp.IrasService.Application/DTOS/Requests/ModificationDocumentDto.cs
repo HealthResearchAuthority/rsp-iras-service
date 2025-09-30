@@ -41,4 +41,9 @@ public class ModificationDocumentDto
     /// Gets or sets the document scan status.
     /// </summary>
     public string? DocumentStatus { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Corellation Id
+    /// </summary>
+    public string CorellationId { get; set; } = null!;
 }

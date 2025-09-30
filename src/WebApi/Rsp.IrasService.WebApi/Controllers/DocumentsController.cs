@@ -1,8 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Rsp.IrasService.Application.CQRS.Commands;
 using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.IrasService.Application.DTOS.Responses;
 
 namespace Rsp.IrasService.WebApi.Controllers;
 
@@ -11,26 +13,77 @@ namespace Rsp.IrasService.WebApi.Controllers;
 [Authorize]
 public class DocumentsController(IMediator mediator) : ControllerBase
 {
-    /// <summary>
-    ///     Gets all modifications with filtering, sorting and pagination
-    ///     <param name="searchQuery">Object containing filtering criteria for modifications.</param>
-    ///     <param name="pageNumber">The number of the page to retrieve (used for pagination - 1-based).</param>
-    ///     <param name="pageSize">The number of items per page (used for pagination).</param>
-    ///     <param name="sortField">The field name by which the results should be sorted.</param>
-    ///     <param name="sortDirection">The direction of sorting: "asc" for ascending or "desc" for descending.</param>
-    ///     <returns>Returns a paginated list of modifications matching the search criteria.</returns>
     [HttpPost("updatedocumentscanstatus")]
-    public async Task<IActionResult> UpdateDocumentScanStatus(
-        [FromBody] ModificationDocumentDto searchQuery)
+    public async Task<IActionResult> UpdateDocumentScanStatus([FromBody] ModificationDocumentDto dto)
     {
-        if (searchQuery.Id == Guid.Empty || string.IsNullOrWhiteSpace(searchQuery.DocumentStoragePath))
+        if (dto.Id == Guid.Empty || string.IsNullOrWhiteSpace(dto.DocumentStoragePath))
         {
-            return BadRequest("Either Id or DocumentStoragePath must be provided.");
+            var bad = new UpdateDocumentScanStatusResponse
+            {
+                Id = dto.Id,
+                CorellationId = dto.CorellationId,
+                Status = "failure",
+                Timestamp = DateTime.UtcNow,
+                Message = "Validation failed.",
+                ErrorResponse = new ErrorResponse
+                {
+                    Code = "VALIDATION_ERROR",
+                    Message = "Either Id or DocumentStoragePath must be provided.",
+                    Details = "Id must be a non-empty GUID and DocumentStoragePath must be provided."
+                }
+            };
+
+            return BadRequest(bad);
         }
 
-        var query = new UpdateModificationDocumentCommand(searchQuery);
-        await mediator.Send(query);
+        try
+        {
+            var request = new UpdateModificationDocumentCommand(dto);
+            var result = await mediator.Send(request);
 
-        return Ok();
+            return result switch
+            {
+                StatusCodes.Status200OK => Ok(new UpdateDocumentScanStatusResponse
+                {
+                    Id = dto.Id,
+                    CorellationId = dto.CorellationId,
+                    Status = "success",
+                    Timestamp = DateTime.UtcNow,
+                    Message = "Malware scan completed successfully. Document is clean."
+                }),
+                StatusCodes.Status404NotFound => NotFound(new UpdateDocumentScanStatusResponse
+                {
+                    Id = dto.Id,
+                    CorellationId = dto.CorellationId,
+                    Status = "failure",
+                    Timestamp = DateTime.UtcNow,
+                    Message = "An unexpected error occurred. Malware scan was not completed",
+                    ErrorResponse = new ErrorResponse
+                    {
+                        Code = "NOT_FOUND",
+                        Message = "Document could not be found using document storage path."
+                    }
+                }),
+                _ => throw new InvalidOperationException($"Unhandled status code: {result}")
+            };
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                new UpdateDocumentScanStatusResponse
+                {
+                    Id = dto.Id,
+                    CorellationId = dto.CorellationId,
+                    Status = "failure",
+                    Timestamp = DateTime.UtcNow,
+                    Message = "Internal server error occurred while updating document scan status.",
+                    ErrorResponse = new ErrorResponse
+                    {
+                        Code = "INTERNAL_SERVER_ERROR",
+                        Message = ex.Message,
+                        Details = ex.ToString() // stack trace & more details
+                    }
+                });
+        }
     }
 }
