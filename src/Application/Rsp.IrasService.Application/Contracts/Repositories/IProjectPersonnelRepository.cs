@@ -119,4 +119,11 @@ public interface IProjectPersonnelRepository
     /// <param name="specification">The specification to filter which modification participating oraganisation answer to save.</param>
     /// <param name="respondentAnswer">The modification participating oraganisation answer to save.</param>
     Task SaveModificationDocumentAnswerResponses(ISpecification<ModificationDocumentAnswer> specification, List<ModificationDocumentAnswer> respondentAnswer);
+
+    /// <summary>
+    /// Saves the provided project modification documents that match the given specification.
+    /// </summary>
+    /// <param name="specification">The specification to filter which modification documents to save.</param>
+    /// <param name="respondentAnswers">The list of modification documents to save.</param>
+    Task DeleteModificationDocumentResponses(ISpecification<ModificationDocument> specification, List<ModificationDocument> respondentAnswers);
 }
