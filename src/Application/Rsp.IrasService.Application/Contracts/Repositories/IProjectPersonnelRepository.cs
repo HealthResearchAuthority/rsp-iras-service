@@ -23,18 +23,18 @@ public interface IProjectPersonnelRepository
     Task<IEnumerable<ProjectModificationAnswer>> GetResponses(ISpecification<ProjectModificationAnswer> specification);
 
     /// <summary>
+    /// Retrieves project modification change answers matching the given specification.
+    /// </summary>
+    /// <param name="specification">The specification to filter project modification answers.</param>
+    /// <returns>A collection of <see cref="ProjectModificationChangeAnswer"/> objects.</returns>
+    Task<IEnumerable<ProjectModificationChangeAnswer>> GetResponses(ISpecification<ProjectModificationChangeAnswer> specification);
+
+    /// <summary>
     /// Retrieves document types matching the given specification.
     /// </summary>
     /// <param name="specification">The specification to filter project document types.</param>
     /// <returns>A collection of <see cref="DocumentType"/> objects.</returns>
     Task<IEnumerable<DocumentType>> GetResponses(ISpecification<DocumentType> specification);
-
-    /// <summary>
-    /// Retrieves modification documents matching the given specification.
-    /// </summary>
-    /// <param name="specification">The specification to filter project modification documents.</param>
-    /// <returns>A collection of <see cref="ModificationDocument"/> objects.</returns>
-    Task<ModificationDocument> GetResponse(ISpecification<ModificationDocument> specification);
 
     /// <summary>
     /// Retrieves document types matching the given specification.
@@ -65,11 +65,11 @@ public interface IProjectPersonnelRepository
     Task<ModificationParticipatingOrganisationAnswer> GetResponses(ISpecification<ModificationParticipatingOrganisationAnswer> specification);
 
     /// <summary>
-    /// Retrieves modification area of changes and specific area of changes matching the given specification.
+    /// Retrieves modification documents matching the given specification.
     /// </summary>
-    /// <param name="specification">The specification to filter area of changes and specific area of changes.</param>
-    /// <returns>A <see cref="ModificationAreaOfChange"/> object.</returns>
-    Task<IEnumerable<ModificationAreaOfChange>> GetResponses(ISpecification<ModificationAreaOfChange> specification);
+    /// <param name="specification">The specification to filter project modification documents.</param>
+    /// <returns>A collection of <see cref="ModificationDocument"/> objects.</returns>
+    Task<ModificationDocument> GetResponse(ISpecification<ModificationDocument> specification);
 
     /// <summary>
     /// Saves the provided project record answers that match the given specification.
@@ -84,6 +84,13 @@ public interface IProjectPersonnelRepository
     /// <param name="specification">The specification to filter which modification answers to save.</param>
     /// <param name="respondentAnswers">The list of modification answers to save.</param>
     Task SaveModificationResponses(ISpecification<ProjectModificationAnswer> specification, List<ProjectModificationAnswer> respondentAnswers);
+
+    /// <summary>
+    /// Saves the provided project modification answers that match the given specification.
+    /// </summary>
+    /// <param name="specification">The specification to filter which modification answers to save.</param>
+    /// <param name="respondentAnswers">The list of modification answers to save.</param>
+    Task SaveModificationChangeResponses(ISpecification<ProjectModificationChangeAnswer> specification, List<ProjectModificationChangeAnswer> respondentAnswers);
 
     /// <summary>
     /// Saves the provided project modification documents that match the given specification.
@@ -112,4 +119,11 @@ public interface IProjectPersonnelRepository
     /// <param name="specification">The specification to filter which modification participating oraganisation answer to save.</param>
     /// <param name="respondentAnswer">The modification participating oraganisation answer to save.</param>
     Task SaveModificationDocumentAnswerResponses(ISpecification<ModificationDocumentAnswer> specification, List<ModificationDocumentAnswer> respondentAnswer);
+
+    /// <summary>
+    /// Saves the provided project modification documents that match the given specification.
+    /// </summary>
+    /// <param name="specification">The specification to filter which modification documents to save.</param>
+    /// <param name="respondentAnswers">The list of modification documents to save.</param>
+    Task DeleteModificationDocumentResponses(ISpecification<ModificationDocument> specification, List<ModificationDocument> respondentAnswers);
 }

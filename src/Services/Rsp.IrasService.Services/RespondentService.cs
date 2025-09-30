@@ -46,13 +46,41 @@ public class RespondentService(IProjectPersonnelRepository projectPersonnelRepos
     {
         var respondentAnswers = new List<ProjectModificationAnswer>();
 
-        var modificationChangeId = modificationAnswersRequest.ProjectModificationChangeId;
+        var modificationId = modificationAnswersRequest.ProjectModificationId;
         var projectRecordId = modificationAnswersRequest.ProjectRecordId;
         var projectPersonnelId = modificationAnswersRequest.ProjectPersonnelId;
 
         foreach (var answer in modificationAnswersRequest.ModificationAnswers)
         {
             var respondentAnswer = answer.Adapt<ProjectModificationAnswer>();
+
+            respondentAnswer.ProjectModificationId = modificationId;
+            respondentAnswer.ProjectRecordId = projectRecordId;
+            respondentAnswer.ProjectPersonnelId = projectPersonnelId;
+
+            respondentAnswers.Add(respondentAnswer);
+        }
+
+        var specification = new SaveModificationResponsesSpecification(modificationId, projectRecordId, projectPersonnelId);
+
+        await projectPersonnelRepository.SaveModificationResponses(specification, respondentAnswers);
+    }
+
+    /// <summary>
+    /// Saves respondent answers for a project modification change.
+    /// </summary>
+    /// <param name="modificationAnswersRequest">The request containing modification answers and identifiers.</param>
+    public async Task SaveModificationChangeAnswers(ModificationChangeAnswersRequest modificationAnswersRequest)
+    {
+        var respondentAnswers = new List<ProjectModificationChangeAnswer>();
+
+        var modificationChangeId = modificationAnswersRequest.ProjectModificationChangeId;
+        var projectRecordId = modificationAnswersRequest.ProjectRecordId;
+        var projectPersonnelId = modificationAnswersRequest.ProjectPersonnelId;
+
+        foreach (var answer in modificationAnswersRequest.ModificationChangeAnswers)
+        {
+            var respondentAnswer = answer.Adapt<ProjectModificationChangeAnswer>();
 
             respondentAnswer.ProjectModificationChangeId = modificationChangeId;
             respondentAnswer.ProjectRecordId = projectRecordId;
@@ -61,19 +89,19 @@ public class RespondentService(IProjectPersonnelRepository projectPersonnelRepos
             respondentAnswers.Add(respondentAnswer);
         }
 
-        var specification = new SaveModificationResponsesSpecification(modificationChangeId, projectRecordId, projectPersonnelId);
+        var specification = new SaveModificationChangeResponsesSpecification(modificationChangeId, projectRecordId, projectPersonnelId);
 
-        await projectPersonnelRepository.SaveModificationResponses(specification, respondentAnswers);
+        await projectPersonnelRepository.SaveModificationChangeResponses(specification, respondentAnswers);
     }
 
     /// <summary>
     /// Retrieves all respondent answers for a given application.
     /// </summary>
-    /// <param name="applicationId">The application identifier.</param>
+    /// <param name="projectRecordId">The application identifier.</param>
     /// <returns>A collection of respondent answers.</returns>
-    public async Task<IEnumerable<RespondentAnswerDto>> GetResponses(string applicationId)
+    public async Task<IEnumerable<RespondentAnswerDto>> GetResponses(string projectRecordId)
     {
-        var specification = new GetRespondentAnswersSpecification(applicationId);
+        var specification = new GetRespondentAnswersSpecification(projectRecordId);
 
         var responses = await projectPersonnelRepository.GetResponses(specification);
 
@@ -83,12 +111,43 @@ public class RespondentService(IProjectPersonnelRepository projectPersonnelRepos
     /// <summary>
     /// Retrieves respondent answers for a given application and category.
     /// </summary>
-    /// <param name="applicationId">The application identifier.</param>
+    /// <param name="projectRecordId">The application identifier.</param>
     /// <param name="categoryId">The category identifier.</param>
     /// <returns>A collection of respondent answers.</returns>
-    public async Task<IEnumerable<RespondentAnswerDto>> GetResponses(string applicationId, string categoryId)
+    public async Task<IEnumerable<RespondentAnswerDto>> GetResponses(string projectRecordId, string categoryId)
     {
-        var specification = new GetRespondentAnswersSpecification(applicationId, categoryId);
+        var specification = new GetRespondentAnswersSpecification(projectRecordId, categoryId);
+
+        var responses = await projectPersonnelRepository.GetResponses(specification);
+
+        return responses.Adapt<IEnumerable<RespondentAnswerDto>>();
+    }
+
+    /// <summary>
+    /// Retrieves respondent answers for a specific modification and project record.
+    /// </summary>
+    /// <param name="modificationId">The modification identifier.</param>
+    /// <param name="projectRecordId">The project record identifier.</param>
+    /// <returns>A collection of respondent answers.</returns>
+    public async Task<IEnumerable<RespondentAnswerDto>> GetModificationResponses(Guid modificationId, string projectRecordId)
+    {
+        var specification = new GetModificationAnswersSpecification(modificationId, projectRecordId);
+
+        var responses = await projectPersonnelRepository.GetResponses(specification);
+
+        return responses.Adapt<IEnumerable<RespondentAnswerDto>>();
+    }
+
+    /// <summary>
+    /// Retrieves respondent answers for a specific modification and project record.
+    /// </summary>
+    /// <param name="modificationId">The modification identifier.</param>
+    /// <param name="projectRecordId">The project record identifier.</param>
+    /// <param name="categoryId">The category identifier.</param>
+    /// <returns>A collection of respondent answers.</returns>
+    public async Task<IEnumerable<RespondentAnswerDto>> GetModificationResponses(Guid modificationId, string projectRecordId, string categoryId)
+    {
+        var specification = new GetModificationAnswersSpecification(modificationId, projectRecordId, categoryId);
 
         var responses = await projectPersonnelRepository.GetResponses(specification);
 
@@ -101,9 +160,9 @@ public class RespondentService(IProjectPersonnelRepository projectPersonnelRepos
     /// <param name="modificationChangeId">The modification change identifier.</param>
     /// <param name="projectRecordId">The project record identifier.</param>
     /// <returns>A collection of respondent answers.</returns>
-    public async Task<IEnumerable<RespondentAnswerDto>> GetResponses(Guid modificationChangeId, string projectRecordId)
+    public async Task<IEnumerable<RespondentAnswerDto>> GetModificationChangeResponses(Guid modificationChangeId, string projectRecordId)
     {
-        var specification = new GetModificationAnswersSpecification(modificationChangeId, projectRecordId);
+        var specification = new GetModificationChangeAnswersSpecification(modificationChangeId, projectRecordId);
 
         var responses = await projectPersonnelRepository.GetResponses(specification);
 
@@ -117,9 +176,9 @@ public class RespondentService(IProjectPersonnelRepository projectPersonnelRepos
     /// <param name="projectRecordId">The project record identifier.</param>
     /// <param name="categoryId">The category identifier.</param>
     /// <returns>A collection of respondent answers.</returns>
-    public async Task<IEnumerable<RespondentAnswerDto>> GetResponses(Guid modificationChangeId, string projectRecordId, string categoryId)
+    public async Task<IEnumerable<RespondentAnswerDto>> GetModificationChangeResponses(Guid modificationChangeId, string projectRecordId, string categoryId)
     {
-        var specification = new GetModificationAnswersSpecification(modificationChangeId, projectRecordId, categoryId);
+        var specification = new GetModificationChangeAnswersSpecification(modificationChangeId, projectRecordId, categoryId);
 
         var responses = await projectPersonnelRepository.GetResponses(specification);
 
@@ -201,19 +260,6 @@ public class RespondentService(IProjectPersonnelRepository projectPersonnelRepos
         var responses = await projectPersonnelRepository.GetResponses(specification);
 
         return responses.Adapt<ModificationParticipatingOrganisationAnswerDto>();
-    }
-
-    /// <summary>
-    /// Retrieves the list of area of changes and specific area of changes.
-    /// </summary>
-    /// <returns>A collection of document types as <see cref="ModificationAreaOfChangeDto"/>.</returns>
-    public async Task<IEnumerable<ModificationAreaOfChangeDto>> GetModificationAreaOfChanges()
-    {
-        var specification = new GetModificationAreaOfChangeSpecification();
-
-        var responses = await projectPersonnelRepository.GetResponses(specification);
-
-        return responses.Adapt<IEnumerable<ModificationAreaOfChangeDto>>();
     }
 
     /// <summary>
@@ -322,5 +368,31 @@ public class RespondentService(IProjectPersonnelRepository projectPersonnelRepos
         var respondentOrganisationAnswer = respondentAnswer.Adapt<ModificationParticipatingOrganisationAnswer>();
 
         await projectPersonnelRepository.SaveModificationParticipatingOrganisationAnswerResponses(specification, respondentOrganisationAnswer);
+    }
+
+    /// <summary>
+    /// Saves the list of document responses associated with a modification change.
+    /// </summary>
+    /// <param name="respondentAnswers">A list of document DTOs to be saved for the specified modification.</param>
+    /// <returns>A task that represents the asynchronous save operation.</returns>
+    public async Task DeleteModificationDocumentResponses(List<ModificationDocumentDto> respondentAnswers)
+    {
+        if (respondentAnswers == null || !respondentAnswers.Any())
+        {
+            return; // Exit early if the list is null or empty
+        }
+
+        // Extract all document Ids
+        var ids = respondentAnswers.Select(a => a.Id).ToList();
+
+        // Create the specification to fetch all docs + their answers
+        var specification = new DeleteModificationDocumentsSpecification(ids);
+
+        // Map DTOs into entities (for deletion tracking in the repo)
+        var respondentDocuments = respondentAnswers
+            .Select(answer => answer.Adapt<ModificationDocument>())
+            .ToList();
+
+        await projectPersonnelRepository.DeleteModificationDocumentResponses(specification, respondentDocuments);
     }
 }

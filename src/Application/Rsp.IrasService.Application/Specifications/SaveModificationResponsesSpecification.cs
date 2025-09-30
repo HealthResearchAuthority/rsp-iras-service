@@ -10,16 +10,16 @@ public class SaveModificationResponsesSpecification : Specification<ProjectModif
     /// Defines a specification to return all <see cref="ProjectModificationAnswer"/> records
     /// for the specified modificationChangeId, projectRecordId, and projectPersonnelId.
     /// </summary>
-    /// <param name="modificationChangeId">Unique identifier of the project modification change.</param>
+    /// <param name="modificationId">Unique identifier of the project modification change.</param>
     /// <param name="projectRecordId">Unique identifier of the project record.</param>
     /// <param name="projectPersonnelId">Identifier of the project personnel who submitted the change.</param>
-    public SaveModificationResponsesSpecification(Guid modificationChangeId, string projectRecordId, string projectPersonnelId)
+    public SaveModificationResponsesSpecification(Guid modificationId, string projectRecordId, string projectPersonnelId)
     {
         Query
             .Where
             (
                 entity =>
-                entity.ProjectModificationChangeId == modificationChangeId &&
+                entity.ProjectModificationId == modificationId &&
                 entity.ProjectRecordId == projectRecordId &&
                 entity.ProjectPersonnelId == projectPersonnelId
             );

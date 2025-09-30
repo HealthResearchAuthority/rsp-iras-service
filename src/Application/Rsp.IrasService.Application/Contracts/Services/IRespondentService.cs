@@ -27,12 +27,29 @@ public interface IRespondentService : IInterceptable
     Task<IEnumerable<RespondentAnswerDto>> GetResponses(string projectRecordId, string categoryId);
 
     /// <summary>
+    /// Retrieves respondent answers for a specific modification and project record.
+    /// </summary>
+    /// <param name="modificationId">The modification identifier.</param>
+    /// <param name="projectRecordId">The project record identifier.</param>
+    /// <returns>A collection of respondent answers.</returns>
+    Task<IEnumerable<RespondentAnswerDto>> GetModificationResponses(Guid modificationId, string projectRecordId);
+
+    /// <summary>
+    /// Retrieves respondent answers for a specific modification, project record, and category.
+    /// </summary>
+    /// <param name="modificationId">The modification identifier.</param>
+    /// <param name="projectRecordId">The project record identifier.</param>
+    /// <param name="categoryId">The category identifier.</param>
+    /// <returns>A collection of respondent answers.</returns>
+    Task<IEnumerable<RespondentAnswerDto>> GetModificationResponses(Guid modificationId, string projectRecordId, string categoryId);
+
+    /// <summary>
     /// Retrieves respondent answers for a specific modification change and project record.
     /// </summary>
     /// <param name="modificationChangeId">The modification change identifier.</param>
     /// <param name="projectRecordId">The project record identifier.</param>
     /// <returns>A collection of respondent answers.</returns>
-    Task<IEnumerable<RespondentAnswerDto>> GetResponses(Guid modificationChangeId, string projectRecordId);
+    Task<IEnumerable<RespondentAnswerDto>> GetModificationChangeResponses(Guid modificationChangeId, string projectRecordId);
 
     /// <summary>
     /// Retrieves respondent answers for a specific modification change, project record, and category.
@@ -41,7 +58,7 @@ public interface IRespondentService : IInterceptable
     /// <param name="projectRecordId">The project record identifier.</param>
     /// <param name="categoryId">The category identifier.</param>
     /// <returns>A collection of respondent answers.</returns>
-    Task<IEnumerable<RespondentAnswerDto>> GetResponses(Guid modificationChangeId, string projectRecordId, string categoryId);
+    Task<IEnumerable<RespondentAnswerDto>> GetModificationChangeResponses(Guid modificationChangeId, string projectRecordId, string categoryId);
 
     /// <summary>
     /// Retrieves document types matching the given specification.
@@ -89,17 +106,18 @@ public interface IRespondentService : IInterceptable
     Task<ModificationParticipatingOrganisationAnswerDto> GetModificationParticipatingOrganisationAnswerResponses(Guid modificationParticipatingOrganisationId);
 
     /// <summary>
-    /// Retrieves modification area of changes and specific area of changes matching the given specification.
+    /// Saves respondent answers for a project modification.
     /// </summary>
-    /// <returns>A <see cref="ModificationAreaOfChangeDto"/> object.</returns>
-    Task<IEnumerable<ModificationAreaOfChangeDto>> GetModificationAreaOfChanges();
+    /// <param name="modificationAnswersRequest">The modification answers request containing answers to save.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    Task SaveModificationAnswers(ModificationAnswersRequest modificationAnswersRequest);
 
     /// <summary>
     /// Saves respondent answers for a project modification.
     /// </summary>
     /// <param name="modificationAnswersRequest">The modification answers request containing answers to save.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    Task SaveModificationAnswers(ModificationAnswersRequest modificationAnswersRequest);
+    Task SaveModificationChangeAnswers(ModificationChangeAnswersRequest modificationAnswersRequest);
 
     /// <summary>
     /// Saves respondent answers for an project record.
@@ -127,4 +145,10 @@ public interface IRespondentService : IInterceptable
     Task SaveModificationParticipatingOrganisationAnswerResponses(ModificationParticipatingOrganisationAnswerDto respondentAnswer);
 
     Task SaveModificationDocumentAnswerResponses(List<ModificationDocumentAnswerDto> respondentAnswer);
+
+    /// <summary>
+    /// Saves the provided project modification documents that match the given specification.
+    /// </summary>
+    /// <param name="respondentAnswers">The list of modification documents to save.</param>
+    Task DeleteModificationDocumentResponses(List<ModificationDocumentDto> respondentAnswers);
 }

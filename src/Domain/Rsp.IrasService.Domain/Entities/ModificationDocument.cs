@@ -38,6 +38,11 @@ public class ModificationDocument
     public int? FileSize { get; set; }
 
     /// <summary>
+    /// Gets or sets the current status of this document (e.g., Pending, Approved, Rejected).
+    /// </summary>
+    public string? Status { get; set; }
+
+    /// <summary>
     /// Gets or sets the document scan status.
     /// </summary>
     public string? DocumentStatus { get; set; }

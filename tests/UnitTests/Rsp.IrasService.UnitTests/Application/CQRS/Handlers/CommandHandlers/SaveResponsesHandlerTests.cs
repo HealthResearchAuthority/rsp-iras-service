@@ -23,8 +23,8 @@ public class SaveResponsesHandlerTests
         var request = new RespondentAnswersRequest
         {
             Id = "R-123",
-            RespondentAnswers = new List<RespondentAnswerDto>
-            {
+            RespondentAnswers =
+            [
                 new()
                 {
                     QuestionId = "Q1",
@@ -33,7 +33,7 @@ public class SaveResponsesHandlerTests
                     AnswerText = "Yes",
                     OptionType = "Single",
                     SelectedOption = "Yes",
-                    Answers = new List<string> { "Yes" }
+                    Answers = ["Yes"]
                 },
                 new()
                 {
@@ -43,9 +43,9 @@ public class SaveResponsesHandlerTests
                     AnswerText = "No",
                     OptionType = "Multiple",
                     SelectedOption = "No",
-                    Answers = new List<string> { "No", "Maybe" }
+                    Answers = ["No", "Maybe"]
                 }
-            }
+            ]
         };
 
         var command = new SaveResponsesCommand(request);

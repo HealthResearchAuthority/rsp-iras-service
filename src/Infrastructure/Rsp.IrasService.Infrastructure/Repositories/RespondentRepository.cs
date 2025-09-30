@@ -2,6 +2,7 @@
 using Ardalis.Specification.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Application.Contracts.Repositories;
+using Rsp.IrasService.Application.Enums;
 using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Infrastructure.Repositories;
@@ -72,7 +73,7 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
 
         foreach (var answer in respondentAnswers)
         {
-            var existingAnswer = answers.FirstOrDefault(ans => ans.QuestionId == answer.QuestionId);
+            var existingAnswer = await answers.FirstOrDefaultAsync(ans => ans.QuestionId == answer.QuestionId);
 
             if (existingAnswer != null)
             {
@@ -107,6 +108,54 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
     }
 
     /// <summary>
+    /// Saves the provided project modification answers that match the given specification.
+    /// Updates existing answers, removes cleared answers, or adds new answers as appropriate.
+    /// </summary>
+    /// <param name="specification">The specification to filter which modification answers to save.</param>
+    /// <param name="respondentAnswers">The list of modification answers to save.</param>
+    public async Task SaveModificationChangeResponses(ISpecification<ProjectModificationChangeAnswer> specification, List<ProjectModificationChangeAnswer> respondentAnswers)
+    {
+        var answers = irasContext
+            .ProjectModificationChangeAnswers
+            .WithSpecification(specification);
+
+        foreach (var answer in respondentAnswers)
+        {
+            var existingAnswer = await answers.FirstOrDefaultAsync(ans => ans.QuestionId == answer.QuestionId);
+
+            if (existingAnswer != null)
+            {
+                // Delete the answer if it was previously saved and is now cleared or all options are unselected
+                if ((string.IsNullOrWhiteSpace(existingAnswer.OptionType) && string.IsNullOrWhiteSpace(answer.Response)) ||
+                    (existingAnswer.OptionType is "Single" or "Multiple" && string.IsNullOrWhiteSpace(answer.SelectedOptions)))
+                {
+                    irasContext.ProjectModificationChangeAnswers.Remove(existingAnswer);
+                    continue;
+                }
+
+                // Update the existing answer
+                existingAnswer.OptionType = answer.OptionType;
+                existingAnswer.Response = answer.Response;
+                existingAnswer.SelectedOptions = answer.SelectedOptions;
+
+                continue;
+            }
+
+            // Do not add if answer is multiple choice but none of the options are selected
+            if ((string.IsNullOrWhiteSpace(answer.OptionType) && string.IsNullOrWhiteSpace(answer.Response)) ||
+                (answer.OptionType is "Single" or "Multiple" && string.IsNullOrWhiteSpace(answer.SelectedOptions)))
+            {
+                continue;
+            }
+
+            // Add new answer
+            await irasContext.ProjectModificationChangeAnswers.AddAsync(answer);
+        }
+
+        await irasContext.SaveChangesAsync();
+    }
+
+    /// <summary>
     /// Retrieves project record answers matching the given specification.
     /// </summary>
     /// <param name="specification">The specification to filter project record answers.</param>
@@ -125,11 +174,26 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
     /// Retrieves project modification answers matching the given specification.
     /// </summary>
     /// <param name="specification">The specification to filter project modification answers.</param>
-    /// <returns>A collection of <see cref="ProjectModificationAnswer"/> objects.</returns>
+    /// <returns>A collection of <see cref="ProjectModificationChangeAnswer"/> objects.</returns>
     public Task<IEnumerable<ProjectModificationAnswer>> GetResponses(ISpecification<ProjectModificationAnswer> specification)
     {
         var result = irasContext
            .ProjectModificationAnswers
+           .WithSpecification(specification)
+           .AsEnumerable();
+
+        return Task.FromResult(result);
+    }
+
+    /// <summary>
+    /// Retrieves project modification change answers matching the given specification.
+    /// </summary>
+    /// <param name="specification">The specification to filter project modification answers.</param>
+    /// <returns>A collection of <see cref="ProjectModificationChangeAnswer"/> objects.</returns>
+    public Task<IEnumerable<ProjectModificationChangeAnswer>> GetResponses(ISpecification<ProjectModificationChangeAnswer> specification)
+    {
+        var result = irasContext
+           .ProjectModificationChangeAnswers
            .WithSpecification(specification)
            .AsEnumerable();
 
@@ -145,21 +209,6 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
     {
         var result = irasContext
             .DocumentTypes
-            .WithSpecification(specification)
-            .AsEnumerable();
-
-        return Task.FromResult(result);
-    }
-
-    /// <summary>
-    /// Gets area of changes based on the provided specification.
-    /// </summary>
-    /// <param name="specification">The specification to filter document type.</param>
-    /// <returns>A collection of <see cref="ModificationAreaOfChange"/> objects.</returns>
-    public Task<IEnumerable<ModificationAreaOfChange>> GetResponses(ISpecification<ModificationAreaOfChange> specification)
-    {
-        var result = irasContext
-            .ModificationAreaOfChanges
             .WithSpecification(specification)
             .AsEnumerable();
 
@@ -396,6 +445,44 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
         }
 
         // Save to DB
+        await irasContext.SaveChangesAsync();
+    }
+
+    /// <summary>
+    /// Deletes a list of documents.
+    /// </summary>
+    /// <param name="specification">The specification to filter which modification answers to delete.</param>
+    /// <param name="respondentAnswers">The list of modification answers to delete.</param>
+    public async Task DeleteModificationDocumentResponses(
+    ISpecification<ModificationDocument> specification,
+    List<ModificationDocument> respondentAnswers)
+    {
+        // Fetch all matching documents (with answers included via specification)
+        var documents = await irasContext
+            .ModificationDocuments
+            .WithSpecification(specification)
+            .ToListAsync();
+
+        foreach (var doc in documents)
+        {
+            // Only delete if status is NOT "SubmittedToSponsor"
+            if (!string.Equals(doc.Status, DocumentStatus.SubmittedToSponsor.ToString(), StringComparison.OrdinalIgnoreCase))
+            {
+                // Remove related answers first
+                var relatedAnswers = await irasContext.ModificationDocumentAnswers
+                .Where(a => a.ModificationDocumentId == doc.Id)
+                .ToListAsync();
+
+                if (relatedAnswers.Any())
+                {
+                    irasContext.ModificationDocumentAnswers.RemoveRange(relatedAnswers);
+                }
+
+                // Remove the document itself
+                irasContext.ModificationDocuments.Remove(doc);
+            }
+        }
+
         await irasContext.SaveChangesAsync();
     }
 }

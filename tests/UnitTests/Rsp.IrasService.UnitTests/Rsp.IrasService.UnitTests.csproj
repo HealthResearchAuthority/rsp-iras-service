@@ -53,8 +53,4 @@
 		<ProjectReference Include="..\..\..\src\WebApi\Rsp.IrasService.WebApi\Rsp.IrasService.WebApi.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<Folder Include="Application\CQRS\Queries\" />
-	</ItemGroup>
-
 </Project>
