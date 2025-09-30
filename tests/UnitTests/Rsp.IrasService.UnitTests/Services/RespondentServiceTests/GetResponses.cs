@@ -129,7 +129,7 @@ public class GetResponses : TestServiceBase<RespondentService>
         Sut = Mocker.CreateInstance<RespondentService>();
 
         // Act
-        var result = await Sut.GetResponses(modificationChangeId, projectRecordId);
+        var result = await Sut.GetModificationChangeResponses(modificationChangeId, projectRecordId);
 
         // Assert
         result.ShouldNotBeNull();
@@ -150,7 +150,7 @@ public class GetResponses : TestServiceBase<RespondentService>
         Sut = Mocker.CreateInstance<RespondentService>();
 
         // Act
-        var result = await Sut.GetResponses(modificationChangeId, projectRecordId, categoryId);
+        var result = await Sut.GetModificationChangeResponses(modificationChangeId, projectRecordId, categoryId);
 
         // Assert
         result.ShouldNotBeNull();
@@ -176,27 +176,6 @@ public class GetResponses : TestServiceBase<RespondentService>
         // Assert
         result.ShouldNotBeNull();
         result.ShouldBeAssignableTo<IEnumerable<DocumentTypeResponse>>();
-    }
-
-    /// <summary>
-    ///     Tests that responses are returned for document types
-    /// </summary>
-    [Theory, AutoData]
-    public async Task GetModificationAreaOfChanges_ShouldReturnAnswers()
-    {
-        // Arrange
-        Mocker.Use<IProjectPersonnelRepository>(_respondentRepository);
-
-        // Optionally seed data here if needed for the test
-
-        Sut = Mocker.CreateInstance<RespondentService>();
-
-        // Act
-        var result = await Sut.GetModificationAreaOfChanges();
-
-        // Assert
-        result.ShouldNotBeNull();
-        result.ShouldBeAssignableTo<IEnumerable<ModificationAreaOfChangeDto>>();
     }
 
     /// <summary>
