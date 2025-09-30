@@ -29,8 +29,7 @@ public class CreateApplication : TestServiceBase<ApplicationsService>
     ///     Tests that applicaiton is created
     /// </summary>
     /// <param name="createApplicationRequest">Represents the model for new application request</param>
-    [Theory]
-    [AutoData]
+    [Theory, AutoData]
     public async Task Returns_CreateApplicationResponse(ApplicationRequest createApplicationRequest)
     {
         // Arrange
