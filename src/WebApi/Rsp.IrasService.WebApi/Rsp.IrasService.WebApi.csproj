@@ -20,6 +20,7 @@
   </ItemGroup>
 
 	<ItemGroup>
+  	<PackageReference Include="Azure.Identity" Version="1.16.0" />
 		<ProjectReference Include="..\..\Application\Rsp.IrasService.Application\Rsp.IrasService.Application.csproj" />
 	</ItemGroup>
 
