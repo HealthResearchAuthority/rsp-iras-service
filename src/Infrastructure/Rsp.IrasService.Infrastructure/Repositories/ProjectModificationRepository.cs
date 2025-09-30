@@ -321,6 +321,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                     where string.IsNullOrEmpty(projectRecordId) || pr.Id == projectRecordId
                     select new
                     {
+                        md.Id,
                         md.FileName,
                         md.DocumentStoragePath,
                         DocumentType = modificationDocumentAnswers
@@ -357,6 +358,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
 
                 return new ProjectOverviewDocumentResult
                 {
+                    Id = x.Id,
                     FileName = x.FileName,
                     DocumentStoragePath = x.DocumentStoragePath,
 

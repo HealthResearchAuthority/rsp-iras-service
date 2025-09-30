@@ -2,6 +2,7 @@
 using Ardalis.Specification.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Application.Contracts.Repositories;
+using Rsp.IrasService.Application.Enums;
 using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Infrastructure.Repositories;
@@ -444,6 +445,44 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
         }
 
         // Save to DB
+        await irasContext.SaveChangesAsync();
+    }
+
+    /// <summary>
+    /// Deletes a list of documents.
+    /// </summary>
+    /// <param name="specification">The specification to filter which modification answers to delete.</param>
+    /// <param name="respondentAnswers">The list of modification answers to delete.</param>
+    public async Task DeleteModificationDocumentResponses(
+    ISpecification<ModificationDocument> specification,
+    List<ModificationDocument> respondentAnswers)
+    {
+        // Fetch all matching documents (with answers included via specification)
+        var documents = await irasContext
+            .ModificationDocuments
+            .WithSpecification(specification)
+            .ToListAsync();
+
+        foreach (var doc in documents)
+        {
+            // Only delete if status is NOT "SubmittedToSponsor"
+            if (!string.Equals(doc.Status, DocumentStatus.SubmittedToSponsor.ToString(), StringComparison.OrdinalIgnoreCase))
+            {
+                // Remove related answers first
+                var relatedAnswers = await irasContext.ModificationDocumentAnswers
+                .Where(a => a.ModificationDocumentId == doc.Id)
+                .ToListAsync();
+
+                if (relatedAnswers.Any())
+                {
+                    irasContext.ModificationDocumentAnswers.RemoveRange(relatedAnswers);
+                }
+
+                // Remove the document itself
+                irasContext.ModificationDocuments.Remove(doc);
+            }
+        }
+
         await irasContext.SaveChangesAsync();
     }
 }

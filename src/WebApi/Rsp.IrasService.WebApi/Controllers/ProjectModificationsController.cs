@@ -223,4 +223,17 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
 
         await mediator.Send(request);
     }
+
+    /// <summary>
+    /// Deletes documents for a project modification.
+    /// </summary>
+    /// <param name="modificationChangeRequest">The request object containing modification change details.</param>
+    /// <returns>The created modification change response.</returns>
+    [HttpPost("deletedocument")]
+    public async Task DeleteDocument(List<ModificationDocumentDto> modificationChangeRequest)
+    {
+        var request = new DeleteModificationDocumentsCommand(modificationChangeRequest);
+
+        await mediator.Send(request);
+    }
 }
