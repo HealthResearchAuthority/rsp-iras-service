@@ -229,8 +229,8 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
     /// </summary>
     /// <param name="modificationChangeRequest">The request object containing modification change details.</param>
     /// <returns>The created modification change response.</returns>
-    [HttpPost("deletedocument")]
-    public async Task DeleteDocument(List<ModificationDocumentDto> modificationChangeRequest)
+    [HttpPost("deletedocuments")]
+    public async Task DeleteDocuments(List<ModificationDocumentDto> modificationChangeRequest)
     {
         var request = new DeleteModificationDocumentsCommand(modificationChangeRequest);
 
