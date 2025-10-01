@@ -16,7 +16,7 @@ public class DocumentsController(IMediator mediator) : ControllerBase
     [HttpPost("updatedocumentscanstatus")]
     public async Task<IActionResult> UpdateDocumentScanStatus([FromBody] ModificationDocumentDto dto)
     {
-        if (dto.Id == Guid.Empty || string.IsNullOrWhiteSpace(dto.DocumentStoragePath))
+        if (string.IsNullOrWhiteSpace(dto.DocumentStoragePath))
         {
             var bad = new UpdateDocumentScanStatusResponse
             {

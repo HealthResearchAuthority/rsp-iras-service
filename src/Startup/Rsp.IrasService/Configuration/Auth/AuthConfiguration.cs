@@ -78,16 +78,16 @@ public static class AuthConfiguration
 
         // Enable built-in authentication of Jwt bearer token
         services
-            .AddAuthentication("defaultBearer")
+            .AddAuthentication()
             // using the scheme JwtBearerDefaults.AuthenticationScheme (Bearer)
-            .AddJwtBearer(async authOptions => await JwtBearerConfiguration.Configure(authOptions, appSettings, events, featureManager))
+            .AddJwtBearer("DefaultBearer", async authOptions => await JwtBearerConfiguration.Configure(authOptions, appSettings, events, featureManager))
             .AddJwtBearer("FunctionAppBearer", options =>
             {
                 options.Authority = appSettings.MicrosoftEntraSettings.Authority;
                 options.Audience = appSettings.MicrosoftEntraSettings.IrasServiceAPIID; 
                 options.Events = events;
             })
-            .AddPolicyScheme("defaultBearer", null, options =>
+            .AddPolicyScheme("dynamicBearer", null, options =>
             {
                 options.ForwardDefaultSelector = context =>
                 {
@@ -116,7 +116,7 @@ public static class AuthConfiguration
                     // based on the issuer, we will forward the request to the appropriate scheme
                     // if the token issuer is the one for OneLogin, use the default JwtBearer scheme
                     // if the issuer is the one for Microsoft Entra ID, use the FunctionAppBearer scheme
-                    return jwtSecurityToken.Issuer == appSettings.MicrosoftEntraSettings.Authority ? "FunctionAppBearer" : JwtBearerDefaults.AuthenticationScheme;
+                    return jwtSecurityToken.Issuer == appSettings.MicrosoftEntraSettings.Authority ? "FunctionAppBearer" : "DefaultBearer";
                 };
             });
     }
@@ -126,17 +126,37 @@ public static class AuthConfiguration
         // amend the default policy so that
         // it checks for email and role claim
         // in addition to just an authenticated user
-        var defaultPolicy = new AuthorizationPolicyBuilder()
-            .RequireAuthenticatedUser()
-            .RequireClaim(ClaimTypes.Email)
-            .RequireClaim(ClaimTypes.Role)
-            .Build();
+        //var defaultPolicy = new AuthorizationPolicyBuilder()
+        //    .RequireAuthenticatedUser()
+        //    .RequireClaim(ClaimTypes.Email)
+        //    .RequireClaim(ClaimTypes.Role)
+        //    .Build();
 
-        // set the default policy for [Authorize] attribute
-        // without a policy name
-        services
-            .AddAuthorizationBuilder()
-            .SetDefaultPolicy(defaultPolicy);
+        //// set the default policy for [Authorize] attribute
+        //// without a policy name
+        //services
+        //    .AddAuthorizationBuilder()
+        //    .SetDefaultPolicy(defaultPolicy);
+
+
+        services.AddAuthorization(options =>
+        {
+            // Policy that only uses defaultBearer scheme
+            options.AddPolicy("UseDefaultBearerOnly", policy =>
+            {
+                policy
+                    .AddAuthenticationSchemes("defaultBearer")
+                    .RequireAuthenticatedUser()
+                    .RequireClaim(ClaimTypes.Email)
+                    .RequireClaim(ClaimTypes.Role);
+            });
+
+            // Optional: default policy can use dynamicBearer if you want
+            options.DefaultPolicy = new AuthorizationPolicyBuilder()
+                .AddAuthenticationSchemes("dynamicBearer")
+                .RequireAuthenticatedUser()
+                .Build();
+        });
 
         // add an authorization handler to handle the application access requirements
         // for a reviewer. The requirement is linked to the the custom [ApplicationAccess]
