@@ -50,7 +50,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
     /// </summary>
     /// <param name="projectModificationChange">The project modification change entity to add.</param>
     /// <returns>The created <see cref="ProjectModificationChange"/> entity.</returns>
-    public async Task<ProjectModificationChange> CreateModificationChange(ProjectModificationChange projectModificationChange)
+    public async Task<ProjectModificationChange> CreateModificationChange(
+        ProjectModificationChange projectModificationChange)
     {
         var entity = await irasContext.ProjectModificationChanges.AddAsync(projectModificationChange);
 
@@ -59,7 +60,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         return entity.Entity;
     }
 
-    public async Task<ProjectModificationChange?> GetModificationChange(GetModificationChangeSpecification specification)
+    public async Task<ProjectModificationChange?> GetModificationChange(
+        GetModificationChangeSpecification specification)
     {
         return await irasContext
             .ProjectModificationChanges
@@ -67,7 +69,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             .SingleOrDefaultAsync();
     }
 
-    public Task<IEnumerable<ProjectModificationChange>> GetModificationChanges(GetModificationChangesSpecification specification)
+    public Task<IEnumerable<ProjectModificationChange>> GetModificationChanges(
+        GetModificationChangesSpecification specification)
     {
         var result = irasContext
             .ProjectModificationChanges
@@ -105,19 +108,19 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
     public IEnumerable<ProjectModificationResult> GetModificationsByIds(List<string> Ids)
     {
         var results = from pm in irasContext.ProjectModifications.Include(pm => pm.ProjectModificationChanges)
-                      join pr in irasContext.ProjectRecords on pm.ProjectRecordId equals pr.Id
-                      where Ids.Contains(pm.Id.ToString())
-                      select new ProjectModificationResult
-                      {
-                          Id = pm.Id.ToString(),
-                          ModificationId = pm.ModificationIdentifier,
-                          ProjectRecordId = pm.ProjectRecordId,
-                          ShortProjectTitle = irasContext.ProjectRecordAnswers
-                              .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ShortProjectTitle)
-                              .Select(a => a.Response)
-                              .FirstOrDefault() ?? string.Empty,
-                          Status = pm.Status
-                      };
+            join pr in irasContext.ProjectRecords on pm.ProjectRecordId equals pr.Id
+            where Ids.Contains(pm.Id.ToString())
+            select new ProjectModificationResult
+            {
+                Id = pm.Id.ToString(),
+                ModificationId = pm.ModificationIdentifier,
+                ProjectRecordId = pm.ProjectRecordId,
+                ShortProjectTitle = irasContext.ProjectRecordAnswers
+                    .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ShortProjectTitle)
+                    .Select(a => a.Response)
+                    .FirstOrDefault() ?? string.Empty,
+                Status = pm.Status
+            };
 
         return results.OrderBy(r => r.ShortProjectTitle);
     }
@@ -154,7 +157,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             .Take(pageSize);
     }
 
-    public int GetDocumentsForProjectOverviewCount(ProjectOverviewDocumentSearchRequest searchQuery, string? projectRecordId = null)
+    public int GetDocumentsForProjectOverviewCount(ProjectOverviewDocumentSearchRequest searchQuery,
+        string? projectRecordId = null)
     {
         var modifications = ProjectOverviewDocumentsQuery(searchQuery, projectRecordId);
         return FilterProjectOverviewDocuments(modifications, searchQuery).Count();
@@ -166,42 +170,45 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         var projectAnswers = irasContext.ProjectRecordAnswers.AsQueryable();
 
         return from pm in irasContext.ProjectModifications.Include(pm => pm.ProjectModificationChanges)
-               join pr in projectRecords on pm.ProjectRecordId equals pr.Id
-               where string.IsNullOrEmpty(projectRecordId) || pr.Id == projectRecordId
-               select new ProjectModificationResult
-               {
-                   Id = pm.Id.ToString(),
-                   ProjectRecordId = pr.Id,
-                   ModificationId = pm.ModificationIdentifier,
-                   IrasId = pr.IrasId.HasValue ? pr.IrasId.Value.ToString() : string.Empty,
-                   ModificationNumber = pm.ModificationNumber,
-                   ChiefInvestigator = projectAnswers
-                       .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ChiefInvestigator)
-                       .Select(a => a.Response)
-                       .FirstOrDefault() ?? string.Empty,
-                   LeadNation = projectAnswers
-                       .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.LeadNation)
-                       .Select(a => a.SelectedOptions)
-                       .FirstOrDefault() ?? string.Empty,
-                   ParticipatingNation = projectAnswers
-                       .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ParticipatingNation)
-                       .Select(a => a.SelectedOptions)
-                       .FirstOrDefault() ?? string.Empty,
-                   ShortProjectTitle = projectAnswers
-                       .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ShortProjectTitle)
-                       .Select(a => a.Response)
-                       .FirstOrDefault() ?? string.Empty,
-                   SponsorOrganisation = projectAnswers
-                       .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.SponsorOrganisation)
-                       .Select(a => a.Response)
-                       .FirstOrDefault() ?? string.Empty,
-                   CreatedAt = pm.CreatedDate,
-                   ReviewerId = pm.ReviewerId,
-                   Status = pm.Status
-               };
+            join pr in projectRecords on pm.ProjectRecordId equals pr.Id
+            where string.IsNullOrEmpty(projectRecordId) || pr.Id == projectRecordId
+            select new ProjectModificationResult
+            {
+                Id = pm.Id.ToString(),
+                ProjectRecordId = pr.Id,
+                ModificationId = pm.ModificationIdentifier,
+                IrasId = pr.IrasId.HasValue ? pr.IrasId.Value.ToString() : string.Empty,
+                ModificationNumber = pm.ModificationNumber,
+                ChiefInvestigator = projectAnswers
+                    .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ChiefInvestigator)
+                    .Select(a => a.Response)
+                    .FirstOrDefault() ?? string.Empty,
+                LeadNation = projectAnswers
+                    .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.LeadNation)
+                    .Select(a => a.SelectedOptions)
+                    .FirstOrDefault() ?? string.Empty,
+                ParticipatingNation = projectAnswers
+                    .Where(a => a.ProjectRecordId == pr.Id &&
+                                a.QuestionId == ProjectRecordConstants.ParticipatingNation)
+                    .Select(a => a.SelectedOptions)
+                    .FirstOrDefault() ?? string.Empty,
+                ShortProjectTitle = projectAnswers
+                    .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ShortProjectTitle)
+                    .Select(a => a.Response)
+                    .FirstOrDefault() ?? string.Empty,
+                SponsorOrganisation = projectAnswers
+                    .Where(a => a.ProjectRecordId == pr.Id &&
+                                a.QuestionId == ProjectRecordConstants.SponsorOrganisation)
+                    .Select(a => a.Response)
+                    .FirstOrDefault() ?? string.Empty,
+                CreatedAt = pm.CreatedDate,
+                ReviewerId = pm.ReviewerId,
+                Status = pm.Status
+            };
     }
 
-    private static IEnumerable<ProjectModificationResult> FilterModifications(IQueryable<ProjectModificationResult> modifications, ModificationSearchRequest searchQuery)
+    private static IEnumerable<ProjectModificationResult> FilterModifications(
+        IQueryable<ProjectModificationResult> modifications, ModificationSearchRequest searchQuery)
     {
         var fromDate = searchQuery.FromDate?.Date;
         var toDate = searchQuery.ToDate?.Date;
@@ -238,11 +245,13 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                 (string.IsNullOrEmpty(searchQuery.IrasId)
                  || x.IrasId.Contains(searchQuery.IrasId, StringComparison.OrdinalIgnoreCase))
                 && (string.IsNullOrEmpty(searchQuery.ChiefInvestigatorName)
-                    || x.ChiefInvestigator.Contains(searchQuery.ChiefInvestigatorName, StringComparison.OrdinalIgnoreCase))
+                    || x.ChiefInvestigator.Contains(searchQuery.ChiefInvestigatorName,
+                        StringComparison.OrdinalIgnoreCase))
                 && (string.IsNullOrEmpty(searchQuery.ShortProjectTitle)
                     || x.ShortProjectTitle.Contains(searchQuery.ShortProjectTitle, StringComparison.OrdinalIgnoreCase))
                 && (string.IsNullOrEmpty(searchQuery.SponsorOrganisation)
-                    || x.SponsorOrganisation.Contains(searchQuery.SponsorOrganisation, StringComparison.OrdinalIgnoreCase))
+                    || x.SponsorOrganisation.Contains(searchQuery.SponsorOrganisation,
+                        StringComparison.OrdinalIgnoreCase))
                 // ✅ Date-only filtering (ignore time)
                 && (!fromDate.HasValue || x.CreatedAt.Date >= fromDate.Value)
                 && (!toDate.HasValue || x.CreatedAt.Date <= toDate.Value)
@@ -258,7 +267,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                     || x.ReviewerId == searchQuery.ReviewerId));
     }
 
-    private static IEnumerable<ProjectModificationResult> SortModifications(IEnumerable<ProjectModificationResult> modifications, string sortField, string sortDirection)
+    private static IEnumerable<ProjectModificationResult> SortModifications(
+        IEnumerable<ProjectModificationResult> modifications, string sortField, string sortDirection)
     {
         Func<ProjectModificationResult, object>? keySelector = sortField switch
         {
@@ -307,38 +317,41 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
     /// ProjectModifications → ProjectModificationChanges → ModificationDocuments → ModificationDocumentAnswers.
     /// </summary>
     private IQueryable<ProjectOverviewDocumentResult> ProjectOverviewDocumentsQuery(
-    ProjectOverviewDocumentSearchRequest searchQuery,
-    string? projectRecordId = null)
+        ProjectOverviewDocumentSearchRequest searchQuery,
+        string? projectRecordId = null)
     {
         var projectRecords = irasContext.ProjectRecords.AsQueryable();
         var modificationDocuments = irasContext.ModificationDocuments.AsQueryable();
         var modificationDocumentAnswers = irasContext.ModificationDocumentAnswers.AsQueryable();
 
         var query = from pm in irasContext.ProjectModifications
-                    join pr in projectRecords on pm.ProjectRecordId equals pr.Id
-                    join pmc in irasContext.ProjectModificationChanges on pm.Id equals pmc.ProjectModificationId
-                    join md in modificationDocuments on pmc.Id equals md.ProjectModificationChangeId
-                    where string.IsNullOrEmpty(projectRecordId) || pr.Id == projectRecordId
-                    select new
-                    {
-                        md.Id,
-                        md.FileName,
-                        md.DocumentStoragePath,
-                        DocumentType = modificationDocumentAnswers
-                            .Where(a => a.ModificationDocumentId == md.Id && a.QuestionId == ModificationQuestionIds.DocumentType)
-                            .Select(a => a.SelectedOptions)
-                            .FirstOrDefault(),
-                        DocumentVersion = modificationDocumentAnswers
-                            .Where(a => a.ModificationDocumentId == md.Id && a.QuestionId == ModificationQuestionIds.DocumentVersion)
-                            .Select(a => a.Response)
-                            .FirstOrDefault(),
-                        DocumentDateRaw = modificationDocumentAnswers
-                            .Where(a => a.ModificationDocumentId == md.Id && a.QuestionId == ModificationQuestionIds.DocumentDate)
-                            .Select(a => a.Response)
-                            .FirstOrDefault(),
-                        Status = pmc.Status ?? string.Empty,
-                        pm.ModificationIdentifier
-                    };
+            join pr in projectRecords on pm.ProjectRecordId equals pr.Id
+            join pmc in irasContext.ProjectModificationChanges on pm.Id equals pmc.ProjectModificationId
+            join md in modificationDocuments on pmc.Id equals md.ProjectModificationChangeId
+            where string.IsNullOrEmpty(projectRecordId) || pr.Id == projectRecordId
+            select new
+            {
+                md.Id,
+                md.FileName,
+                md.DocumentStoragePath,
+                DocumentType = modificationDocumentAnswers
+                    .Where(a => a.ModificationDocumentId == md.Id &&
+                                a.QuestionId == ModificationQuestionIds.DocumentType)
+                    .Select(a => a.SelectedOptions)
+                    .FirstOrDefault(),
+                DocumentVersion = modificationDocumentAnswers
+                    .Where(a => a.ModificationDocumentId == md.Id &&
+                                a.QuestionId == ModificationQuestionIds.DocumentVersion)
+                    .Select(a => a.Response)
+                    .FirstOrDefault(),
+                DocumentDateRaw = modificationDocumentAnswers
+                    .Where(a => a.ModificationDocumentId == md.Id &&
+                                a.QuestionId == ModificationQuestionIds.DocumentDate)
+                    .Select(a => a.Response)
+                    .FirstOrDefault(),
+                Status = pmc.Status ?? string.Empty,
+                pm.ModificationIdentifier
+            };
 
         return query
             .AsEnumerable() // switch to in-memory for parsing
@@ -347,11 +360,11 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                 DateTime? parsedDate = null;
 
                 if (!string.IsNullOrWhiteSpace(x.DocumentDateRaw) && DateTime.TryParseExact(
-                            x.DocumentDateRaw,
-                            "yyyy-MM-dd",
-                            null,
-                            System.Globalization.DateTimeStyles.None,
-                            out var dt))
+                        x.DocumentDateRaw,
+                        "yyyy-MM-dd",
+                        null,
+                        System.Globalization.DateTimeStyles.None,
+                        out var dt))
                 {
                     parsedDate = dt;
                 }
@@ -376,7 +389,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             .AsQueryable();
     }
 
-    private static IEnumerable<ProjectOverviewDocumentResult> FilterProjectOverviewDocuments(IQueryable<ProjectOverviewDocumentResult> modifications, ProjectOverviewDocumentSearchRequest searchQuery)
+    private static IEnumerable<ProjectOverviewDocumentResult> FilterProjectOverviewDocuments(
+        IQueryable<ProjectOverviewDocumentResult> modifications, ProjectOverviewDocumentSearchRequest searchQuery)
     {
         return modifications
             .AsEnumerable()
@@ -386,7 +400,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                  || x.DocumentType.Contains(searchQuery.IrasId, StringComparison.OrdinalIgnoreCase)));
     }
 
-    private static IEnumerable<ProjectOverviewDocumentResult> SortProjectOverviewDocuments(IEnumerable<ProjectOverviewDocumentResult> modifications, string sortField, string sortDirection)
+    private static IEnumerable<ProjectOverviewDocumentResult> SortProjectOverviewDocuments(
+        IEnumerable<ProjectOverviewDocumentResult> modifications, string sortField, string sortDirection)
     {
         if (string.IsNullOrWhiteSpace(sortField))
         {
@@ -400,7 +415,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             nameof(ProjectOverviewDocumentResult.DocumentVersion) => x => x.DocumentVersion.ToLowerInvariant(),
             nameof(ProjectOverviewDocumentResult.DocumentDate) => x => x.DocumentDate ?? DateTime.MinValue,
             nameof(ProjectOverviewDocumentResult.Status) => x => x.Status.ToLowerInvariant(),
-            nameof(ProjectOverviewDocumentResult.ModificationIdentifier) => x => x.ModificationIdentifier.ToLowerInvariant(),
+            nameof(ProjectOverviewDocumentResult.ModificationIdentifier) => x =>
+                x.ModificationIdentifier.ToLowerInvariant(),
             _ => null
         };
 
@@ -408,8 +424,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             return modifications.OrderBy(x => x.DocumentType.ToLowerInvariant());
 
         return string.Equals(sortDirection, "desc", StringComparison.OrdinalIgnoreCase)
-        ? modifications.OrderByDescending(keySelector)
-        : modifications.OrderBy(keySelector);
+            ? modifications.OrderByDescending(keySelector)
+            : modifications.OrderBy(keySelector);
     }
 
     /// <summary>
@@ -471,5 +487,55 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
 
         // Save the changes to the database.
         await irasContext.SaveChangesAsync();
+    }
+
+    public async Task DeleteModification(ISpecification<ProjectModification> specification)
+    {
+        // Using FirstOrDefaultAsync to avoid exceptions if no entity matches the criteria.
+        var modification = await irasContext
+            .ProjectModifications
+            .Include(pm => pm.ProjectModificationChanges)
+            .WithSpecification(specification)
+            .FirstOrDefaultAsync();
+
+        // If no entity was found, there is nothing to remove.
+        if (modification == null)
+        {
+            return;
+        }
+
+        await using var tx = await irasContext.Database.BeginTransactionAsync();
+
+        try
+        {
+            var id = modification.Id;
+
+            // Delete change answers where their change belongs to this modification (subquery, no batching needed)
+            await irasContext.ProjectModificationChangeAnswers
+                .Where(a => irasContext.ProjectModificationChanges
+                    .Any(c => c.Id == a.ProjectModificationChangeId && c.ProjectModificationId == id))
+                .ExecuteDeleteAsync();
+
+            // Delete direct answers for this modification
+            await irasContext.ProjectModificationAnswers
+                .Where(a => a.ProjectModificationId == id)
+                .ExecuteDeleteAsync();
+
+            // Delete the changes
+            await irasContext.ProjectModificationChanges
+                .Where(c => c.ProjectModificationId == id)
+                .ExecuteDeleteAsync();
+
+            // Delete the modification itself
+            await irasContext.ProjectModifications
+                .Where(m => m.Id == id)
+                .ExecuteDeleteAsync();
+
+            await tx.CommitAsync();
+        }
+        catch
+        {
+            await tx.RollbackAsync();
+        }
     }
 }
