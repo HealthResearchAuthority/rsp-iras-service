@@ -337,7 +337,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                             .Select(a => a.Response)
                             .FirstOrDefault(),
                         Status = pmc.Status ?? string.Empty,
-                        pm.ModificationIdentifier
+                        pm.ModificationIdentifier,
+                        pm.ModificationNumber
                     };
 
         return query
@@ -370,7 +371,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                     DocumentVersion = x.DocumentVersion ?? string.Empty,
                     DocumentDate = parsedDate, // will be null if not found or invalid
                     Status = x.Status ?? string.Empty,
-                    ModificationIdentifier = x.ModificationIdentifier
+                    ModificationIdentifier = x.ModificationIdentifier,
+                    ModificationNumber = x.ModificationNumber
                 };
             })
             .AsQueryable();
@@ -400,7 +402,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             nameof(ProjectOverviewDocumentResult.DocumentVersion) => x => x.DocumentVersion.ToLowerInvariant(),
             nameof(ProjectOverviewDocumentResult.DocumentDate) => x => x.DocumentDate ?? DateTime.MinValue,
             nameof(ProjectOverviewDocumentResult.Status) => x => x.Status.ToLowerInvariant(),
-            nameof(ProjectOverviewDocumentResult.ModificationIdentifier) => x => x.ModificationIdentifier.ToLowerInvariant(),
+            nameof(ProjectOverviewDocumentResult.ModificationIdentifier) => x => x.ModificationNumber,
             _ => null
         };
 
@@ -455,7 +457,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             .WithSpecification(specification)
             .FirstOrDefaultAsync();
 
-        // If no entity was found, there is nothing to remove.
+        // If no entity was found, there is nothing to update.
         if (modification == null)
         {
             return;
@@ -464,10 +466,21 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         // update the modification changes status as well
         foreach (var change in modification.ProjectModificationChanges)
         {
+            var documents = irasContext.ModificationDocuments
+                .Where(md => md.ProjectModificationChangeId == change.Id)
+                .ToList();
+
+            foreach (var doc in documents)
+            {
+                doc.Status = status;
+            }
+
             change.Status = status;
+            change.UpdatedDate = DateTime.Now;
         }
 
         modification.Status = status;
+        modification.UpdatedDate = DateTime.Now;
 
         // Save the changes to the database.
         await irasContext.SaveChangesAsync();
