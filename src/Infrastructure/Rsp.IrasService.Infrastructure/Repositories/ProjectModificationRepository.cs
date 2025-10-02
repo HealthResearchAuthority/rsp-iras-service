@@ -491,44 +491,64 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
 
     public async Task DeleteModification(ISpecification<ProjectModification> specification)
     {
-        // Using FirstOrDefaultAsync to avoid exceptions if no entity matches the criteria.
         var modification = await irasContext
             .ProjectModifications
             .Include(pm => pm.ProjectModificationChanges)
             .WithSpecification(specification)
             .FirstOrDefaultAsync();
 
-        // If no entity was found, there is nothing to remove.
         if (modification == null)
         {
             return;
         }
 
-        var id = modification.Id;
+        var modId = modification.Id;
 
+        // All change IDs for this modification
         var changeIds = await irasContext.ProjectModificationChanges
-            .Where(c => c.ProjectModificationId == id)
+            .Where(c => c.ProjectModificationId == modId)
             .Select(c => c.Id)
             .ToListAsync();
 
+        // All document IDs for those changes
+        var documentIds = await irasContext.ModificationDocuments
+            .Where(d => changeIds.Contains(d.ProjectModificationChangeId))
+            .Select(d => d.Id)
+            .ToListAsync();
+
+        // 1) Remove change answers
         var changeAnswers = await irasContext.ProjectModificationChangeAnswers
             .Where(a => changeIds.Contains(a.ProjectModificationChangeId))
             .ToListAsync();
         irasContext.ProjectModificationChangeAnswers.RemoveRange(changeAnswers);
 
+        // 2) Remove document answers
+        var documentAnswers = await irasContext.ModificationDocumentAnswers
+            .Where(a => documentIds.Contains(a.ModificationDocumentId))
+            .ToListAsync();
+        irasContext.ModificationDocumentAnswers.RemoveRange(documentAnswers);
+
+        // 3) Remove modification-level answers
         var modAnswers = await irasContext.ProjectModificationAnswers
-            .Where(a => a.ProjectModificationId == id)
+            .Where(a => a.ProjectModificationId == modId)
             .ToListAsync();
         irasContext.ProjectModificationAnswers.RemoveRange(modAnswers);
 
+        // 4) Remove documents
+        var documents = await irasContext.ModificationDocuments
+            .Where(d => documentIds.Contains(d.Id))
+            .ToListAsync();
+        irasContext.ModificationDocuments.RemoveRange(documents);
+
+        // 5) Remove changes
         var changes = await irasContext.ProjectModificationChanges
-            .Where(c => c.ProjectModificationId == id)
+            .Where(c => changeIds.Contains(c.Id))
             .ToListAsync();
         irasContext.ProjectModificationChanges.RemoveRange(changes);
 
+        // 6) Remove the modification
         irasContext.ProjectModifications.Remove(modification);
 
-        // Save the changes to the database.
         await irasContext.SaveChangesAsync();
     }
 }
