@@ -1,5 +1,7 @@
+using Ardalis.Specification;
 using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Application.Contracts.Repositories;
+using Rsp.IrasService.Application.Specifications;
 using Rsp.IrasService.Domain.Entities;
 using Rsp.IrasService.Infrastructure;
 using Rsp.IrasService.Infrastructure.Repositories;
@@ -127,6 +129,53 @@ public class ProjectModificationServiceTests : TestServiceBase<ProjectModificati
 
         // Act
         await Sut.RemoveModificationChange(change.Id);
+
+        // Assert
+        (await _context.ProjectModificationChanges.FindAsync(change.Id)).ShouldBeNull();
+    }
+
+    [Fact]
+    public async Task DeleteModification_Removes_From_Database()
+    {
+        // Arrange - seed a modification change
+        var modId = Guid.NewGuid();
+        var now = DateTime.UtcNow;
+
+        var modification = new ProjectModification
+        {
+            Id = modId,
+            ProjectRecordId = "PR-1",
+            ModificationNumber = 1,
+            ModificationIdentifier = "IRAS/",
+            Status = "Draft",
+            CreatedDate = now,
+            UpdatedDate = now,
+            CreatedBy = "tester",
+            UpdatedBy = "tester"
+        };
+
+        var change = new ProjectModificationChange
+        {
+            Id = Guid.NewGuid(),
+            ProjectModificationId = modId,
+            AreaOfChange = "Area",
+            SpecificAreaOfChange = "Detail",
+            Status = "Draft",
+            CreatedDate = now,
+            UpdatedDate = now,
+            CreatedBy = "tester",
+            UpdatedBy = "tester"
+        };
+
+        await _context.ProjectModifications.AddAsync(modification);
+        await _context.ProjectModificationChanges.AddAsync(change);
+        await _context.SaveChangesAsync();
+
+        Mocker.Use<IProjectModificationRepository>(_modificationRepository);
+        Sut = Mocker.CreateInstance<ProjectModificationService>();
+
+        // Act
+        await Sut.DeleteModification(modification.Id);
 
         // Assert
         (await _context.ProjectModificationChanges.FindAsync(change.Id)).ShouldBeNull();

@@ -504,38 +504,31 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             return;
         }
 
-        await using var tx = await irasContext.Database.BeginTransactionAsync();
+        var id = modification.Id;
 
-        try
-        {
-            var id = modification.Id;
+        var changeIds = await irasContext.ProjectModificationChanges
+            .Where(c => c.ProjectModificationId == id)
+            .Select(c => c.Id)
+            .ToListAsync();
 
-            // Delete change answers where their change belongs to this modification (subquery, no batching needed)
-            await irasContext.ProjectModificationChangeAnswers
-                .Where(a => irasContext.ProjectModificationChanges
-                    .Any(c => c.Id == a.ProjectModificationChangeId && c.ProjectModificationId == id))
-                .ExecuteDeleteAsync();
+        var changeAnswers = await irasContext.ProjectModificationChangeAnswers
+            .Where(a => changeIds.Contains(a.ProjectModificationChangeId))
+            .ToListAsync();
+        irasContext.ProjectModificationChangeAnswers.RemoveRange(changeAnswers);
 
-            // Delete direct answers for this modification
-            await irasContext.ProjectModificationAnswers
-                .Where(a => a.ProjectModificationId == id)
-                .ExecuteDeleteAsync();
+        var modAnswers = await irasContext.ProjectModificationAnswers
+            .Where(a => a.ProjectModificationId == id)
+            .ToListAsync();
+        irasContext.ProjectModificationAnswers.RemoveRange(modAnswers);
 
-            // Delete the changes
-            await irasContext.ProjectModificationChanges
-                .Where(c => c.ProjectModificationId == id)
-                .ExecuteDeleteAsync();
+        var changes = await irasContext.ProjectModificationChanges
+            .Where(c => c.ProjectModificationId == id)
+            .ToListAsync();
+        irasContext.ProjectModificationChanges.RemoveRange(changes);
 
-            // Delete the modification itself
-            await irasContext.ProjectModifications
-                .Where(m => m.Id == id)
-                .ExecuteDeleteAsync();
+        irasContext.ProjectModifications.Remove(modification);
 
-            await tx.CommitAsync();
-        }
-        catch
-        {
-            await tx.RollbackAsync();
-        }
+        // Save the changes to the database.
+        await irasContext.SaveChangesAsync();
     }
 }
