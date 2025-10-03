@@ -122,4 +122,10 @@ public interface IProjectModificationRepository
     /// </summary>
     /// <param name="specification">The specification used to locate the modification to update.</param>
     Task UpdateModificationStatus(ISpecification<ProjectModification> specification, string status);
+
+    /// <summary>
+    /// Deletes the  <see cref="ProjectModification"/> modification that matches the provided specification.
+    /// </summary>
+    /// <param name="specification">The specification used to locate the modification to delete.</param>
+    Task DeleteModification(ISpecification<ProjectModification> specification);
 }

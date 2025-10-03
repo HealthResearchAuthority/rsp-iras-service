@@ -113,4 +113,10 @@ public interface IProjectModificationService : IInterceptable
     /// </summary>
     /// <param name="modificationId">The unique identifier of the modification change to remove.</param>
     Task UpdateModificationStatus(Guid modificationId, string status);
+
+    /// <summary>
+    /// Deletes an existing modification by its unique identifier. 
+    /// </summary>
+    /// <param name="modificationId">The unique identifier of the modification to delete.</param>
+    Task DeleteModification(Guid modificationId);
 }

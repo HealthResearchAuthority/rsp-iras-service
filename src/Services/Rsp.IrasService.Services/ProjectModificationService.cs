@@ -162,4 +162,16 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
 
         await projectModificationRepository.UpdateModificationStatus(specification, status);
     }
+
+    /// <summary>
+    /// Updates an existing modification status by its unique identifier. And also updates
+    /// the status of the associated modification changes.
+    /// </summary>
+    /// <param name="modificationId">The unique identifier of the modification change to remove.</param>
+    public async Task DeleteModification(Guid modificationId)
+    {
+        var specification = new GetModificationSpecification(modificationId);
+
+        await projectModificationRepository.DeleteModification(specification);
+    }
 }
