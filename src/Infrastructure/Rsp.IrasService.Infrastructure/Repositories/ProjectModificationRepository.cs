@@ -325,33 +325,31 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         var modificationDocumentAnswers = irasContext.ModificationDocumentAnswers.AsQueryable();
 
         var query = from pm in irasContext.ProjectModifications
-            join pr in projectRecords on pm.ProjectRecordId equals pr.Id
-            join pmc in irasContext.ProjectModificationChanges on pm.Id equals pmc.ProjectModificationId
-            join md in modificationDocuments on pmc.Id equals md.ProjectModificationChangeId
-            where string.IsNullOrEmpty(projectRecordId) || pr.Id == projectRecordId
-            select new
-            {
-                md.Id,
-                md.FileName,
-                md.DocumentStoragePath,
-                DocumentType = modificationDocumentAnswers
-                    .Where(a => a.ModificationDocumentId == md.Id &&
-                                a.QuestionId == ModificationQuestionIds.DocumentType)
-                    .Select(a => a.SelectedOptions)
-                    .FirstOrDefault(),
-                DocumentVersion = modificationDocumentAnswers
-                    .Where(a => a.ModificationDocumentId == md.Id &&
-                                a.QuestionId == ModificationQuestionIds.DocumentVersion)
-                    .Select(a => a.Response)
-                    .FirstOrDefault(),
-                DocumentDateRaw = modificationDocumentAnswers
-                    .Where(a => a.ModificationDocumentId == md.Id &&
-                                a.QuestionId == ModificationQuestionIds.DocumentDate)
-                    .Select(a => a.Response)
-                    .FirstOrDefault(),
-                Status = pmc.Status ?? string.Empty,
-                pm.ModificationIdentifier
-            };
+                    join pr in projectRecords on pm.ProjectRecordId equals pr.Id
+                    join pmc in irasContext.ProjectModificationChanges on pm.Id equals pmc.ProjectModificationId
+                    join md in modificationDocuments on pmc.Id equals md.ProjectModificationChangeId
+                    where string.IsNullOrEmpty(projectRecordId) || pr.Id == projectRecordId
+                    select new
+                    {
+                        md.Id,
+                        md.FileName,
+                        md.DocumentStoragePath,
+                        DocumentType = modificationDocumentAnswers
+                            .Where(a => a.ModificationDocumentId == md.Id && a.QuestionId == ModificationQuestionIds.DocumentType)
+                            .Select(a => a.SelectedOptions)
+                            .FirstOrDefault(),
+                        DocumentVersion = modificationDocumentAnswers
+                            .Where(a => a.ModificationDocumentId == md.Id && a.QuestionId == ModificationQuestionIds.DocumentVersion)
+                            .Select(a => a.Response)
+                            .FirstOrDefault(),
+                        DocumentDateRaw = modificationDocumentAnswers
+                            .Where(a => a.ModificationDocumentId == md.Id && a.QuestionId == ModificationQuestionIds.DocumentDate)
+                            .Select(a => a.Response)
+                            .FirstOrDefault(),
+                        Status = pmc.Status ?? string.Empty,
+                        pm.ModificationIdentifier,
+                        pm.ModificationNumber
+                    };
 
         return query
             .AsEnumerable() // switch to in-memory for parsing
@@ -383,7 +381,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                     DocumentVersion = x.DocumentVersion ?? string.Empty,
                     DocumentDate = parsedDate, // will be null if not found or invalid
                     Status = x.Status ?? string.Empty,
-                    ModificationIdentifier = x.ModificationIdentifier
+                    ModificationIdentifier = x.ModificationIdentifier,
+                    ModificationNumber = x.ModificationNumber
                 };
             })
             .AsQueryable();
@@ -400,8 +399,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                  || x.DocumentType.Contains(searchQuery.IrasId, StringComparison.OrdinalIgnoreCase)));
     }
 
-    private static IEnumerable<ProjectOverviewDocumentResult> SortProjectOverviewDocuments(
-        IEnumerable<ProjectOverviewDocumentResult> modifications, string sortField, string sortDirection)
+    private static IEnumerable<ProjectOverviewDocumentResult> SortProjectOverviewDocuments(IEnumerable<ProjectOverviewDocumentResult> modifications, string sortField, string sortDirection)
     {
         if (string.IsNullOrWhiteSpace(sortField))
         {
@@ -415,8 +413,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             nameof(ProjectOverviewDocumentResult.DocumentVersion) => x => x.DocumentVersion.ToLowerInvariant(),
             nameof(ProjectOverviewDocumentResult.DocumentDate) => x => x.DocumentDate ?? DateTime.MinValue,
             nameof(ProjectOverviewDocumentResult.Status) => x => x.Status.ToLowerInvariant(),
-            nameof(ProjectOverviewDocumentResult.ModificationIdentifier) => x =>
-                x.ModificationIdentifier.ToLowerInvariant(),
+            nameof(ProjectOverviewDocumentResult.ModificationIdentifier) => x => x.ModificationNumber,
             _ => null
         };
 
@@ -471,7 +468,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             .WithSpecification(specification)
             .FirstOrDefaultAsync();
 
-        // If no entity was found, there is nothing to remove.
+        // If no entity was found, there is nothing to update.
         if (modification == null)
         {
             return;
@@ -480,10 +477,21 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         // update the modification changes status as well
         foreach (var change in modification.ProjectModificationChanges)
         {
+            var documents = irasContext.ModificationDocuments
+                .Where(md => md.ProjectModificationChangeId == change.Id)
+                .ToList();
+
+            foreach (var doc in documents)
+            {
+                doc.Status = status;
+            }
+
             change.Status = status;
+            change.UpdatedDate = DateTime.Now;
         }
 
         modification.Status = status;
+        modification.UpdatedDate = DateTime.Now;
 
         // Save the changes to the database.
         await irasContext.SaveChangesAsync();
