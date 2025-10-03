@@ -236,4 +236,17 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
 
         await mediator.Send(request);
     }
+
+    /// <summary>
+    /// Delete a modification by its unique identifier.
+    /// </summary>
+    /// <param name="modificationId">The unique identifier of the modification to update.</param>
+    /// <param name="status">The new status for modification to update.</param>
+    [HttpPost("delete")]
+    public async Task DeleteModification(Guid modificationId)
+    {
+        var request = new DeleteModificationCommand(modificationId);
+
+        await mediator.Send(request);
+    }
 }
