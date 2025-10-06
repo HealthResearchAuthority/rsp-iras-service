@@ -73,4 +73,20 @@ public class ModificationControllerMiscTests : TestServiceBase<ProjectModificati
         // Assert
         mediator.Verify(m => m.Send(It.Is<UpdateModificationStatusCommand>(q => q.ProjectModificationId == id && q.Status == status), It.IsAny<CancellationToken>()), Times.Once);
     }
+
+    [Fact]
+    public async Task DeleteModification_Sends_Command()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var mediator = Mocker.GetMock<IMediator>();
+        mediator.Setup(x => x.Send(It.IsAny<DeleteModificationCommand>(), It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
+
+        // Act
+        await Sut.DeleteModification(id);
+
+        // Assert
+        mediator.Verify(m => m.Send(It.Is<DeleteModificationCommand>(q => q.ProjectModificationId == id), It.IsAny<CancellationToken>()), Times.Once);
+    }
 }

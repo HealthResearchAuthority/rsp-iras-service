@@ -24,7 +24,7 @@ public class DeleteModificationDocument : TestServiceBase
             .Setup(m => m.Send(It.IsAny<DeleteModificationDocumentsCommand>(), It.IsAny<CancellationToken>()));
 
         // Act
-        await _controller.DeleteDocument(modificationChangeRequest);
+        await _controller.DeleteDocuments(modificationChangeRequest);
 
         // Assert
         mediator
