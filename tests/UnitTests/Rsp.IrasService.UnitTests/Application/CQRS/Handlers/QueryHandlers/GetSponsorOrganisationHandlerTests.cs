@@ -24,16 +24,16 @@ public class GetSponsorOrganisationHandlerTests
         {
             SponsorOrganisations = new List<SponsorOrganisationDto>
                 {
-                    new() { SponsorOrganisationName = "App-123" },
-                    new() { SponsorOrganisationName = "App-456" }
+                    new() { RtsId = "App-123" },
+                    new() { RtsId = "App-456" }
                 },
             TotalCount = 2
         };
 
-        var query = new GetSponsorOrganisationsQuery(1, 100, nameof(SponsorOrganisationDto.SponsorOrganisationName), "asc", null);
+        var query = new GetSponsorOrganisationsQuery(1, 100, nameof(SponsorOrganisationDto.RtsId), "asc", null);
 
         _mock
-            .Setup(service => service.GetSponsorOrganisations(1, 100, nameof(SponsorOrganisationDto.SponsorOrganisationName), "asc", null))
+            .Setup(service => service.GetSponsorOrganisations(1, 100, nameof(SponsorOrganisationDto.RtsId), "asc", null))
             .ReturnsAsync(expectedResponse);
 
         // Act
@@ -43,6 +43,6 @@ public class GetSponsorOrganisationHandlerTests
         result.ShouldNotBeNull();
         result.TotalCount.ShouldBe(expectedResponse.TotalCount);
 
-        _mock.Verify(service => service.GetSponsorOrganisations(1, 100, nameof(SponsorOrganisationDto.SponsorOrganisationName), "asc", null), Times.Once);
+        _mock.Verify(service => service.GetSponsorOrganisations(1, 100, nameof(SponsorOrganisationDto.RtsId), "asc", null), Times.Once);
     }
 }

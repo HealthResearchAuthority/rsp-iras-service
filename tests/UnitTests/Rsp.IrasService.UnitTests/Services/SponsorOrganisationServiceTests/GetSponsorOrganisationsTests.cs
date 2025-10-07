@@ -36,7 +36,7 @@ public class GetSponsorOrganisationsTests : TestServiceBase<SponsorOrganisations
         await TestData.SeedData(_context, generator, records);
 
         // Act
-        var result = await Sut.GetSponsorOrganisations(1, 100, nameof(SponsorOrganisationDto.SponsorOrganisationName), "asc", null);
+        var result = await Sut.GetSponsorOrganisations(1, 100, nameof(SponsorOrganisationDto.RtsId), "asc", null);
 
         // Assert
         result.ShouldNotBeNull();

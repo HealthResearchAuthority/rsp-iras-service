@@ -14,7 +14,7 @@ public class GetSponsorOrganisationSpecificationTests
         // Arrange
         var applications = generator.Take(5).ToList();
 
-        var spec = new GetSponsorOrganisationsSpecification(1, 10, nameof(SponsorOrganisationDto.SponsorOrganisationName), "asc", null);
+        var spec = new GetSponsorOrganisationsSpecification(1, 10, nameof(SponsorOrganisationDto.RtsId), "asc", null);
 
         // Act
         var result = spec

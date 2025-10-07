@@ -2,7 +2,7 @@
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.WebApi.Controllers;
 
-namespace Rsp.IrasService.UnitTests.Web.Controllers.ReviewBodyControllersTests;
+namespace Rsp.IrasService.UnitTests.Web.Controllers.SponsorOrganisationsControllerTests;
 
 public class GetSponsorOrganisationControllerTests : TestServiceBase
 {
@@ -20,9 +20,9 @@ public class GetSponsorOrganisationControllerTests : TestServiceBase
         var mockMediator = Mocker.GetMock<IMediator>();
 
         // Act
-        await _controller.GetAllSponsorOrganisations(1, 100, nameof(SponsorOrganisationDto.SponsorOrganisationName),
+        await _controller.GetAllSponsorOrganisations(1, 100, nameof(SponsorOrganisationDto.RtsId),
             "asc", null);
-
+        
         // Assert
         mockMediator.Verify(
             m => m.Send(It.IsAny<GetSponsorOrganisationsQuery>(), default), Times.Once);

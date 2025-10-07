@@ -3,8 +3,7 @@
 public class SponsorOrganisationDto : BaseDto
 {
     public Guid Id { get; set; }
-    public string SponsorOrganisationName { get; set; } = null!;
-    public List<string> Countries { get; set; } = [];
+    public string RtsId { get; set; } = null!;
     public bool IsActive { get; set; } = true;
     public string CreatedBy { get; set; } = null!;
     public string? UpdatedBy { get; set; }

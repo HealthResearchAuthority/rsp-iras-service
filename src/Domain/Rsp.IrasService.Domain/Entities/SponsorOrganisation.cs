@@ -6,10 +6,8 @@ namespace Rsp.IrasService.Domain.Entities;
 public class SponsorOrganisation : IAuditable
 {
     public Guid Id { get; set; }
-    [Auditable]
-    public string SponsorOrganisationName { get; set; } = null!;
-    [Auditable]
-    public List<string> Countries { get; set; } = [];
+
+    public string RtsId { get; set; }
     [Auditable]
     public bool IsActive { get; set; } = true;
     public DateTime CreatedDate { get; set; }

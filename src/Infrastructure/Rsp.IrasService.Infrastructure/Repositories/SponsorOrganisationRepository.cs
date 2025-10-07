@@ -28,26 +28,11 @@ public class SponsorOrganisationRepository(IrasContext irasContext) : ISponsorOr
 
         if (searchQuery != null)
         {
-            if (!string.IsNullOrEmpty(searchQuery.SearchQuery))
+            if (searchQuery.RtsIds is { Count: > 0 })
             {
-                var splitQuery = searchQuery.SearchQuery
-                    .Split(' ', StringSplitOptions.RemoveEmptyEntries);
-
                 query = query.Where(x =>
-                    splitQuery.Any(word =>
-                        x.SponsorOrganisationName.Contains(word)));
-            }
-
-            if (searchQuery.Country is { Count: > 0 })
-            {
-                var lowerCountries = searchQuery.Country
-                    .Where(c => !string.IsNullOrWhiteSpace(c))
-                    .Select(c => c.ToLower())
-                    .ToList();
-
-                query = query.Where(rb =>
-                    rb.Countries.Any(c =>
-                        lowerCountries.Contains(c.ToLower())));
+                    searchQuery.RtsIds.Any(rtsId =>
+                        x.RtsId == rtsId));
             }
 
             if (searchQuery.Status != null)

@@ -14,26 +14,11 @@ public class GetSponsorOrganisationsSpecification : Specification<SponsorOrganis
 
         if (searchQuery != null)
         {
-            if (!string.IsNullOrEmpty(searchQuery.SearchQuery))
+            if (searchQuery.RtsIds is { Count: > 0 })
             {
-                var splitQuery = searchQuery.SearchQuery.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-
                 builder = builder.Where(x =>
-                    splitQuery.Any(word =>
-                        x.SponsorOrganisationName.Contains(word)
-                        ));
-            }
-
-            if (searchQuery.Country is { Count: > 0 })
-            {
-                var lowerCountries = searchQuery.Country
-                    .Where(c => !string.IsNullOrWhiteSpace(c))
-                    .Select(c => c.ToLower())
-                    .ToList();
-
-                builder = builder.Where(rb =>
-                    rb.Countries.Any(c =>
-                        lowerCountries.Contains(c.ToLower())));
+                    searchQuery.RtsIds.Any(rtsId =>
+                        x.RtsId == rtsId));
             }
 
             if (searchQuery.Status != null)
@@ -45,11 +30,6 @@ public class GetSponsorOrganisationsSpecification : Specification<SponsorOrganis
         // Apply sorting
         builder = (sortField.ToLower(), sortDirection.ToLower()) switch
         {
-            ("sponsororganisationname", "asc") => builder.OrderBy(x => x.SponsorOrganisationName).ThenBy(x => x.IsActive),
-            ("sponsororganisationname", "desc") => builder.OrderByDescending(x => x.SponsorOrganisationName).ThenBy(x => x.IsActive),
-            ("countries", "asc") => builder.OrderBy(x => x.Countries.FirstOrDefault()).ThenBy(x => x.IsActive),
-            ("countries", "desc") => builder.OrderByDescending(x => x.Countries.FirstOrDefault()).ThenBy(x => x.IsActive),
-
             // Sort so that active records (IsActive == true) appear first when sorting ascending
             ("isactive", "asc") => builder.OrderByDescending(x => x.IsActive),
 
@@ -57,8 +37,7 @@ public class GetSponsorOrganisationsSpecification : Specification<SponsorOrganis
             ("isactive", "desc") => builder.OrderBy(x => x.IsActive),
 
             _ => builder
-                .OrderBy(x => x.SponsorOrganisationName)
-                .ThenByDescending(x => x.IsActive)
+                .OrderBy(x => x.IsActive)
         };
 
         builder
