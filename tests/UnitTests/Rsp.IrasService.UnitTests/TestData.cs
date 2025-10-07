@@ -113,4 +113,20 @@ public static class TestData
 
         return items;
     }
+
+    public static async Task<IList<SponsorOrganisation>> SeedData(IrasContext context,
+        Generator<SponsorOrganisation> generator, int records)
+    {
+        // seed data using bogus
+        var items = generator
+            .Take(records)
+            .ToList();
+
+        await context.SponsorOrganisations.AddRangeAsync(items);
+
+        await context.SaveChangesAsync();
+
+        return items;
+    }
+
 }
