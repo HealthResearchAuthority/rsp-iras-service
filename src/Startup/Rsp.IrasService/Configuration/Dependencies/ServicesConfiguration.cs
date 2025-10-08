@@ -33,6 +33,7 @@ public static class ServicesConfiguration
         services.AddTransient<IReviewBodyAuditTrailService, ReviewBodyAuditTrailService>();
         services.AddTransient<IAuditTrailDetailsService, AuditTrailDetailsService>();
         services.AddTransient<IProjectModificationService, ProjectModificationService>();
+        services.AddTransient<ISponsorOrganisationsService, SponsorOrganisationsService>();
 
         // repositories
         services.AddTransient<IProjectRecordRepository, ProjectRecordRepository>();
@@ -42,6 +43,7 @@ public static class ServicesConfiguration
         services.AddTransient<IRegulatoryBodyRepository, RegulatoryBodyRepository>();
         services.AddTransient<IRegulatoryBodyAuditTrailRepository, RegulatoryBodyAuditTrailRepository>();
         services.AddTransient<IProjectModificationRepository, ProjectModificationRepository>();
+        services.AddTransient<ISponsorOrganisationsRepository, SponsorOrganisationRepository>();
 
         // handlers and interceptors
         services.AddTransient<IAuditTrailHandler, ReviewBodyAuditTrailHandler>();

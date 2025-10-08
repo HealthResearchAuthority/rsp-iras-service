@@ -5,11 +5,11 @@ using Rsp.IrasService.WebApi.Controllers;
 
 namespace Rsp.IrasService.UnitTests.Web.Controllers.ReviewBodyControllersTests;
 
-public class GetReviewBodiesTests : TestServiceBase
+public class GetSponsorOrganisationTests : TestServiceBase
 {
     private readonly ReviewBodyController _controller;
 
-    public GetReviewBodiesTests()
+    public GetSponsorOrganisationTests()
     {
         _controller = Mocker.CreateInstance<ReviewBodyController>();
     }

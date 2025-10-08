@@ -23,6 +23,8 @@ public class IrasContext(DbContextOptions<IrasContext> options) : DbContext(opti
     public DbSet<ModificationDocumentAnswer> ModificationDocumentAnswers { get; set; }
     public DbSet<ModificationParticipatingOrganisation> ModificationParticipatingOrganisations { get; set; }
     public DbSet<ModificationParticipatingOrganisationAnswer> ModificationParticipatingOrganisationAnswers { get; set; }
+    public DbSet<SponsorOrganisation> SponsorOrganisations { get; set; }
+    public DbSet<SponsorOrganisationUser> SponsorOrganisationsUsers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -36,6 +38,8 @@ public class IrasContext(DbContextOptions<IrasContext> options) : DbContext(opti
         modelBuilder.ApplyConfiguration(new RegulatoryBodyConfiguration());
         modelBuilder.ApplyConfiguration(new RegulatoryBodyAuditTrailConfiguration());
         modelBuilder.ApplyConfiguration(new ReviewBodyUserConfiguration());
+        modelBuilder.ApplyConfiguration(new SponsorOrganisationConfiguration());
+        modelBuilder.ApplyConfiguration(new SponsorOrganisationUserConfiguration());
 
         // project modifications entities configuration
         modelBuilder.ApplyConfiguration(new ProjectModificationConfiguration());
