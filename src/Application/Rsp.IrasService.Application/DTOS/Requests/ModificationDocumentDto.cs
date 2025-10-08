@@ -36,4 +36,9 @@ public class ModificationDocumentDto
     /// Gets or sets the document file size.
     /// </summary>
     public long? FileSize { get; set; }
+
+    /// <summary>
+    /// Gets or sets the status.
+    /// </summary>
+    public string? Status { get; set; }
 }

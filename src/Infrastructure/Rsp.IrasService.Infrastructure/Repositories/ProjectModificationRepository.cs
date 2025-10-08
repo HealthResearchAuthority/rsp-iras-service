@@ -108,19 +108,19 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
     public IEnumerable<ProjectModificationResult> GetModificationsByIds(List<string> Ids)
     {
         var results = from pm in irasContext.ProjectModifications.Include(pm => pm.ProjectModificationChanges)
-            join pr in irasContext.ProjectRecords on pm.ProjectRecordId equals pr.Id
-            where Ids.Contains(pm.Id.ToString())
-            select new ProjectModificationResult
-            {
-                Id = pm.Id.ToString(),
-                ModificationId = pm.ModificationIdentifier,
-                ProjectRecordId = pm.ProjectRecordId,
-                ShortProjectTitle = irasContext.ProjectRecordAnswers
-                    .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ShortProjectTitle)
-                    .Select(a => a.Response)
-                    .FirstOrDefault() ?? string.Empty,
-                Status = pm.Status
-            };
+                      join pr in irasContext.ProjectRecords on pm.ProjectRecordId equals pr.Id
+                      where Ids.Contains(pm.Id.ToString())
+                      select new ProjectModificationResult
+                      {
+                          Id = pm.Id.ToString(),
+                          ModificationId = pm.ModificationIdentifier,
+                          ProjectRecordId = pm.ProjectRecordId,
+                          ShortProjectTitle = irasContext.ProjectRecordAnswers
+                              .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ShortProjectTitle)
+                              .Select(a => a.Response)
+                              .FirstOrDefault() ?? string.Empty,
+                          Status = pm.Status
+                      };
 
         return results.OrderBy(r => r.ShortProjectTitle);
     }
@@ -170,41 +170,41 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         var projectAnswers = irasContext.ProjectRecordAnswers.AsQueryable();
 
         return from pm in irasContext.ProjectModifications.Include(pm => pm.ProjectModificationChanges)
-            join pr in projectRecords on pm.ProjectRecordId equals pr.Id
-            where string.IsNullOrEmpty(projectRecordId) || pr.Id == projectRecordId
-            select new ProjectModificationResult
-            {
-                Id = pm.Id.ToString(),
-                ProjectRecordId = pr.Id,
-                ModificationId = pm.ModificationIdentifier,
-                IrasId = pr.IrasId.HasValue ? pr.IrasId.Value.ToString() : string.Empty,
-                ModificationNumber = pm.ModificationNumber,
-                ChiefInvestigator = projectAnswers
-                    .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ChiefInvestigator)
-                    .Select(a => a.Response)
-                    .FirstOrDefault() ?? string.Empty,
-                LeadNation = projectAnswers
-                    .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.LeadNation)
-                    .Select(a => a.SelectedOptions)
-                    .FirstOrDefault() ?? string.Empty,
-                ParticipatingNation = projectAnswers
-                    .Where(a => a.ProjectRecordId == pr.Id &&
-                                a.QuestionId == ProjectRecordConstants.ParticipatingNation)
-                    .Select(a => a.SelectedOptions)
-                    .FirstOrDefault() ?? string.Empty,
-                ShortProjectTitle = projectAnswers
-                    .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ShortProjectTitle)
-                    .Select(a => a.Response)
-                    .FirstOrDefault() ?? string.Empty,
-                SponsorOrganisation = projectAnswers
-                    .Where(a => a.ProjectRecordId == pr.Id &&
-                                a.QuestionId == ProjectRecordConstants.SponsorOrganisation)
-                    .Select(a => a.Response)
-                    .FirstOrDefault() ?? string.Empty,
-                CreatedAt = pm.CreatedDate,
-                ReviewerId = pm.ReviewerId,
-                Status = pm.Status
-            };
+               join pr in projectRecords on pm.ProjectRecordId equals pr.Id
+               where string.IsNullOrEmpty(projectRecordId) || pr.Id == projectRecordId
+               select new ProjectModificationResult
+               {
+                   Id = pm.Id.ToString(),
+                   ProjectRecordId = pr.Id,
+                   ModificationId = pm.ModificationIdentifier,
+                   IrasId = pr.IrasId.HasValue ? pr.IrasId.Value.ToString() : string.Empty,
+                   ModificationNumber = pm.ModificationNumber,
+                   ChiefInvestigator = projectAnswers
+                       .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ChiefInvestigator)
+                       .Select(a => a.Response)
+                       .FirstOrDefault() ?? string.Empty,
+                   LeadNation = projectAnswers
+                       .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.LeadNation)
+                       .Select(a => a.SelectedOptions)
+                       .FirstOrDefault() ?? string.Empty,
+                   ParticipatingNation = projectAnswers
+                       .Where(a => a.ProjectRecordId == pr.Id &&
+                                   a.QuestionId == ProjectRecordConstants.ParticipatingNation)
+                       .Select(a => a.SelectedOptions)
+                       .FirstOrDefault() ?? string.Empty,
+                   ShortProjectTitle = projectAnswers
+                       .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ShortProjectTitle)
+                       .Select(a => a.Response)
+                       .FirstOrDefault() ?? string.Empty,
+                   SponsorOrganisation = projectAnswers
+                       .Where(a => a.ProjectRecordId == pr.Id &&
+                                   a.QuestionId == ProjectRecordConstants.SponsorOrganisation)
+                       .Select(a => a.Response)
+                       .FirstOrDefault() ?? string.Empty,
+                   CreatedAt = pm.CreatedDate,
+                   ReviewerId = pm.ReviewerId,
+                   Status = pm.Status
+               };
     }
 
     private static IEnumerable<ProjectModificationResult> FilterModifications(
@@ -346,7 +346,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                             .Where(a => a.ModificationDocumentId == md.Id && a.QuestionId == ModificationQuestionIds.DocumentDate)
                             .Select(a => a.Response)
                             .FirstOrDefault(),
-                        Status = pmc.Status ?? string.Empty,
+                        Status = md.Status ?? string.Empty,
                         pm.ModificationIdentifier,
                         pm.ModificationNumber
                     };
