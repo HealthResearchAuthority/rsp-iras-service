@@ -1,0 +1,12 @@
+﻿using Ardalis.Specification;
+using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.IrasService.Domain.Entities;
+
+namespace Rsp.IrasService.Application.Contracts.Repositories;
+
+public interface ISponsorOrganisationsRepository
+{
+    Task<IEnumerable<SponsorOrganisation>> GetSponsorOrganisations(ISpecification<SponsorOrganisation> specification);
+    Task<int> GetSponsorOrganisationCount(SponsorOrganisationSearchRequest searchQuery);
+
+}
