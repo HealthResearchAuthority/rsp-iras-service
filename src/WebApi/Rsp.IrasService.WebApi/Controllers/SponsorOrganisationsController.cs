@@ -12,7 +12,7 @@ namespace Rsp.IrasService.WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-//[Authorize]
+[Authorize]
 public class SponsorOrganisationsController(IMediator mediator) : ControllerBase
 {
     [HttpPost("all")]
