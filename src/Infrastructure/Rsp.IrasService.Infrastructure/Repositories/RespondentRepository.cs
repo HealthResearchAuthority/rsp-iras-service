@@ -301,6 +301,7 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
                 existingAnswer.FileName = answer.FileName;
                 existingAnswer.DocumentStoragePath = answer.DocumentStoragePath;
                 existingAnswer.FileSize = answer.FileSize;
+                existingAnswer.Status = answer.Status;
 
                 continue;
             }
