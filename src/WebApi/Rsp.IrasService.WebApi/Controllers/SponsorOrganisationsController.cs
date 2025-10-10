@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.ComponentModel.DataAnnotations;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Rsp.IrasService.Application.Contracts.Services;
@@ -12,7 +13,7 @@ namespace Rsp.IrasService.WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-[Authorize]
+//[Authorize]
 public class SponsorOrganisationsController(IMediator mediator) : ControllerBase
 {
     [HttpPost("all")]
@@ -28,4 +29,33 @@ public class SponsorOrganisationsController(IMediator mediator) : ControllerBase
         return await mediator.Send(query);
     }
 
+    [HttpGet("{rtsId}")]
+    [Produces<AllSponsorOrganisationsResponse>]
+    public async Task<AllSponsorOrganisationsResponse> GetSponsorOrganisationByRtsId(
+         string rtsId)
+    {
+        var rtsIds = rtsId
+            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .ToList();
+
+        var searchQuery = new SponsorOrganisationSearchRequest
+        {
+            RtsIds = rtsIds
+        };
+
+        var query = new GetSponsorOrganisationsQuery(1, int.MaxValue, "name", "asc", searchQuery);
+        return await mediator.Send(query);
+    }
+
+    /// <summary>
+    ///     Creates a review body
+    /// </summary>
+    /// <param name="reviewBodyDto">Research Body Dto</param>
+    [HttpPost("create")]
+    public async Task<SponsorOrganisationDto> Create
+        (SponsorOrganisationDto sponsorOrganisationDto)
+    {
+        var request = new CreateSponsorOrganisationCommand(sponsorOrganisationDto);
+        return await mediator.Send(request);
+    }
 }

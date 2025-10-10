@@ -43,4 +43,15 @@ public class SponsorOrganisationRepository(IrasContext irasContext) : ISponsorOr
 
         return query.CountAsync();
     }
+
+    public async Task<SponsorOrganisation> CreateSponsorOrganisation(SponsorOrganisation sponsorOrganisation)
+    {
+        sponsorOrganisation.Id = Guid.NewGuid();
+        sponsorOrganisation.CreatedDate = DateTime.Now;
+        sponsorOrganisation.IsActive = true;
+
+        await irasContext.SponsorOrganisations.AddAsync(sponsorOrganisation);
+        await irasContext.SaveChangesAsync();
+        return sponsorOrganisation;
+    }
 }
