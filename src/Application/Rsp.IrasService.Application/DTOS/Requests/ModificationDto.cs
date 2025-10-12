@@ -13,4 +13,5 @@ public record ModificationDto
     public string SponsorOrganisation { get; set; } = null!;
     public DateTime CreatedAt { get; set; }
     public string Status { get; set; } = null!;
+    public DateTime? SubmittedDate { get; set; }
 }

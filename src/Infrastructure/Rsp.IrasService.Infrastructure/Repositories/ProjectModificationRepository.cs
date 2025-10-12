@@ -203,7 +203,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                        .FirstOrDefault() ?? string.Empty,
                    CreatedAt = pm.CreatedDate,
                    ReviewerId = pm.ReviewerId,
-                   Status = pm.Status
+                   Status = pm.Status,
+                   SubmittedDate=pm.SubmittedDate
                };
     }
 
