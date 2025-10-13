@@ -36,6 +36,9 @@ public class GetRespondentApplicationSpecification : Specification<ProjectRecord
     {
         var fromDate = searchQuery.FromDate?.Date;
         var toDate = searchQuery.ToDate?.Date;
+        var loweredStatus = searchQuery.Status
+                .Select(s => s.ToLower())
+                .ToList();
 
         var builder = Query
             .AsNoTracking();
@@ -44,16 +47,16 @@ public class GetRespondentApplicationSpecification : Specification<ProjectRecord
 
         if (!string.IsNullOrWhiteSpace(searchQuery.SearchTitleTerm))
         {
-            var terms = searchQuery.SearchTitleTerm.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-            builder
-                .Where
-                (
-                    entity => terms.All
-                    (
-                        term => (entity.Title != null && entity.Title.Contains(term, StringComparison.OrdinalIgnoreCase)) ||
-                                (entity.IrasId != null && entity.IrasId.Value.ToString().Contains(term, StringComparison.OrdinalIgnoreCase))
-                    )
-                );
+            var terms = searchQuery.SearchTitleTerm
+                .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                .Select(t => t.ToLower());
+
+            builder.Where(entity =>
+                terms.All(term =>
+                    (entity.Title != null && entity.Title.ToLower().Contains(term)) ||
+                    (entity.IrasId != null && entity.IrasId.Value.ToString().ToLower().Contains(term))
+                )
+            );
         }
 
         if (searchQuery.Status.Count != 0)
@@ -66,7 +69,7 @@ public class GetRespondentApplicationSpecification : Specification<ProjectRecord
                               .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
                               .Any
                               (
-                                  status => searchQuery.Status.Contains(status, StringComparer.OrdinalIgnoreCase)
+                                  status => loweredStatus.Contains(status.ToLower())
                               )
                 );
         }
