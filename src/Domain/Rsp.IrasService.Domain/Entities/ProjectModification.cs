@@ -57,4 +57,8 @@ public class ProjectModification
 
     // Navigation property for the changes associated with this project modification.
     public ICollection<ProjectModificationChange> ProjectModificationChanges { get; set; } = [];
+    /// <summary>
+    /// Gets or sets the submission date.
+    /// </summary>
+    public DateTime? SubmittedDate { get; set; }
 }
