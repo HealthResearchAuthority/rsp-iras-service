@@ -8,5 +8,6 @@ public interface ISponsorOrganisationsRepository
 {
     Task<IEnumerable<SponsorOrganisation>> GetSponsorOrganisations(ISpecification<SponsorOrganisation> specification);
     Task<int> GetSponsorOrganisationCount(SponsorOrganisationSearchRequest searchQuery);
-
+    Task<SponsorOrganisation> CreateSponsorOrganisation(SponsorOrganisation sponsorOrganisation);
+    Task<SponsorOrganisationUser> AddUserToSponsorOrganisation(SponsorOrganisationUser user);
 }

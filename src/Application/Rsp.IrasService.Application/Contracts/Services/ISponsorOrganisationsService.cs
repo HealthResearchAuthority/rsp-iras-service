@@ -13,4 +13,8 @@ public interface ISponsorOrganisationsService : IInterceptable
     Task<AllSponsorOrganisationsResponse> GetSponsorOrganisations(int pageNumber, int pageSize, string sortField,
         string sortDirection,
         SponsorOrganisationSearchRequest searchQuery);
+
+    Task<SponsorOrganisationDto> CreateSponsorOrganisation(SponsorOrganisationDto sponsorOrganisationDto);
+
+    Task<SponsorOrganisationUserDto?> AddUserToSponsorOrganisation(SponsorOrganisationUserDto sponsorOrganisationUserDto);
 }
