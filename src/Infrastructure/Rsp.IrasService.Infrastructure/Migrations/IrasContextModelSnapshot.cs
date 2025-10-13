@@ -292,6 +292,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("SubmittedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("UpdatedBy")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
