@@ -1,4 +1,5 @@
 ﻿using Ardalis.Specification;
+using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Application.Specifications;
@@ -26,29 +27,59 @@ public class GetRespondentApplicationSpecification : Specification<ProjectRecord
     /// Defines a specification to return a paginated list of project records for a given respondent.
     /// </summary>
     /// <param name="respondentId">Unique Id of the respondent to get associated records for.</param>
-    /// <param name="searchQuery">Optional search query to filter projects by title or description.</param>
+    /// <param name="searchQuery">Optional search query to filter projects.</param>
     public GetRespondentApplicationSpecification
     (
         string respondentId,
-        string? searchQuery
+        ApplicationSearchRequest searchQuery
     )
     {
+        var fromDate = searchQuery.FromDate?.Date;
+        var toDate = searchQuery.ToDate?.Date;
+
         var builder = Query
             .AsNoTracking();
 
         builder.Where(entity => entity.ProjectPersonnelId == respondentId);
 
-        if (!string.IsNullOrWhiteSpace(searchQuery))
+        if (!string.IsNullOrWhiteSpace(searchQuery.SearchTitleTerm))
         {
-            var terms = searchQuery.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            var terms = searchQuery.SearchTitleTerm.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             builder
                 .Where
                 (
-                    entity => terms.Any
+                    entity => terms.All
                     (
-                        term => entity.Title.Contains(term)
+                        term => (entity.Title != null && entity.Title.Contains(term, StringComparison.OrdinalIgnoreCase)) ||
+                                (entity.IrasId != null && entity.IrasId.Value.ToString().Contains(term, StringComparison.OrdinalIgnoreCase))
                     )
                 );
+        }
+
+        if (searchQuery.Status.Count != 0)
+        {
+            builder
+                .Where
+                (
+                    entity => !string.IsNullOrWhiteSpace(entity.Status) &&
+                              entity.Status
+                              .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                              .Any
+                              (
+                                  status => searchQuery.Status.Contains(status, StringComparer.OrdinalIgnoreCase)
+                              )
+                );
+        }
+
+        // ✅ Date-only filtering (ignore time)
+        if (fromDate.HasValue)
+        {
+            builder.Where(entity => entity.CreatedDate.Date >= fromDate.Value);
+        }
+
+        if (toDate.HasValue)
+        {
+            builder.Where(entity => entity.CreatedDate.Date <= toDate.Value);
         }
     }
 }

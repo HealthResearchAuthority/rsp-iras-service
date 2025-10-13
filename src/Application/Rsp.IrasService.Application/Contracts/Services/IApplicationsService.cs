@@ -46,7 +46,7 @@ public interface IApplicationsService : IInterceptable
     /// <summary>
     /// Returns applications for a specified respondent with pagination
     /// </summary>
-    Task<PaginatedResponse<ApplicationResponse>> GetPaginatedRespondentApplications(string respondentId, string? searchQuery, int pageIndex, int? pageSize, string? sortField, string? sortDirection);
+    Task<PaginatedResponse<ApplicationResponse>> GetPaginatedRespondentApplications(string respondentId, ApplicationSearchRequest searchQuery, int pageIndex, int? pageSize, string? sortField, string? sortDirection);
 
     /// <summary>
     /// Updates the values of an application
