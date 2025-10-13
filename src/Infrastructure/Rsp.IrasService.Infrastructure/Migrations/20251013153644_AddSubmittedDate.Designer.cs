@@ -12,7 +12,7 @@ using Rsp.IrasService.Infrastructure;
 namespace Rsp.IrasService.Infrastructure.Migrations
 {
     [DbContext(typeof(IrasContext))]
-    [Migration("20251013133127_AddSubmittedDate")]
+    [Migration("20251013153644_AddSubmittedDate")]
     partial class AddSubmittedDate
     {
         /// <inheritdoc />
