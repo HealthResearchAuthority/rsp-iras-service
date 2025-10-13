@@ -4,6 +4,7 @@ using Rsp.IrasService.Application.Contracts.Services;
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.DTOS.Responses;
 using Rsp.IrasService.Application.Specifications;
+using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Services;
 

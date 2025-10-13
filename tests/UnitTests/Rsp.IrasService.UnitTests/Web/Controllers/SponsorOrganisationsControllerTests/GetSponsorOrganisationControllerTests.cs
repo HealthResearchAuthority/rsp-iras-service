@@ -22,7 +22,7 @@ public class GetSponsorOrganisationControllerTests : TestServiceBase
         // Act
         await _controller.GetAllSponsorOrganisations(1, 100, nameof(SponsorOrganisationDto.RtsId),
             "asc", null);
-        
+
         // Assert
         mockMediator.Verify(
             m => m.Send(It.IsAny<GetSponsorOrganisationsQuery>(), default), Times.Once);
