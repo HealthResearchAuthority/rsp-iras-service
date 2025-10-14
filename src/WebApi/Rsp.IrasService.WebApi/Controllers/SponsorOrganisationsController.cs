@@ -55,4 +55,17 @@ public class SponsorOrganisationsController(IMediator mediator) : ControllerBase
         var request = new CreateSponsorOrganisationCommand(sponsorOrganisationDto);
         return await mediator.Send(request);
     }
+
+    /// <summary>
+    ///     Add a user to a Sponsor Organisation
+    /// </summary>
+    /// <param name="sponsorOrganisationUser">Sponsor Organisation User Dto</param>
+    [HttpPost("adduser")]
+    public async Task<SponsorOrganisationUserDto> AddUser(SponsorOrganisationUserDto sponsorOrganisationUser)
+    {
+        var request = new AddSponsorOrganisationUserCommand(sponsorOrganisationUser);
+        var adduser = await mediator.Send(request);
+
+        return adduser;
+    }
 }
