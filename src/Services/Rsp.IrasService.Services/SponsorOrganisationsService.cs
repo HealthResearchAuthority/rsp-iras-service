@@ -36,4 +36,12 @@ public class SponsorOrganisationsService(ISponsorOrganisationsRepository sponsor
         var response = await sponsorOrganisationsRepository.CreateSponsorOrganisation(sponsorOrganisation);
         return response.Adapt<SponsorOrganisationDto>();
     }
+
+    public async Task<SponsorOrganisationUserDto?> AddUserToSponsorOrganisation(
+        SponsorOrganisationUserDto sponsorOrganisationUserDto)
+    {
+        var reviewBodyUserEntity = sponsorOrganisationUserDto.Adapt<SponsorOrganisationUser>();
+        var response = await sponsorOrganisationsRepository.AddUserToSponsorOrganisation(reviewBodyUserEntity);
+        return response.Adapt<SponsorOrganisationUserDto?>();
+    }
 }

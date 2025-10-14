@@ -15,4 +15,6 @@ public interface ISponsorOrganisationsService : IInterceptable
         SponsorOrganisationSearchRequest searchQuery);
 
     Task<SponsorOrganisationDto> CreateSponsorOrganisation(SponsorOrganisationDto sponsorOrganisationDto);
+
+    Task<SponsorOrganisationUserDto?> AddUserToSponsorOrganisation(SponsorOrganisationUserDto sponsorOrganisationUserDto);
 }

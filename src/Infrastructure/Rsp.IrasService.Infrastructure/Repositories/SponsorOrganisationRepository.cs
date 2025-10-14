@@ -9,15 +9,17 @@ namespace Rsp.IrasService.Infrastructure.Repositories;
 
 public class SponsorOrganisationRepository(IrasContext irasContext) : ISponsorOrganisationsRepository
 {
-    public Task<IEnumerable<SponsorOrganisation>> GetSponsorOrganisations(
+    public async Task<IEnumerable<SponsorOrganisation>> GetSponsorOrganisations(
         ISpecification<SponsorOrganisation> specification)
     {
-        var result = irasContext
+        var result = await irasContext
             .SponsorOrganisations
             .WithSpecification(specification)
-            .AsEnumerable();
+            .Include(x => x.Users)
+            .AsNoTracking()
+            .ToListAsync();
 
-        return Task.FromResult(result);
+        return result;
     }
 
     public Task<int> GetSponsorOrganisationCount(SponsorOrganisationSearchRequest searchQuery)
@@ -53,5 +55,12 @@ public class SponsorOrganisationRepository(IrasContext irasContext) : ISponsorOr
         await irasContext.SponsorOrganisations.AddAsync(sponsorOrganisation);
         await irasContext.SaveChangesAsync();
         return sponsorOrganisation;
+    }
+
+    public async Task<SponsorOrganisationUser> AddUserToSponsorOrganisation(SponsorOrganisationUser user)
+    {
+        var addedUser = await irasContext.SponsorOrganisationsUsers.AddAsync(user);
+        await irasContext.SaveChangesAsync();
+        return addedUser.Entity;
     }
 }
