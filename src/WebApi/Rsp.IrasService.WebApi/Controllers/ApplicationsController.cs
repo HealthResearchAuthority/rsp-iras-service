@@ -162,4 +162,16 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
 
         return await mediator.Send(request);
     }
+
+    /// <summary>
+    /// Delete a project record by its unique identifier.
+    /// </summary>
+    /// <param name="projectRecordId">The unique identifier of the project to delete.</param>
+    [HttpDelete]
+    public async Task DeleteProjectRecord(string projectRecordId)
+    {
+        var request = new DeleteProjectCommand(projectRecordId);
+
+        await mediator.Send(request);
+    }
 }
