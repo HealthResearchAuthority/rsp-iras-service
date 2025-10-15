@@ -1,4 +1,5 @@
 ﻿using Ardalis.Specification;
+using Rsp.IrasService.Application.Specifications;
 using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Application.Contracts.Repositories;
@@ -31,4 +32,10 @@ public interface IProjectRecordRepository
     /// </summary>
     /// <param name="irasApplication">The ProjectRecord values</param>
     Task<ProjectRecord?> UpdateProjectRecord(ProjectRecord irasApplication);
+
+    /// <summary>
+    /// Deletes the project with the specified projectRecordId
+    /// </summary>
+    /// <param name="specification">The specification to identify the project record to delete</param>
+    Task DeleteProjectRecord(GetApplicationSpecification specification);
 }

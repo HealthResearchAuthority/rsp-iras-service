@@ -53,4 +53,10 @@ public interface IApplicationsService : IInterceptable
     /// </summary>
     /// <param name="applicationRequest">The application values</param>
     Task<ApplicationResponse> UpdateApplication(ApplicationRequest applicationRequest);
+
+    /// <summary>
+    /// Deletes the project with the specified projectRecordId
+    /// </summary>
+    /// <param name="projectRecordId">The project record id</param>
+    Task DeleteProject(string projectRecordId);
 }
