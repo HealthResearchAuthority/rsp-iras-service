@@ -64,8 +64,21 @@ public class SponsorOrganisationsController(IMediator mediator) : ControllerBase
     public async Task<SponsorOrganisationUserDto> AddUser(SponsorOrganisationUserDto sponsorOrganisationUser)
     {
         var request = new AddSponsorOrganisationUserCommand(sponsorOrganisationUser);
-        var adduser = await mediator.Send(request);
+        return await mediator.Send(request);
 
-        return adduser;
+    }
+
+
+    /// <summary>
+    ///     Gets a user in a Sponsor Organisation
+    /// </summary>
+    /// <param name="rtsId">Sponsor Organisation Rts Id</param>
+    /// <param name="userId">Sponsor Organisation User Id</param>
+    [HttpPost("getuser")]
+    public async Task<SponsorOrganisationUserDto> GetUser(string rtsId, Guid userId)
+    {
+        var request = new GetSponsorOrganisationUserCommand(rtsId, userId);
+        return await mediator.Send(request);
+
     }
 }

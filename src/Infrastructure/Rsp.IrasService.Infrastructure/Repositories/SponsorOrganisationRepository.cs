@@ -63,4 +63,32 @@ public class SponsorOrganisationRepository(IrasContext irasContext) : ISponsorOr
         await irasContext.SaveChangesAsync();
         return addedUser.Entity;
     }
+
+
+    public async Task<SponsorOrganisationUser> GetUserInSponsorOrganisation(string rtsId, Guid userId)
+    {
+        return await irasContext.SponsorOrganisationsUsers
+            .AsNoTracking()
+            .FirstAsync(x => x.RtsId == rtsId && x.UserId == userId);
+    }
+
+    public async Task<SponsorOrganisationUser> DisableUserInSponsorOrganisation(string rtsId, Guid userId)
+    {
+        var response = await GetUserInSponsorOrganisation(rtsId, userId);
+
+        // DISABLE HERE
+
+
+        return response;
+    }
+
+    public async Task<SponsorOrganisationUser> EnableUserInSponsorOrganisation(string rtsId, Guid userId)
+    {
+        var response = await GetUserInSponsorOrganisation(rtsId, userId);
+
+        // ENABLE HERE
+
+
+        return response;
+    }
 }

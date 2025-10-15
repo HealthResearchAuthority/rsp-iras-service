@@ -17,4 +17,7 @@ public interface ISponsorOrganisationsService : IInterceptable
     Task<SponsorOrganisationDto> CreateSponsorOrganisation(SponsorOrganisationDto sponsorOrganisationDto);
 
     Task<SponsorOrganisationUserDto?> AddUserToSponsorOrganisation(SponsorOrganisationUserDto sponsorOrganisationUserDto);
+
+    Task<SponsorOrganisationUserDto?> GetUserInSponsorOrganisation(
+        string rtsId, Guid userId);
 }
