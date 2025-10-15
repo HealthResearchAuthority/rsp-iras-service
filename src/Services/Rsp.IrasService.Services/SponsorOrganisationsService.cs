@@ -51,5 +51,15 @@ public class SponsorOrganisationsService(ISponsorOrganisationsRepository sponsor
         return response.Adapt<SponsorOrganisationUserDto?>();
     }
 
- 
+    public async Task<SponsorOrganisationUserDto?> EnableUserInSponsorOrganisation(string rtsId, Guid userId)
+    {
+        var response = await sponsorOrganisationsRepository.EnableUserInSponsorOrganisation(rtsId, userId);
+        return response.Adapt<SponsorOrganisationUserDto?>();
+    }
+
+    public async Task<SponsorOrganisationUserDto?> DisableUserInSponsorOrganisation(string rtsId, Guid userId)
+    {
+        var response = await sponsorOrganisationsRepository.DisableUserInSponsorOrganisation(rtsId, userId);
+        return response.Adapt<SponsorOrganisationUserDto?>();
+    }
 }

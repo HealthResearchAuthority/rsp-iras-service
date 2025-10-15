@@ -64,7 +64,6 @@ public class SponsorOrganisationRepository(IrasContext irasContext) : ISponsorOr
         return addedUser.Entity;
     }
 
-
     public async Task<SponsorOrganisationUser> GetUserInSponsorOrganisation(string rtsId, Guid userId)
     {
         return await irasContext.SponsorOrganisationsUsers
@@ -74,21 +73,23 @@ public class SponsorOrganisationRepository(IrasContext irasContext) : ISponsorOr
 
     public async Task<SponsorOrganisationUser> DisableUserInSponsorOrganisation(string rtsId, Guid userId)
     {
-        var response = await GetUserInSponsorOrganisation(rtsId, userId);
+        var response = await irasContext.SponsorOrganisationsUsers
+            .FirstAsync(x => x.RtsId == rtsId && x.UserId == userId);
 
-        // DISABLE HERE
+        response.IsActive = false;
 
-
+        await irasContext.SaveChangesAsync();
         return response;
     }
 
     public async Task<SponsorOrganisationUser> EnableUserInSponsorOrganisation(string rtsId, Guid userId)
     {
-        var response = await GetUserInSponsorOrganisation(rtsId, userId);
+        var response = await irasContext.SponsorOrganisationsUsers
+            .FirstAsync(x => x.RtsId == rtsId && x.UserId == userId);
 
-        // ENABLE HERE
+        response.IsActive = true;
 
-
+        await irasContext.SaveChangesAsync();
         return response;
     }
 }

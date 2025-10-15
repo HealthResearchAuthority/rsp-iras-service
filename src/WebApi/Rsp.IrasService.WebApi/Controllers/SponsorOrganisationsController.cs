@@ -68,17 +68,45 @@ public class SponsorOrganisationsController(IMediator mediator) : ControllerBase
 
     }
 
+    /// <summary>
+    ///     Gets a user in a Sponsor Organisation
+    /// </summary>
+    /// <param name="rtsId">Sponsor Organisation RTS Id</param>
+    /// <param name="userId">Sponsor Organisation User Id</param>
+    [HttpGet("{rtsId}/user/{userId}")]
+    public async Task<ActionResult<SponsorOrganisationUserDto>> GetUser(
+        string rtsId,
+        Guid userId)
+    {
+        var request = new GetSponsorOrganisationUserCommand(rtsId, userId);
+        return await mediator.Send(request);
+    }
 
     /// <summary>
     ///     Gets a user in a Sponsor Organisation
     /// </summary>
-    /// <param name="rtsId">Sponsor Organisation Rts Id</param>
+    /// <param name="rtsId">Sponsor Organisation RTS Id</param>
     /// <param name="userId">Sponsor Organisation User Id</param>
-    [HttpPost("getuser")]
-    public async Task<SponsorOrganisationUserDto> GetUser(string rtsId, Guid userId)
+    [HttpGet("{rtsId}/user/{userId}/enable")]
+    public async Task<ActionResult<SponsorOrganisationUserDto>> EnableUser(
+        string rtsId,
+        Guid userId)
     {
-        var request = new GetSponsorOrganisationUserCommand(rtsId, userId);
+        var request = new EnableSponsorOrganisationUserCommand(rtsId, userId);
         return await mediator.Send(request);
+    }
 
+    /// <summary>
+    ///     Gets a user in a Sponsor Organisation
+    /// </summary>
+    /// <param name="rtsId">Sponsor Organisation RTS Id</param>
+    /// <param name="userId">Sponsor Organisation User Id</param>
+    [HttpGet("{rtsId}/user/{userId}/disable")]
+    public async Task<ActionResult<SponsorOrganisationUserDto>> DisableUser(
+        string rtsId,
+        Guid userId)
+    {
+        var request = new DisableSponsorOrganisationUserCommand(rtsId, userId);
+        return await mediator.Send(request);
     }
 }
