@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Rsp.IrasService.Application.CQRS.Queries;
+using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.DTOS.Responses;
 using Rsp.IrasService.WebApi.Controllers;
 
@@ -20,6 +21,7 @@ public class GetPaginatedApplicationsByRespondent : TestServiceBase
         PaginatedResponse<ApplicationResponse> mockResponse)
     {
         // Arrange
+        var searchQuery = new ApplicationSearchRequest();
         var mockMediator = Mocker.GetMock<IMediator>();
         mockMediator
             .Setup
@@ -30,7 +32,7 @@ public class GetPaginatedApplicationsByRespondent : TestServiceBase
                     (
                         q =>
                             q.RespondentId == respondentId &&
-                            q.SearchQuery == null &&
+                            q.SearchQuery == searchQuery &&
                             q.PageIndex == 1 &&
                             q.PageSize == 5
                     ),
@@ -40,7 +42,7 @@ public class GetPaginatedApplicationsByRespondent : TestServiceBase
             .ReturnsAsync(mockResponse);
 
         // Act
-        var result = await _controller.GetPaginatedApplicationsByRespondent(respondentId, null, 1, 5);
+        var result = await _controller.GetPaginatedApplicationsByRespondent(searchQuery, respondentId, 1, 5);
 
         // Assert
         var ok = result.Result.ShouldBeOfType<OkObjectResult>();
@@ -53,6 +55,7 @@ public class GetPaginatedApplicationsByRespondent : TestServiceBase
     public async Task GetPaginatedApplicationsByRespondent_ShouldReturnEmptyList_WhenNoDataExists(string respondentId)
     {
         // Arrange
+        var searchQuery = new ApplicationSearchRequest();
         var mockMediator = Mocker.GetMock<IMediator>();
         mockMediator
             .Setup
@@ -63,7 +66,7 @@ public class GetPaginatedApplicationsByRespondent : TestServiceBase
                         (
                             q =>
                                 q.RespondentId == respondentId &&
-                                q.SearchQuery == null &&
+                                q.SearchQuery == searchQuery &&
                                 q.PageIndex == 1 &&
                                 q.PageSize == 5
                         ),
@@ -77,7 +80,7 @@ public class GetPaginatedApplicationsByRespondent : TestServiceBase
             });
 
         // Act
-        var result = await _controller.GetPaginatedApplicationsByRespondent(respondentId, null, 1, 5);
+        var result = await _controller.GetPaginatedApplicationsByRespondent(searchQuery, respondentId, 1, 5);
 
         // Assert
         var ok = result.Result.ShouldBeOfType<OkObjectResult>();
@@ -92,8 +95,9 @@ public class GetPaginatedApplicationsByRespondent : TestServiceBase
     [InlineData(-1)]
     public async Task GetPaginatedApplicationsByRespondent_ShouldReturnBadRequest_WhenPageIndexInvalid(int pageIndex)
     {
+        var searchQuery = new ApplicationSearchRequest();
         var respondentId = "abc";
-        var result = await _controller.GetPaginatedApplicationsByRespondent(respondentId, pageIndex: pageIndex);
+        var result = await _controller.GetPaginatedApplicationsByRespondent(searchQuery, respondentId, pageIndex: pageIndex);
 
         var badRequest = result.Result.ShouldBeOfType<BadRequestObjectResult>();
         badRequest.Value.ShouldBe("pageIndex must be greater than 0 if specified.");
@@ -104,8 +108,9 @@ public class GetPaginatedApplicationsByRespondent : TestServiceBase
     [InlineData(-10)]
     public async Task GetPaginatedApplicationsByRespondent_ShouldReturnBadRequest_WhenPageSizeInvalid(int pageSize)
     {
+        var searchQuery = new ApplicationSearchRequest();
         var respondentId = "abc";
-        var result = await _controller.GetPaginatedApplicationsByRespondent(respondentId, pageSize: pageSize);
+        var result = await _controller.GetPaginatedApplicationsByRespondent(searchQuery, respondentId, pageSize: pageSize);
 
         var badRequest = result.Result.ShouldBeOfType<BadRequestObjectResult>();
         badRequest.Value.ShouldBe("pageSize must be greater than 0 if specified.");

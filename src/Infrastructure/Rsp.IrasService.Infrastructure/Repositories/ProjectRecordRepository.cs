@@ -57,19 +57,14 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
         string? sortDirection
     )
     {
-        // Apply filtering to ProjectRecords
-        var filteredProjectRecords = irasContext
-            .ProjectRecords
-            .WithSpecification(projectsSpecification);
-
         // Apply filtering to ProjectRecordAnswers
         var filteredTitles = irasContext
             .ProjectRecordAnswers
             .WithSpecification(projectTitlesSpecification);
 
         // Join ProjectRecords with ProjectRecordAnswers (left join)
-        var query = from projectRecord in filteredProjectRecords
-                    join projectRecordAnswer in filteredTitles
+        var joinedProjectTitles = from projectRecord in irasContext.ProjectRecords
+                                  join projectRecordAnswer in filteredTitles
                         on projectRecord.Id equals projectRecordAnswer.ProjectRecordId into titleGroup
                     from projectRecordAnswer in titleGroup.DefaultIfEmpty()
                     select new ProjectRecord
@@ -87,6 +82,10 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
                         ProjectModifications = projectRecord.ProjectModifications,
                         Title = projectRecordAnswer != null && projectRecordAnswer.Response != null ? projectRecordAnswer.Response : projectRecord.Title
                     };
+
+        // Apply filtering to ProjectRecords
+        var query = joinedProjectTitles
+            .WithSpecification(projectsSpecification);
 
         // Count before pagination
         var count = await query.CountAsync();
