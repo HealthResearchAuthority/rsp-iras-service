@@ -46,11 +46,17 @@ public interface IApplicationsService : IInterceptable
     /// <summary>
     /// Returns applications for a specified respondent with pagination
     /// </summary>
-    Task<PaginatedResponse<ApplicationResponse>> GetPaginatedRespondentApplications(string respondentId, string? searchQuery, int pageIndex, int? pageSize, string? sortField, string? sortDirection);
+    Task<PaginatedResponse<ApplicationResponse>> GetPaginatedRespondentApplications(string respondentId, ApplicationSearchRequest searchQuery, int pageIndex, int? pageSize, string? sortField, string? sortDirection);
 
     /// <summary>
     /// Updates the values of an application
     /// </summary>
     /// <param name="applicationRequest">The application values</param>
     Task<ApplicationResponse> UpdateApplication(ApplicationRequest applicationRequest);
+
+    /// <summary>
+    /// Deletes the project with the specified projectRecordId
+    /// </summary>
+    /// <param name="projectRecordId">The project record id</param>
+    Task DeleteProject(string projectRecordId);
 }

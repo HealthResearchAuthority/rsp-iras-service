@@ -4,6 +4,7 @@ using Rsp.IrasService.Application.Contracts.Services;
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.DTOS.Responses;
 using Rsp.IrasService.Application.Specifications;
+using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Services;
 
@@ -27,5 +28,20 @@ public class SponsorOrganisationsService(ISponsorOrganisationsRepository sponsor
         };
 
         return response;
+    }
+
+    public async Task<SponsorOrganisationDto> CreateSponsorOrganisation(SponsorOrganisationDto sponsorOrganisationDto)
+    {
+        var sponsorOrganisation = sponsorOrganisationDto.Adapt<SponsorOrganisation>();
+        var response = await sponsorOrganisationsRepository.CreateSponsorOrganisation(sponsorOrganisation);
+        return response.Adapt<SponsorOrganisationDto>();
+    }
+
+    public async Task<SponsorOrganisationUserDto?> AddUserToSponsorOrganisation(
+        SponsorOrganisationUserDto sponsorOrganisationUserDto)
+    {
+        var reviewBodyUserEntity = sponsorOrganisationUserDto.Adapt<SponsorOrganisationUser>();
+        var response = await sponsorOrganisationsRepository.AddUserToSponsorOrganisation(reviewBodyUserEntity);
+        return response.Adapt<SponsorOrganisationUserDto?>();
     }
 }
