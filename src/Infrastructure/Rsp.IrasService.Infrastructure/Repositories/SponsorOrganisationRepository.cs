@@ -50,6 +50,7 @@ public class SponsorOrganisationRepository(IrasContext irasContext) : ISponsorOr
     {
         sponsorOrganisation.Id = Guid.NewGuid();
         sponsorOrganisation.CreatedDate = DateTime.Now;
+        sponsorOrganisation.UpdatedDate = DateTime.Now;
         sponsorOrganisation.IsActive = true;
 
         await irasContext.SponsorOrganisations.AddAsync(sponsorOrganisation);
@@ -60,6 +61,14 @@ public class SponsorOrganisationRepository(IrasContext irasContext) : ISponsorOr
     public async Task<SponsorOrganisationUser> AddUserToSponsorOrganisation(SponsorOrganisationUser user)
     {
         var addedUser = await irasContext.SponsorOrganisationsUsers.AddAsync(user);
+
+        var sponsorOrganisationDto = await irasContext.SponsorOrganisations.FirstOrDefaultAsync(x=>x.RtsId == user.RtsId);
+
+        if (sponsorOrganisationDto != null)
+        {
+            sponsorOrganisationDto.UpdatedDate = DateTime.Now;
+        }
+
         await irasContext.SaveChangesAsync();
         return addedUser.Entity;
     }
@@ -78,6 +87,13 @@ public class SponsorOrganisationRepository(IrasContext irasContext) : ISponsorOr
 
         response.IsActive = false;
 
+        var sponsorOrganisationDto = await irasContext.SponsorOrganisations.FirstOrDefaultAsync(x => x.RtsId == rtsId);
+
+        if (sponsorOrganisationDto != null)
+        {
+            sponsorOrganisationDto.UpdatedDate = DateTime.Now;
+        }
+
         await irasContext.SaveChangesAsync();
         return response;
     }
@@ -88,6 +104,13 @@ public class SponsorOrganisationRepository(IrasContext irasContext) : ISponsorOr
             .FirstAsync(x => x.RtsId == rtsId && x.UserId == userId);
 
         response.IsActive = true;
+
+        var sponsorOrganisationDto = await irasContext.SponsorOrganisations.FirstOrDefaultAsync(x => x.RtsId == rtsId);
+
+        if (sponsorOrganisationDto != null)
+        {
+            sponsorOrganisationDto.UpdatedDate = DateTime.Now;
+        }
 
         await irasContext.SaveChangesAsync();
         return response;
