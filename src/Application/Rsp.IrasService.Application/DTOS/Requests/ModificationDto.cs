@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualBasic;
-
-namespace Rsp.IrasService.Application.DTOS.Requests;
+﻿namespace Rsp.IrasService.Application.DTOS.Requests;
 
 public record ModificationDto
 {
@@ -15,5 +13,6 @@ public record ModificationDto
     public string SponsorOrganisation { get; set; } = null!;
     public DateTime CreatedAt { get; set; }
     public string Status { get; set; } = null!;
-    public DateAndTime? SubmittedDate { get; set; }
+    public DateTime? SentToRegulatorDate { get; set; }
+    public DateTime? SentToSponsorDate { get; set; }
 }
