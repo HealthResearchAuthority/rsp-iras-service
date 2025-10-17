@@ -16,5 +16,6 @@ public class ProjectModificationResult
     public DateTime CreatedAt { get; set; }
     public string? ReviewerId { get; set; } = null;
     public string Status { get; set; } = null!;
-    public DateTime? SubmittedDate { get; set; }
+    public DateTime? SentToRegulatorDate { get; set; }
+    public DateTime? SentToSponsorDate { get; set; }
 }
