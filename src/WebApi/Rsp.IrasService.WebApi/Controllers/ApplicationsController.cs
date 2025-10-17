@@ -96,14 +96,14 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     /// Returns applications for the respondent, with possibility of pagination if pageIndex and pageSize are defined > 0 (defaut - no pagination)
     /// </summary>
     /// <param name="respondentId">Reasearch Application Respondent Id</param>
-    /// <param name="searchQuery">Optional search query to filter projects by title or description.</param>
+    /// <param name="searchQuery">Object containing filtering criteria for projects.</param>
     /// <param name="pageIndex">1-based index of the page to retrieve. Must be greater than 0.</param>
     /// <param name="pageSize">Optional number of items per page. If null, all matching applications are returned. Must be greater than 0 if specified.</param>
-    [HttpGet("respondent/paginated")]
+    [HttpPost("respondent/paginated")]
     [Produces(typeof(PaginatedResponse<ApplicationResponse>))]
     public async Task<ActionResult<PaginatedResponse<ApplicationResponse>>> GetPaginatedApplicationsByRespondent(
+        [FromBody] ApplicationSearchRequest searchQuery,
         string respondentId,
-        string? searchQuery = null,
         int pageIndex = 1,
         int? pageSize = null,
         string? sortField = null,
@@ -161,5 +161,17 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
         var request = new UpdateApplicationCommand(applicationRequest);
 
         return await mediator.Send(request);
+    }
+
+    /// <summary>
+    /// Delete a project record by its unique identifier.
+    /// </summary>
+    /// <param name="projectRecordId">The unique identifier of the project to delete.</param>
+    [HttpDelete]
+    public async Task DeleteProjectRecord(string projectRecordId)
+    {
+        var request = new DeleteProjectCommand(projectRecordId);
+
+        await mediator.Send(request);
     }
 }

@@ -18,4 +18,5 @@ public class ProjectModificationResult
     public string Status { get; set; } = null!;
     public DateTime? SentToRegulatorDate { get; set; }
     public DateTime? SentToSponsorDate { get; set; }
+
 }

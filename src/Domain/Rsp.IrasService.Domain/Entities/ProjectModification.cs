@@ -59,12 +59,10 @@ public class ProjectModification
     public ICollection<ProjectModificationChange> ProjectModificationChanges { get; set; } = [];
 
     /// <summary>
-    /// Gets or sets the submission date.
-    /// </summary>
-    public DateTime? SentToRegulatorDate { get; set; }
-
-    /// <summary>
     /// This date is populated when a researcher clicks send to sponsor from the Reveiw all changes page, the actual status is With Sponsor
     /// </summary>
     public DateTime? SentToSponsorDate { get; set; }
+  
+    public DateTime? SubmittedDate { get; set; }
+
 }

@@ -34,28 +34,29 @@ public class GetPaginatedRespondentApplications : TestServiceBase<ApplicationsSe
         // Arrange
         var applicationsService = new ApplicationsService(_applicationRepository, _appSettings);
         var fixedRespondentId = "FixedRespondentId-123";
+        ApplicationSearchRequest searchQuery = new ApplicationSearchRequest();
 
         var applicationRequests = new List<ApplicationRequest>
-    {
-        new()
         {
-            Id = Guid.NewGuid().ToString(),
-            Respondent = new RespondentDto { Id = fixedRespondentId },
-            CreatedBy = "User1",
-            Description = "Description1",
-            Title = "Title1",
-            UpdatedBy = "Updater1"
-        },
-        new()
-        {
-            Id = Guid.NewGuid().ToString(),
-            Respondent = new RespondentDto { Id = fixedRespondentId },
-            CreatedBy = "User2",
-            Description = "Description2",
-            Title = "Title2",
-            UpdatedBy = "Updater2"
-        }
-    };
+            new()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Respondent = new RespondentDto { Id = fixedRespondentId },
+                CreatedBy = "User1",
+                Description = "Description1",
+                Title = "Title1",
+                UpdatedBy = "Updater1"
+            },
+            new()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Respondent = new RespondentDto { Id = fixedRespondentId },
+                CreatedBy = "User2",
+                Description = "Description2",
+                Title = "Title2",
+                UpdatedBy = "Updater2"
+            }
+        };
 
         var researchApplications = applicationRequests.Select(request => new ProjectRecord
         {
@@ -84,7 +85,7 @@ public class GetPaginatedRespondentApplications : TestServiceBase<ApplicationsSe
         // Act
         int pageIndex = 1;
         int pageSize = 10;
-        var result = await applicationsService.GetPaginatedRespondentApplications(fixedRespondentId, null, pageIndex, pageSize, null, null);
+        var result = await applicationsService.GetPaginatedRespondentApplications(fixedRespondentId, searchQuery, pageIndex, pageSize, null, null);
 
         // Assert
         result.ShouldNotBeNull();
@@ -108,13 +109,14 @@ public class GetPaginatedRespondentApplications : TestServiceBase<ApplicationsSe
     public async Task GetPaginatedRespondentApplications_ShouldReturnEmptyList_WhenNoApplicationsExist()
     {
         // Arrange
+        ApplicationSearchRequest searchQuery = new ApplicationSearchRequest();
         var applicationsService = new ApplicationsService(_applicationRepository, _appSettings);
         var fixedRespondentId = "NonExistentRespondent"; // No applications exist for this ID
 
         // Act
         int pageIndex = 1;
         int pageSize = 10;
-        var result = await applicationsService.GetPaginatedRespondentApplications(fixedRespondentId, null, pageIndex, pageSize, null, null);
+        var result = await applicationsService.GetPaginatedRespondentApplications(fixedRespondentId, searchQuery, pageIndex, pageSize, null, null);
 
         // Assert
         result.ShouldNotBeNull();
@@ -128,6 +130,7 @@ public class GetPaginatedRespondentApplications : TestServiceBase<ApplicationsSe
     {
         // Arrange
         var applicationsService = new ApplicationsService(_applicationRepository, _appSettings);
+        ApplicationSearchRequest searchQuery = new ApplicationSearchRequest();
         var respondentId = "LimitedPageSizeRespondent";
 
         foreach (var record in generatedRecords)
@@ -141,7 +144,7 @@ public class GetPaginatedRespondentApplications : TestServiceBase<ApplicationsSe
         // Act
         int pageIndex = 1;
         int pageSize = 2;
-        var result = await applicationsService.GetPaginatedRespondentApplications(respondentId, null, pageIndex, pageSize, null, null);
+        var result = await applicationsService.GetPaginatedRespondentApplications(respondentId, searchQuery, pageIndex, pageSize, null, null);
 
         // Assert
         result.ShouldNotBeNull();
@@ -154,6 +157,7 @@ public class GetPaginatedRespondentApplications : TestServiceBase<ApplicationsSe
     public async Task GetPaginatedRespondentApplications_ShouldReturnAll_WhenPageSizeIsNull(List<ProjectRecord> generatedRecords)
     {
         // Arrange
+        ApplicationSearchRequest searchQuery = new ApplicationSearchRequest();
         var applicationsService = new ApplicationsService(_applicationRepository, _appSettings);
         var respondentId = "NoPageSizeRespondent";
 
@@ -168,7 +172,7 @@ public class GetPaginatedRespondentApplications : TestServiceBase<ApplicationsSe
         // Act
         int pageIndex = 1;
         int? pageSize = null;
-        var result = await applicationsService.GetPaginatedRespondentApplications(respondentId, null, pageIndex, pageSize, null, null);
+        var result = await applicationsService.GetPaginatedRespondentApplications(respondentId, searchQuery, pageIndex, pageSize, null, null);
 
         // Assert
         result.ShouldNotBeNull();
