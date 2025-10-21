@@ -109,4 +109,31 @@ public class SponsorOrganisationsController(IMediator mediator) : ControllerBase
         var request = new DisableSponsorOrganisationUserCommand(rtsId, userId);
         return await mediator.Send(request);
     }
+
+    /// <summary>
+    ///     Gets a user in a Sponsor Organisation
+    /// </summary>
+    /// <param name="rtsId">Sponsor Organisation RTS Id</param>
+    /// <param name="userId">Sponsor Organisation User Id</param>
+    [HttpGet("{rtsId}/enable")]
+    public async Task<ActionResult<SponsorOrganisationDto>> EnableSponsorOrganisation(
+        string rtsId)
+    {
+        var request = new EnableSponsorOrganisationCommand(rtsId);
+        return await mediator.Send(request);
+    }
+
+    /// <summary>
+    ///     Gets a user in a Sponsor Organisation
+    /// </summary>
+    /// <param name="rtsId">Sponsor Organisation RTS Id</param>
+    /// <param name="userId">Sponsor Organisation User Id</param>
+    [HttpGet("{rtsId}/disable")]
+    public async Task<ActionResult<SponsorOrganisationDto>> DisableSponsorOrganisation(
+        string rtsId)
+    {
+        var request = new DisableSponsorOrganisationCommand(rtsId);
+        return await mediator.Send(request);
+    }
 }
+

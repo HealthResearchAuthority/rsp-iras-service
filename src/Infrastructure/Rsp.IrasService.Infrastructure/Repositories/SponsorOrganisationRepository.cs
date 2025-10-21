@@ -62,11 +62,12 @@ public class SponsorOrganisationRepository(IrasContext irasContext) : ISponsorOr
     {
         var addedUser = await irasContext.SponsorOrganisationsUsers.AddAsync(user);
 
-        var sponsorOrganisationDto = await irasContext.SponsorOrganisations.FirstOrDefaultAsync(x=>x.RtsId == user.RtsId);
+        var sponsorOrganisation =
+            await irasContext.SponsorOrganisations.FirstOrDefaultAsync(x => x.RtsId == user.RtsId);
 
-        if (sponsorOrganisationDto != null)
+        if (sponsorOrganisation != null)
         {
-            sponsorOrganisationDto.UpdatedDate = DateTime.Now;
+            sponsorOrganisation.UpdatedDate = DateTime.Now;
         }
 
         await irasContext.SaveChangesAsync();
@@ -87,11 +88,11 @@ public class SponsorOrganisationRepository(IrasContext irasContext) : ISponsorOr
 
         response.IsActive = false;
 
-        var sponsorOrganisationDto = await irasContext.SponsorOrganisations.FirstOrDefaultAsync(x => x.RtsId == rtsId);
+        var sponsorOrganisation = await irasContext.SponsorOrganisations.FirstOrDefaultAsync(x => x.RtsId == rtsId);
 
-        if (sponsorOrganisationDto != null)
+        if (sponsorOrganisation != null)
         {
-            sponsorOrganisationDto.UpdatedDate = DateTime.Now;
+            sponsorOrganisation.UpdatedDate = DateTime.Now;
         }
 
         await irasContext.SaveChangesAsync();
@@ -105,14 +106,38 @@ public class SponsorOrganisationRepository(IrasContext irasContext) : ISponsorOr
 
         response.IsActive = true;
 
-        var sponsorOrganisationDto = await irasContext.SponsorOrganisations.FirstOrDefaultAsync(x => x.RtsId == rtsId);
+        var sponsorOrganisation = await irasContext.SponsorOrganisations.FirstOrDefaultAsync(x => x.RtsId == rtsId);
 
-        if (sponsorOrganisationDto != null)
+        if (sponsorOrganisation != null)
         {
-            sponsorOrganisationDto.UpdatedDate = DateTime.Now;
+            sponsorOrganisation.UpdatedDate = DateTime.Now;
         }
 
         await irasContext.SaveChangesAsync();
         return response;
+    }
+
+    public async Task<SponsorOrganisation> DisableSponsorOrganisation(string rtsId)
+    {
+        var sponsorOrganisation = await irasContext.SponsorOrganisations.FirstAsync(x => x.RtsId == rtsId);
+
+        sponsorOrganisation.UpdatedDate = DateTime.Now;
+        sponsorOrganisation.IsActive = false;
+
+        await irasContext.SaveChangesAsync();
+
+        return sponsorOrganisation;
+    }
+
+    public async Task<SponsorOrganisation> EnableSponsorOrganisation(string rtsId)
+    {
+        var sponsorOrganisation = await irasContext.SponsorOrganisations.FirstAsync(x => x.RtsId == rtsId);
+
+        sponsorOrganisation.UpdatedDate = DateTime.Now;
+        sponsorOrganisation.IsActive = true;
+
+        await irasContext.SaveChangesAsync();
+
+        return sponsorOrganisation;
     }
 }
