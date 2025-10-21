@@ -65,12 +65,11 @@ public class GetRespondentApplicationSpecification : Specification<ProjectRecord
                 .Where
                 (
                     entity => !string.IsNullOrWhiteSpace(entity.Status) &&
-                              entity.Status
-                              .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-                              .Any
-                              (
-                                  status => loweredStatus.Contains(status.ToLower())
-                              )
+                        loweredStatus
+                        .Any
+                        (
+                            status => entity.Status.ToLower().Contains(status)
+                        )
                 );
         }
 
