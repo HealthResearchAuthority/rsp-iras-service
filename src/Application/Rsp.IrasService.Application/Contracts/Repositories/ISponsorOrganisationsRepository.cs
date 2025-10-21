@@ -13,4 +13,6 @@ public interface ISponsorOrganisationsRepository
     Task<SponsorOrganisationUser> GetUserInSponsorOrganisation(string rtsId, Guid userId);
     Task<SponsorOrganisationUser> DisableUserInSponsorOrganisation(string rtsId, Guid userId);
     Task<SponsorOrganisationUser> EnableUserInSponsorOrganisation(string rtsId, Guid userId);
+    Task<SponsorOrganisation> DisableSponsorOrganisation(string rtsId);
+    Task<SponsorOrganisation> EnableSponsorOrganisation(string rtsId);
 }

@@ -14,7 +14,8 @@ public class AddSponsorOrganisationUserTests : TestServiceBase<SponsorOrganisati
         var mockMediator = Mocker.GetMock<IMediator>();
         mockMediator
             .Setup(m => m.Send(
-                It.Is<AddSponsorOrganisationUserCommand>(c => c.SponsorOrganisationUserRequest == sponsorOrganisationUser),
+                It.Is<AddSponsorOrganisationUserCommand>(c =>
+                    c.SponsorOrganisationUserRequest == sponsorOrganisationUser),
                 default))
             .ReturnsAsync(sponsorOrganisationUser);
 
@@ -24,7 +25,8 @@ public class AddSponsorOrganisationUserTests : TestServiceBase<SponsorOrganisati
         // Assert
         mockMediator.Verify(
             m => m.Send(
-                It.Is<AddSponsorOrganisationUserCommand>(c => c.SponsorOrganisationUserRequest == sponsorOrganisationUser),
+                It.Is<AddSponsorOrganisationUserCommand>(c =>
+                    c.SponsorOrganisationUserRequest == sponsorOrganisationUser),
                 default),
             Times.Once);
 

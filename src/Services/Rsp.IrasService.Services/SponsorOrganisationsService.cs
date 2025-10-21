@@ -40,8 +40,9 @@ public class SponsorOrganisationsService(ISponsorOrganisationsRepository sponsor
     public async Task<SponsorOrganisationUserDto?> AddUserToSponsorOrganisation(
         SponsorOrganisationUserDto sponsorOrganisationUserDto)
     {
-        var reviewBodyUserEntity = sponsorOrganisationUserDto.Adapt<SponsorOrganisationUser>();
-        var response = await sponsorOrganisationsRepository.AddUserToSponsorOrganisation(reviewBodyUserEntity);
+        var sponsorOrganisationUserEntity = sponsorOrganisationUserDto.Adapt<SponsorOrganisationUser>();
+
+        var response = await sponsorOrganisationsRepository.AddUserToSponsorOrganisation(sponsorOrganisationUserEntity);
         return response.Adapt<SponsorOrganisationUserDto?>();
     }
 
@@ -61,5 +62,17 @@ public class SponsorOrganisationsService(ISponsorOrganisationsRepository sponsor
     {
         var response = await sponsorOrganisationsRepository.DisableUserInSponsorOrganisation(rtsId, userId);
         return response.Adapt<SponsorOrganisationUserDto?>();
+    }
+
+    public async Task<SponsorOrganisationDto?> EnableSponsorOrganisation(string rtsId)
+    {
+        var response = await sponsorOrganisationsRepository.EnableSponsorOrganisation(rtsId);
+        return response.Adapt<SponsorOrganisationDto>();
+    }
+
+    public async Task<SponsorOrganisationDto?> DisableSponsorOrganisation(string rtsId)
+    {
+        var response = await sponsorOrganisationsRepository.DisableSponsorOrganisation(rtsId);
+        return response.Adapt<SponsorOrganisationDto>();
     }
 }
