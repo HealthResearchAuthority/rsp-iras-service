@@ -57,4 +57,12 @@ public class ProjectModification
 
     // Navigation property for the changes associated with this project modification.
     public ICollection<ProjectModificationChange> ProjectModificationChanges { get; set; } = [];
+
+    /// <summary>
+    /// Gets or sets the submission date.
+    /// This date is populated when a researcher clicks send to sponsor from the Reveiw all changes page, the actual status is With Sponsor
+    /// </summary>
+    public DateTime? SentToSponsorDate { get; set; }
+
+    public DateTime? SentToRegulatorDate { get; set; }
 }

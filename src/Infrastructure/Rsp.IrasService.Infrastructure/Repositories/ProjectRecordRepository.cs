@@ -2,6 +2,7 @@
 using Ardalis.Specification.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Application.Contracts.Repositories;
+using Rsp.IrasService.Application.Specifications;
 using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Infrastructure.Repositories;
@@ -56,19 +57,14 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
         string? sortDirection
     )
     {
-        // Apply filtering to ProjectRecords
-        var filteredProjectRecords = irasContext
-            .ProjectRecords
-            .WithSpecification(projectsSpecification);
-
         // Apply filtering to ProjectRecordAnswers
         var filteredTitles = irasContext
             .ProjectRecordAnswers
             .WithSpecification(projectTitlesSpecification);
 
         // Join ProjectRecords with ProjectRecordAnswers (left join)
-        var query = from projectRecord in filteredProjectRecords
-                    join projectRecordAnswer in filteredTitles
+        var joinedProjectTitles = from projectRecord in irasContext.ProjectRecords
+                                  join projectRecordAnswer in filteredTitles
                         on projectRecord.Id equals projectRecordAnswer.ProjectRecordId into titleGroup
                     from projectRecordAnswer in titleGroup.DefaultIfEmpty()
                     select new ProjectRecord
@@ -86,6 +82,10 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
                         ProjectModifications = projectRecord.ProjectModifications,
                         Title = projectRecordAnswer != null && projectRecordAnswer.Response != null ? projectRecordAnswer.Response : projectRecord.Title
                     };
+
+        // Apply filtering to ProjectRecords
+        var query = joinedProjectTitles
+            .WithSpecification(projectsSpecification);
 
         // Count before pagination
         var count = await query.CountAsync();
@@ -139,5 +139,26 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
         await irasContext.SaveChangesAsync();
 
         return entity;
+    }
+
+    /// <summary>
+    /// Deletes a project record from the database that matches the given specification.
+    /// </summary>
+    /// <param name="specification">Specification to identify the project record to delete.</param>
+    public async Task DeleteProjectRecord(GetApplicationSpecification specification)
+    {
+        // Find the project record matching the specification
+        var projectRecord = await irasContext
+            .ProjectRecords
+            .WithSpecification(specification)
+            .SingleOrDefaultAsync();
+
+        // If found, remove it from the context and save changes
+        if (projectRecord != null)
+        {
+            irasContext.ProjectRecords.Remove(projectRecord);
+
+            await irasContext.SaveChangesAsync();
+        }
     }
 }

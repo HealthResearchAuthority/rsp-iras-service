@@ -1,4 +1,5 @@
 ﻿using Ardalis.Specification;
+using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Application.Specifications;
@@ -26,29 +27,61 @@ public class GetRespondentApplicationSpecification : Specification<ProjectRecord
     /// Defines a specification to return a paginated list of project records for a given respondent.
     /// </summary>
     /// <param name="respondentId">Unique Id of the respondent to get associated records for.</param>
-    /// <param name="searchQuery">Optional search query to filter projects by title or description.</param>
+    /// <param name="searchQuery">Optional search query to filter projects.</param>
     public GetRespondentApplicationSpecification
     (
         string respondentId,
-        string? searchQuery
+        ApplicationSearchRequest searchQuery
     )
     {
+        var fromDate = searchQuery.FromDate?.Date;
+        var toDate = searchQuery.ToDate?.Date;
+        var loweredStatus = searchQuery.Status
+                .Select(s => s.ToLower())
+                .ToList();
+
         var builder = Query
             .AsNoTracking();
 
         builder.Where(entity => entity.ProjectPersonnelId == respondentId);
 
-        if (!string.IsNullOrWhiteSpace(searchQuery))
+        if (!string.IsNullOrWhiteSpace(searchQuery.SearchTitleTerm))
         {
-            var terms = searchQuery.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            var terms = searchQuery.SearchTitleTerm
+                .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                .Select(t => t.ToLower());
+
+            builder.Where(entity =>
+                terms.All(term =>
+                    (entity.Title != null && entity.Title.ToLower().Contains(term)) ||
+                    (entity.IrasId != null && entity.IrasId.Value.ToString().ToLower().Contains(term))
+                )
+            );
+        }
+
+        if (searchQuery.Status.Count != 0)
+        {
             builder
                 .Where
                 (
-                    entity => terms.Any
-                    (
-                        term => entity.Title.Contains(term)
-                    )
+                    entity => !string.IsNullOrWhiteSpace(entity.Status) &&
+                        loweredStatus
+                        .Any
+                        (
+                            status => entity.Status.ToLower().Contains(status)
+                        )
                 );
+        }
+
+        // ✅ Date-only filtering (ignore time)
+        if (fromDate.HasValue)
+        {
+            builder.Where(entity => entity.CreatedDate.Date >= fromDate.Value);
+        }
+
+        if (toDate.HasValue)
+        {
+            builder.Where(entity => entity.CreatedDate.Date <= toDate.Value);
         }
     }
 }

@@ -16,9 +16,16 @@ public class GetModificationDocumentSpecification : Specification<ModificationDo
         Query
             .AsNoTracking()
             .Where(entity =>
-                entity.ProjectModificationChangeId == modificationChangeId &&
-                entity.ProjectRecordId == projectRecordId &&
-                entity.ProjectPersonnelId == projectPersonellId
-            );
+                entity.ProjectModificationChangeId == modificationChangeId);
+
+        if (!string.IsNullOrEmpty(projectRecordId))
+        {
+            Query.Where(e => e.ProjectRecordId == projectRecordId);
+        }
+
+        if (!string.IsNullOrEmpty(projectPersonellId))
+        {
+            Query.Where(e => e.ProjectPersonnelId == projectPersonellId);
+        }
     }
 }
