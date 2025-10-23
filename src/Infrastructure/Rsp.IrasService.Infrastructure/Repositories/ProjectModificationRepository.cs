@@ -246,6 +246,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             .Where(x =>
                 (string.IsNullOrEmpty(searchQuery.IrasId)
                  || x.IrasId.Contains(searchQuery.IrasId, StringComparison.OrdinalIgnoreCase))
+                //&& (string.IsNullOrEmpty(searchQuery.ModificationId)
+                // || x.ModificationId.Contains(searchQuery.ModificationId))
                 && (string.IsNullOrEmpty(searchQuery.ChiefInvestigatorName)
                     || x.ChiefInvestigator.Contains(searchQuery.ChiefInvestigatorName,
                         StringComparison.OrdinalIgnoreCase))
@@ -266,7 +268,17 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                 && (searchQuery.ModificationTypes.Count == 0
                     || searchQuery.ModificationTypes.Contains(x.ModificationType, StringComparer.OrdinalIgnoreCase))
                 && (!searchQuery.IncludeReviewerId
-                    || x.ReviewerId == searchQuery.ReviewerId));
+                    || x.ReviewerId == searchQuery.ReviewerId)
+                && (string.IsNullOrEmpty(searchQuery.ModificationType) ||
+                    x.ModificationType.Contains(searchQuery.ModificationType, StringComparison.OrdinalIgnoreCase))
+                && (string.IsNullOrEmpty(searchQuery.ReviewType) ||
+                    x.ReviewType.Contains(searchQuery.ReviewType, StringComparison.OrdinalIgnoreCase))
+                && (string.IsNullOrEmpty(searchQuery.Category) ||
+                    x.Category.Contains(searchQuery.Category, StringComparison.OrdinalIgnoreCase))
+                && (string.IsNullOrEmpty(searchQuery.Status) ||
+                    x.Status.Contains(searchQuery.Status, StringComparison.OrdinalIgnoreCase))
+                && (!fromDate.HasValue || x.DateSubmitted.Date >= fromDate.Value)
+                && (!toDate.HasValue || x.DateSubmitted.Date <= toDate.Value));
     }
 
     private static IEnumerable<ProjectModificationResult> SortModifications(
