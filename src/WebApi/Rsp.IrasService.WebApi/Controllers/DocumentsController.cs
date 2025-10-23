@@ -49,7 +49,7 @@ public class DocumentsController(IMediator mediator) : ControllerBase
                     CorellationId = dto.CorellationId,
                     Status = "success",
                     Timestamp = DateTime.UtcNow,
-                    Message = "Malware scan completed successfully. Document is clean."
+                    Message = "Malware scan completed successfully."
                 }),
                 StatusCodes.Status404NotFound => NotFound(new UpdateDocumentScanStatusResponse
                 {
