@@ -18,5 +18,5 @@ public class ModificationSearchRequest
     public string? Category { get; set; }
     public DateTime DateSubmitted { get; set; }
     public string? Status { get; set; }
-    //public string ModificationId { get; set; } = null!;
+    public string? ModificationId { get; set; } = null!;
 }
