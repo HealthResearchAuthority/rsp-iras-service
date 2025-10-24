@@ -21,7 +21,6 @@ public class DocumentsController(IMediator mediator) : ControllerBase
             var bad = new UpdateDocumentScanStatusResponse
             {
                 Id = dto.Id,
-                CorellationId = dto.CorellationId,
                 Status = "failure",
                 Timestamp = DateTime.UtcNow,
                 Message = "Validation failed.",
@@ -46,15 +45,13 @@ public class DocumentsController(IMediator mediator) : ControllerBase
                 StatusCodes.Status200OK => Ok(new UpdateDocumentScanStatusResponse
                 {
                     Id = dto.Id,
-                    CorellationId = dto.CorellationId,
                     Status = "success",
                     Timestamp = DateTime.UtcNow,
-                    Message = "Malware scan completed successfully. Document is clean."
+                    Message = "Malware scan completed successfully."
                 }),
                 StatusCodes.Status404NotFound => NotFound(new UpdateDocumentScanStatusResponse
                 {
                     Id = dto.Id,
-                    CorellationId = dto.CorellationId,
                     Status = "failure",
                     Timestamp = DateTime.UtcNow,
                     Message = "An unexpected error occurred. Malware scan was not completed",
@@ -73,7 +70,6 @@ public class DocumentsController(IMediator mediator) : ControllerBase
                 new UpdateDocumentScanStatusResponse
                 {
                     Id = dto.Id,
-                    CorellationId = dto.CorellationId,
                     Status = "failure",
                     Timestamp = DateTime.UtcNow,
                     Message = "Internal server error occurred while updating document scan status.",

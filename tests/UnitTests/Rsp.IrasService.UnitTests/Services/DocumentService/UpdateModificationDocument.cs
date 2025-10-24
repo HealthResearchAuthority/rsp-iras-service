@@ -68,7 +68,7 @@ public class UpdateModificationDocument : TestServiceBase<IrasService.Services.D
             ProjectPersonnelId = existingDocument.ProjectPersonnelId,
             ProjectRecordId = existingDocument.ProjectRecordId,
             ProjectModificationChangeId = existingDocument.ProjectModificationChangeId,
-            DocumentStatus = "Clean",
+            Status = "Clean",
         };
 
         // Act

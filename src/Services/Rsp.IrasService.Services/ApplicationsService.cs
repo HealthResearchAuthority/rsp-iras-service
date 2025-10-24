@@ -67,7 +67,7 @@ public class ApplicationsService(IProjectRecordRepository applicationRepository,
         return applicationsFromDb.Adapt<IEnumerable<ApplicationResponse>>();
     }
 
-    public async Task<PaginatedResponse<ApplicationResponse>> GetPaginatedRespondentApplications(string respondentId, string? searchQuery, int pageIndex, int? pageSize, string? sortField, string? sortDirection)
+    public async Task<PaginatedResponse<ApplicationResponse>> GetPaginatedRespondentApplications(string respondentId, ApplicationSearchRequest searchQuery, int pageIndex, int? pageSize, string? sortField, string? sortDirection)
     {
         var projectsSpecification = new GetRespondentApplicationSpecification(respondentId: respondentId, searchQuery: searchQuery);
         var projectTitleQuestionId = appSettings.QuestionIds[QuestionIdKeys.ShortProjectTitle];
@@ -92,5 +92,18 @@ public class ApplicationsService(IProjectRecordRepository applicationRepository,
         var updatedApplication = await applicationRepository.UpdateProjectRecord(irasApplication);
 
         return updatedApplication.Adapt<ApplicationResponse>();
+    }
+
+    /// <summary>
+    /// Deletes the project record with the specified projectRecordId if it is in draft status.
+    /// </summary>
+    /// <param name="projectRecordId">The unique identifier of the project record to delete.</param>
+    public async Task DeleteProject(string projectRecordId)
+    {
+        // Create a specification to find the project record with "In draft" status and the given ID.
+        var specification = new GetApplicationSpecification(id: projectRecordId);
+
+        // Delete the project record from the repository using the specification.
+        await applicationRepository.DeleteProjectRecord(specification);
     }
 }

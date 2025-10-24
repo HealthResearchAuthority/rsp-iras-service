@@ -1,4 +1,6 @@
-﻿using Rsp.IrasService.Application.Specifications;
+﻿using System.Globalization;
+using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.IrasService.Application.Specifications;
 using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.UnitTests.Application.Specifications;
@@ -81,20 +83,34 @@ public class GetRespondentApplicationSpecificationTests
         result.Count.ShouldBe(expectedCount);
     }
 
-    [Fact]
-    public void GetRespondentApplicationSpecification_WithSearchQuery_FiltersCorrectly()
+    [Theory]
+    [InlineData("Initiative", null, new[] { "2" })]
+    [InlineData("123", null, new[] { "1", "2", "3", "5" })]
+    [InlineData(null, "Approved", new[] { "1", "3" })]
+    [InlineData("ABC", "Rejected", new string[] { })]
+    [InlineData("123 Test", null, new[] { "5" })]
+    public void GetRespondentApplicationSpecification_ShouldFilterCorrectly(
+    string? searchTitleTerm,
+    string? status,
+    string[] expectedIds)
     {
         // Arrange
         var respondentId = "R-123";
-        var applications = new List<ProjectRecord>
-        {
-            new() { Id = "1", ProjectPersonnelId = respondentId, Title = "ABC Project", Description = "Phase Alpha" },
-            new() { Id = "2", ProjectPersonnelId = respondentId, Title = "XYZ Initiative", Description = "Phase Beta" },
-            new() { Id = "3", ProjectPersonnelId = respondentId, Title = "123 Study", Description = "Phase Gamma" },
-            new() { Id = "4", ProjectPersonnelId = "Other", Title = "ABC Project", Description = "Phase Alpha" }
-        };
 
-        var searchQuery = "ABC Alpha";
+        var applications = new List<ProjectRecord>
+    {
+        new() { Id = "1", ProjectPersonnelId = respondentId, Title = "ABC Project", IrasId = 12334, Status = "Approved" },
+        new() { Id = "2", ProjectPersonnelId = respondentId, Title = "XYZ Initiative", IrasId = 12335, Status = "Rejected" },
+        new() { Id = "3", ProjectPersonnelId = respondentId, Title = "123 Study", IrasId = 12336, Status = "Approved,Pending" },
+        new() { Id = "4", ProjectPersonnelId = "Other", Title = "ABC Project", IrasId = 12337, Status = "Approved" },
+        new() { Id = "5", ProjectPersonnelId = respondentId, Title = "123 ABC Test", IrasId = 12339, Status = "Pending" }
+    };
+
+        var searchQuery = new ApplicationSearchRequest
+        {
+            SearchTitleTerm = searchTitleTerm,
+            Status = status?.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList() ?? new List<string>()
+        };
 
         var spec = new GetRespondentApplicationSpecification(respondentId, searchQuery);
 
@@ -103,8 +119,46 @@ public class GetRespondentApplicationSpecificationTests
 
         // Assert
         result.ShouldNotBeNull();
-        result.Count.ShouldBe(1);
-        result[0].Id.ShouldBe("1");
+        result.Select(r => r.Id).ShouldBe(expectedIds);
+    }
+
+    [Theory]
+    [InlineData("2023-01-01", "2023-03-03", new[] { "2" })]
+    [InlineData("2022-01-01", "2022-12-31", new string[] { })]
+    [InlineData("2023-05-01", null, new[] { "1", "3" })]
+    [InlineData(null, "2023-05-31", new[] { "1", "2" })]
+    [InlineData(null, null, new[] { "1", "2", "3" })]
+    public void GetRespondentApplicationSpecification_ShouldFilterByDateRange(
+    string? fromDateStr,
+    string? toDateStr,
+    string[] expectedIds)
+    {
+        // Arrange
+        var respondentId = "R-123";
+        CultureInfo ukCulture = new CultureInfo("en-GB");
+
+        var applications = new List<ProjectRecord>
+        {
+            new() { Id = "1", ProjectPersonnelId = respondentId, CreatedDate = new DateTime(2023, 5, 10, 0, 0, 0, DateTimeKind.Utc) },
+            new() { Id = "2", ProjectPersonnelId = respondentId, CreatedDate = new DateTime(2023, 1, 1, 0, 0, 0, DateTimeKind.Utc) },
+            new() { Id = "3", ProjectPersonnelId = respondentId, CreatedDate = new DateTime(2023, 12, 31, 0, 0, 0, DateTimeKind.Utc) },
+            new() { Id = "4", ProjectPersonnelId = "Other", CreatedDate = new DateTime(2023, 5, 10, 0, 0, 0, DateTimeKind.Utc) }
+        };
+
+        var searchQuery = new ApplicationSearchRequest
+        {
+            FromDate = fromDateStr != null ? DateTime.Parse(fromDateStr, ukCulture) : (DateTime?)null,
+            ToDate = toDateStr != null ? DateTime.Parse(toDateStr, ukCulture) : (DateTime?)null
+        };
+
+        var spec = new GetRespondentApplicationSpecification(respondentId, searchQuery);
+
+        // Act
+        var result = spec.Evaluate(applications).ToList();
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.Select(r => r.Id).ShouldBe(expectedIds);
     }
 
     [Fact]
@@ -117,7 +171,8 @@ public class GetRespondentApplicationSpecificationTests
             new() { Id = "1", ProjectPersonnelId = respondentId, Title = "ABC Project", Description = "Phase Alpha" }
         };
 
-        var searchQuery = "XYZ";
+        ApplicationSearchRequest searchQuery = new ApplicationSearchRequest();
+        searchQuery.SearchTitleTerm = "Initiative";
 
         var spec = new GetRespondentApplicationSpecification(respondentId, searchQuery);
 

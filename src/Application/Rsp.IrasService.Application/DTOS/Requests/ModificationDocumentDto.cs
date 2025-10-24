@@ -15,12 +15,12 @@ public class ModificationDocumentDto
     /// <summary>
     /// Gets or sets the project record identifier.
     /// </summary>
-    public string ProjectRecordId { get; set; }
+    public string ProjectRecordId { get; set; } = null!;
 
     /// <summary>
     /// Gets or sets the project personnel identifier.
     /// </summary>
-    public string ProjectPersonnelId { get; set; }
+    public string ProjectPersonnelId { get; set; } = null!;
 
     /// <summary>
     /// Gets or sets the document file name.
@@ -38,12 +38,7 @@ public class ModificationDocumentDto
     public long? FileSize { get; set; }
 
     /// <summary>
-    /// Gets or sets the document scan status.
+    /// Gets or sets the status.
     /// </summary>
-    public string? DocumentStatus { get; set; }
-
-    /// <summary>
-    /// Gets or sets the Corellation Id
-    /// </summary>
-    public string CorellationId { get; set; } = null!;
+    public string? Status { get; set; }
 }

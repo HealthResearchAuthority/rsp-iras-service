@@ -1,12 +1,5 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoFixture.Xunit2;
-using MediatR;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
-using Shouldly;
 using Rsp.IrasService.Application.CQRS.Commands;
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.DTOS.Responses;
@@ -23,13 +16,12 @@ public class UpdateDocumentScanStatusTests : TestServiceBase<DocumentsController
         // Arrange
         dto.Id = Guid.NewGuid();
         dto.DocumentStoragePath = "folder/file.pdf";
-        dto.CorellationId = Guid.NewGuid().ToString();
 
         var mockMediator = Mocker.GetMock<IMediator>();
         mockMediator
             .Setup(m => m.Send(
                 It.Is<UpdateModificationDocumentCommand>(c => c.ModificationDocumentsRequest == dto),
-                CancellationToken.None))
+                default))
             .ReturnsAsync(StatusCodes.Status200OK);
 
         // Act
@@ -42,7 +34,6 @@ public class UpdateDocumentScanStatusTests : TestServiceBase<DocumentsController
 
         var payload = (UpdateDocumentScanStatusResponse)ok.Value!;
         payload.Id.ShouldBe(dto.Id);
-        payload.CorellationId.ShouldBe(dto.CorellationId);
         payload.Status.ShouldBe("success");
 
         mockMediator.Verify(m => m.Send(
@@ -57,7 +48,6 @@ public class UpdateDocumentScanStatusTests : TestServiceBase<DocumentsController
         // Arrange
         dto.Id = Guid.NewGuid();
         dto.DocumentStoragePath = "folder/file.pdf";
-        dto.CorellationId = Guid.NewGuid().ToString();
 
         var mockMediator = Mocker.GetMock<IMediator>();
         mockMediator
@@ -76,7 +66,6 @@ public class UpdateDocumentScanStatusTests : TestServiceBase<DocumentsController
 
         var payload = (UpdateDocumentScanStatusResponse)nf.Value!;
         payload.Id.ShouldBe(dto.Id);
-        payload.CorellationId.ShouldBe(dto.CorellationId);
         payload.Status.ShouldBe("failure");
         payload.ErrorResponse.ShouldNotBeNull();
         payload.ErrorResponse!.Code.ShouldBe("NOT_FOUND");
@@ -94,7 +83,6 @@ public class UpdateDocumentScanStatusTests : TestServiceBase<DocumentsController
         // Arrange (invalid)
         dto.Id = Guid.Empty;
         dto.DocumentStoragePath = "";
-        dto.CorellationId = Guid.NewGuid().ToString();
 
         // Act
         var result = await Sut.UpdateDocumentScanStatus(dto);
@@ -107,7 +95,6 @@ public class UpdateDocumentScanStatusTests : TestServiceBase<DocumentsController
 
         var payload = (UpdateDocumentScanStatusResponse)bad.Value!;
         payload.Id.ShouldBe(dto.Id);
-        payload.CorellationId.ShouldBe(dto.CorellationId);
         payload.Status.ShouldBe("failure");
         payload.ErrorResponse.ShouldNotBeNull();
         payload.ErrorResponse!.Code.ShouldBe("VALIDATION_ERROR");
@@ -126,7 +113,6 @@ public class UpdateDocumentScanStatusTests : TestServiceBase<DocumentsController
         // Arrange
         dto.Id = Guid.NewGuid();
         dto.DocumentStoragePath = "folder/file.pdf";
-        dto.CorellationId = Guid.NewGuid().ToString();
 
         var ex = new InvalidOperationException("Boom!");
         var mockMediator = Mocker.GetMock<IMediator>();
@@ -147,7 +133,6 @@ public class UpdateDocumentScanStatusTests : TestServiceBase<DocumentsController
         obj.Value.ShouldBeOfType<UpdateDocumentScanStatusResponse>();
         var payload = (UpdateDocumentScanStatusResponse)obj.Value!;
         payload.Id.ShouldBe(dto.Id);
-        payload.CorellationId.ShouldBe(dto.CorellationId);
         payload.Status.ShouldBe("failure");
         payload.ErrorResponse.ShouldNotBeNull();
         payload.ErrorResponse!.Code.ShouldBe("INTERNAL_SERVER_ERROR");
@@ -166,7 +151,6 @@ public class UpdateDocumentScanStatusTests : TestServiceBase<DocumentsController
         // Arrange (interaction test)
         dto.Id = Guid.NewGuid();
         dto.DocumentStoragePath = "folder/file.pdf";
-        dto.CorellationId = Guid.NewGuid().ToString();
 
         var mockMediator = Mocker.GetMock<IMediator>();
         mockMediator

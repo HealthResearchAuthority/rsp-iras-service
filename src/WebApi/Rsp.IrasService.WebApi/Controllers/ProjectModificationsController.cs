@@ -229,10 +229,22 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
     /// </summary>
     /// <param name="modificationChangeRequest">The request object containing modification change details.</param>
     /// <returns>The created modification change response.</returns>
-    [HttpPost("deletedocument")]
-    public async Task DeleteDocument(List<ModificationDocumentDto> modificationChangeRequest)
+    [HttpPost("deletedocuments")]
+    public async Task DeleteDocuments(List<ModificationDocumentDto> modificationChangeRequest)
     {
         var request = new DeleteModificationDocumentsCommand(modificationChangeRequest);
+
+        await mediator.Send(request);
+    }
+
+    /// <summary>
+    /// Delete a modification by its unique identifier.
+    /// </summary>
+    /// <param name="modificationId">The unique identifier of the modification to update.</param>
+    [HttpPost("delete")]
+    public async Task DeleteModification(Guid modificationId)
+    {
+        var request = new DeleteModificationCommand(modificationId);
 
         await mediator.Send(request);
     }

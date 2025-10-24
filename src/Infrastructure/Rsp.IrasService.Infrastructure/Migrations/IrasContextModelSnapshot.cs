@@ -288,6 +288,12 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Property<string>("ReviewerId")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("SentToRegulatorDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("SentToSponsorDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -3785,6 +3791,65 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.ToTable("RegulatoryBodiesUsers");
                 });
 
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.SponsorOrganisation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("RtsId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SponsorOrganisations");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.SponsorOrganisationUser", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("RtsId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id", "UserId");
+
+                    b.ToTable("SponsorOrganisationsUsers");
+                });
+
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.EmailTemplate", b =>
                 {
                     b.HasOne("Rsp.IrasService.Domain.Entities.EventType", "EventType")
@@ -3992,6 +4057,15 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.SponsorOrganisationUser", b =>
+                {
+                    b.HasOne("Rsp.IrasService.Domain.Entities.SponsorOrganisation", null)
+                        .WithMany("Users")
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModification", b =>
                 {
                     b.Navigation("ProjectModificationChanges");
@@ -4008,6 +4082,11 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.RegulatoryBody", b =>
+                {
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.SponsorOrganisation", b =>
                 {
                     b.Navigation("Users");
                 });

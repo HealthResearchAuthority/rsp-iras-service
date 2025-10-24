@@ -41,4 +41,9 @@ public class ProjectOverviewDocumentResult
     /// Gets or sets the identifier of the modification, if specified.
     /// </summary>
     public string ModificationIdentifier { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets or sets the number of the modification.
+    /// </summary>
+    public int ModificationNumber { get; set; }
 }
