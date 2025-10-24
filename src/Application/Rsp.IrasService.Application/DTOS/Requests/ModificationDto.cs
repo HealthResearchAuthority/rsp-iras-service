@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualBasic;
-
-namespace Rsp.IrasService.Application.DTOS.Requests;
+﻿namespace Rsp.IrasService.Application.DTOS.Requests;
 
 public record ModificationDto
 {
