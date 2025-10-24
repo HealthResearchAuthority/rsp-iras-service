@@ -123,22 +123,6 @@ public static class AuthConfiguration
 
     private static void ConfigureAuthorization(IServiceCollection services)
     {
-        // amend the default policy so that
-        // it checks for email and role claim
-        // in addition to just an authenticated user
-        //var defaultPolicy = new AuthorizationPolicyBuilder()
-        //    .RequireAuthenticatedUser()
-        //    .RequireClaim(ClaimTypes.Email)
-        //    .RequireClaim(ClaimTypes.Role)
-        //    .Build();
-
-        //// set the default policy for [Authorize] attribute
-        //// without a policy name
-        //services
-        //    .AddAuthorizationBuilder()
-        //    .SetDefaultPolicy(defaultPolicy);
-
-
         services.AddAuthorization(options =>
         {
             // Policy that only uses defaultBearer scheme
