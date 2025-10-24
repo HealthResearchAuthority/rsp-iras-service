@@ -28,4 +28,6 @@ public class AppSettings
     public OneLoginConfiguration OneLogin { get; set; } = null!;
 
     public Dictionary<string, string> QuestionIds { get; set; } = null!;
+
+    public MicrosoftEntraSettings MicrosoftEntraSettings { get; set; } = null!;
 }

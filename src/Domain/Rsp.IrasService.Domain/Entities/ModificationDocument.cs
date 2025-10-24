@@ -43,6 +43,16 @@ public class ModificationDocument
     public string? Status { get; set; }
 
     /// <summary>
+    /// Gets or sets the document scan status.
+    /// </summary>
+    public string? DocumentStatus { get; set; }
+
+    /// <summary>
+    /// Gets or sets the document created date.
+    /// </summary>
+    public DateTime CreatedDate { get; set; }
+
+    /// <summary>
     /// Navigation property to the related project personnel.
     /// </summary>
     public ProjectPersonnel? ProjectPersonnel { get; set; }
