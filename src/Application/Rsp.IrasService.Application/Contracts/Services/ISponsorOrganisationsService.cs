@@ -26,4 +26,10 @@ public interface ISponsorOrganisationsService : IInterceptable
 
     Task<SponsorOrganisationUserDto?> DisableUserInSponsorOrganisation(
         string rtsId, Guid userId);
+
+    Task<SponsorOrganisationDto?> EnableSponsorOrganisation(
+        string rtsId);
+
+    Task<SponsorOrganisationDto?> DisableSponsorOrganisation(
+        string rtsId);
 }

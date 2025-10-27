@@ -204,7 +204,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                    CreatedAt = pm.CreatedDate,
                    ReviewerId = pm.ReviewerId,
                    Status = pm.Status,
-                   SubmittedDate = pm.SubmittedDate
+                   SentToRegulatorDate = pm.SentToRegulatorDate,
+                   SentToSponsorDate = pm.SentToSponsorDate
                };
     }
 
@@ -493,6 +494,9 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
 
         modification.Status = status;
         modification.UpdatedDate = DateTime.Now;
+        modification.SentToRegulatorDate = status is ModificationStatus.WithRegulator or ModificationStatus.Approved
+                                        ? DateTime.Now : null;
+        modification.SentToSponsorDate = status is ModificationStatus.WithSponsor ? DateTime.Now : null;
 
         // Save the changes to the database.
         await irasContext.SaveChangesAsync();

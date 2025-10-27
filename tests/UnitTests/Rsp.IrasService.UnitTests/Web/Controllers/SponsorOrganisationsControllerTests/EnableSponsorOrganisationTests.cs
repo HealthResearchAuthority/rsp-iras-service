@@ -4,30 +4,30 @@ using Rsp.IrasService.WebApi.Controllers;
 
 namespace Rsp.IrasService.UnitTests.Web.Controllers.SponsorOrganisationsControllerTests;
 
-public class EnableUserTests : TestServiceBase<SponsorOrganisationsController>
+public class EnableSponsorOrganisationTests : TestServiceBase<SponsorOrganisationsController>
 {
     [Theory]
     [AutoData]
-    public async Task EnableUser_ShouldSendCommand(
+    public async Task EnableSponsorOrganisation_ShouldSendCommand(
         string rtsId,
         Guid userId,
-        SponsorOrganisationUserDto expected)
+        SponsorOrganisationDto expected)
     {
         // Arrange
         var mockMediator = Mocker.GetMock<IMediator>();
         mockMediator
             .Setup(m => m.Send(
-                It.Is<EnableSponsorOrganisationUserCommand>(c => c.RtsId == rtsId && c.UserId == userId),
+                It.Is<EnableSponsorOrganisationCommand>(c => c.RtsId == rtsId),
                 default))
             .ReturnsAsync(expected);
 
         // Act
-        var result = await Sut.EnableUser(rtsId, userId);
+        var result = await Sut.EnableSponsorOrganisation(rtsId);
 
         // Assert
         mockMediator.Verify(
             m => m.Send(
-                It.Is<EnableSponsorOrganisationUserCommand>(c => c.RtsId == rtsId && c.UserId == userId),
+                It.Is<EnableSponsorOrganisationCommand>(c => c.RtsId == rtsId),
                 default),
             Times.Once);
 
