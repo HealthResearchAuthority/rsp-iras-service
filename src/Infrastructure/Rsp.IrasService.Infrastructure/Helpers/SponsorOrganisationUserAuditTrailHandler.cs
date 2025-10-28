@@ -44,10 +44,12 @@ public class SponsorOrganisationUserAuditTrailHandler : IAuditTrailHandler<Spons
         var modifiedAuditableProps = entry.Properties
             .Where(p =>
                 Attribute.IsDefined(p.Metadata.PropertyInfo!, typeof(AuditableAttribute)) &&
-                (p.Metadata.ClrType != typeof(List<string>)
-                    ? !Equals(p.OriginalValue, p.CurrentValue)
-                    : !AreListsEqual(p.OriginalValue as List<string>, p.CurrentValue as List<string>)) &&
-                p.IsModified);
+                p.IsModified &&
+                (
+                    p.Metadata.ClrType != typeof(List<string>)
+                        ? !Equals(p.OriginalValue, p.CurrentValue)
+                        : !(p.OriginalValue as List<string> ?? new()).SequenceEqual(p.CurrentValue as List<string> ?? new())
+                ));
 
         return
         [
@@ -60,26 +62,6 @@ public class SponsorOrganisationUserAuditTrailHandler : IAuditTrailHandler<Spons
                 Description = GenerateDescription(property, sponsorOrganisationUser)
             })
         ];
-    }
-
-    private static bool AreListsEqual(List<string>? list1, List<string>? list2)
-    {
-        if (list1 == null && list2 == null)
-        {
-            return true;
-        }
-
-        if (list1 == null || list2 == null)
-        {
-            return false;
-        }
-
-        if (list1.Count != list2.Count)
-        {
-            return false;
-        }
-
-        return list1.SequenceEqual(list2);
     }
 
     private static string GenerateDescription(PropertyEntry property, SponsorOrganisationUser sponsorOrganisationUser)
