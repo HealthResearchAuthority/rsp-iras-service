@@ -5,37 +5,38 @@ using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Infrastructure.Helpers;
 
-public class ReviewBodyAuditTrailHandler : IRegulatoryBodyAuditTrailHandler
+public class SponsorOrganisationAuditTrailHandler : ISponsorOrganisationAuditTrailHandler
 {
-    public bool CanHandle(object entity) => entity is RegulatoryBody;
+    public bool CanHandle(object entity) => entity is SponsorOrganisation;
 
-    public IEnumerable<RegulatoryBodyAuditTrail> GenerateAuditTrails(EntityEntry entry, string systemAdminEmail)
+    public IEnumerable<SponsorOrganisationAuditTrail> GenerateAuditTrails(EntityEntry entry, string systemAdminEmail)
     {
-        if (entry.Entity is not RegulatoryBody reviewBody)
+        if (entry.Entity is not SponsorOrganisation sponsorOrganisation)
         {
             return [];
         }
 
         return entry.State switch
         {
-            EntityState.Added => [HandleAddedState(reviewBody, systemAdminEmail)],
-            EntityState.Modified => HandleModifiedState(entry, reviewBody, systemAdminEmail),
+            EntityState.Added => [HandleAddedState(sponsorOrganisation, systemAdminEmail)],
+            EntityState.Modified => HandleModifiedState(entry, sponsorOrganisation, systemAdminEmail),
             _ => []
         };
     }
 
-    private static RegulatoryBodyAuditTrail HandleAddedState(RegulatoryBody reviewBody, string systemAdminEmail)
+    private static SponsorOrganisationAuditTrail HandleAddedState(SponsorOrganisation sponsorOrganisation, string systemAdminEmail)
     {
-        return new RegulatoryBodyAuditTrail
+        return new SponsorOrganisationAuditTrail
         {
             DateTimeStamp = DateTime.UtcNow,
-            RegulatoryBodyId = reviewBody.Id,
+            RtsId = sponsorOrganisation.RtsId,
+            SponsorOrganisationId = sponsorOrganisation.Id,
             User = systemAdminEmail,
-            Description = $"{reviewBody.RegulatoryBodyName} was created"
+            Description = $"{sponsorOrganisation.RtsId} created"
         };
     }
 
-    private static List<RegulatoryBodyAuditTrail> HandleModifiedState(EntityEntry entry, RegulatoryBody reviewBody, string systemAdminEmail)
+    private static List<SponsorOrganisationAuditTrail> HandleModifiedState(EntityEntry entry, SponsorOrganisation sponsorOrganisation, string systemAdminEmail)
     {
         var modifiedAuditableProps = entry.Properties
             .Where(p =>
@@ -45,12 +46,13 @@ public class ReviewBodyAuditTrailHandler : IRegulatoryBodyAuditTrailHandler
                     : !AreListsEqual(p.OriginalValue as List<string>, p.CurrentValue as List<string>)) &&
                 p.IsModified);
 
-        return [.. modifiedAuditableProps.Select(property => new RegulatoryBodyAuditTrail
+        return [.. modifiedAuditableProps.Select(property => new SponsorOrganisationAuditTrail
         {
             DateTimeStamp = DateTime.UtcNow,
-            RegulatoryBodyId = reviewBody.Id,
+            RtsId = sponsorOrganisation.RtsId,
+            SponsorOrganisationId = sponsorOrganisation.Id,
             User = systemAdminEmail,
-            Description = GenerateDescription(property, reviewBody)
+            Description = GenerateDescription(property, sponsorOrganisation)
         })];
     }
 
@@ -74,12 +76,12 @@ public class ReviewBodyAuditTrailHandler : IRegulatoryBodyAuditTrailHandler
         return list1.SequenceEqual(list2);
     }
 
-    private static string GenerateDescription(PropertyEntry property, RegulatoryBody reviewBody)
+    private static string GenerateDescription(PropertyEntry property, SponsorOrganisation sponsorOrganisation)
     {
-        if (property.Metadata.Name == nameof(RegulatoryBody.IsActive))
+        if (property.Metadata.Name == nameof(SponsorOrganisation.IsActive))
         {
             var newStatus = property.CurrentValue as bool? == true ? "enabled" : "disabled";
-            return $"{reviewBody.RegulatoryBodyName} was {newStatus}";
+            return $"{sponsorOrganisation.RtsId} was {newStatus}";
         }
         else
         {
@@ -88,11 +90,7 @@ public class ReviewBodyAuditTrailHandler : IRegulatoryBodyAuditTrailHandler
             var oldValue = property.OriginalValue ?? emptyValue;
             var newValue = property.CurrentValue ?? emptyValue;
 
-            if (property.Metadata.Name == nameof(RegulatoryBody.Countries))
-            {
-                oldValue = string.Join(", ", property.OriginalValue as List<string> ?? [emptyValue]);
-                newValue = string.Join(", ", property.CurrentValue as List<string> ?? [emptyValue]);
-            }
+          
 
             return $"{property.Metadata.Name} was changed from {oldValue} to {newValue}";
         }

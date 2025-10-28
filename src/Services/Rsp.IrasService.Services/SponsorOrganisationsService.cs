@@ -75,4 +75,17 @@ public class SponsorOrganisationsService(ISponsorOrganisationsRepository sponsor
         var response = await sponsorOrganisationsRepository.DisableSponsorOrganisation(rtsId);
         return response.Adapt<SponsorOrganisationDto>();
     }
+
+    public async Task<SponsorOrganisationAuditTrailResponse> GetAuditTrailForSponsorOrganisation(string rtsId)
+    {
+        var result = new SponsorOrganisationAuditTrailResponse();
+
+        var response = await sponsorOrganisationsRepository.GetAuditsForSponsorOrganisation(rtsId);
+        var sponsorOrganisationAuditTrailDtos = response.Adapt<List<SponsorOrganisationAuditTrailDto>>();
+
+        result.Items = sponsorOrganisationAuditTrailDtos;
+        result.TotalCount = sponsorOrganisationAuditTrailDtos.Count;
+
+        return result;
+    }
 }

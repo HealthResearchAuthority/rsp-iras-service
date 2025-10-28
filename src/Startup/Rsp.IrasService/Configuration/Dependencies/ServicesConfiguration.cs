@@ -48,9 +48,13 @@ public static class ServicesConfiguration
         services.AddTransient<ISponsorOrganisationsRepository, SponsorOrganisationRepository>();
 
         // handlers and interceptors
-        services.AddTransient<IAuditTrailHandler, ReviewBodyAuditTrailHandler>();
-        services.AddTransient<IAuditTrailHandler, RegulatoryBodyUserAuditTrailHandler>();
-        services.AddTransient<AuditTrailInterceptor>();
+        services.AddTransient<IRegulatoryBodyAuditTrailHandler, ReviewBodyAuditTrailHandler>();
+        services.AddTransient<IRegulatoryBodyAuditTrailHandler, RegulatoryBodyUserAuditTrailHandler>();
+        services.AddTransient<RegulatoryBodyAuditTrailInterceptor>();
+
+        services.AddTransient<ISponsorOrganisationAuditTrailHandler, SponsorOrganisationAuditTrailHandler>();
+        services.AddTransient<ISponsorOrganisationAuditTrailHandler, SponsorOrganisationUserAuditTrailHandler>();
+        services.AddTransient<SponsorOrganisationAuditTrailInterceptor>();
 
         services.AddMediatR(option => option.RegisterServicesFromAssemblyContaining<IApplication>());
 

@@ -7,7 +7,7 @@ using Rsp.IrasService.Infrastructure.Helpers;
 namespace Rsp.IrasService.Infrastructure.Interceptors;
 
 [ExcludeFromCodeCoverage]
-public class AuditTrailInterceptor(IAuditTrailDetailsService auditTrailDetailsService, IEnumerable<IAuditTrailHandler> auditTrailHandlers) : SaveChangesInterceptor
+public class SponsorOrganisationAuditTrailInterceptor(IAuditTrailDetailsService auditTrailDetailsService, IEnumerable<ISponsorOrganisationAuditTrailHandler> auditTrailHandlers) : SaveChangesInterceptor
 {
     public override async ValueTask<InterceptionResult<int>> SavingChangesAsync
     (
@@ -32,7 +32,7 @@ public class AuditTrailInterceptor(IAuditTrailDetailsService auditTrailDetailsSe
 
         var systemAdminEmail = auditTrailDetailsService.GetEmailFromHttpContext();
 
-        var auditTrailRecords = new List<RegulatoryBodyAuditTrail>();
+        var auditTrailRecords = new List<SponsorOrganisationAuditTrail>();
 
         foreach (var entry in auditableEntries)
         {
@@ -46,7 +46,7 @@ public class AuditTrailInterceptor(IAuditTrailDetailsService auditTrailDetailsSe
             }
         }
 
-        await dbContext.RegulatoryBodiesAuditTrail.AddRangeAsync(auditTrailRecords, cancellationToken);
+        await dbContext.SponsorOrganisationsAuditTrail.AddRangeAsync(auditTrailRecords, cancellationToken);
 
         return await new ValueTask<InterceptionResult<int>>(result);
     }

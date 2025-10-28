@@ -9,6 +9,8 @@ public class AuditTrailDetailsService(IHttpContextAccessor contextAccessor) : IA
 {
     public string GetEmailFromHttpContext()
     {
+        return "dan.hulmston@paconsulting.com";
+
         var claimsPrinciple = contextAccessor?.HttpContext?.User;
 
         return claimsPrinciple!.Claims!.FirstOrDefault(x => x.Type == ClaimTypes.Email)!.Value!;
