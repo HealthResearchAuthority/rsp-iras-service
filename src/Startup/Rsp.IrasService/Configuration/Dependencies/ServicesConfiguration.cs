@@ -2,6 +2,7 @@
 using Rsp.IrasService.Application.Authentication.Helpers;
 using Rsp.IrasService.Application.Contracts.Repositories;
 using Rsp.IrasService.Application.Contracts.Services;
+using Rsp.IrasService.Domain.Entities;
 using Rsp.IrasService.Infrastructure.Helpers;
 using Rsp.IrasService.Infrastructure.Interceptors;
 using Rsp.IrasService.Infrastructure.Repositories;
@@ -48,13 +49,16 @@ public static class ServicesConfiguration
         services.AddTransient<ISponsorOrganisationsRepository, SponsorOrganisationRepository>();
 
         // handlers and interceptors
-        services.AddTransient<IRegulatoryBodyAuditTrailHandler, ReviewBodyAuditTrailHandler>();
-        services.AddTransient<IRegulatoryBodyAuditTrailHandler, RegulatoryBodyUserAuditTrailHandler>();
-        services.AddTransient<RegulatoryBodyAuditTrailInterceptor>();
+        // Handlers (generic)
+        services.AddScoped<IAuditTrailHandler<SponsorOrganisationAuditTrail>, SponsorOrganisationAuditTrailHandler>();
+        services.AddScoped<IAuditTrailHandler<SponsorOrganisationAuditTrail>, SponsorOrganisationUserAuditTrailHandler>();
 
-        services.AddTransient<ISponsorOrganisationAuditTrailHandler, SponsorOrganisationAuditTrailHandler>();
-        services.AddTransient<ISponsorOrganisationAuditTrailHandler, SponsorOrganisationUserAuditTrailHandler>();
-        services.AddTransient<SponsorOrganisationAuditTrailInterceptor>();
+        services.AddScoped<IAuditTrailHandler<RegulatoryBodyAuditTrail>, ReviewBodyAuditTrailHandler>();
+        services.AddScoped<IAuditTrailHandler<RegulatoryBodyAuditTrail>, RegulatoryBodyUserAuditTrailHandler>();
+
+        // Single merged interceptor
+        services.AddScoped<AuditTrailInterceptor>();
+
 
         services.AddMediatR(option => option.RegisterServicesFromAssemblyContaining<IApplication>());
 

@@ -7,7 +7,7 @@ using Rsp.IrasService.Domain.Entities;
 namespace Rsp.IrasService.Infrastructure.Helpers;
 
 [ExcludeFromCodeCoverage]
-public class SponsorOrganisationUserAuditTrailHandler : ISponsorOrganisationAuditTrailHandler
+public class SponsorOrganisationUserAuditTrailHandler : IAuditTrailHandler<SponsorOrganisationAuditTrail>
 {
     public bool CanHandle(object entity) => entity is SponsorOrganisationUser;
 
