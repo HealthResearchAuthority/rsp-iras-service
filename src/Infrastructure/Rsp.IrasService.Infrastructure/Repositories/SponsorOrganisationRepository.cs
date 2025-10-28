@@ -74,7 +74,7 @@ public class SponsorOrganisationRepository(IrasContext irasContext) : ISponsorOr
         return addedUser.Entity;
     }
 
-    public async Task<SponsorOrganisationUser> GetUserInSponsorOrganisation(string rtsId, Guid userId)
+    public async Task<SponsorOrganisationUser?> GetUserInSponsorOrganisation(string rtsId, Guid userId)
     {
         return await irasContext.SponsorOrganisationsUsers
             .AsNoTracking()

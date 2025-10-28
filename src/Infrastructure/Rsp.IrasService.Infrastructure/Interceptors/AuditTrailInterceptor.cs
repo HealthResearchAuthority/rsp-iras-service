@@ -47,17 +47,15 @@ public class AuditTrailInterceptor(
     private static List<TAudit> Collect<TAudit>(
         IEnumerable<IAuditTrailHandler<TAudit>> handlers,
         List<EntityEntry> entries,
-        string userEmail) where TAudit : class
+        string userEmail)
+        where TAudit : class
     {
-        var buffer = new List<TAudit>();
-        foreach (var entry in entries)
-        {
-            foreach (var h in handlers)
-            {
-                if (h.CanHandle(entry.Entity))
-                    buffer.AddRange(h.GenerateAuditTrails(entry, userEmail));
-            }
-        }
-        return buffer;
+        return entries
+            .SelectMany(entry =>
+                handlers
+                    .Where(h => h.CanHandle(entry.Entity))
+                    .SelectMany(h => h.GenerateAuditTrails(entry, userEmail))
+            )
+            .ToList();
     }
 }

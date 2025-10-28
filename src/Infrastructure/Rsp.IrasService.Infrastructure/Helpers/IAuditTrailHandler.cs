@@ -3,8 +3,8 @@ using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Infrastructure.Helpers;
 
-public interface IAuditTrailHandler<TAudit> where TAudit : class
+public interface IAuditTrailHandler<out TAudit> where TAudit : class
 {
     bool CanHandle(object entity);
-    IEnumerable<TAudit> GenerateAuditTrails(EntityEntry entry, string userEmail);
+    IEnumerable<TAudit> GenerateAuditTrails(EntityEntry entry, string systemAdminEmail);
 }
