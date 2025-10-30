@@ -257,8 +257,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                     || x.SponsorOrganisation.Contains(searchQuery.SponsorOrganisation,
                         StringComparison.OrdinalIgnoreCase))
                 // ✅ Date-only filtering (ignore time)
-                && (!fromDate.HasValue || x.CreatedAt.Date >= fromDate.Value)
-                && (!toDate.HasValue || x.CreatedAt.Date <= toDate.Value)
+                && (!fromDate.HasValue || (x.SentToRegulatorDate.HasValue && x.SentToRegulatorDate.Value.Date >= fromDate.Value))
+                && (!toDate.HasValue || (x.SentToRegulatorDate.HasValue && x.SentToRegulatorDate.Value.Date <= toDate.Value))
                 && (searchQuery.LeadNation.Count == 0
                     || searchQuery.LeadNation.Contains(x.LeadNation, StringComparer.OrdinalIgnoreCase))
                 && (searchQuery.ParticipatingNation.Count == 0
@@ -280,20 +280,22 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
     {
         Func<ProjectModificationResult, object>? keySelector = sortField switch
         {
-            nameof(ProjectModificationResult.ModificationId) => x => x.ModificationId.ToLowerInvariant(),
+            nameof(ProjectModificationResult.ModificationNumber) => x => x.ModificationNumber,
             nameof(ProjectModificationResult.ChiefInvestigator) => x => x.ChiefInvestigator.ToLowerInvariant(),
             nameof(ProjectModificationResult.ShortProjectTitle) => x => x.ShortProjectTitle.ToLowerInvariant(),
             nameof(ProjectModificationResult.ModificationType) => x => x.ModificationType.ToLowerInvariant(),
             nameof(ProjectModificationResult.SponsorOrganisation) => x => x.SponsorOrganisation.ToLowerInvariant(),
             nameof(ProjectModificationResult.LeadNation) => x => x.LeadNation.ToLowerInvariant(),
             nameof(ProjectModificationResult.CreatedAt) => x => x.CreatedAt,
+            nameof(ProjectModificationResult.Status) => x => x.Status,
+            nameof(ProjectModificationResult.SentToRegulatorDate) => x => x.SentToRegulatorDate!,
             _ => null
         };
 
         if (keySelector == null)
             return modifications;
 
-        if (sortField == nameof(ProjectModificationResult.ModificationId))
+        if (sortField == nameof(ProjectModificationResult.ModificationNumber))
         {
             return sortDirection == "desc"
                 ? modifications
