@@ -22,11 +22,5 @@ public class SponsorOrganisationAuditTrailConfiguration : IEntityTypeConfigurati
         builder
             .Property(x => x.DateTimeStamp)
             .IsRequired();
-
-
-        builder
-            .HasOne(x => x.SponsorOrganisation)
-            .WithMany()
-            .HasForeignKey(x => x.SponsorOrganisationId);
     }
 }
