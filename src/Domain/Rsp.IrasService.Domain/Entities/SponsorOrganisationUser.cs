@@ -1,4 +1,5 @@
-﻿using Rsp.IrasService.Domain.Interfaces;
+﻿using Rsp.IrasService.Domain.Attributes;
+using Rsp.IrasService.Domain.Interfaces;
 
 namespace Rsp.IrasService.Domain.Entities;
 
@@ -9,5 +10,7 @@ public class SponsorOrganisationUser : IAuditable
     public Guid UserId { get; set; }
     public string? Email { get; set; }
     public DateTime DateAdded { get; set; }
+
+    [Auditable]
     public bool IsActive { get; set; }
 }
