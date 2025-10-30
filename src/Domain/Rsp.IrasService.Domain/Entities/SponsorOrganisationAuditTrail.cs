@@ -11,6 +11,4 @@ public class SponsorOrganisationAuditTrail
     public string Description { get; set; } = null!;
     public string User { get; set; } = null!;
 
-    // navigation properties
-    public SponsorOrganisation SponsorOrganisation { get; set; } = null!;
 }
