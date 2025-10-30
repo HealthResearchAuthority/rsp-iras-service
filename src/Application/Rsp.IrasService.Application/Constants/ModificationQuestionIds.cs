@@ -16,4 +16,9 @@ public struct ModificationQuestionIds
     /// The question ID for the document date.
     /// </summary>
     public const string DocumentDate = "IQA0602";
+
+    /// <summary>
+    /// The question ID for the selected document type.
+    /// </summary>
+    public const string DocumentName = "IQA0623";
 }
