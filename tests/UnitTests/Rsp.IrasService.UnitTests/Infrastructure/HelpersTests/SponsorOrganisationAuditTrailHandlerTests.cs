@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Rsp.IrasService.Domain.Entities;
 using Rsp.IrasService.Infrastructure;
 using Rsp.IrasService.Infrastructure.Helpers;
+using Shouldly;
 
 namespace Rsp.IrasService.UnitTests.Infrastructure.HelpersTests;
 
@@ -19,13 +20,13 @@ public class SponsorOrganisationAuditTrailHandlerTests
     public void CanHandle_ShouldReturnTrue_WhenEntityIsSponsorOrganisation()
     {
         // Arrange
-        var SponsorOrganisation = new SponsorOrganisation();
+        var sponsorOrganisation = new SponsorOrganisation();
 
         // Act
-        var result = _handler.CanHandle(SponsorOrganisation);
+        var result = _handler.CanHandle(sponsorOrganisation);
 
         // Assert
-        Assert.True(result);
+        result.ShouldBeTrue();
     }
 
     [Fact]
@@ -38,7 +39,7 @@ public class SponsorOrganisationAuditTrailHandlerTests
         var result = _handler.CanHandle(nonSponsorOrganisation);
 
         // Assert
-        Assert.False(result);
+        result.ShouldBeFalse();
     }
 
     [Fact]
@@ -47,14 +48,13 @@ public class SponsorOrganisationAuditTrailHandlerTests
         // Arrange
         var entity = new ProjectPersonnel { Id = "id" };
         var systemAdminEmail = "adminEmail";
-
         var entityEntry = MockEntityEntry(entity);
 
         // Act
         var result = _handler.GenerateAuditTrails(entityEntry, systemAdminEmail);
 
         // Assert
-        Assert.Empty(result);
+        result.ShouldBeEmpty();
     }
 
     [Fact]
@@ -62,17 +62,16 @@ public class SponsorOrganisationAuditTrailHandlerTests
     {
         // Arrange
         var id = Guid.NewGuid();
-        var SponsorOrganisation = new SponsorOrganisation { Id = id, RtsId = "name" };
+        var sponsorOrganisation = new SponsorOrganisation { Id = id, RtsId = "name" };
         var systemAdminEmail = "adminEmail";
-
-        var entityEntry = MockEntityEntry(SponsorOrganisation);
+        var entityEntry = MockEntityEntry(sponsorOrganisation);
 
         // Act
         var result = _handler.GenerateAuditTrails(entityEntry, systemAdminEmail);
 
         // Assert
-        var auditTrail = Assert.Single(result);
-        Assert.Equal("name created", auditTrail.Description);
+        var auditTrail = result.Single();
+        auditTrail.Description.ShouldBe("name created");
     }
 
     [Fact]
@@ -80,41 +79,36 @@ public class SponsorOrganisationAuditTrailHandlerTests
     {
         // Arrange
         var id = Guid.NewGuid();
-        var SponsorOrganisation = new SponsorOrganisation { Id = id, RtsId = "name", IsActive = false };
+        var sponsorOrganisation = new SponsorOrganisation { Id = id, RtsId = "name", IsActive = false };
         var modifiedSponsorOrganisation = new SponsorOrganisation { Id = id, RtsId = "name", IsActive = true };
-
         var systemAdminEmail = "adminEmail";
-
-        var entityEntry = MockEntityEntry(SponsorOrganisation, modifiedSponsorOrganisation);
+        var entityEntry = MockEntityEntry(sponsorOrganisation, modifiedSponsorOrganisation);
 
         // Act
         var result = _handler.GenerateAuditTrails(entityEntry, systemAdminEmail);
 
         // Assert
-        var auditTrail = Assert.Single(result);
-        Assert.Equal("name was enabled", auditTrail.Description);
-        Assert.Equal(id, auditTrail.SponsorOrganisationId);
-        Assert.Equal(systemAdminEmail, auditTrail.User);
+        var auditTrail = result.Single();
+        auditTrail.Description.ShouldBe("name was enabled");
+        auditTrail.SponsorOrganisationId.ShouldBe(id);
+        auditTrail.User.ShouldBe(systemAdminEmail);
     }
-
-
 
     [Fact]
     public void GenerateAuditTrails_ShouldSkipUnchangedProperties()
     {
         // Arrange
         var id = Guid.NewGuid();
-        var SponsorOrganisation = new SponsorOrganisation { Id = id, RtsId = "name" };
+        var sponsorOrganisation = new SponsorOrganisation { Id = id, RtsId = "name" };
         var modifiedSponsorOrganisation = new SponsorOrganisation { Id = id, RtsId = "name" };
         var systemAdminEmail = "adminEmail";
-
-        var entityEntry = MockEntityEntry(SponsorOrganisation, modifiedSponsorOrganisation);
+        var entityEntry = MockEntityEntry(sponsorOrganisation, modifiedSponsorOrganisation);
 
         // Act
         var result = _handler.GenerateAuditTrails(entityEntry, systemAdminEmail);
 
         // Assert
-        Assert.Empty(result);
+        result.ShouldBeEmpty();
     }
 
     private static EntityEntry MockEntityEntry(object entity, object? modifiedEntity = null)
