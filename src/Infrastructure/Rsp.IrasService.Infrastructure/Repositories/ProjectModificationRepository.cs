@@ -257,8 +257,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                     || x.SponsorOrganisation.Contains(searchQuery.SponsorOrganisation,
                         StringComparison.OrdinalIgnoreCase))
                 // ✅ Date-only filtering (ignore time)
-                && (!fromDate.HasValue || x.SentToRegulatorDate!.Value.Date >= fromDate.Value)
-                && (!toDate.HasValue || x.SentToRegulatorDate!.Value.Date <= toDate.Value)
+                && (!fromDate.HasValue || (x.SentToRegulatorDate.HasValue && x.SentToRegulatorDate.Value.Date >= fromDate.Value))
+                && (!toDate.HasValue || (x.SentToRegulatorDate.HasValue && x.SentToRegulatorDate.Value.Date <= toDate.Value))
                 && (searchQuery.LeadNation.Count == 0
                     || searchQuery.LeadNation.Contains(x.LeadNation, StringComparer.OrdinalIgnoreCase))
                 && (searchQuery.ParticipatingNation.Count == 0
