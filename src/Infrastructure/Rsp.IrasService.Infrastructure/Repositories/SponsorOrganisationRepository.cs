@@ -74,11 +74,11 @@ public class SponsorOrganisationRepository(IrasContext irasContext) : ISponsorOr
         return addedUser.Entity;
     }
 
-    public async Task<SponsorOrganisationUser> GetUserInSponsorOrganisation(string rtsId, Guid userId)
+    public async Task<SponsorOrganisationUser?> GetUserInSponsorOrganisation(string rtsId, Guid userId)
     {
         return await irasContext.SponsorOrganisationsUsers
             .AsNoTracking()
-            .FirstAsync(x => x.RtsId == rtsId && x.UserId == userId);
+            .FirstOrDefaultAsync(x => x.RtsId == rtsId && x.UserId == userId);
     }
 
     public async Task<SponsorOrganisationUser> DisableUserInSponsorOrganisation(string rtsId, Guid userId)
@@ -139,5 +139,13 @@ public class SponsorOrganisationRepository(IrasContext irasContext) : ISponsorOr
         await irasContext.SaveChangesAsync();
 
         return sponsorOrganisation;
+    }
+
+    public async Task<IEnumerable<SponsorOrganisationAuditTrail>> GetAuditsForSponsorOrganisation(string rtsId)
+    {
+        return await irasContext.SponsorOrganisationsAuditTrail
+            .AsNoTracking()
+            .Where(x => x.RtsId == rtsId)
+            .ToListAsync();
     }
 }

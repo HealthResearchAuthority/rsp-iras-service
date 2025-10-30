@@ -70,7 +70,8 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
             CreatedBy = "Test",
             UpdatedBy = "Test",
             UpdatedDate = DateTime.Now,
-            Status = "Active"
+            Status = "Active",
+            SentToRegulatorDate = new DateTime(2023, 12, 31)
         };
 
         var answers = new List<ProjectRecordAnswer>
@@ -133,7 +134,7 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
             FromDate = new DateTime(2023, 12, 31),
             ToDate = new DateTime(2024, 1, 2),
             LeadNation = new List<string> { "England" },
-            ParticipatingNation = new List<string> { "Wales" },
+            ParticipatingNation = new List<string> { "Wales" }
         };
 
         // Act

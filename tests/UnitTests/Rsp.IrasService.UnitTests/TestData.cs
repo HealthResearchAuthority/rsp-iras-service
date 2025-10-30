@@ -143,4 +143,19 @@ public static class TestData
 
         return items;
     }
+
+    public static async Task<IList<SponsorOrganisationAuditTrail>> SeedData(IrasContext context,
+        Generator<SponsorOrganisationAuditTrail> generator, int records)
+    {
+        // seed data using bogus
+        var items = generator
+            .Take(records)
+            .ToList();
+
+        await context.SponsorOrganisationsAuditTrail.AddRangeAsync(items);
+
+        await context.SaveChangesAsync();
+
+        return items;
+    }
 }

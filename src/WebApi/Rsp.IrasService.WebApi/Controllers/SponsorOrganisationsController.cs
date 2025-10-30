@@ -5,6 +5,7 @@ using Rsp.IrasService.Application.CQRS.Commands;
 using Rsp.IrasService.Application.CQRS.Queries;
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.DTOS.Responses;
+using Rsp.IrasService.Application.Specifications;
 
 namespace Rsp.IrasService.WebApi.Controllers;
 
@@ -133,6 +134,21 @@ public class SponsorOrganisationsController(IMediator mediator) : ControllerBase
         string rtsId)
     {
         var request = new DisableSponsorOrganisationCommand(rtsId);
+        return await mediator.Send(request);
+    }
+
+
+
+    /// <summary>
+    ///     Gets a user in a Sponsor Organisation
+    /// </summary>
+    /// <param name="rtsId">Sponsor Organisation RTS Id</param>
+    /// <param name="userId">Sponsor Organisation User Id</param>
+    [HttpGet("{rtsId}/audittrail")]
+    public async Task<ActionResult<SponsorOrganisationAuditTrailResponse>> GetAuditsForSponsorOrganisation(
+        string rtsId)
+    {
+        var request = new GetAuditForSponsorOrganisationCommand(rtsId);
         return await mediator.Send(request);
     }
 }

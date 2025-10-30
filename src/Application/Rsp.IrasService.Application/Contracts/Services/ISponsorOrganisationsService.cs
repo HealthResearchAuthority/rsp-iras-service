@@ -32,4 +32,7 @@ public interface ISponsorOrganisationsService : IInterceptable
 
     Task<SponsorOrganisationDto?> DisableSponsorOrganisation(
         string rtsId);
+
+    Task<SponsorOrganisationAuditTrailResponse> GetAuditTrailForSponsorOrganisation(string rtsId);
+
 }
