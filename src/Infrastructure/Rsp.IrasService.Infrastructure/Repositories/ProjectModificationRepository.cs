@@ -344,6 +344,10 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                         md.Id,
                         md.FileName,
                         md.DocumentStoragePath,
+                        DocumentName = modificationDocumentAnswers
+                            .Where(a => a.ModificationDocumentId == md.Id && a.QuestionId == ModificationQuestionIds.DocumentName)
+                            .Select(a => a.Response)
+                            .FirstOrDefault(),
                         DocumentType = modificationDocumentAnswers
                             .Where(a => a.ModificationDocumentId == md.Id && a.QuestionId == ModificationQuestionIds.DocumentType)
                             .Select(a => a.SelectedOptions)
@@ -381,6 +385,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                 {
                     Id = x.Id,
                     FileName = x.FileName,
+                    DocumentName = x.DocumentName ?? string.Empty,
                     DocumentStoragePath = x.DocumentStoragePath,
 
                     DocumentType = !string.IsNullOrEmpty(x.DocumentType) &&
@@ -420,6 +425,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         {
             nameof(ProjectOverviewDocumentResult.DocumentType) => x => x.DocumentType.ToLowerInvariant(),
             nameof(ProjectOverviewDocumentResult.FileName) => x => x.FileName.ToLowerInvariant(),
+            nameof(ProjectOverviewDocumentResult.DocumentName) => x => x.DocumentName.ToLowerInvariant(),
             nameof(ProjectOverviewDocumentResult.DocumentVersion) => x => x.DocumentVersion.ToLowerInvariant(),
             nameof(ProjectOverviewDocumentResult.DocumentDate) => x => x.DocumentDate ?? DateTime.MinValue,
             nameof(ProjectOverviewDocumentResult.Status) => x => x.Status.ToLowerInvariant(),
