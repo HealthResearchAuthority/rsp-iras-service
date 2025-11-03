@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rsp.IrasService.Infrastructure;
 
@@ -11,9 +12,11 @@ using Rsp.IrasService.Infrastructure;
 namespace Rsp.IrasService.Infrastructure.Migrations
 {
     [DbContext(typeof(IrasContext))]
-    partial class IrasContextModelSnapshot : ModelSnapshot
+    [Migration("20251030160248_CreateProjectModificationAuditTrail")]
+    partial class CreateProjectModificationAuditTrail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -284,9 +287,6 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Property<string>("ProjectRecordId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ReviewerEmail")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReviewerId")
                         .HasColumnType("nvarchar(max)");

@@ -160,9 +160,9 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost("assignmodificationstoreviewer")]
-    public async Task AssignModificationsToReviewer(List<string> modificationsIds, string reviewerId)
+    public async Task AssignModificationsToReviewer(List<string> modificationsIds, string reviewerId, string reviewerEmail)
     {
-        var command = new AssignModificationsToReviewerCommand(modificationsIds, reviewerId);
+        var command = new AssignModificationsToReviewerCommand(modificationsIds, reviewerId, reviewerEmail);
         await mediator.Send(command);
     }
 
@@ -247,5 +247,12 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
         var request = new DeleteModificationCommand(modificationId);
 
         await mediator.Send(request);
+    }
+
+    [HttpGet("audittrail")]
+    public async Task<ModificationAuditTrailResponse> GetModificationAuditTrail(Guid modificationId)
+    {
+        var query = new GetModificationAuditTrailQuery(modificationId);
+        return await mediator.Send(query);
     }
 }

@@ -9,7 +9,8 @@ public class AssignModificationsToReviewer : TestServiceBase<ProjectModification
     public async Task AssignModificationsToReviewer_ShouldReturnOk_WhenAssignmentsAreSuccessful
     (
         List<string> modificationIds,
-        string reviewerId
+        string reviewerId,
+        string reviewerEmail
     )
     {
         // Arrange
@@ -17,7 +18,7 @@ public class AssignModificationsToReviewer : TestServiceBase<ProjectModification
         mockMediator.Setup(m => m.Send(It.IsAny<AssignModificationsToReviewerCommand>(), default));
 
         // Act
-        await Sut.AssignModificationsToReviewer(modificationIds, reviewerId);
+        await Sut.AssignModificationsToReviewer(modificationIds, reviewerId, reviewerEmail);
         // Assert
 
         mockMediator

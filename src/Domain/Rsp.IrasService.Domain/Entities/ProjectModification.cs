@@ -1,9 +1,12 @@
-﻿namespace Rsp.IrasService.Domain.Entities;
+﻿using Rsp.IrasService.Domain.Attributes;
+using Rsp.IrasService.Domain.Interfaces;
+
+namespace Rsp.IrasService.Domain.Entities;
 
 /// <summary>
 /// Represents a modification made to a project record.
 /// </summary>
-public class ProjectModification
+public class ProjectModification : IAuditable
 {
     /// <summary>
     /// Gets or sets the unique identifier for the project modification.
@@ -28,6 +31,7 @@ public class ProjectModification
     /// <summary>
     /// Gets or sets the status of the modification.
     /// </summary>
+    [Auditable]
     public string Status { get; set; } = null!;
 
     /// <summary>
@@ -54,6 +58,12 @@ public class ProjectModification
     /// Gets or sets the identifier of the reviewer assigned to this modification, if any.
     /// </summary>
     public string? ReviewerId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the email of the reviewer assigned to this modification, if any.
+    /// </summary>
+    [Auditable]
+    public string? ReviewerEmail { get; set; }
 
     // Navigation property for the changes associated with this project modification.
     public ICollection<ProjectModificationChange> ProjectModificationChanges { get; set; } = [];

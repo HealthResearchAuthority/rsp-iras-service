@@ -5,7 +5,7 @@ using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Infrastructure.Helpers;
 
-public class ReviewBodyAuditTrailHandler :  IAuditTrailHandler<RegulatoryBodyAuditTrail>
+public class ReviewBodyAuditTrailHandler : IAuditTrailHandler<RegulatoryBodyAuditTrail>
 {
     public bool CanHandle(object entity) => entity is RegulatoryBody;
 

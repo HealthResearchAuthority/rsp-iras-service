@@ -116,9 +116,9 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
         });
     }
 
-    public Task AssignModificationsToReviewer(List<string> modificationIds, string reviewerId)
+    public Task AssignModificationsToReviewer(List<string> modificationIds, string reviewerId, string reviewerEmail)
     {
-        return projectModificationRepository.AssignModificationsToReviewer(modificationIds, reviewerId);
+        return projectModificationRepository.AssignModificationsToReviewer(modificationIds, reviewerId, reviewerEmail);
     }
 
     public Task<ProjectOverviewDocumentResponse> GetDocumentsForProjectOverview(
@@ -173,5 +173,16 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
         var specification = new GetModificationSpecification(modificationId);
 
         await projectModificationRepository.DeleteModification(specification);
+    }
+
+    public async Task<ModificationAuditTrailResponse> GetModificationAuditTrail(Guid projectModificationId)
+    {
+        var auditTrailEntries = await projectModificationRepository.GetModificationAuditTrail(projectModificationId);
+
+        return new ModificationAuditTrailResponse
+        {
+            Items = auditTrailEntries.Adapt<IEnumerable<ModificationAuditTrailDto>>(),
+            TotalCount = auditTrailEntries.Count()
+        };
     }
 }
