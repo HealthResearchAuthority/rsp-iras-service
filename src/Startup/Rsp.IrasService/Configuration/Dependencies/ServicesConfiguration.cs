@@ -56,9 +56,10 @@ public static class ServicesConfiguration
         services.AddScoped<IAuditTrailHandler<RegulatoryBodyAuditTrail>, ReviewBodyAuditTrailHandler>();
         services.AddScoped<IAuditTrailHandler<RegulatoryBodyAuditTrail>, RegulatoryBodyUserAuditTrailHandler>();
 
+        services.AddScoped<IAuditTrailHandler<ProjectModificationAuditTrail>, ProjectModificationAuditTrailHandler>();
+
         // Single merged interceptor
         services.AddScoped<AuditTrailInterceptor>();
-
 
         services.AddMediatR(option => option.RegisterServicesFromAssemblyContaining<IApplication>());
 
