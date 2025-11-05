@@ -88,4 +88,10 @@ public class SponsorOrganisationsService(ISponsorOrganisationsRepository sponsor
 
         return result;
     }
+
+    public async Task<IEnumerable<SponsorOrganisationDto>> GetAllActiveSponsorOrganisationsForEnabledUser(Guid userId)
+    {
+        var entities = await sponsorOrganisationsRepository.GetActiveSponsorOrganisationsForEnabledUser(userId);
+        return entities.Select(e => e.Adapt<SponsorOrganisationDto>());
+    }
 }

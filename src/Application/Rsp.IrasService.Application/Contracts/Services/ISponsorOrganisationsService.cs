@@ -35,4 +35,5 @@ public interface ISponsorOrganisationsService : IInterceptable
 
     Task<SponsorOrganisationAuditTrailResponse> GetAuditTrailForSponsorOrganisation(string rtsId);
 
+    Task<IEnumerable<SponsorOrganisationDto>> GetAllActiveSponsorOrganisationsForEnabledUser(Guid userId);
 }
