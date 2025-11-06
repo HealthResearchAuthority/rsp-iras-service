@@ -148,13 +148,4 @@ public class SponsorOrganisationRepository(IrasContext irasContext) : ISponsorOr
             .Where(x => x.RtsId == rtsId)
             .ToListAsync();
     }
-
-    public async Task<IEnumerable<SponsorOrganisation>> GetActiveSponsorOrganisationsForEnabledUser(Guid userId)
-    {
-        return await irasContext.SponsorOrganisations
-                .AsNoTracking()
-                .Include(org => org.Users)
-                .Where(org => org.IsActive && org.Users.Any(u => u.UserId == userId && u.IsActive))
-                .ToListAsync();
-    }
 }
