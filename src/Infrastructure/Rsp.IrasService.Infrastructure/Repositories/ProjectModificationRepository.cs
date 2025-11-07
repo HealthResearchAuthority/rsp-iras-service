@@ -116,7 +116,6 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
     )
     {
         var modifications = ProjectModificationBySponsorOrganisationUserQuery(sponsorOrganisationUserId);
-
         var filtered = FilterModificationsBySponsorOrganisationUserQuery(modifications, searchQuery);
         var sorted = SortModifications(filtered, sortField, sortDirection);
 
