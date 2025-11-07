@@ -125,7 +125,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         return results.OrderBy(r => r.ShortProjectTitle);
     }
 
-    public async Task AssignModificationsToReviewer(List<string> modificationIds, string reviewerId)
+    public async Task AssignModificationsToReviewer(List<string> modificationIds, string reviewerId, string reviewerEmail)
     {
         var modifications = await irasContext.ProjectModifications
             .Where(pm => modificationIds.Contains(pm.Id.ToString()))
@@ -134,6 +134,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         foreach (var modification in modifications)
         {
             modification.ReviewerId = reviewerId;
+            modification.ReviewerEmail = reviewerEmail;
         }
 
         await irasContext.SaveChangesAsync();
@@ -577,5 +578,13 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         irasContext.ProjectModifications.Remove(modification);
 
         await irasContext.SaveChangesAsync();
+    }
+
+    public async Task<IEnumerable<ProjectModificationAuditTrail>> GetModificationAuditTrail(Guid modificationId)
+    {
+        return await irasContext.ProjectModificationAuditTrail
+            .Where(a => a.ProjectModificationId == modificationId)
+            .OrderByDescending(a => a.DateTimeStamp)
+            .ToListAsync();
     }
 }
