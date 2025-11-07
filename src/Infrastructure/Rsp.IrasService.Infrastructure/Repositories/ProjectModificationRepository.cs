@@ -352,40 +352,40 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             .Select(u => u.RtsId)
             .FirstOrDefault();
 
-        return from pm in irasContext.ProjectModifications.Include(pm => pm.ProjectModificationChanges)
-               join pr in projectRecords on pm.ProjectRecordId equals pr.Id
-               where projectAnswers.Any(a => a.ProjectRecordId == pr.Id &&
+        return from prm in irasContext.ProjectModifications.Include(pm => pm.ProjectModificationChanges)
+               join proj in projectRecords on prm.ProjectRecordId equals proj.Id
+               where projectAnswers.Any(a => a.ProjectRecordId == proj.Id &&
                                              a.QuestionId == ProjectRecordConstants.SponsorOrganisation &&
                                              a.Response == rtsId)
                select new ProjectModificationResult
                {
-                   Id = pm.Id.ToString(),
-                   ProjectRecordId = pr.Id,
-                   ModificationId = pm.ModificationIdentifier,
-                   IrasId = pr.IrasId.HasValue ? pr.IrasId.Value.ToString() : string.Empty,
-                   ModificationNumber = pm.ModificationNumber,
+                   Id = prm.Id.ToString(),
+                   ProjectRecordId = proj.Id,
+                   ModificationId = prm.ModificationIdentifier,
+                   IrasId = proj.IrasId.HasValue ? proj.IrasId.Value.ToString() : string.Empty,
+                   ModificationNumber = prm.ModificationNumber,
                    ChiefInvestigator = projectAnswers
-                       .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ChiefInvestigator)
+                       .Where(a => a.ProjectRecordId == proj.Id && a.QuestionId == ProjectRecordConstants.ChiefInvestigator)
                        .Select(a => a.Response)
                        .FirstOrDefault() ?? string.Empty,
                    LeadNation = projectAnswers
-                       .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.LeadNation)
+                       .Where(a => a.ProjectRecordId == proj.Id && a.QuestionId == ProjectRecordConstants.LeadNation)
                        .Select(a => a.SelectedOptions)
                        .FirstOrDefault() ?? string.Empty,
                    ParticipatingNation = projectAnswers
-                       .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ParticipatingNation)
+                       .Where(a => a.ProjectRecordId == proj.Id && a.QuestionId == ProjectRecordConstants.ParticipatingNation)
                        .Select(a => a.SelectedOptions)
                        .FirstOrDefault() ?? string.Empty,
                    ShortProjectTitle = projectAnswers
-                       .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ShortProjectTitle)
+                       .Where(a => a.ProjectRecordId == proj.Id && a.QuestionId == ProjectRecordConstants.ShortProjectTitle)
                        .Select(a => a.Response)
                        .FirstOrDefault() ?? string.Empty,
                    SponsorOrganisation = rtsId ?? string.Empty,
-                   CreatedAt = pm.CreatedDate,
-                   ReviewerId = pm.ReviewerId,
-                   Status = pm.Status,
-                   SentToRegulatorDate = pm.SentToRegulatorDate,
-                   SentToSponsorDate = pm.SentToSponsorDate
+                   CreatedAt = prm.CreatedDate,
+                   ReviewerId = prm.ReviewerId,
+                   Status = prm.Status,
+                   SentToRegulatorDate = prm.SentToRegulatorDate,
+                   SentToSponsorDate = prm.SentToSponsorDate
                };
     }
 
