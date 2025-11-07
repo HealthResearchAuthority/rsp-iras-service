@@ -17,6 +17,21 @@ public class ProjectModificationChange
     public Guid ProjectModificationId { get; set; }
 
     /// <summary>
+    /// Ranking type of the change
+    /// </summary>
+    public string? ModificationType { get; set; }
+
+    /// <summary>
+    /// Ranking category of the change
+    /// </summary>
+    public string? Category { get; set; }
+
+    /// <summary>
+    /// Ranking review type of the change
+    /// </summary>
+    public string? ReviewType { get; set; }
+
+    /// <summary>
     /// Gets or sets the area of the project that was changed
     /// </summary>
     public string AreaOfChange { get; set; } = null!;

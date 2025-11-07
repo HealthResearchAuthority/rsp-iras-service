@@ -6,7 +6,7 @@ using Rsp.IrasService.Infrastructure;
 using Rsp.IrasService.Infrastructure.Repositories;
 using Rsp.IrasService.Services;
 
-namespace Rsp.IrasService.UnitTests.Services.ReviewBodyServiceTests;
+namespace Rsp.IrasService.UnitTests.Services.SponsorOrganisationServiceTests;
 
 /// <summary>
 ///     Covers the tests for GetReviewBodies method

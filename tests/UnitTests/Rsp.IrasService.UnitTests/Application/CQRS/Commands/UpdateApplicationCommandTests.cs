@@ -24,8 +24,8 @@ public class UpdateApplicationHandlerTests
         var request = new ApplicationRequest
         {
             Id = "App-123",
-            Title = "Updated Project",
-            Description = "Updated project description",
+            ShortProjectTitle = "Updated Project",
+            FullProjectTitle = "Updated project description",
             UpdatedBy = "User-456",
             Status = "Approved"
         };

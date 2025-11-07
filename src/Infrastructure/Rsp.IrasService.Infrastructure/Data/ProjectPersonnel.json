@@ -1,9 +1,0 @@
-[
-  {
-    "Id": "369e5231-45ec-4f20-bbc2-4940959be518",
-    "GivenName": "Test",
-    "FamilyName": "Personnel",
-    "Email": "test.data@example.com",
-    "Role": "iras_portal_user,operations,reviewer,user,system_administrator"
-  }
-]

@@ -10,7 +10,5 @@ public class ProjectModificationChangeConfiguration : IEntityTypeConfiguration<P
     public void Configure(EntityTypeBuilder<ProjectModificationChange> builder)
     {
         builder.HasKey(r => r.Id);
-
-        builder.HasData(JsonHelper.Parse<ProjectModificationChange>("ProjectModificationChanges.json"));
     }
 }
