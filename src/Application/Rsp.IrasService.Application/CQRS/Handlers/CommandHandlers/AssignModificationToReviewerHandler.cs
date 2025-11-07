@@ -16,6 +16,6 @@ public class AssignModificationToReviewerHandler(IProjectModificationService pro
     /// <param name="cancellationToken">Cancellation token.</param>
     public async Task Handle(AssignModificationsToReviewerCommand request, CancellationToken cancellationToken)
     {
-        await projectModificationService.AssignModificationsToReviewer(request.ModificationIds, request.ReviewerId);
+        await projectModificationService.AssignModificationsToReviewer(request.ModificationIds, request.ReviewerId, request.ReviewerEmail);
     }
 }

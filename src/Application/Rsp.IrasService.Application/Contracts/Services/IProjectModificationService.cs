@@ -90,7 +90,7 @@ public interface IProjectModificationService : IInterceptable
     /// <param name="modificationIds">The list of modification identifiers to assign.</param>
     /// <param name="reviewerId">The identifier of the reviewer receiving the assignment.</param>
     /// <returns>A task representing the asynchronous assignment operation.</returns>
-    Task AssignModificationsToReviewer(List<string> modificationIds, string reviewerId);
+    Task AssignModificationsToReviewer(List<string> modificationIds, string reviewerId, string reviewerEmail);
 
     Task<ProjectOverviewDocumentResponse> GetDocumentsForProjectOverview(
        string projectRecordId,
@@ -115,8 +115,15 @@ public interface IProjectModificationService : IInterceptable
     Task UpdateModificationStatus(Guid modificationId, string status);
 
     /// <summary>
-    /// Deletes an existing modification by its unique identifier. 
+    /// Deletes an existing modification by its unique identifier.
     /// </summary>
     /// <param name="modificationId">The unique identifier of the modification to delete.</param>
     Task DeleteModification(Guid modificationId);
+
+    /// <summary>
+    /// Retrieves the audit trail for a specific project modification.
+    /// </summary>
+    /// <param name="projectModificationId">The unique identifier of the modification</param>
+    /// <returns>A list of modification audit trail records and the total count</returns>
+    Task<ModificationAuditTrailResponse> GetModificationAuditTrail(Guid projectModificationId);
 }

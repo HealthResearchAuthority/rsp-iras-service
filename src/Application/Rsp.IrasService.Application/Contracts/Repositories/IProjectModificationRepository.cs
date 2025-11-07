@@ -91,7 +91,7 @@ public interface IProjectModificationRepository
     /// <param name="modificationIds">List of modification identifiers to assign.</param>
     /// <param name="reviewerId">Identifier of the reviewer user/principal.</param>
     /// <returns>Task representing the asynchronous operation.</returns>
-    Task AssignModificationsToReviewer(List<string> modificationIds, string reviewerId);
+    Task AssignModificationsToReviewer(List<string> modificationIds, string reviewerId, string reviewerEmail);
 
     IEnumerable<ProjectOverviewDocumentResult> GetDocumentsForProjectOverview(
         ProjectOverviewDocumentSearchRequest searchQuery,
@@ -128,4 +128,6 @@ public interface IProjectModificationRepository
     /// </summary>
     /// <param name="specification">The specification used to locate the modification to delete.</param>
     Task DeleteModification(ISpecification<ProjectModification> specification);
+
+    Task<IEnumerable<ProjectModificationAuditTrail>> GetModificationAuditTrail(Guid modificationId);
 }
