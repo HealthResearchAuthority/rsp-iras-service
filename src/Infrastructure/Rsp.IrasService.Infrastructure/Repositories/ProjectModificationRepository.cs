@@ -119,7 +119,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                               .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ShortProjectTitle)
                               .Select(a => a.Response)
                               .FirstOrDefault() ?? string.Empty,
-                          Status = pm.Status
+                          Status = pm.Status,
+                          CreatedAt = pm.CreatedDate
                       };
 
         return results.OrderBy(r => r.ShortProjectTitle);
