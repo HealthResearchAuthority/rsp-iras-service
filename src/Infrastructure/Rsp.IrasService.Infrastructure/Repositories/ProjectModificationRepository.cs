@@ -209,6 +209,9 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                    ModificationId = pm.ModificationIdentifier,
                    IrasId = pr.IrasId.HasValue ? pr.IrasId.Value.ToString() : string.Empty,
                    ModificationNumber = pm.ModificationNumber,
+                   ModificationType = pm.ModificationType,
+                   Category = pm.Category,
+                   ReviewType = pm.ReviewType,
                    ChiefInvestigator = projectAnswers
                        .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ChiefInvestigator)
                        .Select(a => a.Response)

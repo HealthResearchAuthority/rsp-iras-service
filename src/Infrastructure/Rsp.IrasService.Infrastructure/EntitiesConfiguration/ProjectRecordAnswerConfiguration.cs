@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Rsp.IrasService.Domain.Entities;
-using Rsp.IrasService.Infrastructure.Helpers;
 
 namespace Rsp.IrasService.Infrastructure.EntitiesConfiguration;
 
@@ -20,7 +19,5 @@ public class ProjectRecordAnswerConfiguration : IEntityTypeConfiguration<Project
         builder
             .Property(e => e.VersionId)
             .HasDefaultValue("published version");
-
-        builder.HasData(JsonHelper.Parse<ProjectRecordAnswer>("ProjectRecordAnswers.json"));
     }
 }

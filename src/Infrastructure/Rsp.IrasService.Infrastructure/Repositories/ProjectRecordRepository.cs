@@ -75,7 +75,7 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
                                   {
                                       Id = projectRecord.Id,
                                       ProjectPersonnelId = projectRecord.ProjectPersonnelId,
-                                      Description = projectRecord.Description,
+                        FullProjectTitle = projectRecord.FullProjectTitle,
                                       IsActive = projectRecord.IsActive,
                                       Status = projectRecord.Status,
                                       CreatedDate = projectRecord.CreatedDate,
@@ -84,7 +84,7 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
                                       UpdatedBy = projectRecord.UpdatedBy,
                                       IrasId = projectRecord.IrasId,
                                       ProjectModifications = projectRecord.ProjectModifications,
-                                      Title = projectRecordAnswer != null && projectRecordAnswer.Response != null ? projectRecordAnswer.Response : projectRecord.Title
+                        ShortProjectTitle = projectRecordAnswer != null && projectRecordAnswer.Response != null ? projectRecordAnswer.Response : projectRecord.ShortProjectTitle
                                   };
 
         // Apply filtering to ProjectRecords
@@ -97,8 +97,8 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
         // Apply sorting
         query = (sortField?.ToLower(), sortDirection?.ToLower()) switch
         {
-            ("title", "asc") => query.OrderBy(x => x.Title),
-            ("title", "desc") => query.OrderByDescending(x => x.Title),
+            ("title", "asc") => query.OrderBy(x => x.ShortProjectTitle),
+            ("title", "desc") => query.OrderByDescending(x => x.ShortProjectTitle),
             ("status", "asc") => query.OrderBy(x => x.Status),
             ("status", "desc") => query.OrderByDescending(x => x.Status),
             ("createddate", "asc") => query.OrderBy(x => x.CreatedDate),
@@ -178,8 +178,8 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
             return null;
         }
 
-        entity.Title = irasApplication.Title;
-        entity.Description = irasApplication.Description;
+        entity.ShortProjectTitle = irasApplication.ShortProjectTitle;
+        entity.FullProjectTitle = irasApplication.FullProjectTitle;
         entity.UpdatedDate = irasApplication.UpdatedDate;
         entity.CreatedDate = irasApplication.CreatedDate;
         entity.UpdatedBy = irasApplication.UpdatedBy;

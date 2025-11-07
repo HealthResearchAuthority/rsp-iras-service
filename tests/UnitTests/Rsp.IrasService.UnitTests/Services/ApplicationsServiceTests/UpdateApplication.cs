@@ -59,7 +59,7 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
         irasApplication.ShouldSatisfyAllConditions
         (
             app => app.Id.ShouldBe(createApplicationRequest.Id),
-            app => app.Title.ShouldBe(createApplicationRequest.Title),
+            app => app.ShortProjectTitle.ShouldBe(createApplicationRequest.ShortProjectTitle),
             app => app.CreatedDate.ShouldBe(createApplicationRequest.StartDate!.Value),
             app => app.Status.ShouldBe(createApplicationRequest.Status)
         );
@@ -106,8 +106,8 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
             Id = Guid.NewGuid().ToString(),
             Respondent = new RespondentDto { Id = fixedRespondentId },
             CreatedBy = "CreatedBy",
-            Description = "Description",
-            Title = "Title",
+            FullProjectTitle = "Description",
+            ShortProjectTitle = "Title",
             UpdatedBy = "UpdatedBy"
         };
 
@@ -116,8 +116,8 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
             Id = applicationRequest.Id,
             ProjectPersonnelId = fixedRespondentId,
             CreatedBy = applicationRequest.CreatedBy,
-            Description = applicationRequest.Description,
-            Title = applicationRequest.Title,
+            FullProjectTitle = applicationRequest.FullProjectTitle,
+            ShortProjectTitle = applicationRequest.ShortProjectTitle,
             UpdatedBy = applicationRequest.UpdatedBy
         };
 
