@@ -65,6 +65,11 @@ public class ProjectModification : IAuditable
     [Auditable]
     public string? ReviewerEmail { get; set; }
 
+    /// <summary>
+    /// Gets or sets the name of the reviewer assigned to this modification, if any.
+    /// </summary>
+    public string? ReviewerName { get; set; }
+
     // Navigation property for the changes associated with this project modification.
     public ICollection<ProjectModificationChange> ProjectModificationChanges { get; set; } = [];
 

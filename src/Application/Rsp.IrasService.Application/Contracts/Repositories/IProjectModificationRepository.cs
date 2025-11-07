@@ -91,7 +91,7 @@ public interface IProjectModificationRepository
     /// <param name="modificationIds">List of modification identifiers to assign.</param>
     /// <param name="reviewerId">Identifier of the reviewer user/principal.</param>
     /// <returns>Task representing the asynchronous operation.</returns>
-    Task AssignModificationsToReviewer(List<string> modificationIds, string reviewerId, string reviewerEmail);
+    Task AssignModificationsToReviewer(List<string> modificationIds, string reviewerId, string reviewerEmail, string reviewerName);
 
     IEnumerable<ProjectOverviewDocumentResult> GetDocumentsForProjectOverview(
         ProjectOverviewDocumentSearchRequest searchQuery,
