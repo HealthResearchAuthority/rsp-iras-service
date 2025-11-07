@@ -160,9 +160,9 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost("assignmodificationstoreviewer")]
-    public async Task AssignModificationsToReviewer(List<string> modificationsIds, string reviewerId, string reviewerEmail)
+    public async Task AssignModificationsToReviewer(List<string> modificationsIds, string reviewerId, string reviewerEmail, string reviewerName)
     {
-        var command = new AssignModificationsToReviewerCommand(modificationsIds, reviewerId, reviewerEmail);
+        var command = new AssignModificationsToReviewerCommand(modificationsIds, reviewerId, reviewerEmail, reviewerName);
         await mediator.Send(command);
     }
 
