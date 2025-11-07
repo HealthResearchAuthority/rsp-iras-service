@@ -90,8 +90,9 @@ public class SponsorOrganisationsService(ISponsorOrganisationsRepository sponsor
         return result;
     }
 
-    public async Task<IEnumerable<SponsorOrganisationDto>> GetSponsorOrganisationsForSpecification(Specification<SponsorOrganisation> spec)
+    public async Task<IEnumerable<SponsorOrganisationDto>> GetSponsorOrganisationsForUser(Guid userId)
     {
+        var spec = new GetActiveSponsorOrganisationsForEnabledUserSpecification(userId);
         var entities = await sponsorOrganisationsRepository.GetSponsorOrganisations(spec);
         return entities.Select(e => e.Adapt<SponsorOrganisationDto>());
     }

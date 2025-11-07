@@ -1,7 +1,5 @@
-﻿using Ardalis.Specification;
-using Rsp.IrasService.Application.DTOS.Requests;
+﻿using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.DTOS.Responses;
-using Rsp.IrasService.Domain.Entities;
 using Rsp.Logging.Interceptors;
 
 namespace Rsp.IrasService.Application.Contracts.Services;
@@ -37,5 +35,5 @@ public interface ISponsorOrganisationsService : IInterceptable
 
     Task<SponsorOrganisationAuditTrailResponse> GetAuditTrailForSponsorOrganisation(string rtsId);
 
-    Task<IEnumerable<SponsorOrganisationDto>> GetSponsorOrganisationsForSpecification(Specification<SponsorOrganisation> spec);
+    Task<IEnumerable<SponsorOrganisationDto>> GetSponsorOrganisationsForUser(Guid userId);
 }

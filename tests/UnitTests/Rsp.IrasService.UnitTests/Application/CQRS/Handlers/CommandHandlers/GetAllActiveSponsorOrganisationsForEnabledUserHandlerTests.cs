@@ -1,7 +1,6 @@
 ﻿using Rsp.IrasService.Application.Contracts.Services;
 using Rsp.IrasService.Application.CQRS.Commands;
 using Rsp.IrasService.Application.CQRS.Handlers.CommandHandlers;
-using Rsp.IrasService.Application.Specifications;
 
 namespace Rsp.IrasService.UnitTests.Application.CQRS.Handlers.CommandHandlers;
 
@@ -20,10 +19,8 @@ public class GetAllActiveSponsorOrganisationsForEnabledUserHandlerTests
 
         // Assert
         sponsorOrganisationsService.Verify(s =>
-            s.GetSponsorOrganisationsForSpecification(
-                It.Is<GetActiveSponsorOrganisationsForEnabledUserSpecification>(spec =>
-                    spec != null
-                )),
+            s.GetSponsorOrganisationsForUser(
+                It.Is<Guid>(u => u != Guid.Empty)),
             Times.Once);
     }
 }
