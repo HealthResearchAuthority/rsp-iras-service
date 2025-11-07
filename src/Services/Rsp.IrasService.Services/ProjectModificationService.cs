@@ -116,9 +116,9 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
         });
     }
 
-    public Task AssignModificationsToReviewer(List<string> modificationIds, string reviewerId, string reviewerEmail)
+    public Task AssignModificationsToReviewer(List<string> modificationIds, string reviewerId, string reviewerEmail, string reviewerName)
     {
-        return projectModificationRepository.AssignModificationsToReviewer(modificationIds, reviewerId, reviewerEmail);
+        return projectModificationRepository.AssignModificationsToReviewer(modificationIds, reviewerId, reviewerEmail, reviewerName);
     }
 
     public Task<ProjectOverviewDocumentResponse> GetDocumentsForProjectOverview(

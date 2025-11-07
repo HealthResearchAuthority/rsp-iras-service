@@ -90,7 +90,7 @@ public interface IProjectModificationService : IInterceptable
     /// <param name="modificationIds">The list of modification identifiers to assign.</param>
     /// <param name="reviewerId">The identifier of the reviewer receiving the assignment.</param>
     /// <returns>A task representing the asynchronous assignment operation.</returns>
-    Task AssignModificationsToReviewer(List<string> modificationIds, string reviewerId, string reviewerEmail);
+    Task AssignModificationsToReviewer(List<string> modificationIds, string reviewerId, string reviewerEmail, string reviewerName);
 
     Task<ProjectOverviewDocumentResponse> GetDocumentsForProjectOverview(
        string projectRecordId,

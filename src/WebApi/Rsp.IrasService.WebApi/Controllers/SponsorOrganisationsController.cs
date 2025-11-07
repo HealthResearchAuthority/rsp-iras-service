@@ -66,7 +66,6 @@ public class SponsorOrganisationsController(IMediator mediator) : ControllerBase
     {
         var request = new AddSponsorOrganisationUserCommand(sponsorOrganisationUser);
         return await mediator.Send(request);
-
     }
 
     /// <summary>
@@ -137,8 +136,6 @@ public class SponsorOrganisationsController(IMediator mediator) : ControllerBase
         return await mediator.Send(request);
     }
 
-
-
     /// <summary>
     ///     Gets a user in a Sponsor Organisation
     /// </summary>
@@ -151,5 +148,16 @@ public class SponsorOrganisationsController(IMediator mediator) : ControllerBase
         var request = new GetAuditForSponsorOrganisationCommand(rtsId);
         return await mediator.Send(request);
     }
-}
 
+    /// <summary>
+    /// Gets all active sponsor organisations assigned to an active user.
+    /// </summary>
+    /// <param name="userId">Sponsor Organisation User Id</param>
+    [HttpGet("getallactiveforenableduser/{userId}")]
+    public async Task<IEnumerable<SponsorOrganisationDto>> GetAllActiveSponsorOrganisationsForEnabledUser(
+        Guid userId)
+    {
+        var request = new GetAllActiveSponsorOrganisationsForEnabledUserCommand(userId);
+        return await mediator.Send(request);
+    }
+}

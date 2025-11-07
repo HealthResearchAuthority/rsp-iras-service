@@ -120,13 +120,15 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                               .Select(a => a.Response)
                               .FirstOrDefault() ?? string.Empty,
                           Status = pm.Status,
-                          CreatedAt = pm.CreatedDate
+                          CreatedAt = pm.CreatedDate,
+                          ReviewerName = pm.ReviewerName
+
                       };
 
         return results.OrderBy(r => r.ShortProjectTitle);
     }
 
-    public async Task AssignModificationsToReviewer(List<string> modificationIds, string reviewerId, string reviewerEmail)
+    public async Task AssignModificationsToReviewer(List<string> modificationIds, string reviewerId, string reviewerEmail, string reviewerName)
     {
         var modifications = await irasContext.ProjectModifications
             .Where(pm => modificationIds.Contains(pm.Id.ToString()))
@@ -136,6 +138,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         {
             modification.ReviewerId = reviewerId;
             modification.ReviewerEmail = reviewerEmail;
+            modification.ReviewerName = reviewerName;
         }
 
         await irasContext.SaveChangesAsync();
@@ -207,7 +210,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                    ReviewerId = pm.ReviewerId,
                    Status = pm.Status,
                    SentToRegulatorDate = pm.SentToRegulatorDate,
-                   SentToSponsorDate = pm.SentToSponsorDate
+                   SentToSponsorDate = pm.SentToSponsorDate,
+                   ReviewerName = pm.ReviewerName
                };
     }
 
@@ -256,7 +260,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                 && (string.IsNullOrEmpty(searchQuery.ShortProjectTitle)
                     || x.ShortProjectTitle.Contains(searchQuery.ShortProjectTitle, StringComparison.OrdinalIgnoreCase))
                 && (string.IsNullOrEmpty(searchQuery.SponsorOrganisation)
-                    || x.SponsorOrganisation.Contains(searchQuery.SponsorOrganisation,
+                    || x.SponsorOrganisation.Equals(searchQuery.SponsorOrganisation,
                         StringComparison.OrdinalIgnoreCase))
                 // ✅ Date-only filtering (ignore time)
                 && (!fromDate.HasValue || (x.SentToRegulatorDate.HasValue && x.SentToRegulatorDate.Value.Date >= fromDate.Value))
@@ -291,6 +295,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             nameof(ProjectModificationResult.CreatedAt) => x => x.CreatedAt,
             nameof(ProjectModificationResult.Status) => x => x.Status,
             nameof(ProjectModificationResult.SentToRegulatorDate) => x => x.SentToRegulatorDate!,
+            nameof(ProjectModificationResult.ReviewerName) => x => x.ReviewerName,
             _ => null
         };
 
