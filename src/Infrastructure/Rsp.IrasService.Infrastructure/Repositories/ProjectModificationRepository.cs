@@ -255,7 +255,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                 && (string.IsNullOrEmpty(searchQuery.ShortProjectTitle)
                     || x.ShortProjectTitle.Contains(searchQuery.ShortProjectTitle, StringComparison.OrdinalIgnoreCase))
                 && (string.IsNullOrEmpty(searchQuery.SponsorOrganisation)
-                    || x.SponsorOrganisation.Contains(searchQuery.SponsorOrganisation,
+                    || x.SponsorOrganisation.Equals(searchQuery.SponsorOrganisation,
                         StringComparison.OrdinalIgnoreCase))
                 // ✅ Date-only filtering (ignore time)
                 && (!fromDate.HasValue || (x.SentToRegulatorDate.HasValue && x.SentToRegulatorDate.Value.Date >= fromDate.Value))
