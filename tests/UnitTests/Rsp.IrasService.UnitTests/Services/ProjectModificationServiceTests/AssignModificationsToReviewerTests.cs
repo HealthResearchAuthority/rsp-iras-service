@@ -9,11 +9,11 @@ namespace Rsp.IrasService.UnitTests.Services.ProjectModificationServiceTests;
 public class AssignModificationsToReviewerTests : TestServiceBase<ProjectModificationService>
 {
     [Theory, AutoData]
-    public async Task Calls_Repository_With_Passed_Arguments(List<string> modificationIds, string reviewerId, string reviewerEmail)
+    public async Task Calls_Repository_With_Passed_Arguments(List<string> modificationIds, string reviewerId, string reviewerEmail, string reviewerName)
     {
         // Arrange
         var repo = new Mock<IProjectModificationRepository>();
-        repo.Setup(r => r.AssignModificationsToReviewer(modificationIds, reviewerId, reviewerEmail))
+        repo.Setup(r => r.AssignModificationsToReviewer(modificationIds, reviewerId, reviewerEmail,reviewerName))
             .Returns(Task.CompletedTask)
             .Verifiable();
 
@@ -21,9 +21,9 @@ public class AssignModificationsToReviewerTests : TestServiceBase<ProjectModific
         Sut = Mocker.CreateInstance<ProjectModificationService>();
 
         // Act
-        await Sut.AssignModificationsToReviewer(modificationIds, reviewerId, reviewerEmail);
+        await Sut.AssignModificationsToReviewer(modificationIds, reviewerId, reviewerEmail, reviewerName);
 
         // Assert
-        repo.Verify(r => r.AssignModificationsToReviewer(modificationIds, reviewerId, reviewerEmail), Times.Once);
+        repo.Verify(r => r.AssignModificationsToReviewer(modificationIds, reviewerId, reviewerEmail, reviewerName), Times.Once);
     }
 }
