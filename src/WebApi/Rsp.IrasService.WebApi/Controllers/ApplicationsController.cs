@@ -204,12 +204,6 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
 
         var result = await mediator.Send(query);
 
-        //var applications = new PaginatedResponse<CompleteProjectRecordResponse>
-        //{
-        //    Items = result.Items,
-        //    TotalCount = result.TotalCount
-        //};
-
         return Ok(result);
     }
 }
