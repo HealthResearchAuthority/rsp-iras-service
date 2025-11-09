@@ -2,6 +2,7 @@
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.Specifications;
 using Rsp.IrasService.Domain.Entities;
+using Rsp.IrasService.UnitTests.Fixtures;
 
 namespace Rsp.IrasService.UnitTests.Application.Specifications;
 
@@ -10,7 +11,7 @@ public class GetRespondentApplicationSpecificationTests
     /// <summary>
     ///     Tests that GetRespondentApplicationSpecification filters by RespondentId and ApplicationId correctly.
     /// </summary>
-    [Theory, AutoData]
+    [Theory, NoRecursionAutoData]
     public void GetRespondentApplicationSpecification_ById_ReturnsCorrectSpecification(
         Generator<ProjectRecord> generator)
     {
@@ -35,7 +36,7 @@ public class GetRespondentApplicationSpecificationTests
     /// <summary>
     ///     Tests that GetRespondentApplicationSpecification filters by RespondentId correctly.
     /// </summary>
-    [Theory, AutoData]
+    [Theory, NoRecursionAutoData]
     public void GetRespondentApplicationSpecification_ByRespondentId_ReturnsCorrectSpecification(
         Generator<ProjectRecord> generator)
     {
@@ -58,7 +59,7 @@ public class GetRespondentApplicationSpecificationTests
     /// <summary>
     ///     Tests that GetRespondentApplicationSpecification filters by records count correctly.
     /// </summary>
-    [Theory, InlineAutoData(2), InlineAutoData(0)]
+    [Theory, NoRecursionInlineAutoData(2), NoRecursionInlineAutoData(0)]
     public void GetRespondentApplicationSpecification_ByRecords_ReturnsCorrectCount(int records,
         Generator<ProjectRecord> generator)
     {

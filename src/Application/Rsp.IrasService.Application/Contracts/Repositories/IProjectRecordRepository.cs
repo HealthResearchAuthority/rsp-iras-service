@@ -1,4 +1,6 @@
 ﻿using Ardalis.Specification;
+using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.IrasService.Application.DTOS.Responses;
 using Rsp.IrasService.Application.Specifications;
 using Rsp.IrasService.Domain.Entities;
 
@@ -38,4 +40,13 @@ public interface IProjectRecordRepository
     /// </summary>
     /// <param name="specification">The specification to identify the project record to delete</param>
     Task DeleteProjectRecord(GetApplicationSpecification specification);
+
+    Task<(IEnumerable<CompleteProjectRecordResponse>, int)> GetPaginatedProjectRecords
+    (
+        ProjectRecordSearchRequest request,
+        int pageIndex,
+        int? pageSize,
+        string? sortField,
+        string? sortDirection
+    );
 }

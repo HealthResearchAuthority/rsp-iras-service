@@ -1,11 +1,12 @@
 ﻿using Rsp.IrasService.Application.Specifications;
 using Rsp.IrasService.Domain.Entities;
+using Rsp.IrasService.UnitTests.Fixtures;
 
 namespace Rsp.IrasService.UnitTests.Application.Specifications;
 
 public class GetApplicationSpecificationTests
 {
-    [Theory, AutoData]
+    [Theory, NoRecursionAutoData]
     public void GetApplicationSpecification_ById_ReturnsCorrectSpecification(Generator<ProjectRecord> generator)
     {
         // Arrange
@@ -23,7 +24,7 @@ public class GetApplicationSpecificationTests
         result.Id.ShouldBe(applications[0].Id);
     }
 
-    [Theory, InlineAutoData(5, 5), InlineAutoData(0, 10)]
+    [Theory, NoRecursionInlineAutoData(5, 5), NoRecursionInlineAutoData(0, 10)]
     public void GetApplicationSpecification_ByRecords_ReturnsCorrectSpecification(int records, int expected,
         Generator<ProjectRecord> generator)
     {
@@ -42,7 +43,7 @@ public class GetApplicationSpecificationTests
         result.ShouldBe(expected);
     }
 
-    [Theory, AutoData]
+    [Theory, NoRecursionAutoData]
     public void GetApplicationSpecification_ByStatusAndId_ReturnsCorrectSpecification(
         Generator<ProjectRecord> generator)
     {
@@ -65,7 +66,7 @@ public class GetApplicationSpecificationTests
         result[0].Id.ShouldBe(applications[1].Id);
     }
 
-    [Theory, InlineAutoData(5, 2), InlineAutoData(0, 2)]
+    [Theory, NoRecursionInlineAutoData(5, 2), NoRecursionInlineAutoData(0, 2)]
     public void GetApplicationSpecification_ByStatusAndRecords_ReturnsCorrectSpecification(int records, int expected,
         Generator<ProjectRecord> generator)
     {

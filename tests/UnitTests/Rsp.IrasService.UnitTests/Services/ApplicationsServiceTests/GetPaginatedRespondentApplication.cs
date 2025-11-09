@@ -5,6 +5,7 @@ using Rsp.IrasService.Domain.Entities;
 using Rsp.IrasService.Infrastructure;
 using Rsp.IrasService.Infrastructure.Repositories;
 using Rsp.IrasService.Services;
+using Rsp.IrasService.UnitTests.Fixtures;
 
 namespace Rsp.IrasService.UnitTests.Services.ApplicationsServiceTests;
 
@@ -125,7 +126,7 @@ public class GetPaginatedRespondentApplications : TestServiceBase<ApplicationsSe
     }
 
     [Theory]
-    [AutoData]
+    [NoRecursionAutoData]
     public async Task GetPaginatedRespondentApplications_ShouldPaginateCorrectly_WhenPageSizeIsLimited(List<ProjectRecord> generatedRecords)
     {
         // Arrange
@@ -153,7 +154,7 @@ public class GetPaginatedRespondentApplications : TestServiceBase<ApplicationsSe
     }
 
     [Theory]
-    [AutoData]
+    [NoRecursionAutoData]
     public async Task GetPaginatedRespondentApplications_ShouldReturnAll_WhenPageSizeIsNull(List<ProjectRecord> generatedRecords)
     {
         // Arrange

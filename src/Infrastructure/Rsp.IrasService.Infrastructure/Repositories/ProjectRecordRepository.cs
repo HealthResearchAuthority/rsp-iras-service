@@ -1,13 +1,17 @@
 ﻿using Ardalis.Specification;
 using Ardalis.Specification.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Rsp.IrasService.Application.Constants;
 using Rsp.IrasService.Application.Contracts.Repositories;
+using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.IrasService.Application.DTOS.Responses;
 using Rsp.IrasService.Application.Specifications;
 using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Infrastructure.Repositories;
 
 public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRepository
+
 {
     public async Task<ProjectRecord> CreateProjectRecord(ProjectRecord irasApplication, ProjectPersonnel respondent)
     {
@@ -66,22 +70,22 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
         var joinedProjectTitles = from projectRecord in irasContext.ProjectRecords
                                   join projectRecordAnswer in filteredTitles
                         on projectRecord.Id equals projectRecordAnswer.ProjectRecordId into titleGroup
-                    from projectRecordAnswer in titleGroup.DefaultIfEmpty()
-                    select new ProjectRecord
-                    {
-                        Id = projectRecord.Id,
-                        ProjectPersonnelId = projectRecord.ProjectPersonnelId,
-                        Description = projectRecord.Description,
-                        IsActive = projectRecord.IsActive,
-                        Status = projectRecord.Status,
-                        CreatedDate = projectRecord.CreatedDate,
-                        UpdatedDate = projectRecord.UpdatedDate,
-                        CreatedBy = projectRecord.CreatedBy,
-                        UpdatedBy = projectRecord.UpdatedBy,
-                        IrasId = projectRecord.IrasId,
-                        ProjectModifications = projectRecord.ProjectModifications,
-                        Title = projectRecordAnswer != null && projectRecordAnswer.Response != null ? projectRecordAnswer.Response : projectRecord.Title
-                    };
+                                  from projectRecordAnswer in titleGroup.DefaultIfEmpty()
+                                  select new ProjectRecord
+                                  {
+                                      Id = projectRecord.Id,
+                                      ProjectPersonnelId = projectRecord.ProjectPersonnelId,
+                                      Description = projectRecord.Description,
+                                      IsActive = projectRecord.IsActive,
+                                      Status = projectRecord.Status,
+                                      CreatedDate = projectRecord.CreatedDate,
+                                      UpdatedDate = projectRecord.UpdatedDate,
+                                      CreatedBy = projectRecord.CreatedBy,
+                                      UpdatedBy = projectRecord.UpdatedBy,
+                                      IrasId = projectRecord.IrasId,
+                                      ProjectModifications = projectRecord.ProjectModifications,
+                                      Title = projectRecordAnswer != null && projectRecordAnswer.Response != null ? projectRecordAnswer.Response : projectRecord.Title
+                                  };
 
         // Apply filtering to ProjectRecords
         var query = joinedProjectTitles
@@ -113,6 +117,52 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
         }
 
         var result = await query.ToListAsync();
+
+        return (result, count);
+    }
+
+    public async Task<(IEnumerable<CompleteProjectRecordResponse>, int)> GetPaginatedProjectRecords
+    (
+        ProjectRecordSearchRequest request,
+        int pageIndex,
+        int? pageSize,
+        string? sortField,
+        string? sortDirection
+    )
+    {
+        var records = irasContext
+            .ProjectRecords
+            .Include(x => x.ProjectRecordAnswers)
+            .AsQueryable();
+
+        // apply filters
+        records = ApplyFilters(request, records);
+
+        var count = await records.CountAsync();
+
+        var projectRecords = GenerateCompleteProjectRecordObjects(records);
+
+        // Apply sorting
+        projectRecords = (sortField?.ToLower(), sortDirection?.ToLower()) switch
+        {
+            ("title", "asc") => projectRecords.OrderBy(x => x.ShortProjectTitle),
+            ("title", "desc") => projectRecords.OrderByDescending(x => x.ShortProjectTitle),
+            ("irasid", "asc") => projectRecords.OrderBy(x => x.IrasId),
+            ("irasid", "desc") => projectRecords.OrderByDescending(x => x.IrasId),
+            ("leadnation", "asc") => projectRecords.OrderBy(x => x.LeadNation),
+            ("leadnation", "desc") => projectRecords.OrderByDescending(x => x.LeadNation),
+            _ => projectRecords.OrderByDescending(x => x.CreatedDate),
+        };
+
+        // Apply pagination
+        if (pageSize.HasValue)
+        {
+            projectRecords = projectRecords
+                .Skip((pageIndex - 1) * pageSize.Value)
+                .Take(pageSize.Value);
+        }
+
+        var result = projectRecords.ToList();
 
         return (result, count);
     }
@@ -160,5 +210,130 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
 
             await irasContext.SaveChangesAsync();
         }
+    }
+
+    private IQueryable<ProjectRecord> ApplyFilters(ProjectRecordSearchRequest request, IQueryable<ProjectRecord> records)
+    {
+        // get only active records
+        if (request.ActiveProjectsOnly)
+        {
+            records = records.Where(x => x.IsActive);
+        }
+
+        // match IRAS ID
+        if (!string.IsNullOrEmpty(request.IrasId))
+        {
+            records = records.Where(x => x.IrasId.ToString() == request.IrasId);
+        }
+
+        // Filter by short project title
+        if (!string.IsNullOrEmpty(request.ShortProjectTitle))
+        {
+            records = records.Where(x => x.ProjectRecordAnswers.Any(
+                y =>
+                    y.QuestionId == ProjectRecordConstants.ShortProjectTitle
+                    && y.Response != null
+                    && y.Response.Contains(request.ShortProjectTitle)));
+        }
+
+        // Filter by chief investigator name
+        if (!string.IsNullOrEmpty(request.ChiefInvestigatorName))
+        {
+            records = records.Where(x => x.ProjectRecordAnswers.Any(
+                y =>
+                    y.QuestionId == ProjectRecordConstants.ChiefInvestigator
+                    && y.Response != null
+                    && y.Response.Contains(request.ChiefInvestigatorName)));
+        }
+
+        // Filter by sponsor organisation
+        if (!string.IsNullOrEmpty(request.SponsorOrganisation))
+        {
+            records = records.Where(x => x.ProjectRecordAnswers.Any(
+                y =>
+                    y.QuestionId == ProjectRecordConstants.SponsorOrganisation
+                    && y.Response != null
+                    && y.Response.Contains(request.SponsorOrganisation)));
+        }
+
+        // Filter by lead nation
+        if (request.LeadNation.Any())
+        {
+            var leadNationCode = request.LeadNation.Select(
+                x => ProjectRecordConstants.NationIdMap.FirstOrDefault(y =>
+                    y.Value.Equals(x, StringComparison.InvariantCultureIgnoreCase)).Key);
+
+            records = records.Where(x => x.ProjectRecordAnswers.Any(
+                y =>
+                    y.QuestionId == ProjectRecordConstants.LeadNation
+                    && y.SelectedOptions != null
+                    && leadNationCode.Any(r => y.SelectedOptions.Contains(r))));
+        }
+
+        // Filter by participating nation
+        if (request.ParticipatingNation.Any())
+        {
+            var participatingNationCode = request.ParticipatingNation.Select(
+                x => ProjectRecordConstants.NationIdMap.FirstOrDefault(y =>
+                    y.Value.Equals(x, StringComparison.InvariantCultureIgnoreCase)).Key);
+
+            records = records.Where(x => x.ProjectRecordAnswers.Any(
+            y =>
+                y.QuestionId == ProjectRecordConstants.ParticipatingNation
+                && y.SelectedOptions != null
+                && participatingNationCode.Any(r => y.SelectedOptions.Contains(r))));
+        }
+
+        return records;
+    }
+
+    private IEnumerable<CompleteProjectRecordResponse> GenerateCompleteProjectRecordObjects(IQueryable<ProjectRecord> records)
+    {
+        var result = records.Select(x => new CompleteProjectRecordResponse
+        {
+            Id = x.Id.ToString(),
+            IrasId = x.IrasId,
+            ChiefInvestigator = x.ProjectRecordAnswers
+                       .Where(a => a.QuestionId == ProjectRecordConstants.ChiefInvestigator)
+                       .Select(a => a.Response)
+                       .FirstOrDefault() ?? string.Empty,
+            LeadNation = x.ProjectRecordAnswers
+                       .Where(a => a.QuestionId == ProjectRecordConstants.LeadNation)
+                       .Select(a => a.SelectedOptions)
+                       .FirstOrDefault() ?? string.Empty,
+            ParticipatingNation = x.ProjectRecordAnswers
+                       .Where(a => a.QuestionId == ProjectRecordConstants.ParticipatingNation)
+                       .Select(a => a.SelectedOptions)
+                       .FirstOrDefault() ?? string.Empty,
+            ShortProjectTitle = x.ProjectRecordAnswers
+                       .Where(a => a.QuestionId == ProjectRecordConstants.ShortProjectTitle)
+                       .Select(a => a.Response)
+                       .FirstOrDefault() ?? string.Empty,
+            SponsorOrganisation = x.ProjectRecordAnswers
+                       .Where(a => a.QuestionId == ProjectRecordConstants.SponsorOrganisation)
+                       .Select(a => a.Response)
+                       .FirstOrDefault() ?? string.Empty,
+            CreatedDate = x.CreatedDate,
+            Status = x.Status
+        });
+
+        return NormaliseRecords(result);
+    }
+
+    private IEnumerable<CompleteProjectRecordResponse> NormaliseRecords(IQueryable<CompleteProjectRecordResponse> records)
+    {
+        var recordsList = records.ToList();
+        foreach (var record in recordsList)
+        {
+            record.LeadNation = ProjectRecordConstants.NationIdMap.TryGetValue(record.LeadNation, out var leadCountryName) ?
+                leadCountryName :
+                string.Empty;
+
+            record.ParticipatingNation = ProjectRecordConstants.NationIdMap.TryGetValue(record.ParticipatingNation, out var participatingCountryName) ?
+                participatingCountryName :
+                string.Empty;
+        }
+
+        return recordsList;
     }
 }
