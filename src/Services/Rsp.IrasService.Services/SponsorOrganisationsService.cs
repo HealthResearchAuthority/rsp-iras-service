@@ -1,4 +1,5 @@
-﻿using Mapster;
+﻿using Ardalis.Specification;
+using Mapster;
 using Rsp.IrasService.Application.Contracts.Repositories;
 using Rsp.IrasService.Application.Contracts.Services;
 using Rsp.IrasService.Application.DTOS.Requests;
@@ -87,5 +88,12 @@ public class SponsorOrganisationsService(ISponsorOrganisationsRepository sponsor
         result.TotalCount = sponsorOrganisationAuditTrailDtos.Count;
 
         return result;
+    }
+
+    public async Task<IEnumerable<SponsorOrganisationDto>> GetSponsorOrganisationsForUser(Guid userId)
+    {
+        var spec = new GetActiveSponsorOrganisationsForEnabledUserSpecification(userId);
+        var entities = await sponsorOrganisationsRepository.GetSponsorOrganisations(spec);
+        return entities.Select(e => e.Adapt<SponsorOrganisationDto>());
     }
 }

@@ -15,4 +15,5 @@ public record ModificationDto
     public string Status { get; set; } = null!;
     public DateTime? SentToRegulatorDate { get; set; }
     public DateTime? SentToSponsorDate { get; set; }
+    public string ReviewerName { get; set; }
 }
