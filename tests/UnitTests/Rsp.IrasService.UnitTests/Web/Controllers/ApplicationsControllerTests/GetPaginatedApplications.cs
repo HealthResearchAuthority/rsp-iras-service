@@ -9,7 +9,6 @@ namespace Rsp.IrasService.UnitTests.Web.Controllers.ApplicationsControllerTests;
 public class GetPaginatedApplications : TestServiceBase
 {
     private readonly ApplicationsController _controller;
-    GetPaginatedApplications
 
     public GetPaginatedApplications()
     {
