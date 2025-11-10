@@ -298,6 +298,35 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
     }
 
     [Theory, AutoData]
+    public async Task GetModificationsBySponsorOrganisationUserId_ShouldReturnMappedResponse(
+    Guid sponsorOrganisationUserId,
+    SponsorAuthorisationsSearchRequest searchQuery,
+    List<ProjectModificationResult> domainModifications,
+    int pageNumber,
+    int pageSize,
+    string sortField,
+    string sortDirection)
+    {
+        // Arrange
+        var mockRepo = new Mock<IProjectModificationRepository>();
+        mockRepo.Setup(r => r.GetModificationsBySponsorOrganisationUser(searchQuery, pageNumber, pageSize, sortField, sortDirection, sponsorOrganisationUserId))
+                .Returns(domainModifications);
+
+        mockRepo.Setup(r => r.GetModificationsBySponsorOrganisationUserCount(searchQuery, sponsorOrganisationUserId))
+                .Returns(domainModifications.Count);
+
+        var service = new ProjectModificationService(mockRepo.Object);
+
+        // Act
+        var result = await service.GetModificationsBySponsorOrganisationUserId(sponsorOrganisationUserId, searchQuery, pageNumber, pageSize, sortField, sortDirection);
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.Modifications.Count().ShouldBe(domainModifications.Count);
+        result.TotalCount.ShouldBe(domainModifications.Count);
+    }
+
+    [Theory, AutoData]
     public async Task GetModificationsByIds_ShouldReturnMappedResult
     (
         List<string> ids,
