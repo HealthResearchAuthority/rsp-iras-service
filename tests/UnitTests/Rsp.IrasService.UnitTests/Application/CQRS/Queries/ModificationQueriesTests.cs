@@ -1,4 +1,5 @@
 using Rsp.IrasService.Application.CQRS.Queries;
+using Rsp.IrasService.Application.DTOS.Requests;
 
 namespace Rsp.IrasService.UnitTests.Application.CQRS.Queries;
 
@@ -57,5 +58,37 @@ public class GetModificationChangesQueryTests
         var id = Guid.NewGuid();
         var q = new GetModificationChangesQuery(id);
         q.ProjectModificationId.ShouldBe(id);
+    }
+}
+
+public class GetModificationsBySponsorOrganisationUserIdQueryTests
+{
+    [Fact]
+    public void Ctor_Sets_All_Properties()
+    {
+        // Arrange
+        var sponsorOrganisationUserId = Guid.NewGuid();
+        var searchQuery = new SponsorAuthorisationsSearchRequest { SearchTerm = "Test" };
+        var pageNumber = 2;
+        var pageSize = 50;
+        var sortField = "SentToSponsorDate";
+        var sortDirection = "desc";
+
+        // Act
+        var query = new GetModificationsBySponsorOrganisationUserIdQuery(
+            sponsorOrganisationUserId,
+            searchQuery,
+            pageNumber,
+            pageSize,
+            sortField,
+            sortDirection);
+
+        // Assert
+        query.SponsorOrganisationUserId.ShouldBe(sponsorOrganisationUserId);
+        query.SearchQuery.ShouldBe(searchQuery);
+        query.PageNumber.ShouldBe(pageNumber);
+        query.PageSize.ShouldBe(pageSize);
+        query.SortField.ShouldBe(sortField);
+        query.SortDirection.ShouldBe(sortDirection);
     }
 }
