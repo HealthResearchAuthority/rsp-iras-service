@@ -106,4 +106,24 @@ public class ApplicationsService(IProjectRecordRepository applicationRepository,
         // Delete the project record from the repository using the specification.
         await applicationRepository.DeleteProjectRecord(specification);
     }
+
+    public async Task<PaginatedResponse<CompleteProjectRecordResponse>> GetPaginatedApplications(ProjectRecordSearchRequest searchQuery,
+       int pageIndex,
+       int? pageSize,
+       string? sortField,
+       string? sortDirection)
+    {
+        var (applicationsFromDb, totalCount) = await applicationRepository.GetPaginatedProjectRecords(
+            searchQuery,
+            pageIndex,
+            pageSize,
+            sortField,
+            sortDirection);
+
+        return new PaginatedResponse<CompleteProjectRecordResponse>
+        {
+            Items = applicationsFromDb,
+            TotalCount = totalCount
+        };
+    }
 }

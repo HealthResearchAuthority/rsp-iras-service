@@ -1,5 +1,6 @@
 ﻿using Rsp.IrasService.Application.Specifications;
 using Rsp.IrasService.Domain.Entities;
+using Rsp.IrasService.UnitTests.Fixtures;
 
 namespace Rsp.IrasService.UnitTests.Application.Specifications;
 
@@ -8,7 +9,7 @@ public class SaveResponsesSpecificationTests
     /// <summary>
     ///     Tests that SaveResponsesSpecification filters by ApplicationId and RespondentId correctly.
     /// </summary>
-    [Theory, AutoData]
+    [Theory, NoRecursionAutoData]
     public void SaveResponsesSpecification_ByApplicationIdAndRespondentId_ReturnsCorrectSpecification(
         Generator<ProjectRecordAnswer> generator)
     {
@@ -32,7 +33,7 @@ public class SaveResponsesSpecificationTests
     /// <summary>
     ///     Tests that SaveResponsesSpecification returns an empty list when no matching responses exist.
     /// </summary>
-    [Theory, AutoData]
+    [Theory, NoRecursionAutoData]
     public void SaveResponsesSpecification_NoMatches_ReturnsEmptyList(Generator<ProjectRecordAnswer> generator)
     {
         // Arrange

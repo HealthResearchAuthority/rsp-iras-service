@@ -7,6 +7,7 @@ using Rsp.IrasService.Domain.Entities;
 using Rsp.IrasService.Infrastructure;
 using Rsp.IrasService.Infrastructure.Repositories;
 using Rsp.IrasService.Services;
+using Rsp.IrasService.UnitTests.Fixtures;
 
 namespace Rsp.IrasService.UnitTests.Services.ApplicationsServiceTests;
 
@@ -34,7 +35,7 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
     /// </summary>
     /// <param name="createApplicationRequest">Represents the model for application request</param>
     [Theory]
-    [InlineAutoData(1)]
+    [NoRecursionInlineAutoData(1)]
     public async Task Updates_And_Returns_CreateApplicationResponse(int records,
         Generator<ProjectRecord> generator, ApplicationRequest createApplicationRequest)
     {
@@ -69,7 +70,7 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
     /// </summary>
     /// <param name="createApplicationRequest">Represents the model for new application request</param>
     [Theory]
-    [InlineAutoData(1)]
+    [NoRecursionInlineAutoData(1)]
     public async Task ReturnsNull_If_Id_DoesNotExist(int records, Generator<ProjectRecord> generator,
         ApplicationRequest createApplicationRequest)
     {

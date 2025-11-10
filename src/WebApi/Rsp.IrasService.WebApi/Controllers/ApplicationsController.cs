@@ -174,4 +174,36 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
 
         await mediator.Send(request);
     }
+
+    [HttpPost("paginated")]
+    [Produces(typeof(PaginatedResponse<CompleteProjectRecordResponse>))]
+    public async Task<ActionResult<PaginatedResponse<CompleteProjectRecordResponse>>> GetPaginatedApplications(
+        [FromBody] ProjectRecordSearchRequest searchQuery,
+        int pageIndex = 1,
+        int? pageSize = null,
+        string? sortField = null,
+        string? sortDirection = null)
+    {
+        if (pageIndex <= 0)
+        {
+            return BadRequest("pageIndex must be greater than 0 if specified.");
+        }
+        if (pageSize.HasValue && pageSize <= 0)
+        {
+            return BadRequest("pageSize must be greater than 0 if specified.");
+        }
+
+        var query = new GetPaginatedProjectRecordsQuery
+        {
+            SearchQuery = searchQuery,
+            PageIndex = pageIndex,
+            PageSize = pageSize,
+            SortDirection = sortDirection,
+            SortField = sortField
+        };
+
+        var result = await mediator.Send(query);
+
+        return Ok(result);
+    }
 }
