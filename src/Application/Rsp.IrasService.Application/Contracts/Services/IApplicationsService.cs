@@ -59,4 +59,10 @@ public interface IApplicationsService : IInterceptable
     /// </summary>
     /// <param name="projectRecordId">The project record id</param>
     Task DeleteProject(string projectRecordId);
+
+    Task<PaginatedResponse<CompleteProjectRecordResponse>> GetPaginatedApplications(ProjectRecordSearchRequest searchQuery,
+        int pageIndex,
+        int? pageSize,
+        string? sortField,
+        string? sortDirection);
 }

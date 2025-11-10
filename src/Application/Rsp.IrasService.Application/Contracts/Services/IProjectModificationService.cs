@@ -90,7 +90,7 @@ public interface IProjectModificationService : IInterceptable
     /// <param name="modificationIds">The list of modification identifiers to assign.</param>
     /// <param name="reviewerId">The identifier of the reviewer receiving the assignment.</param>
     /// <returns>A task representing the asynchronous assignment operation.</returns>
-    Task AssignModificationsToReviewer(List<string> modificationIds, string reviewerId, string reviewerEmail);
+    Task AssignModificationsToReviewer(List<string> modificationIds, string reviewerId, string reviewerEmail, string reviewerName);
 
     Task<ProjectOverviewDocumentResponse> GetDocumentsForProjectOverview(
        string projectRecordId,
@@ -126,4 +126,24 @@ public interface IProjectModificationService : IInterceptable
     /// <param name="projectModificationId">The unique identifier of the modification</param>
     /// <returns>A list of modification audit trail records and the total count</returns>
     Task<ModificationAuditTrailResponse> GetModificationAuditTrail(Guid projectModificationId);
+
+    /// <summary>
+    /// Gets modifications for specific SponsorOrganisationUserId with filtering, sorting and pagination
+    /// </summary>
+    /// <param name="sponsorOrganisationUserId">The unique identifier of the sponsor organisation user for which modifications are requested.</param>
+    /// <param name="searchQuery">Object containing filtering criteria for modifications.</param>
+    /// <param name="pageNumber">The number of the page to retrieve (used for pagination - 1-based).</param>
+    /// <param name="pageSize">The number of items per page (used for pagination).</param>
+    /// <param name="sortField">The field name by which the results should be sorted.</param>
+    /// <param name="sortDirection">The direction of sorting: "asc" for ascending or "desc" for descending.</param>
+    /// <returns>A <see cref="ModificationResponse"/> containing the filtered page of modifications for the project.</returns>
+    Task<ModificationResponse> GetModificationsBySponsorOrganisationUserId
+    (
+       Guid sponsorOrganisationUserId,
+       SponsorAuthorisationsSearchRequest searchQuery,
+       int pageNumber,
+       int pageSize,
+       string sortField,
+       string sortDirection
+    );
 }

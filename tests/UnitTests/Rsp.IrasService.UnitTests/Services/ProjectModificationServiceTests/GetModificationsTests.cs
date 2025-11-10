@@ -52,7 +52,7 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
         var modification = new ProjectModification
         {
             ProjectRecordId = recordId,
-            CreatedDate = new DateTime(2024, 1, 1),
+            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc),
             ModificationIdentifier = modificationId,
             ProjectModificationChanges = new List<ProjectModificationChange>
             {
@@ -71,7 +71,7 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
             UpdatedBy = "Test",
             UpdatedDate = DateTime.Now,
             Status = "Active",
-            SentToRegulatorDate = new DateTime(2023, 12, 31)
+            SentToRegulatorDate = new DateTime(2023, 12, 31, 0, 0, 0, DateTimeKind.Utc)
         };
 
         var answers = new List<ProjectRecordAnswer>
@@ -113,7 +113,7 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
             new()
             {
                 ProjectPersonnelId = projectPersonnelId, ProjectRecordId = recordId,
-                QuestionId = ProjectRecordConstants.SponsorOrganisation, Response = "Test Org",
+                QuestionId = ProjectRecordConstants.SponsorOrganisation, Response = "1111",
                 Category = "Cat1",
                 Section = "Section1",
                 VersionId = "1"
@@ -130,9 +130,9 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
             IrasId = "123456",
             ChiefInvestigatorName = "Smith",
             ShortProjectTitle = "Short",
-            SponsorOrganisation = "Test Org",
-            FromDate = new DateTime(2023, 12, 31),
-            ToDate = new DateTime(2024, 1, 2),
+            SponsorOrganisation = "1111",
+            FromDate = new DateTime(2023, 12, 31, 0, 0, 0, DateTimeKind.Utc),
+            ToDate = new DateTime(2024, 1, 2, 0, 0, 0, DateTimeKind.Utc),
             LeadNation = new List<string> { "England" },
             ParticipatingNation = new List<string> { "Wales" }
         };
@@ -153,6 +153,88 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
         list2[0].ChiefInvestigator.ShouldBe("Dr Smith");
         list2[0].LeadNation.ShouldBe("England");
         list2[0].ParticipatingNation.ShouldBe("Wales, Wales");
+    }
+
+    [Theory]
+    [InlineData("111")]
+    [InlineData("11111")]
+    public void Returns_No_Modifications_When_SponsorOrganisation_Does_Not_Match_Exactly(string sponsorValue)
+    {
+        // Arrange
+        var recordId = Guid.NewGuid().ToString();
+        var modificationId = Guid.NewGuid().ToString();
+        var projectPersonnelId = Guid.NewGuid().ToString();
+
+        var record = new ProjectRecord
+        {
+            Id = recordId,
+            IrasId = 123456,
+            ProjectPersonnelId = projectPersonnelId,
+            CreatedBy = "Test",
+            CreatedDate = DateTime.Now,
+            UpdatedBy = "Test",
+            UpdatedDate = DateTime.Now,
+            Description = "Description",
+            Title = "Title"
+        };
+
+        var modification = new ProjectModification
+        {
+            ProjectRecordId = recordId,
+            CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+            ModificationIdentifier = modificationId,
+            ProjectModificationChanges = new List<ProjectModificationChange>
+        {
+            new()
+            {
+                AreaOfChange = ProjectRecordConstants.ParticipatingOrgs,
+                SpecificAreaOfChange = ProjectRecordConstants.MajorModificationAreaOfChange,
+                CreatedBy = "Test",
+                UpdatedBy = "Test",
+                UpdatedDate = DateTime.Now,
+                Status = "Active",
+                Id = Guid.NewGuid()
+            }
+        },
+            CreatedBy = "Test",
+            UpdatedBy = "Test",
+            UpdatedDate = DateTime.Now,
+            Status = "Active",
+            SentToRegulatorDate = new DateTime(2023, 12, 31, 0, 0, 0, DateTimeKind.Utc)
+        };
+
+        var answers = new List<ProjectRecordAnswer>
+    {
+        new()
+        {
+            ProjectPersonnelId = projectPersonnelId,
+            ProjectRecordId = recordId,
+            QuestionId = ProjectRecordConstants.SponsorOrganisation,
+            Response = sponsorValue,
+            Category = "Cat1",
+            Section = "Section1",
+            VersionId = "1"
+        }
+    };
+
+        _context.ProjectRecords.Add(record);
+        _context.ProjectModifications.Add(modification);
+        _context.ProjectRecordAnswers.AddRange(answers);
+        _context.SaveChanges();
+
+        var search = new ModificationSearchRequest
+        {
+            IrasId = "123456",
+            SponsorOrganisation = "1111",
+            FromDate = new DateTime(2023, 12, 31, 0, 0, 0, DateTimeKind.Utc),
+            ToDate = new DateTime(2024, 1, 2, 0, 0, 0, DateTimeKind.Utc)
+        };
+
+        // Act
+        var results = _modificationRepository.GetModifications(search, 1, 10, "CreatedAt", "asc");
+
+        // Assert
+        results.ShouldBeEmpty();
     }
 
     [Theory]
@@ -213,6 +295,35 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
         result.Modifications.Count().ShouldBe(domainModifications.Count);
         result.TotalCount.ShouldBe(domainModifications.Count);
         result.ProjectRecordId.ShouldBe(projectRecordId);
+    }
+
+    [Theory, AutoData]
+    public async Task GetModificationsBySponsorOrganisationUserId_ShouldReturnMappedResponse(
+    Guid sponsorOrganisationUserId,
+    SponsorAuthorisationsSearchRequest searchQuery,
+    List<ProjectModificationResult> domainModifications,
+    int pageNumber,
+    int pageSize,
+    string sortField,
+    string sortDirection)
+    {
+        // Arrange
+        var mockRepo = new Mock<IProjectModificationRepository>();
+        mockRepo.Setup(r => r.GetModificationsBySponsorOrganisationUser(searchQuery, pageNumber, pageSize, sortField, sortDirection, sponsorOrganisationUserId))
+                .Returns(domainModifications);
+
+        mockRepo.Setup(r => r.GetModificationsBySponsorOrganisationUserCount(searchQuery, sponsorOrganisationUserId))
+                .Returns(domainModifications.Count);
+
+        var service = new ProjectModificationService(mockRepo.Object);
+
+        // Act
+        var result = await service.GetModificationsBySponsorOrganisationUserId(sponsorOrganisationUserId, searchQuery, pageNumber, pageSize, sortField, sortDirection);
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.Modifications.Count().ShouldBe(domainModifications.Count);
+        result.TotalCount.ShouldBe(domainModifications.Count);
     }
 
     [Theory, AutoData]

@@ -105,6 +105,31 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         return FilterModifications(modifications, searchQuery).Count();
     }
 
+    public IEnumerable<ProjectModificationResult> GetModificationsBySponsorOrganisationUser
+    (
+       SponsorAuthorisationsSearchRequest searchQuery,
+       int pageNumber,
+       int pageSize,
+       string sortField,
+       string sortDirection,
+       Guid sponsorOrganisationUserId
+    )
+    {
+        var modifications = ProjectModificationBySponsorOrganisationUserQuery(sponsorOrganisationUserId);
+        var filtered = FilterModificationsBySponsorOrganisationUserQuery(modifications, searchQuery);
+        var sorted = SortModifications(filtered, sortField, sortDirection);
+
+        return sorted
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize);
+    }
+
+    public int GetModificationsBySponsorOrganisationUserCount(SponsorAuthorisationsSearchRequest searchQuery, Guid sponsorOrganisationUserId)
+    {
+        var modifications = ProjectModificationBySponsorOrganisationUserQuery(sponsorOrganisationUserId);
+        return FilterModificationsBySponsorOrganisationUserQuery(modifications, searchQuery).Count();
+    }
+
     public IEnumerable<ProjectModificationResult> GetModificationsByIds(List<string> Ids)
     {
         var results = from pm in irasContext.ProjectModifications.Include(pm => pm.ProjectModificationChanges)
@@ -119,13 +144,16 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                               .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ShortProjectTitle)
                               .Select(a => a.Response)
                               .FirstOrDefault() ?? string.Empty,
-                          Status = pm.Status
+                          Status = pm.Status,
+                          CreatedAt = pm.CreatedDate,
+                          ReviewerName = pm.ReviewerName
+
                       };
 
         return results.OrderBy(r => r.ShortProjectTitle);
     }
 
-    public async Task AssignModificationsToReviewer(List<string> modificationIds, string reviewerId, string reviewerEmail)
+    public async Task AssignModificationsToReviewer(List<string> modificationIds, string reviewerId, string reviewerEmail, string reviewerName)
     {
         var modifications = await irasContext.ProjectModifications
             .Where(pm => modificationIds.Contains(pm.Id.ToString()))
@@ -135,6 +163,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         {
             modification.ReviewerId = reviewerId;
             modification.ReviewerEmail = reviewerEmail;
+            modification.ReviewerName = reviewerName;
         }
 
         await irasContext.SaveChangesAsync();
@@ -206,7 +235,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                    ReviewerId = pm.ReviewerId,
                    Status = pm.Status,
                    SentToRegulatorDate = pm.SentToRegulatorDate,
-                   SentToSponsorDate = pm.SentToSponsorDate
+                   SentToSponsorDate = pm.SentToSponsorDate,
+                   ReviewerName = pm.ReviewerName
                };
     }
 
@@ -255,7 +285,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                 && (string.IsNullOrEmpty(searchQuery.ShortProjectTitle)
                     || x.ShortProjectTitle.Contains(searchQuery.ShortProjectTitle, StringComparison.OrdinalIgnoreCase))
                 && (string.IsNullOrEmpty(searchQuery.SponsorOrganisation)
-                    || x.SponsorOrganisation.Contains(searchQuery.SponsorOrganisation,
+                    || x.SponsorOrganisation.Equals(searchQuery.SponsorOrganisation,
                         StringComparison.OrdinalIgnoreCase))
                 // ✅ Date-only filtering (ignore time)
                 && (!fromDate.HasValue || (x.SentToRegulatorDate.HasValue && x.SentToRegulatorDate.Value.Date >= fromDate.Value))
@@ -290,6 +320,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             nameof(ProjectModificationResult.CreatedAt) => x => x.CreatedAt,
             nameof(ProjectModificationResult.Status) => x => x.Status,
             nameof(ProjectModificationResult.SentToRegulatorDate) => x => x.SentToRegulatorDate!,
+            nameof(ProjectModificationResult.SentToSponsorDate) => x => x.SentToSponsorDate!,
+            nameof(ProjectModificationResult.ReviewerName) => x => x.ReviewerName,
             _ => null
         };
 
@@ -310,6 +342,71 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         return sortDirection == "desc"
             ? modifications.OrderByDescending(keySelector)
             : modifications.OrderBy(keySelector);
+    }
+
+    private IQueryable<ProjectModificationResult> ProjectModificationBySponsorOrganisationUserQuery(Guid sponsorOrganisationUserId)
+    {
+        var projectRecords = irasContext.ProjectRecords.AsQueryable();
+        var projectAnswers = irasContext.ProjectRecordAnswers.AsQueryable();
+
+        var rtsId = irasContext.SponsorOrganisationsUsers
+            .Where(u => u.Id == sponsorOrganisationUserId)
+            .Select(u => u.RtsId)
+            .FirstOrDefault();
+
+        return from prm in irasContext.ProjectModifications.Include(pm => pm.ProjectModificationChanges)
+               join proj in projectRecords on prm.ProjectRecordId equals proj.Id
+               where projectAnswers.Any(a => a.ProjectRecordId == proj.Id &&
+                                             a.QuestionId == ProjectRecordConstants.SponsorOrganisation &&
+                                             a.Response == rtsId)
+               select new ProjectModificationResult
+               {
+                   Id = prm.Id.ToString(),
+                   ProjectRecordId = proj.Id,
+                   ModificationId = prm.ModificationIdentifier,
+                   IrasId = proj.IrasId.HasValue ? proj.IrasId.Value.ToString() : string.Empty,
+                   ModificationNumber = prm.ModificationNumber,
+                   ChiefInvestigator = projectAnswers
+                       .Where(a => a.ProjectRecordId == proj.Id && a.QuestionId == ProjectRecordConstants.ChiefInvestigator)
+                       .Select(a => a.Response)
+                       .FirstOrDefault() ?? string.Empty,
+                   LeadNation = projectAnswers
+                       .Where(a => a.ProjectRecordId == proj.Id && a.QuestionId == ProjectRecordConstants.LeadNation)
+                       .Select(a => a.SelectedOptions)
+                       .FirstOrDefault() ?? string.Empty,
+                   ParticipatingNation = projectAnswers
+                       .Where(a => a.ProjectRecordId == proj.Id && a.QuestionId == ProjectRecordConstants.ParticipatingNation)
+                       .Select(a => a.SelectedOptions)
+                       .FirstOrDefault() ?? string.Empty,
+                   ShortProjectTitle = projectAnswers
+                       .Where(a => a.ProjectRecordId == proj.Id && a.QuestionId == ProjectRecordConstants.ShortProjectTitle)
+                       .Select(a => a.Response)
+                       .FirstOrDefault() ?? string.Empty,
+                   SponsorOrganisation = rtsId ?? string.Empty,
+                   CreatedAt = prm.CreatedDate,
+                   ReviewerId = prm.ReviewerId,
+                   Status = prm.Status,
+                   SentToRegulatorDate = prm.SentToRegulatorDate,
+                   SentToSponsorDate = prm.SentToSponsorDate
+               };
+    }
+
+    private static IEnumerable<ProjectModificationResult> FilterModificationsBySponsorOrganisationUserQuery(
+    IQueryable<ProjectModificationResult> modifications,
+    SponsorAuthorisationsSearchRequest searchQuery)
+    {
+        var term = searchQuery.SearchTerm?.Trim();
+
+        return modifications
+            .AsEnumerable()
+            .Where(x =>
+                (string.IsNullOrEmpty(term) ||
+                 x.IrasId.Contains(term, StringComparison.OrdinalIgnoreCase) ||
+                 x.ModificationId.Contains(term, StringComparison.OrdinalIgnoreCase))
+                &&
+                (x.Status == ModificationStatus.WithSponsor ||
+                 x.Status == ModificationStatus.Authorised ||
+                 x.Status == ModificationStatus.NotAuthorised));
     }
 
     private static string DetermineModificationType()

@@ -160,9 +160,9 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost("assignmodificationstoreviewer")]
-    public async Task AssignModificationsToReviewer(List<string> modificationsIds, string reviewerId, string reviewerEmail)
+    public async Task AssignModificationsToReviewer(List<string> modificationsIds, string reviewerId, string reviewerEmail, string reviewerName)
     {
-        var command = new AssignModificationsToReviewerCommand(modificationsIds, reviewerId, reviewerEmail);
+        var command = new AssignModificationsToReviewerCommand(modificationsIds, reviewerId, reviewerEmail, reviewerName);
         await mediator.Send(command);
     }
 
@@ -253,6 +253,39 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
     public async Task<ModificationAuditTrailResponse> GetModificationAuditTrail(Guid modificationId)
     {
         var query = new GetModificationAuditTrailQuery(modificationId);
+        return await mediator.Send(query);
+    }
+
+    /// <summary>
+    /// Gets modifications for specific SponsorOrganisationUserId with filtering, sorting and pagination
+    /// </summary>
+    /// <param name="sponsorOrganisationUserId">The unique identifier of the sponsor organisation user for which modifications are requested.</param>
+    /// <param name="searchQuery">Object containing filtering criteria for modifications.</param>
+    /// <param name="pageNumber">The number of the page to retrieve (used for pagination - 1-based).</param>
+    /// <param name="pageSize">The number of items per page (used for pagination).</param>
+    /// <param name="sortField">The field name by which the results should be sorted.</param>
+    /// <param name="sortDirection">The direction of sorting: "asc" for ascending or "desc" for descending.</param>
+    /// <returns>Returns a paginated list of modifications related to the SponsorOrganisationUserId.</returns>
+    [HttpPost("getmodificationsbysponsororganisationuserid")]
+    public async Task<ActionResult<ModificationResponse>> GetModificationsBySponsorOrganisationUserId(
+        Guid sponsorOrganisationUserId,
+        [FromBody] SponsorAuthorisationsSearchRequest searchQuery,
+        int pageNumber,
+        int pageSize,
+        string sortField,
+        string sortDirection)
+    {
+        if (pageNumber <= 0)
+        {
+            return BadRequest("pageIndex must be greater than 0.");
+        }
+        if (pageSize <= 0)
+        {
+            return BadRequest("pageSize must be greater than 0.");
+        }
+
+        var query = new GetModificationsBySponsorOrganisationUserIdQuery(sponsorOrganisationUserId, searchQuery, pageNumber, pageSize, sortField, sortDirection);
+
         return await mediator.Send(query);
     }
 }

@@ -2,9 +2,10 @@
 
 namespace Rsp.IrasService.Application.CQRS.Commands;
 
-public class AssignModificationsToReviewerCommand(List<string> modificationIds, string reviewerId, string reivewerEmail) : IRequest
+public class AssignModificationsToReviewerCommand(List<string> modificationIds, string reviewerId, string reviewerEmail, string reviewerName) : IRequest
 {
     public List<string> ModificationIds { get; set; } = modificationIds;
     public string ReviewerId { get; set; } = reviewerId;
-    public string ReviewerEmail { get; set; } = reivewerEmail;
+    public string ReviewerEmail { get; set; } = reviewerEmail;
+    public string ReviewerName { get; set; } = reviewerName;
 }

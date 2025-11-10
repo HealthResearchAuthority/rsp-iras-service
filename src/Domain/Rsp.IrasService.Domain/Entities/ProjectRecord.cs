@@ -64,4 +64,9 @@ public class ProjectRecord
     /// Navigation property to the related project modifications associated with this project.
     /// </summary>
     public ICollection<ProjectModification> ProjectModifications { get; set; } = [];
+
+    ///// <summary>
+    ///// Navigation property to the related question answers associated with this project record.
+    ///// </summary>
+    public ICollection<ProjectRecordAnswer> ProjectRecordAnswers { get; set; } = [];
 }

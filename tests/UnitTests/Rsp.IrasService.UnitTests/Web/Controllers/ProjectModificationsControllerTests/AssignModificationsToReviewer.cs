@@ -10,7 +10,8 @@ public class AssignModificationsToReviewer : TestServiceBase<ProjectModification
     (
         List<string> modificationIds,
         string reviewerId,
-        string reviewerEmail
+        string reviewerEmail,
+        string reviewerName
     )
     {
         // Arrange
@@ -18,7 +19,7 @@ public class AssignModificationsToReviewer : TestServiceBase<ProjectModification
         mockMediator.Setup(m => m.Send(It.IsAny<AssignModificationsToReviewerCommand>(), default));
 
         // Act
-        await Sut.AssignModificationsToReviewer(modificationIds, reviewerId, reviewerEmail);
+        await Sut.AssignModificationsToReviewer(modificationIds, reviewerId, reviewerEmail, reviewerName);
         // Assert
 
         mockMediator

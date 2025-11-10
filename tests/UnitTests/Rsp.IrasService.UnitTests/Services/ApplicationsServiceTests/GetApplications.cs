@@ -4,6 +4,7 @@ using Rsp.IrasService.Domain.Entities;
 using Rsp.IrasService.Infrastructure;
 using Rsp.IrasService.Infrastructure.Repositories;
 using Rsp.IrasService.Services;
+using Rsp.IrasService.UnitTests.Fixtures;
 
 namespace Rsp.IrasService.UnitTests.Services.ApplicationsServiceTests;
 
@@ -29,7 +30,7 @@ public class GetApplications : TestServiceBase<ApplicationsService>
     /// </summary>
     /// <param name="generator">Test data generator</param>
     [Theory]
-    [InlineAutoData(5)]
+    [NoRecursionInlineAutoData(5)]
     public async Task Returns_AllApplications(int records, Generator<ProjectRecord> generator)
     {
         // Arrange
@@ -54,8 +55,8 @@ public class GetApplications : TestServiceBase<ApplicationsService>
     /// <param name="records">Number of records to seed</param>
     /// <param name="generator">Test data generator</param>
     [Theory]
-    [InlineAutoData(5, true, 2)]
-    [InlineAutoData(5, false, 0)]
+    [NoRecursionInlineAutoData(5, true, 2)]
+    [NoRecursionInlineAutoData(5, false, 0)]
     public async Task Returns_ApplicationByStatusOrEmpty(int records, bool updateStatus, int expected,
         Generator<ProjectRecord> generator)
     {

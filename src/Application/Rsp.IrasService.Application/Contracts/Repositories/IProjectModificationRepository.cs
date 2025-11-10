@@ -1,4 +1,5 @@
-﻿using Ardalis.Specification;
+﻿using System.Drawing.Printing;
+using Ardalis.Specification;
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.Specifications;
 using Rsp.IrasService.Domain.Entities;
@@ -71,6 +72,38 @@ public interface IProjectModificationRepository
     );
 
     /// <summary>
+    /// Retrieves a paged, sorted list of sponsor organisation user modifications matching the supplied search criteria.
+    /// </summary>
+    /// <param name="searchQuery">Object containing filtering criteria for modifications.</param>
+    /// <param name="pageNumber">1-based page number.</param>
+    /// <param name="pageSize">Number of records per page. Implementations should guard against excessive values.</param>
+    /// <param name="sortField">Property / column name to sort by (case-insensitive). Implementations should validate against a whitelist.</param>
+    /// <param name="sortDirection">Sort direction: typically "ASC" or "DESC" (case-insensitive).</param>
+    /// <param name="sponsorOrganisationUserId">The unique identifier of the sponsor organisation user for which modifications are requested</param>
+    /// <returns>Paged sequence of <see cref="ProjectModificationResult"/> projections.</returns>
+    /// <remarks>
+    /// Expected to perform server-side filtering, ordering and paging for efficiency.
+    /// If <paramref name="pageNumber"/> or <paramref name="pageSize"/> are invalid, implementations may normalize them.
+    /// </remarks>
+    IEnumerable<ProjectModificationResult> GetModificationsBySponsorOrganisationUser
+    (
+       SponsorAuthorisationsSearchRequest searchQuery,
+       int pageNumber,
+       int pageSize,
+       string sortField,
+       string sortDirection,
+       Guid sponsorOrganisationUserId
+    );
+
+    /// <summary>
+    /// Returns the total count of modifications matching the supplied search criteria (ignoring paging).
+    /// </summary>
+    /// <param name="searchQuery">Same filtering contract as <see cref="GetModificationsBySponsorOrganisationUser"/>.</param>
+    /// <param name="sponsorOrganisationUserId">Sponsor organisation user unique identifier.</param>
+    /// <returns>Total number of matching records.</returns>
+    int GetModificationsBySponsorOrganisationUserCount(SponsorAuthorisationsSearchRequest searchQuery, Guid sponsorOrganisationUserId);
+
+    /// <summary>
     /// Returns the total count of modifications matching the supplied search criteria (ignoring paging).
     /// </summary>
     /// <param name="searchQuery">Same filtering contract as <see cref="GetModifications"/>.</param>
@@ -91,7 +124,7 @@ public interface IProjectModificationRepository
     /// <param name="modificationIds">List of modification identifiers to assign.</param>
     /// <param name="reviewerId">Identifier of the reviewer user/principal.</param>
     /// <returns>Task representing the asynchronous operation.</returns>
-    Task AssignModificationsToReviewer(List<string> modificationIds, string reviewerId, string reviewerEmail);
+    Task AssignModificationsToReviewer(List<string> modificationIds, string reviewerId, string reviewerEmail, string reviewerName);
 
     IEnumerable<ProjectOverviewDocumentResult> GetDocumentsForProjectOverview(
         ProjectOverviewDocumentSearchRequest searchQuery,
