@@ -145,7 +145,9 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                               .Select(a => a.Response)
                               .FirstOrDefault() ?? string.Empty,
                           Status = pm.Status,
+                          CreatedAt = pm.CreatedDate,
                           ReviewerName = pm.ReviewerName
+
                       };
 
         return results.OrderBy(r => r.ShortProjectTitle);
