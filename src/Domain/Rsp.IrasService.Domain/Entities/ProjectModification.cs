@@ -29,6 +29,21 @@ public class ProjectModification : IAuditable
     public string ModificationIdentifier { get; set; } = null!;
 
     /// <summary>
+    /// Overall ranking type of the modification
+    /// </summary>
+    public string? ModificationType { get; set; }
+
+    /// <summary>
+    /// Overall ranking category of the modification
+    /// </summary>
+    public string? Category { get; set; }
+
+    /// <summary>
+    /// Overall ranking review type of the modification
+    /// </summary>
+    public string? ReviewType { get; set; }
+
+    /// <summary>
     /// Gets or sets the status of the modification.
     /// </summary>
     [Auditable]

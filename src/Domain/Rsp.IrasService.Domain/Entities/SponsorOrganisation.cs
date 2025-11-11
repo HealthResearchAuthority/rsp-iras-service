@@ -8,8 +8,10 @@ public class SponsorOrganisation : IAuditable
     public Guid Id { get; set; }
 
     public string RtsId { get; set; }
+
     [Auditable]
     public bool IsActive { get; set; } = true;
+
     public DateTime CreatedDate { get; set; }
     public DateTime? UpdatedDate { get; set; }
     public string CreatedBy { get; set; } = null!;

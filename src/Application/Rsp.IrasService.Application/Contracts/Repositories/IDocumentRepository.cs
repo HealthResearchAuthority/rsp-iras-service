@@ -1,4 +1,5 @@
-﻿using Rsp.IrasService.Domain.Entities;
+﻿using Microsoft.Extensions.Logging;
+using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Application.Contracts.Repositories;
 

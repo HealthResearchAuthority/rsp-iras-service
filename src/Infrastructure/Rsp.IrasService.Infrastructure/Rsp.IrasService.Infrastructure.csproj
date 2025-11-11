@@ -11,24 +11,6 @@
     <ProjectReference Include="..\..\Application\Rsp.IrasService.Application\Rsp.IrasService.Application.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="Data\ProjectModificationChanges.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Data\ProjectModifications.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Data\ProjectPersonnel.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Data\ProjectRecordAnswers.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Data\ProjectRecords.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>

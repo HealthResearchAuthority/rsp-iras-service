@@ -42,8 +42,8 @@ public class GetRespondentApplications : TestServiceBase<ApplicationsService>
                 Id = Guid.NewGuid().ToString(),
                 Respondent = new RespondentDto { Id = fixedRespondentId },
                 CreatedBy = "User1",
-                Description = "Description1",
-                Title = "Title1",
+                FullProjectTitle = "Description1",
+                ShortProjectTitle = "Title1",
                 UpdatedBy = "Updater1"
             },
             new()
@@ -51,8 +51,8 @@ public class GetRespondentApplications : TestServiceBase<ApplicationsService>
                 Id = Guid.NewGuid().ToString(),
                 Respondent = new RespondentDto { Id = fixedRespondentId },
                 CreatedBy = "User2",
-                Description = "Description2",
-                Title = "Title2",
+                FullProjectTitle = "Description2",
+                ShortProjectTitle = "Title2",
                 UpdatedBy = "Updater2"
             }
         };
@@ -62,8 +62,8 @@ public class GetRespondentApplications : TestServiceBase<ApplicationsService>
             Id = request.Id,
             ProjectPersonnelId = request.Respondent.Id,
             CreatedBy = request.CreatedBy,
-            Description = request.Description,
-            Title = request.Title,
+            FullProjectTitle = request.FullProjectTitle,
+            ShortProjectTitle = request.ShortProjectTitle,
             UpdatedBy = request.UpdatedBy
         }).ToList();
 
@@ -73,8 +73,8 @@ public class GetRespondentApplications : TestServiceBase<ApplicationsService>
             Id = Guid.NewGuid().ToString(),
             ProjectPersonnelId = "OtherRespondent",
             CreatedBy = "User3",
-            Description = "Description3",
-            Title = "Title3",
+            FullProjectTitle = "Description3",
+            ShortProjectTitle = "Title3",
             UpdatedBy = "Updater3"
         });
 
@@ -93,8 +93,8 @@ public class GetRespondentApplications : TestServiceBase<ApplicationsService>
         {
             var expectedApplication = applicationRequests.First(a => a.Id == application.Id);
             application.CreatedBy.ShouldBe(expectedApplication.CreatedBy);
-            application.Description.ShouldBe(expectedApplication.Description);
-            application.Title.ShouldBe(expectedApplication.Title);
+            application.FullProjectTitle.ShouldBe(expectedApplication.FullProjectTitle);
+            application.ShortProjectTitle.ShouldBe(expectedApplication.ShortProjectTitle);
             application.UpdatedBy.ShouldBe(expectedApplication.UpdatedBy);
         }
     }

@@ -18,12 +18,12 @@ public class ProjectRecord
     /// <summary>
     /// Gets or sets the title of the project.
     /// </summary>
-    public string Title { get; set; } = null!;
+    public string ShortProjectTitle { get; set; } = null!;
 
     /// <summary>
     /// Gets or sets the description of the project.
     /// </summary>
-    public string Description { get; set; } = null!;
+    public string FullProjectTitle { get; set; } = null!;
 
     /// <summary>
     /// Gets or sets a value indicating whether the project is active.

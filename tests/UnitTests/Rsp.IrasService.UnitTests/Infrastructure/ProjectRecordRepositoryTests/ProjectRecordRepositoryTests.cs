@@ -30,9 +30,9 @@ public class ProjectRecordRepositoryTests
     {
         var projectRecords = new List<ProjectRecord>
         {
-            new ProjectRecord { Id = "1", Title = "", CreatedDate = new DateTime(2022, 1, 1, 0, 0, 0, DateTimeKind.Utc), Status = "Open", IrasId = 1, ProjectPersonnelId = respondentId, CreatedBy = "A", Description = "", UpdatedBy = "A" },
-            new ProjectRecord { Id = "2", Title = "", CreatedDate = new DateTime(2023, 1, 1, 0, 0, 0, DateTimeKind.Utc), Status = "Closed", IrasId = 2, ProjectPersonnelId = respondentId, CreatedBy = "A", Description = "", UpdatedBy = "A" },
-            new ProjectRecord { Id = "3", Title = "", CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc), Status = "Pending", IrasId = 3, ProjectPersonnelId = respondentId, CreatedBy = "A", Description = "", UpdatedBy = "A" }
+            new ProjectRecord { Id = "1", ShortProjectTitle = "", CreatedDate = new DateTime(2022, 1, 1, 0, 0, 0, DateTimeKind.Utc), Status = "Open", IrasId = 1, ProjectPersonnelId = respondentId, CreatedBy = "A", FullProjectTitle = "", UpdatedBy = "A" },
+            new ProjectRecord { Id = "2", ShortProjectTitle = "", CreatedDate = new DateTime(2023, 1, 1, 0, 0, 0, DateTimeKind.Utc), Status = "Closed", IrasId = 2, ProjectPersonnelId = respondentId, CreatedBy = "A", FullProjectTitle = "", UpdatedBy = "A" },
+            new ProjectRecord { Id = "3", ShortProjectTitle = "", CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc), Status = "Pending", IrasId = 3, ProjectPersonnelId = respondentId, CreatedBy = "A", FullProjectTitle = "", UpdatedBy = "A" }
         };
 
         var projectRecordAnswers = new List<ProjectRecordAnswer>
@@ -101,6 +101,6 @@ public class ProjectRecordRepositoryTests
         );
 
         Assert.Equal(3, totalCount);
-        Assert.Equal(expectedTitles, results.Select(r => r.Title).ToArray());
+        Assert.Equal(expectedTitles, results.Select(r => r.ShortProjectTitle).ToArray());
     }
 }

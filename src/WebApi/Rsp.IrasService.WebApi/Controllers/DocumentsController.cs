@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Rsp.IrasService.Application.CQRS.Commands;
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.DTOS.Responses;
