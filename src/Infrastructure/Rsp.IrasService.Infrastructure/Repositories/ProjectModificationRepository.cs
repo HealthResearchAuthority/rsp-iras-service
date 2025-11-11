@@ -617,11 +617,12 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         {
             case ModificationStatus.WithRegulator or ModificationStatus.Approved:
                 modification.SentToRegulatorDate ??= DateTime.Now;
+                modification.AuthorisedDate ??= DateTime.Now;
                 break;
             case ModificationStatus.WithSponsor:
                 modification.SentToSponsorDate ??= DateTime.Now;
                 break;
-            case ModificationStatus.Authorised:
+            case ModificationStatus.WithReviewBody:
                 modification.AuthorisedDate ??= DateTime.Now;
                 break;
         }
