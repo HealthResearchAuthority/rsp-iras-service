@@ -53,7 +53,7 @@ public class GetRespondentApplicationSpecification : Specification<ProjectRecord
 
             builder.Where(entity =>
                 terms.All(term =>
-                    (entity.Title != null && entity.Title.ToLower().Contains(term)) ||
+                    (entity.ShortProjectTitle != null && entity.ShortProjectTitle.ToLower().Contains(term)) ||
                     (entity.IrasId != null && entity.IrasId.Value.ToString().ToLower().Contains(term))
                 )
             );

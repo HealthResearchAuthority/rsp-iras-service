@@ -100,11 +100,11 @@ public class GetRespondentApplicationSpecificationTests
 
         var applications = new List<ProjectRecord>
     {
-        new() { Id = "1", ProjectPersonnelId = respondentId, Title = "ABC Project", IrasId = 12334, Status = "Approved" },
-        new() { Id = "2", ProjectPersonnelId = respondentId, Title = "XYZ Initiative", IrasId = 12335, Status = "Rejected" },
-        new() { Id = "3", ProjectPersonnelId = respondentId, Title = "123 Study", IrasId = 12336, Status = "Approved,Pending" },
-        new() { Id = "4", ProjectPersonnelId = "Other", Title = "ABC Project", IrasId = 12337, Status = "Approved" },
-        new() { Id = "5", ProjectPersonnelId = respondentId, Title = "123 ABC Test", IrasId = 12339, Status = "Pending" }
+        new() { Id = "1", ProjectPersonnelId = respondentId, ShortProjectTitle = "ABC Project", IrasId = 12334, Status = "Approved" },
+        new() { Id = "2", ProjectPersonnelId = respondentId, ShortProjectTitle = "XYZ Initiative", IrasId = 12335, Status = "Rejected" },
+        new() { Id = "3", ProjectPersonnelId = respondentId, ShortProjectTitle = "123 Study", IrasId = 12336, Status = "Approved,Pending" },
+        new() { Id = "4", ProjectPersonnelId = "Other", ShortProjectTitle = "ABC Project", IrasId = 12337, Status = "Approved" },
+        new() { Id = "5", ProjectPersonnelId = respondentId, ShortProjectTitle = "123 ABC Test", IrasId = 12339, Status = "Pending" }
     };
 
         var searchQuery = new ApplicationSearchRequest
@@ -169,7 +169,7 @@ public class GetRespondentApplicationSpecificationTests
         var respondentId = "R-123";
         var applications = new List<ProjectRecord>
         {
-            new() { Id = "1", ProjectPersonnelId = respondentId, Title = "ABC Project", Description = "Phase Alpha" }
+            new() { Id = "1", ProjectPersonnelId = respondentId, ShortProjectTitle = "ABC Project", FullProjectTitle = "Phase Alpha" }
         };
 
         ApplicationSearchRequest searchQuery = new ApplicationSearchRequest();

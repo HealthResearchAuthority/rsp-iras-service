@@ -45,8 +45,8 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
             CreatedDate = DateTime.Now,
             UpdatedBy = "Test",
             UpdatedDate = DateTime.Now,
-            Description = "Description",
-            Title = "Title"
+            FullProjectTitle = "Description",
+            ShortProjectTitle = "Title"
         };
 
         var modification = new ProjectModification
@@ -174,8 +174,8 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
             CreatedDate = DateTime.Now,
             UpdatedBy = "Test",
             UpdatedDate = DateTime.Now,
-            Description = "Description",
-            Title = "Title"
+            FullProjectTitle = "Description",
+            ShortProjectTitle = "Title"
         };
 
         var modification = new ProjectModification

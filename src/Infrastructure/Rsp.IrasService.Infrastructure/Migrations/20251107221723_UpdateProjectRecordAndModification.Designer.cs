@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rsp.IrasService.Infrastructure;
 
@@ -11,9 +12,11 @@ using Rsp.IrasService.Infrastructure;
 namespace Rsp.IrasService.Infrastructure.Migrations
 {
     [DbContext(typeof(IrasContext))]
-    partial class IrasContextModelSnapshot : ModelSnapshot
+    [Migration("20251107221723_UpdateProjectRecordAndModification")]
+    partial class UpdateProjectRecordAndModification
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -269,9 +272,6 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.Property<string>("Category")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("AuthorisedDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -986,7 +986,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Rsp.IrasService.Domain.Entities.ProjectRecord", "ProjectRecord")
-                        .WithMany("ProjectRecordAnswers")
+                        .WithMany()
                         .HasForeignKey("ProjectRecordId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1038,8 +1038,6 @@ namespace Rsp.IrasService.Infrastructure.Migrations
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectRecord", b =>
                 {
                     b.Navigation("ProjectModifications");
-
-                    b.Navigation("ProjectRecordAnswers");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.RegulatoryBody", b =>
