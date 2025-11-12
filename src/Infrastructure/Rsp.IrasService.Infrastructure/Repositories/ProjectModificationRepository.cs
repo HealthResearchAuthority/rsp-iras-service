@@ -240,7 +240,6 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                    SentToRegulatorDate = pm.SentToRegulatorDate,
                    SentToSponsorDate = pm.SentToSponsorDate,
                    ReviewerName = pm.ReviewerName,
-                   AuthorisedDate = pm.AuthorisedDate
                };
     }
 
@@ -326,7 +325,6 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             nameof(ProjectModificationResult.SentToRegulatorDate) => x => x.SentToRegulatorDate!,
             nameof(ProjectModificationResult.SentToSponsorDate) => x => x.SentToSponsorDate!,
             nameof(ProjectModificationResult.ReviewerName) => x => x.ReviewerName,
-            nameof(ProjectModificationResult.AuthorisedDate) => x => x.AuthorisedDate!,
             _ => null
         };
 
@@ -393,7 +391,6 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                    Status = prm.Status,
                    SentToRegulatorDate = prm.SentToRegulatorDate,
                    SentToSponsorDate = prm.SentToSponsorDate,
-                   AuthorisedDate = prm.AuthorisedDate
                };
     }
 
@@ -615,15 +612,11 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
 
         switch (status)
         {
-            case ModificationStatus.WithRegulator or ModificationStatus.Approved:
+            case ModificationStatus.WithRegulator or ModificationStatus.Approved or ModificationStatus.WithReviewBody:
                 modification.SentToRegulatorDate ??= DateTime.Now;
-                modification.AuthorisedDate ??= DateTime.Now;
                 break;
             case ModificationStatus.WithSponsor:
                 modification.SentToSponsorDate ??= DateTime.Now;
-                break;
-            case ModificationStatus.WithReviewBody:
-                modification.AuthorisedDate ??= DateTime.Now;
                 break;
         }
 

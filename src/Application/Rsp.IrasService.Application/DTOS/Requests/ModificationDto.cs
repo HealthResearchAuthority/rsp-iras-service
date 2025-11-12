@@ -16,5 +16,4 @@ public record ModificationDto
     public DateTime? SentToRegulatorDate { get; set; }
     public DateTime? SentToSponsorDate { get; set; }
     public string ReviewerName { get; set; }
-    public DateTime? AuthorisedDate { get; set; }
 }
