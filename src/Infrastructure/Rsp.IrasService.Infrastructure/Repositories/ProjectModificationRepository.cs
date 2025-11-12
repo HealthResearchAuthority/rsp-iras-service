@@ -239,7 +239,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                    Status = pm.Status,
                    SentToRegulatorDate = pm.SentToRegulatorDate,
                    SentToSponsorDate = pm.SentToSponsorDate,
-                   ReviewerName = pm.ReviewerName,
+                   ReviewerName = pm.ReviewerName
                };
     }
 
@@ -390,7 +390,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                    ReviewerId = prm.ReviewerId,
                    Status = prm.Status,
                    SentToRegulatorDate = prm.SentToRegulatorDate,
-                   SentToSponsorDate = prm.SentToSponsorDate,
+                   SentToSponsorDate = prm.SentToSponsorDate
                };
     }
 

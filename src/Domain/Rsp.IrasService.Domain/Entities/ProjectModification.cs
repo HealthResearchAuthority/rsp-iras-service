@@ -95,5 +95,4 @@ public class ProjectModification : IAuditable
     public DateTime? SentToSponsorDate { get; set; }
 
     public DateTime? SentToRegulatorDate { get; set; }
-
 }
