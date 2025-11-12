@@ -230,16 +230,16 @@ public class RespondentController(IMediator mediator) : ControllerBase
     /// <summary>
     /// Gets modification documents for a specific modification change and project record.
     /// </summary>
-    /// <param name="modificationChangeId">The modification change identifier.</param>
+    /// <param name="modificationId">The modification change identifier.</param>
     /// <param name="projectRecordId">The project record identifier.</param>
     /// <returns>A collection of documents for the modification.</returns>
-    [HttpGet("modificationdocument/{modificationChangeId}/{projectRecordId}")]
+    [HttpGet("modificationdocument/{modificationId}/{projectRecordId}")]
     [Produces<IEnumerable<ModificationDocumentDto>>]
-    public async Task<IEnumerable<ModificationDocumentDto>> GetModificationDocuments(Guid modificationChangeId, string projectRecordId)
+    public async Task<IEnumerable<ModificationDocumentDto>> GetModificationDocuments(Guid modificationId, string projectRecordId)
     {
         var command = new GetModificationDocumentsQuery
         {
-            ProjectModificationChangeId = modificationChangeId,
+            ProjectModificationId = modificationId,
             ProjectRecordId = projectRecordId,
         };
 
@@ -249,16 +249,16 @@ public class RespondentController(IMediator mediator) : ControllerBase
     /// <summary>
     /// Gets modification documents for a specific modification change and project record.
     /// </summary>
-    /// <param name="modificationChangeId">The modification change identifier.</param>
+    /// <param name="modificationId">The modification change identifier.</param>
     /// <param name="projectRecordId">The project record identifier.</param>
     /// <returns>A collection of documents for the modification.</returns>
-    [HttpGet("modificationdocument/{modificationChangeId}/{projectRecordId}/{projectPersonnelId}")]
+    [HttpGet("modificationdocument/{modificationId}/{projectRecordId}/{projectPersonnelId}")]
     [Produces<IEnumerable<ModificationDocumentDto>>]
-    public async Task<IEnumerable<ModificationDocumentDto>> GetModificationDocuments(Guid modificationChangeId, string projectRecordId, string projectPersonnelId)
+    public async Task<IEnumerable<ModificationDocumentDto>> GetModificationDocuments(Guid modificationId, string projectRecordId, string projectPersonnelId)
     {
         var command = new GetModificationDocumentsQuery
         {
-            ProjectModificationChangeId = modificationChangeId,
+            ProjectModificationId = modificationId,
             ProjectRecordId = projectRecordId,
             ProjectPersonnelId = projectPersonnelId
         };

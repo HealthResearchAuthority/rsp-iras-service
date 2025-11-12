@@ -3,6 +3,11 @@
 public class ProjectOverviewDocumentDto
 {
     /// <summary>
+    /// The unique record identifier for the modification.
+    /// </summary>
+    public Guid ModificationId { get; set; }
+
+    /// <summary>
     /// Gets or sets the name of the uploaded file.
     /// </summary>
     public string FileName { get; set; } = string.Empty;

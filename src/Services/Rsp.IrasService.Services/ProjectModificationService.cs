@@ -205,4 +205,22 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
             TotalCount = totalCount
         });
     }
+
+    public Task<ProjectOverviewDocumentResponse> GetDocumentsForModification(
+        Guid modificationId,
+        ProjectOverviewDocumentSearchRequest searchQuery,
+        int pageNumber,
+        int pageSize,
+        string sortField,
+        string sortDirection)
+    {
+        var modifications = projectModificationRepository.GetDocumentsForModification(searchQuery, pageNumber, pageSize, sortField, sortDirection, modificationId);
+        var totalCount = projectModificationRepository.GetDocumentsForModificationCount(searchQuery, modificationId);
+
+        return Task.FromResult(new ProjectOverviewDocumentResponse
+        {
+            Documents = modifications.Adapt<IEnumerable<ProjectOverviewDocumentDto>>(),
+            TotalCount = totalCount
+        });
+    }
 }

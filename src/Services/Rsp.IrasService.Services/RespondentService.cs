@@ -205,9 +205,9 @@ public class RespondentService(IProjectPersonnelRepository projectPersonnelRepos
     /// <param name="projectRecordId">The identifier of the related project record.</param>
     /// <param name="projectPersonnelId">The identifier of the project personnel who uploaded the documents.</param>
     /// <returns>A collection of modification documents as <see cref="ModificationDocumentDto"/>.</returns>
-    public async Task<IEnumerable<ModificationDocumentDto>> GetModificationDocumentResponses(Guid projectModificationChangeId, string projectRecordId, string projectPersonnelId)
+    public async Task<IEnumerable<ModificationDocumentDto>> GetModificationDocumentResponses(Guid projectModificationId, string projectRecordId, string projectPersonnelId)
     {
-        var specification = new GetModificationDocumentSpecification(projectModificationChangeId, projectRecordId, projectPersonnelId);
+        var specification = new GetModificationDocumentSpecification(projectModificationId, projectRecordId, projectPersonnelId);
 
         var responses = await projectPersonnelRepository.GetResponses(specification);
 
@@ -276,7 +276,7 @@ public class RespondentService(IProjectPersonnelRepository projectPersonnelRepos
 
         // Create the specification based on the first document's identifiers
         var specification = new SaveModificationDocumentsSpecification(
-            respondentAnswers[0].ProjectModificationChangeId,
+            respondentAnswers[0].ProjectModificationId,
             respondentAnswers[0].ProjectRecordId,
             respondentAnswers[0].ProjectPersonnelId
         );

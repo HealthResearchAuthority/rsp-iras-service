@@ -295,7 +295,7 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
             if (existingAnswer != null)
             {
                 // Update existing document entry
-                existingAnswer.ProjectModificationChangeId = answer.ProjectModificationChangeId;
+                existingAnswer.ProjectModificationId = answer.ProjectModificationId;
                 existingAnswer.ProjectRecordId = answer.ProjectRecordId;
                 existingAnswer.ProjectPersonnelId = answer.ProjectPersonnelId;
                 existingAnswer.FileName = answer.FileName;

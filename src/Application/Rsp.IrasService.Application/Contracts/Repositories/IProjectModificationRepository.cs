@@ -1,5 +1,4 @@
-﻿using System.Drawing.Printing;
-using Ardalis.Specification;
+﻿using Ardalis.Specification;
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.Specifications;
 using Rsp.IrasService.Domain.Entities;
@@ -163,4 +162,14 @@ public interface IProjectModificationRepository
     Task DeleteModification(ISpecification<ProjectModification> specification);
 
     Task<IEnumerable<ProjectModificationAuditTrail>> GetModificationAuditTrail(Guid modificationId);
+
+    IEnumerable<ProjectOverviewDocumentResult> GetDocumentsForModification(
+        ProjectOverviewDocumentSearchRequest searchQuery,
+        int pageNumber,
+        int pageSize,
+        string sortField,
+        string sortDirection,
+        Guid modificationId);
+
+    int GetDocumentsForModificationCount(ProjectOverviewDocumentSearchRequest searchQuery, Guid modificationId);
 }

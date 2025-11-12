@@ -6,9 +6,9 @@ namespace Rsp.IrasService.Application.CQRS.Queries;
 public class GetModificationDocumentsQuery : IRequest<IEnumerable<ModificationDocumentDto>>
 {
     /// <summary>
-    /// Gets or sets the project modification change identifier.
+    /// Gets or sets the project modification identifier.
     /// </summary>
-    public Guid ProjectModificationChangeId { get; set; }
+    public Guid ProjectModificationId { get; set; }
 
     /// <summary>
     /// Gets or sets the project record identifier.

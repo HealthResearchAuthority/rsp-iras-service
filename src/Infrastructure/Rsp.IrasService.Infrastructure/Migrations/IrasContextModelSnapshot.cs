@@ -120,7 +120,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Property<bool?>("IsMalwareScanSuccessful")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("ProjectModificationChangeId")
+                    b.Property<Guid>("ProjectModificationId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ProjectPersonnelId")
@@ -136,7 +136,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectModificationChangeId");
+                    b.HasIndex("ProjectModificationId");
 
                     b.HasIndex("ProjectPersonnelId");
 
@@ -808,9 +808,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationDocument", b =>
                 {
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectModificationChange", "ProjectModificationChange")
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectModification", "ProjectModification")
                         .WithMany()
-                        .HasForeignKey("ProjectModificationChangeId")
+                        .HasForeignKey("ProjectModificationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -826,7 +826,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("ProjectModificationChange");
+                    b.Navigation("ProjectModification");
 
                     b.Navigation("ProjectPersonnel");
 

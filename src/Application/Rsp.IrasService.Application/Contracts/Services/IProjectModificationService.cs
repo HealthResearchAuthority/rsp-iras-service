@@ -146,4 +146,12 @@ public interface IProjectModificationService : IInterceptable
        string sortField,
        string sortDirection
     );
+
+    Task<ProjectOverviewDocumentResponse> GetDocumentsForModification(
+        Guid modificationId,
+        ProjectOverviewDocumentSearchRequest searchQuery,
+        int pageNumber,
+        int pageSize,
+        string sortField,
+        string sortDirection);
 }
