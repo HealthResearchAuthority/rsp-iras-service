@@ -56,4 +56,9 @@ public class ProjectOverviewDocumentResult
     /// Gets or sets the number of the modification.
     /// </summary>
     public int ModificationNumber { get; set; }
+
+    /// <summary>
+    /// Gets or sets the unique identifier for this modification.
+    /// </summary>
+    public Guid ModificationId { get; set; }
 }

@@ -175,4 +175,14 @@ public interface IProjectModificationRepository
     /// <param name="projectModificationId">The unique identifier of the modification</param>
     /// <returns>The project modification record</returns>
     public Task<ProjectModification> GetModificationById(Guid projectModificationId);
+
+    IEnumerable<ProjectOverviewDocumentResult> GetDocumentsForModification(
+        ProjectOverviewDocumentSearchRequest searchQuery,
+        int pageNumber,
+        int pageSize,
+        string sortField,
+        string sortDirection,
+        Guid modificationId);
+
+    int GetDocumentsForModificationCount(ProjectOverviewDocumentSearchRequest searchQuery, Guid modificationId);
 }

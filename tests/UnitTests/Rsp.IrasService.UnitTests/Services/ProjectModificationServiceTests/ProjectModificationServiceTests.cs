@@ -1,7 +1,6 @@
 using Ardalis.Specification;
 using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Application.Contracts.Repositories;
-using Rsp.IrasService.Application.Specifications;
 using Rsp.IrasService.Domain.Entities;
 using Rsp.IrasService.Infrastructure;
 using Rsp.IrasService.Infrastructure.Repositories;
@@ -170,7 +169,7 @@ public class ProjectModificationServiceTests : TestServiceBase<ProjectModificati
         var doc = new ModificationDocument
         {
             Id = Guid.NewGuid(),
-            ProjectModificationChangeId = change.Id,
+            ProjectModificationId = modId,
             ProjectPersonnelId = "PP-1",
             ProjectRecordId = "PR-1",
             DocumentStoragePath = "/blob/doc1.pdf",
@@ -208,5 +207,4 @@ public class ProjectModificationServiceTests : TestServiceBase<ProjectModificati
         (await _context.ModificationDocumentAnswers.FindAsync(docAns.Id)).ShouldBeNull();
         (await _context.ProjectModifications.FindAsync(modId)).ShouldBeNull();
     }
-
 }

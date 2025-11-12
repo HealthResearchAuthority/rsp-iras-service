@@ -159,4 +159,12 @@ public interface IProjectModificationService : IInterceptable
     /// <param name="projectModificationId">The unique identifier of the modification</param>
     /// <returns>The modification review responses</returns>
     Task<ModificationReviewResponse> GetModificationReviewResponses(Guid projectModificationId);
+
+    Task<ProjectOverviewDocumentResponse> GetDocumentsForModification(
+        Guid modificationId,
+        ProjectOverviewDocumentSearchRequest searchQuery,
+        int pageNumber,
+        int pageSize,
+        string sortField,
+        string sortDirection);
 }
