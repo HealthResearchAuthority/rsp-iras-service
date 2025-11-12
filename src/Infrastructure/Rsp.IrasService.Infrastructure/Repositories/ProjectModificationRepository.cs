@@ -303,6 +303,10 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                     || searchQuery.ModificationTypes.Contains(x.ModificationType, StringComparer.OrdinalIgnoreCase))
                 && (!searchQuery.IncludeReviewerId
                     || x.ReviewerId == searchQuery.ReviewerId)
+                && (!searchQuery.IncludeReviewerName
+                    || (!string.IsNullOrWhiteSpace(searchQuery.ReviewerName)
+                        && (x.ReviewerName ?? string.Empty)
+                        .Contains(searchQuery.ReviewerName, StringComparison.OrdinalIgnoreCase)))
                 && (string.IsNullOrEmpty(searchQuery.ModificationType) ||
                     x.ModificationType.Contains(searchQuery.ModificationType, StringComparison.OrdinalIgnoreCase))
                 && (string.IsNullOrEmpty(searchQuery.Status) ||
