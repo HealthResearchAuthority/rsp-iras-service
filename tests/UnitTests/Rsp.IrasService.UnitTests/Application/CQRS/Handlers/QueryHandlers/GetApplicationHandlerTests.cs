@@ -25,8 +25,8 @@ public class GetApplicationHandlerTests
         var expectedResponse = new ApplicationResponse
         {
             Id = applicationId,
-            Title = "Sample Project",
-            Description = "A sample project description",
+            ShortProjectTitle = "Sample Project",
+            FullProjectTitle = "A sample project description",
             Status = "Approved"
         };
 
@@ -42,8 +42,8 @@ public class GetApplicationHandlerTests
         // Assert
         result.ShouldNotBeNull();
         result.Id.ShouldBe(expectedResponse.Id);
-        result.Title.ShouldBe(expectedResponse.Title);
-        result.Description.ShouldBe(expectedResponse.Description);
+        result.ShortProjectTitle.ShouldBe(expectedResponse.ShortProjectTitle);
+        result.FullProjectTitle.ShouldBe(expectedResponse.FullProjectTitle);
         result.Status.ShouldBe(expectedResponse.Status);
 
         _applicationsServiceMock.Verify(service => service.GetApplication(applicationId), Times.Once);

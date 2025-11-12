@@ -45,8 +45,8 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
             CreatedDate = DateTime.Now,
             UpdatedBy = "Test",
             UpdatedDate = DateTime.Now,
-            Description = "Description",
-            Title = "Title"
+            FullProjectTitle = "Description",
+            ShortProjectTitle = "Title"
         };
 
         var modification = new ProjectModification
@@ -71,7 +71,7 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
             UpdatedBy = "Test",
             UpdatedDate = DateTime.Now,
             Status = "Active",
-            SentToRegulatorDate = new DateTime(2023, 12, 31, 0, 0, 0, DateTimeKind.Utc)
+            SentToRegulatorDate = new DateTime(2023, 12, 31, 0, 0, 0, DateTimeKind.Utc),
         };
 
         var answers = new List<ProjectRecordAnswer>
@@ -174,8 +174,8 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
             CreatedDate = DateTime.Now,
             UpdatedBy = "Test",
             UpdatedDate = DateTime.Now,
-            Description = "Description",
-            Title = "Title"
+            FullProjectTitle = "Description",
+            ShortProjectTitle = "Title"
         };
 
         var modification = new ProjectModification

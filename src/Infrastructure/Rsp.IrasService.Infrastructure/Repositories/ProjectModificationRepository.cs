@@ -209,6 +209,9 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                    ModificationId = pm.ModificationIdentifier,
                    IrasId = pr.IrasId.HasValue ? pr.IrasId.Value.ToString() : string.Empty,
                    ModificationNumber = pm.ModificationNumber,
+                   ModificationType = pm.ModificationType,
+                   Category = pm.Category,
+                   ReviewType = pm.ReviewType,
                    ChiefInvestigator = projectAnswers
                        .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ChiefInvestigator)
                        .Select(a => a.Response)
@@ -300,6 +303,10 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                     || searchQuery.ModificationTypes.Contains(x.ModificationType, StringComparer.OrdinalIgnoreCase))
                 && (!searchQuery.IncludeReviewerId
                     || x.ReviewerId == searchQuery.ReviewerId)
+                && (!searchQuery.IncludeReviewerName
+                    || (!string.IsNullOrWhiteSpace(searchQuery.ReviewerName)
+                        && (x.ReviewerName ?? string.Empty)
+                        .Contains(searchQuery.ReviewerName, StringComparison.OrdinalIgnoreCase)))
                 && (string.IsNullOrEmpty(searchQuery.ModificationType) ||
                     x.ModificationType.Contains(searchQuery.ModificationType, StringComparison.OrdinalIgnoreCase))
                 && (string.IsNullOrEmpty(searchQuery.Status) ||
@@ -606,9 +613,17 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
 
         modification.Status = status;
         modification.UpdatedDate = DateTime.Now;
-        modification.SentToRegulatorDate = status is ModificationStatus.WithRegulator or ModificationStatus.Approved
-                                        ? DateTime.Now : null;
-        modification.SentToSponsorDate = status is ModificationStatus.WithSponsor ? DateTime.Now : null;
+
+        switch (status)
+        {
+            case ModificationStatus.WithRegulator or ModificationStatus.Approved or ModificationStatus.WithReviewBody:
+                modification.SentToRegulatorDate ??= DateTime.Now;
+                break;
+            case ModificationStatus.WithSponsor:
+                modification.SentToSponsorDate ??= DateTime.Now;
+                break;
+        }
+
 
         // Save the changes to the database.
         await irasContext.SaveChangesAsync();

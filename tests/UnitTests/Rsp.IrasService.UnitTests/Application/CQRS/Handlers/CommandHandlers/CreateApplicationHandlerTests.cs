@@ -24,8 +24,8 @@ public class CreateApplicationHandlerTests
         var request = new ApplicationRequest
         {
             Id = "App-123",
-            Title = "New Project",
-            Description = "A sample project",
+            ShortProjectTitle = "New Project",
+            FullProjectTitle = "A sample project",
             CreatedBy = "User-123",
             Status = "Pending"
         };
