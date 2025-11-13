@@ -10,7 +10,7 @@ public class GetModificationsQuery(
     int pageSize,
     string sortField,
     string sortDirection
-) : IRequest<ModificationResponse>
+) : IRequest<ModificationSearchResponse>
 {
     public ModificationSearchRequest SearchQuery { get; } = searchQuery;
     public int PageNumber { get; } = pageNumber;

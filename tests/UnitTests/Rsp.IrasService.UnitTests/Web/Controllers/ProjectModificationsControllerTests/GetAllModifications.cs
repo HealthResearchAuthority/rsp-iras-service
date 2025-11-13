@@ -20,7 +20,7 @@ public class GetAllModifications : TestServiceBase
     public async Task GetAllModifications_ShouldReturnOk_WhenModificationsExist
     (
         ModificationSearchRequest searchQuery,
-        ModificationResponse mockResponse,
+        ModificationSearchResponse mockResponse,
         int pageNumber,
         int pageSize,
         string sortField,

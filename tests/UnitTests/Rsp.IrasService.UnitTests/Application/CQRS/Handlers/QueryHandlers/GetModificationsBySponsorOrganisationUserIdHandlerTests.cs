@@ -18,7 +18,7 @@ public class GetModificationsBySponsorOrganisationUserIdHandlerTests
     }
 
     [Fact]
-    public async Task Handle_ShouldReturnExpectedModificationResponse()
+    public async Task Handle_ShouldReturnExpectedModificationSearchResponse()
     {
         // Arrange
         var sponsorOrganisationUserId = Guid.NewGuid();
@@ -32,7 +32,7 @@ public class GetModificationsBySponsorOrganisationUserIdHandlerTests
             new() { ModificationId = "MOD-001", ChiefInvestigator = "Dr. Smith" }
         };
 
-        var expectedResponse = new ModificationResponse
+        var expectedResponse = new ModificationSearchResponse
         {
             Modifications = expectedModifications,
             TotalCount = expectedModifications.Count

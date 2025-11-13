@@ -21,7 +21,7 @@ public class GetModificationsForProject : TestServiceBase
     (
         string projectRecordId,
         ModificationSearchRequest searchQuery,
-        ModificationResponse mockResponse,
+        ModificationSearchResponse mockResponse,
         int pageNumber,
         int pageSize,
         string sortField,

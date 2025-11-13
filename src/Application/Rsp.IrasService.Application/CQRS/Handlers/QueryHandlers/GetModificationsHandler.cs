@@ -5,9 +5,9 @@ using Rsp.IrasService.Application.DTOS.Responses;
 
 namespace Rsp.IrasService.Application.CQRS.Handlers.QueryHandlers;
 
-public class GetModificationsHandler(IProjectModificationService projectModificationService) : IRequestHandler<GetModificationsQuery, ModificationResponse>
+public class GetModificationsHandler(IProjectModificationService projectModificationService) : IRequestHandler<GetModificationsQuery, ModificationSearchResponse>
 {
-    public async Task<ModificationResponse> Handle(GetModificationsQuery request, CancellationToken cancellationToken)
+    public async Task<ModificationSearchResponse> Handle(GetModificationsQuery request, CancellationToken cancellationToken)
     {
         return await projectModificationService.GetModifications
         (
