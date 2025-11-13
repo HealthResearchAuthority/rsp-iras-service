@@ -983,7 +983,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Rsp.IrasService.Domain.Entities.ProjectRecord", "ProjectRecord")
-                        .WithMany()
+                        .WithMany("ProjectRecordAnswers")
                         .HasForeignKey("ProjectRecordId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1035,6 +1035,8 @@ namespace Rsp.IrasService.Infrastructure.Migrations
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectRecord", b =>
                 {
                     b.Navigation("ProjectModifications");
+
+                    b.Navigation("ProjectRecordAnswers");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.RegulatoryBody", b =>

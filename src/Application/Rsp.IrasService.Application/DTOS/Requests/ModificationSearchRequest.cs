@@ -19,4 +19,6 @@ public class ModificationSearchRequest
     public DateTime DateSubmitted { get; set; }
     public string? Status { get; set; }
     public string? ModificationId { get; set; } = null!;
+    public string? ReviewerName { get; set; } = null;
+    public bool IncludeReviewerName { get; set; }
 }

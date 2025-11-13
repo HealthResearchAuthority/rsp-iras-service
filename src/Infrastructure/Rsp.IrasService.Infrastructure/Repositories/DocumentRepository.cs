@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Rsp.IrasService.Application.Contracts.Repositories;
 using Rsp.IrasService.Domain.Entities;
 
@@ -10,7 +9,7 @@ namespace Rsp.IrasService.Infrastructure.Repositories;
 /// </summary>
 public class DocumentRepository(IrasContext irasContext) : IDocumentRepository
 {
-    public async Task<int?> UpdateModificationDocument(ModificationDocument modificationDocument)
+    public async Task<int?> UpdateModificationDocumentStatus(ModificationDocument modificationDocument)
     {
         // change to status code
         var existing = await irasContext.ModificationDocuments
@@ -21,13 +20,7 @@ public class DocumentRepository(IrasContext irasContext) : IDocumentRepository
             return 404;
         }
 
-        if (string.IsNullOrWhiteSpace(modificationDocument.DocumentStatus) || string.IsNullOrWhiteSpace(modificationDocument.DocumentStoragePath))
-        {
-            return 500;
-        }
-
         existing.DocumentStatus = modificationDocument.DocumentStatus;
-        existing.DocumentStoragePath = modificationDocument.DocumentStoragePath;
 
         await irasContext.SaveChangesAsync();
         return 200;

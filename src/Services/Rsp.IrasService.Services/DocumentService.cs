@@ -16,6 +16,6 @@ public class DocumentService(IDocumentRepository documentRepository) : IDocument
         // Map the request DTO to the domain entity
         var modificationDocument = modificationDocumentDto.Adapt<ModificationDocument>();
 
-        return documentRepository.UpdateModificationDocument(modificationDocument);
+        return documentRepository.UpdateModificationDocumentStatus(modificationDocument);
     }
 }

@@ -41,4 +41,9 @@ public class ModificationDocumentDto
     /// Gets or sets the status.
     /// </summary>
     public string? Status { get; set; }
+
+    /// <summary>
+    /// Gets or sets the status.
+    /// </summary>
+    public string? DocumentStatus { get; set; }
 }

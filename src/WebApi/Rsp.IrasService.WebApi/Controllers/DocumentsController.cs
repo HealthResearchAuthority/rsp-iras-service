@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Rsp.IrasService.Application.CQRS.Commands;
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.DTOS.Responses;
@@ -28,8 +27,27 @@ public class DocumentsController(IMediator mediator) : ControllerBase
                 ErrorResponse = new ErrorResponse
                 {
                     Code = "VALIDATION_ERROR",
-                    Message = "Either Id or DocumentStoragePath must be provided.",
-                    Details = "Id must be a non-empty GUID and DocumentStoragePath must be provided."
+                    Message = "DocumentStoragePath must be provided.",
+                    Details = "Document Storage Path was Empty. DocumentStoragePath must be provided."
+                }
+            };
+
+            return BadRequest(bad);
+        }
+
+        if (string.IsNullOrWhiteSpace(dto.DocumentStatus))
+        {
+            var bad = new UpdateDocumentScanStatusResponse
+            {
+                Id = dto.Id,
+                Status = "failure",
+                Timestamp = DateTime.UtcNow,
+                Message = "Validation failed.",
+                ErrorResponse = new ErrorResponse
+                {
+                    Code = "VALIDATION_ERROR",
+                    Message = "Status of the document must be provided.",
+                    Details = "Status Path was Empty. DocumentStoragePath must be provided."
                 }
             };
 
@@ -48,7 +66,7 @@ public class DocumentsController(IMediator mediator) : ControllerBase
                     Id = dto.Id,
                     Status = "success",
                     Timestamp = DateTime.UtcNow,
-                    Message = "Malware scan completed successfully."
+                    Message = "Malware scan status updated successfully."
                 }),
                 StatusCodes.Status404NotFound => NotFound(new UpdateDocumentScanStatusResponse
                 {

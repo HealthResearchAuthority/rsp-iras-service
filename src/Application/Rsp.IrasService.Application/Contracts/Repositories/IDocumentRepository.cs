@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Rsp.IrasService.Domain.Entities;
+﻿using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Application.Contracts.Repositories;
 
@@ -8,5 +7,5 @@ namespace Rsp.IrasService.Application.Contracts.Repositories;
 /// </summary>
 public interface IDocumentRepository
 {
-    Task<int?> UpdateModificationDocument(ModificationDocument modificationDocument);
+    Task<int?> UpdateModificationDocumentStatus(ModificationDocument modificationDocument);
 }
