@@ -449,7 +449,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                         md.Id,
                         md.FileName,
                         md.DocumentStoragePath,
-                        md.IsMalwareScanComplete,
+                        md.IsMalwareScanSuccessful,
                         DocumentName = modificationDocumentAnswers
                             .Where(a => a.ModificationDocumentId == md.Id && a.QuestionId == ModificationQuestionIds.DocumentName)
                             .Select(a => a.Response)
