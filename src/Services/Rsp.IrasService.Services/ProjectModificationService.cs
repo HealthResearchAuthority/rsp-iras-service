@@ -205,4 +205,13 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
             TotalCount = totalCount
         });
     }
+
+    /// <summary>
+    /// Saves modification review responses.
+    /// </summary>
+    /// <param name="modificationReviewRequest">The request object containing the review values</param>
+    public Task SaveModificationReviewResponses(ModificationReviewRequest modificationReviewRequest)
+    {
+        return projectModificationRepository.SaveModificationReviewResponses(modificationReviewRequest);
+    }
 }

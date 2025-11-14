@@ -288,4 +288,15 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
 
         return await mediator.Send(query);
     }
+
+    /// <summary>
+    /// Saves review responses for a modification.
+    /// </summary>
+    /// <param name="modificationReviewRequest">The request object containing the modification review values</param>
+    [HttpPost("savereviewresponses")]
+    public async Task SaveReviewResponses(ModificationReviewRequest modificationReviewRequest)
+    {
+        var command = new SaveModificationReviewResponsesCommand(modificationReviewRequest);
+        await mediator.Send(command);
+    }
 }

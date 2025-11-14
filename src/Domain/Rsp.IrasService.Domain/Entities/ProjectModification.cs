@@ -95,4 +95,19 @@ public class ProjectModification : IAuditable
     public DateTime? SentToSponsorDate { get; set; }
 
     public DateTime? SentToRegulatorDate { get; set; }
+
+    /// <summary>
+    /// Gets or sets the reviewer's comments on the modification.
+    /// </summary>
+    public string? ReviewerComments { get; set; }
+
+    /// <summary>
+    /// Gets or sets the reason why the modification was not approved.
+    /// </summary>
+    public string? ReasonNotApproved { get; set; }
+
+    /// <summary>
+    /// Gets or sets the provisional review outcome of the modification.
+    /// </summary>
+    public string? ProvisionalReviewOutcome { get; set; }
 }
