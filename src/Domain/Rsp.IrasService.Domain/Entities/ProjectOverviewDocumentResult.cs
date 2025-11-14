@@ -13,9 +13,9 @@ public class ProjectOverviewDocumentResult
     public string FileName { get; set; } = string.Empty;
 
     /// <summary>
-    /// Gets or sets if the scan is complete or not.
+    /// Gets or sets if the scan is successful or not.
     /// </summary>
-    public bool? IsMalwareScanComplete { get; set; }
+    public bool? IsMalwareScanSuccessful { get; set; }
 
     /// <summary>
     /// Gets or sets the name of the document, if specified.
