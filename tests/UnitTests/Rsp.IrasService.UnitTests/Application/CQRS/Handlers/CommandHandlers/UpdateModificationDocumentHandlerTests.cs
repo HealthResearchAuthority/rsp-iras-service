@@ -23,7 +23,7 @@ public class UpdateModificationDocumentHandlerTests
         var dto = new ModificationDocumentDto
         {
             Id = Guid.NewGuid(),
-            ProjectModificationChangeId = Guid.NewGuid(),
+            ProjectModificationId = Guid.NewGuid(),
             ProjectPersonnelId = "person-123",
             ProjectRecordId = "record-456",
             DocumentStoragePath = "updated/path.pdf",

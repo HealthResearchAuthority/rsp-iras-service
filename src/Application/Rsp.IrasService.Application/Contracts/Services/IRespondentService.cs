@@ -69,11 +69,11 @@ public interface IRespondentService : IInterceptable
     /// <summary>
     /// Retrieves modification documents matching the given specification.
     /// </summary>
-    /// <param name="projectModificationChangeId">The modification change identifier.</param>
+    /// <param name="projectModificationId">The modification identifier.</param>
     /// <param name="projectRecordId">The project record identifier.</param>
     /// <param name="projectPersonnelId">The project personnel identifier.</param>
     /// <returns>A collection of <see cref="ModificationDocument"/> objects.</returns>
-    Task<IEnumerable<ModificationDocumentDto>> GetModificationDocumentResponses(Guid projectModificationChangeId, string projectRecordId, string projectPersonnelId);
+    Task<IEnumerable<ModificationDocumentDto>> GetModificationDocumentResponses(Guid projectModificationId, string projectRecordId, string projectPersonnelId);
 
     /// <summary>
     /// Retrieves modification documents matching the given specification.

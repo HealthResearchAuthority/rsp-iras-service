@@ -11,9 +11,9 @@ public class ModificationDocumentConfiguration : IEntityTypeConfiguration<Modifi
         builder.HasKey(r => r.Id);
 
         builder
-            .HasOne(ra => ra.ProjectModificationChange)
+            .HasOne(ra => ra.ProjectModification)
             .WithMany()
-            .HasForeignKey(r => r.ProjectModificationChangeId)
+            .HasForeignKey(r => r.ProjectModificationId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder
