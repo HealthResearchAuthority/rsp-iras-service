@@ -60,5 +60,5 @@ public class ProjectOverviewDocumentResult
     /// <summary>
     /// Gets or sets the unique identifier for this modification.
     /// </summary>
-    public Guid ModificationId { get; set; }
+    public Guid ProjectModificationId { get; set; }
 }
