@@ -146,4 +146,10 @@ public interface IProjectModificationService : IInterceptable
        string sortField,
        string sortDirection
     );
+
+    /// <summary>
+    /// Saves modification review responses.
+    /// </summary>
+    /// <param name="modificationReviewRequest">The request object containing the review values</param>
+    Task SaveModificationReviewResponses(ModificationReviewRequest modificationReviewRequest);
 }
