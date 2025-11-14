@@ -43,7 +43,7 @@ public class ModificationDocument
     public string? Status { get; set; }
 
     /// <summary>
-    /// Gets or sets if the scan is complete or not.
+    /// Gets or sets if the scan is successful or not.
     /// </summary>
     public bool? IsMalwareScanSuccessful { get; set; }
 
