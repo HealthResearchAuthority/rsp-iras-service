@@ -43,9 +43,9 @@ public class ModificationDocument
     public string? Status { get; set; }
 
     /// <summary>
-    /// Gets or sets the document scan status.
+    /// Gets or sets if the scan is complete or not.
     /// </summary>
-    public string? DocumentStatus { get; set; }
+    public bool? IsMalwareScanComplete { get; set; }
 
     /// <summary>
     /// Gets or sets the document created date.
