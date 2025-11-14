@@ -449,6 +449,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                         md.Id,
                         md.FileName,
                         md.DocumentStoragePath,
+                        md.IsMalwareScanComplete,
                         DocumentName = modificationDocumentAnswers
                             .Where(a => a.ModificationDocumentId == md.Id && a.QuestionId == ModificationQuestionIds.DocumentName)
                             .Select(a => a.Response)
@@ -490,6 +491,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                 {
                     Id = x.Id,
                     FileName = x.FileName,
+                    IsMalwareScanComplete = x.IsMalwareScanComplete,
                     DocumentName = x.DocumentName ?? string.Empty,
                     DocumentStoragePath = x.DocumentStoragePath,
 

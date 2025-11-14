@@ -12,17 +12,12 @@ public class DocumentRepository(IrasContext irasContext) : IDocumentRepository
     public async Task<int?> UpdateModificationDocument(ModificationDocument modificationDocument)
     {
         // change to status code
-         var existing = await irasContext.ModificationDocuments
-            .FirstOrDefaultAsync(d => d.DocumentStoragePath == modificationDocument.DocumentStoragePath);
+        var existing = await irasContext.ModificationDocuments
+           .FirstOrDefaultAsync(d => d.DocumentStoragePath == modificationDocument.DocumentStoragePath);
 
         if (existing is null)
         {
             return 404;
-        }
-
-        if (!string.IsNullOrWhiteSpace(modificationDocument.DocumentStatus))
-        {
-            existing.DocumentStatus = modificationDocument.DocumentStatus;
         }
 
         if (!string.IsNullOrWhiteSpace(modificationDocument.DocumentStoragePath))
