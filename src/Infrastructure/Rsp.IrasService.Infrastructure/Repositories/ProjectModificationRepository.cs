@@ -491,7 +491,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                 {
                     Id = x.Id,
                     FileName = x.FileName,
-                    IsMalwareScanComplete = x.IsMalwareScanComplete,
+                    IsMalwareScanSuccessful = x.IsMalwareScanSuccessful,
                     DocumentName = x.DocumentName ?? string.Empty,
                     DocumentStoragePath = x.DocumentStoragePath,
 
