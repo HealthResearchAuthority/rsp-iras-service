@@ -20,7 +20,10 @@ public class DocumentRepository(IrasContext irasContext) : IDocumentRepository
             return 404;
         }
 
-        existing.DocumentStatus = modificationDocument.DocumentStatus;
+        if (!string.IsNullOrWhiteSpace(modificationDocument.DocumentStoragePath))
+        {
+            existing.DocumentStoragePath = modificationDocument.DocumentStoragePath;
+        }
 
         await irasContext.SaveChangesAsync();
         return 200;

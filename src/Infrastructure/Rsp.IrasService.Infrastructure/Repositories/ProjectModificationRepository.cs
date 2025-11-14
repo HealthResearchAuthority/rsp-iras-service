@@ -147,7 +147,6 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                           Status = pm.Status,
                           CreatedAt = pm.CreatedDate,
                           ReviewerName = pm.ReviewerName
-
                       };
 
         return results.OrderBy(r => r.ShortProjectTitle);
@@ -412,8 +411,9 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                  x.ModificationId.Contains(term, StringComparison.OrdinalIgnoreCase))
                 &&
                 (x.Status == ModificationStatus.WithSponsor ||
-                 x.Status == ModificationStatus.Authorised ||
-                 x.Status == ModificationStatus.NotAuthorised));
+                 x.Status == ModificationStatus.Approved ||
+                 x.Status == ModificationStatus.WithReviewBody ||
+                 x.Status == ModificationStatus.NotApproved));
     }
 
     private static string DetermineModificationType()
@@ -449,6 +449,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                         md.Id,
                         md.FileName,
                         md.DocumentStoragePath,
+                        md.IsMalwareScanComplete,
                         DocumentName = modificationDocumentAnswers
                             .Where(a => a.ModificationDocumentId == md.Id && a.QuestionId == ModificationQuestionIds.DocumentName)
                             .Select(a => a.Response)
@@ -490,6 +491,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                 {
                     Id = x.Id,
                     FileName = x.FileName,
+                    IsMalwareScanComplete = x.IsMalwareScanComplete,
                     DocumentName = x.DocumentName ?? string.Empty,
                     DocumentStoragePath = x.DocumentStoragePath,
 
@@ -616,14 +618,14 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
 
         switch (status)
         {
-            case ModificationStatus.WithRegulator or ModificationStatus.Approved or ModificationStatus.WithReviewBody:
+            case ModificationStatus.Approved or ModificationStatus.WithReviewBody:
                 modification.SentToRegulatorDate ??= DateTime.Now;
                 break;
+
             case ModificationStatus.WithSponsor:
                 modification.SentToSponsorDate ??= DateTime.Now;
                 break;
         }
-
 
         // Save the changes to the database.
         await irasContext.SaveChangesAsync();
