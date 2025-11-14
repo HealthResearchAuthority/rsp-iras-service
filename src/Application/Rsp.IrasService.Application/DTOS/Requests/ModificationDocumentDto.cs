@@ -45,5 +45,5 @@ public class ModificationDocumentDto
     /// <summary>
     /// Gets or sets the status.
     /// </summary>
-    public string? DocumentStatus { get; set; }
+    public bool IsMalwareScanSuccessful { get; set; }
 }

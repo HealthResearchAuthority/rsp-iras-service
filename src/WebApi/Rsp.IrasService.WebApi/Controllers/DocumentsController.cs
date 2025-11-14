@@ -35,25 +35,6 @@ public class DocumentsController(IMediator mediator) : ControllerBase
             return BadRequest(bad);
         }
 
-        if (string.IsNullOrWhiteSpace(dto.DocumentStatus))
-        {
-            var bad = new UpdateDocumentScanStatusResponse
-            {
-                Id = dto.Id,
-                Status = "failure",
-                Timestamp = DateTime.UtcNow,
-                Message = "Validation failed.",
-                ErrorResponse = new ErrorResponse
-                {
-                    Code = "VALIDATION_ERROR",
-                    Message = "Status of the document must be provided.",
-                    Details = "Status Path was Empty. DocumentStoragePath must be provided."
-                }
-            };
-
-            return BadRequest(bad);
-        }
-
         try
         {
             var request = new UpdateModificationDocumentCommand(dto);
