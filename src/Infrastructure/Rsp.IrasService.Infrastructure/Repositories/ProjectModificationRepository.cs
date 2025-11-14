@@ -701,4 +701,34 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             .OrderByDescending(a => a.DateTimeStamp)
             .ToListAsync();
     }
+
+    /// <summary>
+    /// Saves the modification review responses
+    /// </summary>
+    /// <param name="modificationReviewRequest">The request object containing the review values</param>
+    public async Task SaveModificationReviewResponses(ModificationReviewRequest modificationReviewRequest)
+    {
+        var modification = await irasContext.ProjectModifications
+            .FirstOrDefaultAsync(pm => pm.Id == modificationReviewRequest.ProjectModificationId);
+
+        if (modification != null)
+        {
+            modification.ReviewerComments = modificationReviewRequest.Comment;
+            modification.ReasonNotApproved = modificationReviewRequest.ReasonNotApproved;
+            modification.ProvisionalReviewOutcome = modificationReviewRequest.Outcome;
+
+            await irasContext.SaveChangesAsync();
+        }
+    }
+
+    /// <summary>
+    /// Gets modification for a specific projectModificationId
+    /// </summary>
+    /// <param name="projectModificationId">The unique identifier of the modification</param>
+    /// <returns>The project modification record</returns>
+    public Task<ProjectModification> GetModificationById(Guid projectModificationId)
+    {
+        return irasContext.ProjectModifications
+            .FirstAsync(pm => pm.Id == projectModificationId);
+    }
 }
