@@ -20,9 +20,10 @@ public class DocumentRepository(IrasContext irasContext) : IDocumentRepository
             return 404;
         }
 
-        if (!string.IsNullOrWhiteSpace(modificationDocument.DocumentStoragePath))
+        existing.IsMalwareScanSuccessful = modificationDocument.IsMalwareScanSuccessful;
+        if(modificationDocument.IsMalwareScanSuccessful == false)
         {
-            existing.DocumentStoragePath = modificationDocument.DocumentStoragePath;
+            existing.Status = "Failed";
         }
 
         await irasContext.SaveChangesAsync();
