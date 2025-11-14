@@ -53,7 +53,7 @@ public class UpdateModificationDocument : TestServiceBase<IrasService.Services.D
             DocumentStoragePath = "original/path.pdf",
             FileName = "original.pdf",
             FileSize = 1234,
-            IsMalwareScanComplete = true,
+            IsMalwareScanSuccessful = true,
             CreatedDate = DateTime.UtcNow
         };
 
