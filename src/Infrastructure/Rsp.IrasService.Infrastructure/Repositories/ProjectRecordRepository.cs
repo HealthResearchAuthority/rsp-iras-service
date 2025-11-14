@@ -75,7 +75,7 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
                                   {
                                       Id = projectRecord.Id,
                                       ProjectPersonnelId = projectRecord.ProjectPersonnelId,
-                        FullProjectTitle = projectRecord.FullProjectTitle,
+                                      FullProjectTitle = projectRecord.FullProjectTitle,
                                       IsActive = projectRecord.IsActive,
                                       Status = projectRecord.Status,
                                       CreatedDate = projectRecord.CreatedDate,
@@ -84,7 +84,7 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
                                       UpdatedBy = projectRecord.UpdatedBy,
                                       IrasId = projectRecord.IrasId,
                                       ProjectModifications = projectRecord.ProjectModifications,
-                        ShortProjectTitle = projectRecordAnswer != null && projectRecordAnswer.Response != null ? projectRecordAnswer.Response : projectRecord.ShortProjectTitle
+                                      ShortProjectTitle = projectRecordAnswer != null && projectRecordAnswer.Response != null ? projectRecordAnswer.Response : projectRecord.ShortProjectTitle
                                   };
 
         // Apply filtering to ProjectRecords
@@ -151,7 +151,7 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
             ("irasid", "desc") => projectRecords.OrderByDescending(x => x.IrasId),
             ("leadnation", "asc") => projectRecords.OrderBy(x => x.LeadNation),
             ("leadnation", "desc") => projectRecords.OrderByDescending(x => x.LeadNation),
-            _ => projectRecords.OrderByDescending(x => x.CreatedDate),
+            _ => projectRecords.OrderBy(x => x.IrasId),
         };
 
         // Apply pagination
@@ -223,7 +223,7 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
         // match IRAS ID
         if (!string.IsNullOrEmpty(request.IrasId))
         {
-            records = records.Where(x => x.IrasId.ToString() == request.IrasId);
+            records = records.Where(x => x.IrasId != null && x.IrasId.ToString()!.Contains(request.IrasId));
         }
 
         // Filter by short project title
