@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography;
-using Ardalis.Specification;
+﻿using Ardalis.Specification;
 using Ardalis.Specification.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Application.Constants;
@@ -242,8 +241,11 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                };
     }
 
-    private static IEnumerable<ProjectModificationResult> FilterModifications(
-        IQueryable<ProjectModificationResult> modifications, ModificationSearchRequest searchQuery)
+    private static IEnumerable<ProjectModificationResult> FilterModifications
+    (
+        IQueryable<ProjectModificationResult> modifications,
+        ModificationSearchRequest searchQuery
+    )
     {
         var fromDate = searchQuery.FromDate?.Date;
         var toDate = searchQuery.ToDate?.Date;
@@ -271,8 +273,6 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                 {
                     mod.ParticipatingNation = string.Empty;
                 }
-
-                mod.ModificationType = DetermineModificationType();
 
                 return mod;
             })
@@ -414,17 +414,6 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                  x.Status == ModificationStatus.Approved ||
                  x.Status == ModificationStatus.WithReviewBody ||
                  x.Status == ModificationStatus.NotApproved));
-    }
-
-    private static string DetermineModificationType()
-    {
-        var modificationType = RandomNumberGenerator.GetInt32(1, 3);
-        return modificationType switch
-        {
-            1 => "Modification of an important detail",
-            2 => "Minor modification",
-            _ => ""
-        };
     }
 
     /// <summary>
@@ -676,6 +665,79 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         await irasContext.SaveChangesAsync();
     }
 
+    /// <summary>
+    /// Updates the <see cref="ProjectModification"/> that matches the provided specification.
+    /// It also updates the status of the modification changes for this modification, to keep in sync
+    /// If no matching entity is found, the method completes without making any changes.
+    /// </summary>
+    /// <param name="specification">The specification used to locate the modification to update.</param>
+    public async Task UpdateModification(ISpecification<ProjectModification> specification, ProjectModification projectModification)
+    {
+        // Attempt to find a single ProjectModification matching the given specification.
+        // Using FirstOrDefaultAsync to avoid exceptions if no entity matches the criteria.
+        var existingModification = await irasContext
+            .ProjectModifications
+            .Include(pm => pm.ProjectModificationChanges)
+            .WithSpecification(specification)
+            .SingleOrDefaultAsync();
+
+        // If no entity was found, there is nothing to update.
+        if (existingModification == null)
+        {
+            return;
+        }
+
+        irasContext.Entry(existingModification).CurrentValues.SetValues(projectModification);
+
+        var modificationUpdatedTime = DateTime.Now;
+
+        // cascade update to modification changes
+        foreach (var change in existingModification.ProjectModificationChanges.ToList())
+        {
+            // get the matching change from the input modification
+            var updatedChange = projectModification.ProjectModificationChanges.FirstOrDefault(c => c.Id == change.Id);
+
+            if (updatedChange != null)
+            {
+                irasContext.Entry(change).CurrentValues.SetValues(updatedChange);
+            }
+
+            change.UpdatedDate = modificationUpdatedTime;
+        }
+
+        existingModification.UpdatedDate = modificationUpdatedTime;
+
+        await irasContext.SaveChangesAsync();
+    }
+
+    /// <summary>
+    /// Updates the <see cref="ProjectModificationChange"/> that matches the provided specification.
+    /// It also updates the status of the modification changes for this modification, to keep in sync
+    /// If no matching entity is found, the method completes without making any changes.
+    /// </summary>
+    /// <param name="specification">The specification used to locate the modification to update.</param>
+    public async Task UpdateModificationChange(ISpecification<ProjectModificationChange> specification, ProjectModificationChange modificationChange)
+    {
+        // Attempt to find a single ProjectModificationChange matching the given specification.
+        // Using FirstOrDefaultAsync to avoid exceptions if no entity matches the criteria.
+        var existingChange = await irasContext
+            .ProjectModificationChanges
+            .WithSpecification(specification)
+            .SingleOrDefaultAsync();
+
+        // If no entity was found, there is nothing to update.
+        if (existingChange == null)
+        {
+            return;
+        }
+
+        existingChange.UpdatedDate = DateTime.Now;
+
+        irasContext.Entry(existingChange).CurrentValues.SetValues(modificationChange);
+
+        await irasContext.SaveChangesAsync();
+    }
+
     public async Task DeleteModification(ISpecification<ProjectModification> specification)
     {
         var modification = await irasContext
@@ -835,4 +897,12 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
     IQueryable<ProjectOverviewDocumentResult> docs,
     ProjectOverviewDocumentSearchRequest searchQuery)
     => ApplyDocumentFilter(docs, searchQuery);
+
+    public async Task<ProjectModification?> GetModification(GetModificationSpecification specification)
+    {
+        return await irasContext
+            .ProjectModifications
+            .WithSpecification(specification)
+            .SingleOrDefaultAsync();
+    }
 }

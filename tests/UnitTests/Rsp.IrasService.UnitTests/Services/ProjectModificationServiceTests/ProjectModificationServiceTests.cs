@@ -1,6 +1,7 @@
 using Ardalis.Specification;
 using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Application.Contracts.Repositories;
+using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Domain.Entities;
 using Rsp.IrasService.Infrastructure;
 using Rsp.IrasService.Infrastructure.Repositories;
@@ -76,6 +77,44 @@ public class ProjectModificationServiceTests : TestServiceBase<ProjectModificati
 
         // Act
         await Sut.UpdateModificationStatus(modId, newStatus);
+
+        // Assert - reload and verify status changes persisted
+        var updated = await _context.ProjectModifications
+            .Include(m => m.ProjectModificationChanges)
+            .SingleAsync(m => m.Id == modId);
+
+        updated.Status.ShouldBe(newStatus);
+        updated.ProjectModificationChanges.ShouldAllBe(c => c.Status == newStatus);
+    }
+
+    [Theory, AutoData]
+    public async Task UpdateModification_Updates_Modification_And_Changes(ProjectModification projectModification, UpdateModificationRequest updateModificationRequest)
+    {
+        // Arrange - seed a modification with two changes
+        var modId = Guid.NewGuid();
+        var now = DateTime.UtcNow;
+
+        const string newStatus = "Submitted";
+
+        projectModification.Id = modId;
+
+        await _context.ProjectModifications.AddAsync(projectModification);
+        await _context.SaveChangesAsync();
+
+        Mocker.Use<IProjectModificationRepository>(_modificationRepository);
+        Sut = Mocker.CreateInstance<ProjectModificationService>();
+
+        updateModificationRequest.ProjectModificationChanges[0].Id = projectModification.ProjectModificationChanges.ElementAt(0).Id;
+        updateModificationRequest.ProjectModificationChanges[1].Id = projectModification.ProjectModificationChanges.ElementAt(1).Id;
+        updateModificationRequest.ProjectModificationChanges[2].Id = projectModification.ProjectModificationChanges.ElementAt(2).Id;
+
+        updateModificationRequest.Id = modId;
+        updateModificationRequest.Status = newStatus;
+        updateModificationRequest.CreatedDate = now;
+        updateModificationRequest.UpdatedDate = now;
+
+        // Act
+        await Sut.UpdateModification(updateModificationRequest);
 
         // Assert - reload and verify status changes persisted
         var updated = await _context.ProjectModifications
