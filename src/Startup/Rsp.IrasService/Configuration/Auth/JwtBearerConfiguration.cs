@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using NetDevPack.Security.JwtExtensions;
 using Rsp.IrasService.Application.Constants;
 using Rsp.IrasService.Application.Settings;
+using System.Linq;
 
 namespace Rsp.IrasService.Configuration.Auth;
 
@@ -38,7 +39,7 @@ public static class JwtBearerConfiguration
         // Note: TokenValidationParameters.ClockSkew has default value of 300 seconds (5 minutes) which can be changed by setting ClockSkew below.
         authOptions.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidIssuers = oneLoginEnabled ? appSettings.OneLogin.Issuers : appSettings.AuthSettings.Issuers,
+            ValidIssuers = oneLoginEnabled ? appSettings.OneLogin.Issuers!.Union([appSettings.MicrosoftEntra.Authority]) : appSettings.AuthSettings.Issuers,
             ValidateIssuer = true,
             ValidateAudience = true,
             ValidateIssuerSigningKey = true,
