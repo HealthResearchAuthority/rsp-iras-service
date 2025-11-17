@@ -17,34 +17,45 @@ public class GetDocumentsForModification : TestServiceBase
 
     [Theory]
     [AutoData]
-    public async Task GetDocumentsForModification_ShouldReturnOk_WhenDocumentsExist
-    (
-        Guid modificationId,
-        ProjectOverviewDocumentSearchRequest searchQuery,
-        ProjectOverviewDocumentResponse mockResponse,
-        int pageNumber,
-        int pageSize,
-        string sortField,
-        string sortDirection
-    )
+    public async Task GetDocumentsForModification_ShouldReturnResponse_WhenDocumentsExist(
+    Guid modificationId,
+    ProjectOverviewDocumentSearchRequest searchQuery,
+    ProjectOverviewDocumentResponse mockResponse,
+    int pageNumber,
+    int pageSize,
+    string sortField,
+    string sortDirection
+)
     {
         // Arrange
-        var mockMediator = Mocker.GetMock<IMediator>();
-        mockMediator
+        var mediatorMock = Mocker.GetMock<IMediator>();
+
+        mediatorMock
             .Setup(m => m.Send(It.Is<GetDocumentsForModificationQuery>(q =>
-                q.ModificationId.Equals(modificationId) &&
-                q.SearchQuery.Equals(searchQuery) &&
+                q.ModificationId == modificationId &&
+                q.SearchQuery == searchQuery &&
                 q.PageNumber == pageNumber &&
                 q.PageSize == pageSize &&
                 q.SortField == sortField &&
-                q.SortDirection == sortDirection), default))
+                q.SortDirection == sortDirection
+            ), default))
             .ReturnsAsync(mockResponse);
 
         // Act
-        var result = await _controller.GetDocumentsForModification(It.IsAny<Guid>(), It.IsAny<ProjectOverviewDocumentSearchRequest>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>());
+        var result = await _controller.GetDocumentsForModification(
+            modificationId,
+            searchQuery,
+            pageNumber,
+            pageSize,
+            sortField,
+            sortDirection
+        );
 
         // Assert
-        result.Value.ShouldBe(null);
+        result.Result.ShouldBeNull();             // Should not return BadRequest()
+        result.Value.ShouldBe(mockResponse);      // Controller should return mediator response
+
+        mediatorMock.Verify(m => m.Send(It.IsAny<GetDocumentsForModificationQuery>(), default), Times.Once);
     }
 
     [Theory]
