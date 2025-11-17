@@ -4,20 +4,12 @@ using Rsp.IrasService.Application.DTOS.Responses;
 
 namespace Rsp.IrasService.Application.CQRS.Queries;
 
-public class GetDocumentsForModificationQuery
-(
-    Guid modificationId,
-    ProjectOverviewDocumentSearchRequest searchQuery,
-    int pageNumber,
-    int pageSize,
-    string sortField,
-    string sortDirection
-) : IRequest<ProjectOverviewDocumentResponse>
+public class GetDocumentsForModificationQuery : IRequest<ProjectOverviewDocumentResponse>
 {
-    public Guid ModificationId { get; } = modificationId;
-    public ProjectOverviewDocumentSearchRequest SearchQuery { get; } = searchQuery;
-    public int PageNumber { get; } = pageNumber;
-    public int PageSize { get; } = pageSize;
-    public string SortField { get; } = sortField;
-    public string SortDirection { get; } = sortDirection;
+    public required Guid ModificationId { get; set; }
+    public required ProjectOverviewDocumentSearchRequest SearchQuery { get; set; }
+    public required int PageNumber { get; set; }
+    public required int PageSize { get; set; }
+    public required string SortField { get; set; }
+    public required string SortDirection { get; set; }
 }

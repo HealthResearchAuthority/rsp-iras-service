@@ -41,14 +41,15 @@ public class GetDocumentsForModificationTests
             TotalCount = expectedModifications.Count
         };
 
-        var query = new GetDocumentsForModificationQuery(
-            modificationId,
-            searchQuery,
-            pageNumber: 1,
-            pageSize: 10,
-            sortField: "CreatedAt",
-            sortDirection: "asc"
-        );
+        var query = new GetDocumentsForModificationQuery
+        {
+            ModificationId = modificationId,
+            SearchQuery = searchQuery,
+            PageNumber = 1,
+            PageSize = 10,
+            SortField = "CreatedAt",
+            SortDirection = "asc"
+        };
 
         _modificationServiceMock
             .Setup(service => service.GetDocumentsForModification(

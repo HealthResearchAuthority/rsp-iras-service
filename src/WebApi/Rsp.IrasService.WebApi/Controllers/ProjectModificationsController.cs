@@ -335,7 +335,15 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
             return BadRequest("pageSize must be greater than 0.");
         }
 
-        var query = new GetDocumentsForModificationQuery(modificationId, searchQuery, pageNumber, pageSize, sortField, sortDirection);
+        var query = new GetDocumentsForModificationQuery
+        {
+            ModificationId = modificationId,
+            SearchQuery = searchQuery,
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+            SortField = sortField,
+            SortDirection = sortDirection
+        };
 
         return await mediator.Send(query);
     }
