@@ -83,8 +83,8 @@ public static class AuthConfiguration
             .AddJwtBearer("DefaultBearer", async authOptions => await JwtBearerConfiguration.Configure(authOptions, appSettings, events, featureManager))
             .AddJwtBearer("FunctionAppBearer", options =>
             {
-                options.Authority = appSettings.MicrosoftEntraSettings.Authority;
-                options.Audience = appSettings.MicrosoftEntraSettings.IrasServiceAPIID; 
+                options.Authority = appSettings.MicrosoftEntra.Authority;
+                options.Audience = appSettings.MicrosoftEntra.Audience; 
                 options.Events = events;
             })
             .AddPolicyScheme("dynamicBearer", null, options =>
@@ -116,7 +116,7 @@ public static class AuthConfiguration
                     // based on the issuer, we will forward the request to the appropriate scheme
                     // if the token issuer is the one for OneLogin, use the default JwtBearer scheme
                     // if the issuer is the one for Microsoft Entra ID, use the FunctionAppBearer scheme
-                    return jwtSecurityToken.Issuer == appSettings.MicrosoftEntraSettings.Authority ? "FunctionAppBearer" : "DefaultBearer";
+                    return jwtSecurityToken.Issuer == appSettings.MicrosoftEntra.Authority ? "FunctionAppBearer" : "DefaultBearer";
                 };
             });
     }

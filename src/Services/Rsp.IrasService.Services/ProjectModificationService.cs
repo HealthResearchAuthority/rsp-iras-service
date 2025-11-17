@@ -205,4 +205,33 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
             TotalCount = totalCount
         });
     }
+
+    /// <summary>
+    /// Saves modification review responses.
+    /// </summary>
+    /// <param name="modificationReviewRequest">The request object containing the review values</param>
+    public Task SaveModificationReviewResponses(ModificationReviewRequest modificationReviewRequest)
+    {
+        return projectModificationRepository.SaveModificationReviewResponses(modificationReviewRequest);
+    }
+
+    /// <summary>
+    /// Gets modification review responses for a specific project modification.
+    /// </summary>
+    /// <param name="projectModificationId">The unique identifier of the modification</param>
+    /// <returns>The modification review responses</returns>
+    public async Task<ModificationReviewResponse> GetModificationReviewResponses(Guid projectModificationId)
+    {
+        var modification = await projectModificationRepository.GetModificationById(projectModificationId);
+
+        var result = new ModificationReviewResponse
+        {
+            ModificationId = modification.Id,
+            Comment = modification.ReviewerComments,
+            ReasonNotApproved = modification.ReasonNotApproved,
+            ReviewOutcome = modification.ProvisionalReviewOutcome
+        };
+
+        return result;
+    }
 }

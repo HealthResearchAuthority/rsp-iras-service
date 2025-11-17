@@ -9,20 +9,21 @@ namespace Rsp.IrasService.Infrastructure.Repositories;
 /// </summary>
 public class DocumentRepository(IrasContext irasContext) : IDocumentRepository
 {
-    public async Task<int?> UpdateModificationDocument(ModificationDocument modificationDocument)
+    public async Task<int?> UpdateModificationDocumentStatus(ModificationDocument modificationDocument)
     {
         // change to status code
         var existing = await irasContext.ModificationDocuments
-           .FirstOrDefaultAsync(d => d.DocumentStoragePath == modificationDocument.DocumentStoragePath);
+            .FirstOrDefaultAsync(d => d.DocumentStoragePath == modificationDocument.DocumentStoragePath);
 
         if (existing is null)
         {
             return 404;
         }
 
-        if (!string.IsNullOrWhiteSpace(modificationDocument.DocumentStoragePath))
+        existing.IsMalwareScanSuccessful = modificationDocument.IsMalwareScanSuccessful;
+        if(modificationDocument.IsMalwareScanSuccessful == false)
         {
-            existing.DocumentStoragePath = modificationDocument.DocumentStoragePath;
+            existing.Status = "Failed";
         }
 
         await irasContext.SaveChangesAsync();
