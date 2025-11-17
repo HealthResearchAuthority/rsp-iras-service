@@ -98,7 +98,7 @@ public class UpdateDocumentScanStatusTests : TestServiceBase<DocumentsController
         payload.Status.ShouldBe("failure");
         payload.ErrorResponse.ShouldNotBeNull();
         payload.ErrorResponse!.Code.ShouldBe("VALIDATION_ERROR");
-        payload.ErrorResponse!.Message.ShouldBe("Either Id or DocumentStoragePath must be provided.");
+        payload.ErrorResponse!.Message.ShouldBe("DocumentStoragePath must be provided.");
 
         // Mediator must NOT be called
         Mocker.GetMock<IMediator>().Verify(

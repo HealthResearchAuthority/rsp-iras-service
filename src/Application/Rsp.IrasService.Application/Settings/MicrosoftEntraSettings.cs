@@ -1,6 +1,6 @@
 ﻿namespace Rsp.IrasService.Application.Settings;
 
-public class MicrosoftEntraSettings
+public class MicrosoftEntra
 {
     /// <summary>
     /// Authrity URL for the Microsoft Entra tenant
@@ -10,5 +10,5 @@ public class MicrosoftEntraSettings
     /// <summary>
     /// The API Client ID for the IRAS Service from Microsoft Entra
     /// </summary>
-    public string IrasServiceAPIID { get; set; } = null!;
+    public string Audience { get; set; } = null!;
 }

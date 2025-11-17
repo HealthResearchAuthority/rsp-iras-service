@@ -29,5 +29,5 @@ public class AppSettings
 
     public Dictionary<string, string> QuestionIds { get; set; } = null!;
 
-    public MicrosoftEntraSettings MicrosoftEntraSettings { get; set; } = null!;
+    public MicrosoftEntra MicrosoftEntra { get; set; } = null!;
 }
