@@ -432,93 +432,138 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
     /// ProjectModifications → ProjectModificationChanges → ModificationDocuments → ModificationDocumentAnswers.
     /// </summary>
     private IQueryable<ProjectOverviewDocumentResult> ProjectOverviewDocumentsQuery(
-        ProjectOverviewDocumentSearchRequest searchQuery,
-        string? projectRecordId = null)
+    ProjectOverviewDocumentSearchRequest searchQuery,
+    string? projectRecordId = null)
     {
         var projectRecords = irasContext.ProjectRecords.AsQueryable();
-        var modificationDocuments = irasContext.ModificationDocuments.AsQueryable();
-        var modificationDocumentAnswers = irasContext.ModificationDocumentAnswers.AsQueryable();
+        var docs = irasContext.ModificationDocuments.AsQueryable();
 
-        var query = from pm in irasContext.ProjectModifications
-                    join pr in projectRecords on pm.ProjectRecordId equals pr.Id
-                    join pmc in irasContext.ProjectModificationChanges on pm.Id equals pmc.ProjectModificationId
-                    join md in modificationDocuments on pmc.Id equals md.ProjectModificationChangeId
-                    where string.IsNullOrEmpty(projectRecordId) || pr.Id == projectRecordId
-                    select new
-                    {
-                        md.Id,
-                        md.FileName,
-                        md.DocumentStoragePath,
-                        md.IsMalwareScanSuccessful,
-                        DocumentName = modificationDocumentAnswers
-                            .Where(a => a.ModificationDocumentId == md.Id && a.QuestionId == ModificationQuestionIds.DocumentName)
-                            .Select(a => a.Response)
-                            .FirstOrDefault(),
-                        DocumentType = modificationDocumentAnswers
-                            .Where(a => a.ModificationDocumentId == md.Id && a.QuestionId == ModificationQuestionIds.DocumentType)
-                            .Select(a => a.SelectedOptions)
-                            .FirstOrDefault(),
-                        DocumentVersion = modificationDocumentAnswers
-                            .Where(a => a.ModificationDocumentId == md.Id && a.QuestionId == ModificationQuestionIds.DocumentVersion)
-                            .Select(a => a.Response)
-                            .FirstOrDefault(),
-                        DocumentDateRaw = modificationDocumentAnswers
-                            .Where(a => a.ModificationDocumentId == md.Id && a.QuestionId == ModificationQuestionIds.DocumentDate)
-                            .Select(a => a.Response)
-                            .FirstOrDefault(),
-                        Status = md.Status ?? string.Empty,
-                        pm.ModificationIdentifier,
-                        pm.ModificationNumber
-                    };
-
-        return query
-            .AsEnumerable() // switch to in-memory for parsing
-            .Select(x =>
+        var baseQuery =
+            from pm in irasContext.ProjectModifications
+            join pr in projectRecords on pm.ProjectRecordId equals pr.Id
+            join md in docs on pm.Id equals md.ProjectModificationId
+            where string.IsNullOrEmpty(projectRecordId) || pr.Id == projectRecordId
+            select new ProjectOverviewDocumentResult
             {
-                DateTime? parsedDate = null;
+                Id = md.Id,
+                ProjectModificationId = md.ProjectModificationId,
+                FileName = md.FileName,
+                DocumentStoragePath = md.DocumentStoragePath,
+                IsMalwareScanSuccessful = md.IsMalwareScanSuccessful,
+                Status = md.Status ?? "",
+                ModificationIdentifier = pm.ModificationIdentifier,
+                ModificationNumber = pm.ModificationNumber
+            };
 
-                if (!string.IsNullOrWhiteSpace(x.DocumentDateRaw) && DateTime.TryParseExact(
-                        x.DocumentDateRaw,
-                        "yyyy-MM-dd",
-                        null,
-                        System.Globalization.DateTimeStyles.None,
-                        out var dt))
-                {
-                    parsedDate = dt;
-                }
-
-                return new ProjectOverviewDocumentResult
-                {
-                    Id = x.Id,
-                    FileName = x.FileName,
-                    IsMalwareScanSuccessful = x.IsMalwareScanSuccessful,
-                    DocumentName = x.DocumentName ?? string.Empty,
-                    DocumentStoragePath = x.DocumentStoragePath,
-
-                    DocumentType = !string.IsNullOrEmpty(x.DocumentType) &&
-                                   searchQuery.DocumentTypes.TryGetValue(x.DocumentType, out var friendlyName)
-                        ? friendlyName
-                        : x.DocumentType ?? string.Empty,
-
-                    DocumentVersion = x.DocumentVersion ?? string.Empty,
-                    DocumentDate = parsedDate, // will be null if not found or invalid
-                    Status = x.Status ?? string.Empty,
-                    ModificationIdentifier = x.ModificationIdentifier,
-                    ModificationNumber = x.ModificationNumber
-                };
-            })
-            .AsQueryable();
+        return BuildDocumentQuery(baseQuery, irasContext.ModificationDocumentAnswers, searchQuery);
     }
 
     private static IEnumerable<ProjectOverviewDocumentResult> FilterProjectOverviewDocuments(
-        IQueryable<ProjectOverviewDocumentResult> modifications, ProjectOverviewDocumentSearchRequest searchQuery)
+    IQueryable<ProjectOverviewDocumentResult> docs,
+    ProjectOverviewDocumentSearchRequest searchQuery)
+    => ApplyDocumentFilter(docs, searchQuery);
+
+    private static IEnumerable<ProjectOverviewDocumentResult> ApplyDocumentFilter(
+    IQueryable<ProjectOverviewDocumentResult> documents,
+    ProjectOverviewDocumentSearchRequest searchQuery)
     {
-        return modifications
+        return documents
             .AsEnumerable()
-            .Select(mod => mod)
             .Where(x =>
-                (string.IsNullOrEmpty(searchQuery.IrasId)
-                 || x.DocumentType.Contains(searchQuery.IrasId, StringComparison.OrdinalIgnoreCase)));
+                string.IsNullOrEmpty(searchQuery.IrasId) ||
+                x.DocumentType.Contains(searchQuery.IrasId, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private IQueryable<ProjectOverviewDocumentResult> BuildDocumentQuery(
+    IQueryable<ProjectOverviewDocumentResult> baseQuery,
+    IQueryable<ModificationDocumentAnswer> answersQuery,
+    ProjectOverviewDocumentSearchRequest searchQuery)
+    {
+        var query =
+            from x in baseQuery
+            select new
+            {
+                x.Id,
+                x.ProjectModificationId,
+                x.FileName,
+                x.DocumentStoragePath,
+                x.IsMalwareScanSuccessful,
+                DocumentName = answersQuery
+                    .Where(a => a.ModificationDocumentId == x.Id &&
+                                a.QuestionId == ModificationQuestionIds.DocumentName)
+                    .Select(a => a.Response)
+                    .FirstOrDefault(),
+                DocumentType = answersQuery
+                    .Where(a => a.ModificationDocumentId == x.Id &&
+                                a.QuestionId == ModificationQuestionIds.DocumentType)
+                    .Select(a => a.SelectedOptions)
+                    .FirstOrDefault(),
+                DocumentVersion = answersQuery
+                    .Where(a => a.ModificationDocumentId == x.Id &&
+                                a.QuestionId == ModificationQuestionIds.DocumentVersion)
+                    .Select(a => a.Response)
+                    .FirstOrDefault(),
+                DocumentDateRaw = answersQuery
+                    .Where(a => a.ModificationDocumentId == x.Id &&
+                                a.QuestionId == ModificationQuestionIds.DocumentDate)
+                    .Select(a => a.Response)
+                    .FirstOrDefault(),
+                x.Status,
+                x.ModificationIdentifier,
+                x.ModificationNumber
+            };
+
+        // now safe to materialize
+        return query
+            .AsEnumerable()
+            .Select(MapToDocumentResult(searchQuery))
+            .AsQueryable();
+    }
+
+    private static Func<dynamic, ProjectOverviewDocumentResult> MapToDocumentResult(
+    ProjectOverviewDocumentSearchRequest searchQuery)
+    {
+        return x =>
+        {
+            // Parse DocumentDateRaw ("yyyy-MM-dd")
+            DateTime? parsedDate = null;
+            DateTime dt = default;
+            string friendlyName = string.Empty;
+
+            if (!string.IsNullOrWhiteSpace(x.DocumentDateRaw) &&
+                DateTime.TryParseExact(
+                    x.DocumentDateRaw,
+                    "yyyy-MM-dd",
+                    null,
+                    System.Globalization.DateTimeStyles.None,
+                    out dt))
+            {
+                parsedDate = dt;
+            }
+
+            // Resolve friendly name for document type
+            var resolvedDocumentType =
+                !string.IsNullOrEmpty(x.DocumentType) &&
+                searchQuery.DocumentTypes.TryGetValue(x.DocumentType, out friendlyName)
+                    ? friendlyName
+                    : x.DocumentType ?? string.Empty;
+
+            return new ProjectOverviewDocumentResult
+            {
+                Id = x.Id,
+                ProjectModificationId = x.ProjectModificationId,
+                FileName = x.FileName,
+                DocumentName = x.DocumentName ?? string.Empty,
+                DocumentStoragePath = x.DocumentStoragePath,
+                DocumentType = resolvedDocumentType,
+                DocumentVersion = x.DocumentVersion ?? string.Empty,
+                DocumentDate = parsedDate,
+                Status = x.Status ?? string.Empty,
+                ModificationIdentifier = x.ModificationIdentifier,
+                ModificationNumber = x.ModificationNumber,
+                IsMalwareScanSuccessful = x.IsMalwareScanSuccessful
+            };
+        };
     }
 
     private static IEnumerable<ProjectOverviewDocumentResult> SortProjectOverviewDocuments(IEnumerable<ProjectOverviewDocumentResult> modifications, string sortField, string sortDirection)
@@ -600,17 +645,17 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         // update the modification changes status as well
         foreach (var change in modification.ProjectModificationChanges)
         {
-            var documents = irasContext.ModificationDocuments
-                .Where(md => md.ProjectModificationChangeId == change.Id)
-                .ToList();
-
-            foreach (var doc in documents)
-            {
-                doc.Status = status;
-            }
-
             change.Status = status;
             change.UpdatedDate = DateTime.Now;
+        }
+
+        var documents = await irasContext.ModificationDocuments
+            .Where(md => md.ProjectModificationId == modification.Id)
+            .ToListAsync();
+
+        foreach (var doc in documents)
+        {
+            doc.Status = status;
         }
 
         modification.Status = status;
@@ -654,7 +699,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
 
         // All document IDs for those changes
         var documentIds = await irasContext.ModificationDocuments
-            .Where(d => changeIds.Contains(d.ProjectModificationChangeId))
+            .Where(d => d.ProjectModificationId == modId)
             .Select(d => d.Id)
             .ToListAsync();
 
@@ -731,4 +776,63 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         return irasContext.ProjectModifications
             .FirstAsync(pm => pm.Id == projectModificationId);
     }
+
+    public IEnumerable<ProjectOverviewDocumentResult> GetDocumentsForModification(
+        ProjectOverviewDocumentSearchRequest searchQuery,
+        int pageNumber,
+        int pageSize,
+        string sortField,
+        string sortDirection,
+        Guid modificationId)
+    {
+        var modifications = ModificationDocumentsQuery(searchQuery, modificationId);
+
+        var filtered = FilterModificationDocuments(modifications, searchQuery);
+        var sorted = SortProjectOverviewDocuments(filtered, sortField, sortDirection);
+
+        return sorted
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize);
+    }
+
+    public int GetDocumentsForModificationCount(ProjectOverviewDocumentSearchRequest searchQuery,
+        Guid modificationId)
+    {
+        var modifications = ModificationDocumentsQuery(searchQuery, modificationId);
+        return FilterModificationDocuments(modifications, searchQuery).Count();
+    }
+
+    /// <summary>
+    /// Builds an IQueryable of project overview documents by walking down
+    /// ProjectModifications → ProjectModificationChanges → ModificationDocuments → ModificationDocumentAnswers.
+    /// </summary>
+    private IQueryable<ProjectOverviewDocumentResult> ModificationDocumentsQuery(
+    ProjectOverviewDocumentSearchRequest searchQuery,
+    Guid modificationId)
+    {
+        var docs = irasContext.ModificationDocuments.AsQueryable();
+
+        var baseQuery =
+            from pm in irasContext.ProjectModifications
+            join md in docs on pm.Id equals md.ProjectModificationId
+            where pm.Id == modificationId
+            select new ProjectOverviewDocumentResult
+            {
+                Id = md.Id,
+                ProjectModificationId = md.ProjectModificationId,
+                FileName = md.FileName,
+                DocumentStoragePath = md.DocumentStoragePath,
+                IsMalwareScanSuccessful = md.IsMalwareScanSuccessful,
+                Status = md.Status ?? "",
+                ModificationIdentifier = pm.ModificationIdentifier,
+                ModificationNumber = pm.ModificationNumber
+            };
+
+        return BuildDocumentQuery(baseQuery, irasContext.ModificationDocumentAnswers, searchQuery);
+    }
+
+    private static IEnumerable<ProjectOverviewDocumentResult> FilterModificationDocuments(
+    IQueryable<ProjectOverviewDocumentResult> docs,
+    ProjectOverviewDocumentSearchRequest searchQuery)
+    => ApplyDocumentFilter(docs, searchQuery);
 }

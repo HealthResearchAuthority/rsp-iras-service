@@ -306,4 +306,45 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
         var query = new GetModificationReviewResponsesQuery(modificationId);
         return await mediator.Send(query);
     }
+
+    /// <summary>
+    /// Gets modifications for specific ProjectRecordId with filtering, sorting and pagination
+    /// </summary>
+    /// <param name="modificationId">The unique identifier of the project record for which modifications are requested.</param>
+    /// <param name="searchQuery">Object containing filtering criteria for modifications.</param>
+    /// <param name="pageNumber">The number of the page to retrieve (used for pagination - 1-based).</param>
+    /// <param name="pageSize">The number of items per page (used for pagination).</param>
+    /// <param name="sortField">The field name by which the results should be sorted.</param>
+    /// <param name="sortDirection">The direction of sorting: "asc" for ascending or "desc" for descending.</param>
+    /// <returns>Returns a paginated list of modifications related to the specified project record.</returns>
+    [HttpPost("getdocumentsformodification")]
+    public async Task<ActionResult<ProjectOverviewDocumentResponse>> GetDocumentsForModification(
+        Guid modificationId,
+        [FromBody] ProjectOverviewDocumentSearchRequest searchQuery,
+        int pageNumber,
+        int pageSize,
+        string sortField,
+        string sortDirection)
+    {
+        if (pageNumber <= 0)
+        {
+            return BadRequest("pageIndex must be greater than 0.");
+        }
+        if (pageSize <= 0)
+        {
+            return BadRequest("pageSize must be greater than 0.");
+        }
+
+        var query = new GetDocumentsForModificationQuery
+        {
+            ModificationId = modificationId,
+            SearchQuery = searchQuery,
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+            SortField = sortField,
+            SortDirection = sortDirection
+        };
+
+        return await mediator.Send(query);
+    }
 }
