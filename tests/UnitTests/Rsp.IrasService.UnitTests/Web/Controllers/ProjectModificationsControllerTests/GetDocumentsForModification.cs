@@ -31,11 +31,13 @@ public class GetDocumentsForModification : TestServiceBase
         // Arrange
         var mockMediator = Mocker.GetMock<IMediator>();
         mockMediator
-            .Setup(m => m.Send(It.Is<GetDocumentsForProjectOverviewQuery>(q =>
-                q.ProjectRecordId.Equals(modificationId) &&
+            .Setup(m => m.Send(It.Is<GetDocumentsForModificationQuery>(q =>
+                q.ModificationId.Equals(modificationId) &&
                 q.SearchQuery.Equals(searchQuery) &&
                 q.PageNumber == pageNumber &&
-                q.PageSize == pageSize), default))
+                q.PageSize == pageSize &&
+                q.SortField == sortField &&
+                q.SortDirection == sortDirection), default))
             .ReturnsAsync(mockResponse);
 
         // Act
