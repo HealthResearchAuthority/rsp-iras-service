@@ -13,6 +13,11 @@ public class ProjectOverviewDocumentResult
     public string FileName { get; set; } = string.Empty;
 
     /// <summary>
+    /// Gets or sets if the scan is successful or not.
+    /// </summary>
+    public bool? IsMalwareScanSuccessful { get; set; }
+
+    /// <summary>
     /// Gets or sets the name of the document, if specified.
     /// </summary>
     public string DocumentName { get; set; } = string.Empty;
@@ -51,4 +56,9 @@ public class ProjectOverviewDocumentResult
     /// Gets or sets the number of the modification.
     /// </summary>
     public int ModificationNumber { get; set; }
+
+    /// <summary>
+    /// Gets or sets the unique identifier for this modification.
+    /// </summary>
+    public Guid ProjectModificationId { get; set; }
 }

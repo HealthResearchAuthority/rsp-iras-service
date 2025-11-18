@@ -1,5 +1,4 @@
-﻿using System.Drawing.Printing;
-using Ardalis.Specification;
+﻿using Ardalis.Specification;
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.Specifications;
 using Rsp.IrasService.Domain.Entities;
@@ -157,10 +156,57 @@ public interface IProjectModificationRepository
     Task UpdateModificationStatus(ISpecification<ProjectModification> specification, string status);
 
     /// <summary>
+    /// Updates the <see cref="ProjectModification"/> modification that matches the provided specification.
+    /// Only updates fields that are explicitly set (non-null) in the specification.
+    /// If no matching entity is found, the method completes without making any changes.
+    /// </summary>
+    /// <param name="specification">The specification used to locate the modification to update.</param>
+    /// <param name="projectModification">The <see cref="ProjectModification"/> entity with updated values.</param>
+    Task UpdateModification(ISpecification<ProjectModification> specification, ProjectModification projectModification);
+
+    /// <summary>
+    /// Updates an existing <see cref="ProjectModificationChange"/> entity.
+    /// Only updates fields that are explicitly set (non-null) in the change object.
+    /// If the change is null, or if no change matches the identifier, the method completes without making any changes.
+    /// </summary>
+    /// <param name="modificationChange">The <see cref="ProjectModificationChange"/> entity with updated values. Identifier must be set to match the change to update.</param>
+    Task UpdateModificationChange(ISpecification<ProjectModificationChange> specification, ProjectModificationChange modificationChange);
+
+    /// <summary>
     /// Deletes the  <see cref="ProjectModification"/> modification that matches the provided specification.
     /// </summary>
     /// <param name="specification">The specification used to locate the modification to delete.</param>
     Task DeleteModification(ISpecification<ProjectModification> specification);
 
     Task<IEnumerable<ProjectModificationAuditTrail>> GetModificationAuditTrail(Guid modificationId);
+
+    /// <summary>
+    /// Saves the modification review responses
+    /// </summary>
+    /// <param name="modificationReviewRequest">The request object containing the review values</param>
+    Task SaveModificationReviewResponses(ModificationReviewRequest modificationReviewRequest);
+
+    /// <summary>
+    /// Gets modification for a specific projectModificationId
+    /// </summary>
+    /// <param name="projectModificationId">The unique identifier of the modification</param>
+    /// <returns>The project modification record</returns>
+    public Task<ProjectModification> GetModificationById(Guid projectModificationId);
+
+    IEnumerable<ProjectOverviewDocumentResult> GetDocumentsForModification(
+        ProjectOverviewDocumentSearchRequest searchQuery,
+        int pageNumber,
+        int pageSize,
+        string sortField,
+        string sortDirection,
+        Guid modificationId);
+
+    int GetDocumentsForModificationCount(ProjectOverviewDocumentSearchRequest searchQuery, Guid modificationId);
+
+    /// <summary>
+    /// Retrieves a specific project modification by its unique identifier.
+    /// </summary>
+    /// <param name="specification">The specification used to locate the project modification.</param>
+    /// <returns>The matching <see cref="ProjectModification"/> entity, or null if not found.</returns>
+    Task<ProjectModification?> GetModification(GetModificationSpecification specification);
 }

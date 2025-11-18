@@ -66,7 +66,7 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
         return modificationChanges.Adapt<IEnumerable<ModificationChangeResponse>>();
     }
 
-    public Task<ModificationResponse> GetModifications
+    public Task<ModificationSearchResponse> GetModifications
     (
         ModificationSearchRequest searchQuery,
         int pageNumber,
@@ -78,14 +78,14 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
         var modifications = projectModificationRepository.GetModifications(searchQuery, pageNumber, pageSize, sortField, sortDirection);
         var totalCount = projectModificationRepository.GetModificationsCount(searchQuery);
 
-        return Task.FromResult(new ModificationResponse
+        return Task.FromResult(new ModificationSearchResponse
         {
             Modifications = modifications.Adapt<IEnumerable<ModificationDto>>(),
             TotalCount = totalCount
         });
     }
 
-    public Task<ModificationResponse> GetModificationsForProject
+    public Task<ModificationSearchResponse> GetModificationsForProject
     (
         string projectRecordId,
         ModificationSearchRequest searchQuery,
@@ -98,7 +98,7 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
         var modifications = projectModificationRepository.GetModifications(searchQuery, pageNumber, pageSize, sortField, sortDirection, projectRecordId);
         var totalCount = projectModificationRepository.GetModificationsCount(searchQuery, projectRecordId);
 
-        return Task.FromResult(new ModificationResponse
+        return Task.FromResult(new ModificationSearchResponse
         {
             Modifications = modifications.Adapt<IEnumerable<ModificationDto>>(),
             TotalCount = totalCount,
@@ -106,11 +106,11 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
         });
     }
 
-    public Task<ModificationResponse> GetModificationsByIds(List<string> Ids)
+    public Task<ModificationSearchResponse> GetModificationsByIds(List<string> Ids)
     {
         var modifications = projectModificationRepository.GetModificationsByIds(Ids);
 
-        return Task.FromResult(new ModificationResponse
+        return Task.FromResult(new ModificationSearchResponse
         {
             Modifications = modifications.Adapt<IEnumerable<ModificationDto>>(),
         });
@@ -155,12 +155,40 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
     /// Updates an existing modification status by its unique identifier. And also updates
     /// the status of the associated modification changes.
     /// </summary>
+    /// <param name="modificationChangeRequest">The request containing the updated modification change details.</param>
+    public async Task UpdateModificationChange(UpdateModificationChangeRequest modificationChangeRequest)
+    {
+        var specification = new GetModificationChangeSpecification(modificationChangeRequest.Id);
+
+        var modificationChange = modificationChangeRequest.Adapt<ProjectModificationChange>();
+
+        await projectModificationRepository.UpdateModificationChange(specification, modificationChange);
+    }
+
+    /// <summary>
+    /// Updates an existing modification status by its unique identifier. And also updates
+    /// the status of the associated modification changes.
+    /// </summary>
     /// <param name="modificationId">The unique identifier of the modification change to remove.</param>
     public async Task UpdateModificationStatus(Guid modificationId, string status)
     {
         var specification = new GetModificationSpecification(modificationId);
 
         await projectModificationRepository.UpdateModificationStatus(specification, status);
+    }
+
+    /// <summary>
+    /// Updates an existing modification status by its unique identifier. And also updates
+    /// the status of the associated modification changes.
+    /// </summary>
+    /// <param name="modificationRequest">The </param>
+    public async Task UpdateModification(UpdateModificationRequest modificationRequest)
+    {
+        var specification = new GetModificationSpecification(modificationRequest.Id);
+
+        var projectModification = modificationRequest.Adapt<ProjectModification>();
+
+        await projectModificationRepository.UpdateModification(specification, projectModification);
     }
 
     /// <summary>
@@ -186,7 +214,7 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
         };
     }
 
-    public Task<ModificationResponse> GetModificationsBySponsorOrganisationUserId
+    public Task<ModificationSearchResponse> GetModificationsBySponsorOrganisationUserId
     (
         Guid sponsorOrganisationUserId,
         SponsorAuthorisationsSearchRequest searchQuery,
@@ -199,10 +227,66 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
         var modifications = projectModificationRepository.GetModificationsBySponsorOrganisationUser(searchQuery, pageNumber, pageSize, sortField, sortDirection, sponsorOrganisationUserId);
         var totalCount = projectModificationRepository.GetModificationsBySponsorOrganisationUserCount(searchQuery, sponsorOrganisationUserId);
 
-        return Task.FromResult(new ModificationResponse
+        return Task.FromResult(new ModificationSearchResponse
         {
             Modifications = modifications.Adapt<IEnumerable<ModificationDto>>(),
             TotalCount = totalCount
         });
+    }
+
+    /// <summary>
+    /// Saves modification review responses.
+    /// </summary>
+    /// <param name="modificationReviewRequest">The request object containing the review values</param>
+    public Task SaveModificationReviewResponses(ModificationReviewRequest modificationReviewRequest)
+    {
+        return projectModificationRepository.SaveModificationReviewResponses(modificationReviewRequest);
+    }
+
+    /// <summary>
+    /// Gets modification review responses for a specific project modification.
+    /// </summary>
+    /// <param name="projectModificationId">The unique identifier of the modification</param>
+    /// <returns>The modification review responses</returns>
+    public async Task<ModificationReviewResponse> GetModificationReviewResponses(Guid projectModificationId)
+    {
+        var modification = await projectModificationRepository.GetModificationById(projectModificationId);
+
+        var result = new ModificationReviewResponse
+        {
+            ModificationId = modification.Id,
+            Comment = modification.ReviewerComments,
+            ReasonNotApproved = modification.ReasonNotApproved,
+            ReviewOutcome = modification.ProvisionalReviewOutcome
+        };
+
+        return result;
+    }
+
+    public Task<ProjectOverviewDocumentResponse> GetDocumentsForModification(
+        Guid modificationId,
+        ProjectOverviewDocumentSearchRequest searchQuery,
+        int pageNumber,
+        int pageSize,
+        string sortField,
+        string sortDirection)
+    {
+        var modifications = projectModificationRepository.GetDocumentsForModification(searchQuery, pageNumber, pageSize, sortField, sortDirection, modificationId);
+        var totalCount = projectModificationRepository.GetDocumentsForModificationCount(searchQuery, modificationId);
+
+        return Task.FromResult(new ProjectOverviewDocumentResponse
+        {
+            Documents = modifications.Adapt<IEnumerable<ProjectOverviewDocumentDto>>(),
+            TotalCount = totalCount
+        });
+    }
+
+    public async Task<ModificationResponse?> GetModification(string projectModificationId)
+    {
+        var specification = new GetModificationSpecification(Guid.Parse(projectModificationId));
+
+        var modification = await projectModificationRepository.GetModification(specification);
+
+        return modification?.Adapt<ModificationResponse>();
     }
 }

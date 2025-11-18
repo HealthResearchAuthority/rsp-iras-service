@@ -8,9 +8,9 @@ public class ModificationDocumentDto
     public Guid Id { get; set; }
 
     /// <summary>
-    /// Gets or sets the identifier of the related project modification change.
+    /// Gets or sets the identifier of the related project modification.
     /// </summary>
-    public Guid ProjectModificationChangeId { get; set; }
+    public Guid ProjectModificationId { get; set; }
 
     /// <summary>
     /// Gets or sets the project record identifier.
@@ -41,4 +41,9 @@ public class ModificationDocumentDto
     /// Gets or sets the status.
     /// </summary>
     public string? Status { get; set; }
+
+    /// <summary>
+    /// Gets or sets if the scan is successful or not.
+    /// </summary>
+    public bool? IsMalwareScanSuccessful { get; set; }
 }

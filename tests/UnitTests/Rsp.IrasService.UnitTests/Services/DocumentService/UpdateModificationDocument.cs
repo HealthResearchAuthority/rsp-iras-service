@@ -47,13 +47,13 @@ public class UpdateModificationDocument : TestServiceBase<IrasService.Services.D
         var existingDocument = new ModificationDocument
         {
             Id = Guid.NewGuid(),
-            ProjectModificationChangeId = Guid.NewGuid(),
+            ProjectModificationId = Guid.NewGuid(),
             ProjectPersonnelId = "person-123",
             ProjectRecordId = "record-456",
             DocumentStoragePath = "original/path.pdf",
             FileName = "original.pdf",
             FileSize = 1234,
-            DocumentStatus = "Pending",
+            IsMalwareScanSuccessful = true,
             CreatedDate = DateTime.UtcNow
         };
 
@@ -67,7 +67,7 @@ public class UpdateModificationDocument : TestServiceBase<IrasService.Services.D
             FileName = existingDocument.FileName,
             ProjectPersonnelId = existingDocument.ProjectPersonnelId,
             ProjectRecordId = existingDocument.ProjectRecordId,
-            ProjectModificationChangeId = existingDocument.ProjectModificationChangeId,
+            ProjectModificationId = existingDocument.ProjectModificationId,
             Status = "Clean",
         };
 

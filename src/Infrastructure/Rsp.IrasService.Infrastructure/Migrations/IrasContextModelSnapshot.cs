@@ -107,9 +107,6 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("DocumentStatus")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("DocumentStoragePath")
                         .HasColumnType("nvarchar(max)");
 
@@ -120,7 +117,10 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Property<int?>("FileSize")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("ProjectModificationChangeId")
+                    b.Property<bool?>("IsMalwareScanSuccessful")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("ProjectModificationId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ProjectPersonnelId")
@@ -136,7 +136,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectModificationChangeId");
+                    b.HasIndex("ProjectModificationId");
 
                     b.HasIndex("ProjectPersonnelId");
 
@@ -291,7 +291,16 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("ProvisionalReviewOutcome")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReasonNotApproved")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ReviewType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReviewerComments")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReviewerEmail")
@@ -808,9 +817,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationDocument", b =>
                 {
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectModificationChange", "ProjectModificationChange")
+                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectModification", "ProjectModification")
                         .WithMany()
-                        .HasForeignKey("ProjectModificationChangeId")
+                        .HasForeignKey("ProjectModificationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -826,7 +835,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("ProjectModificationChange");
+                    b.Navigation("ProjectModification");
 
                     b.Navigation("ProjectPersonnel");
 

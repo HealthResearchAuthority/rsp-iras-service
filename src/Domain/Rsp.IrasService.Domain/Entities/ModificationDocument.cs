@@ -8,9 +8,9 @@ public class ModificationDocument
     public Guid Id { get; set; }
 
     /// <summary>
-    /// Gets or sets the unique identifier for the project modification change.
+    /// Gets or sets the unique identifier for the project modification.
     /// </summary>
-    public Guid ProjectModificationChangeId { get; set; }
+    public Guid ProjectModificationId { get; set; }
 
     /// <summary>
     /// Gets or sets the identifier of the project personnel related to this document.
@@ -43,9 +43,9 @@ public class ModificationDocument
     public string? Status { get; set; }
 
     /// <summary>
-    /// Gets or sets the document scan status.
+    /// Gets or sets if the scan is successful or not.
     /// </summary>
-    public string? DocumentStatus { get; set; }
+    public bool? IsMalwareScanSuccessful { get; set; }
 
     /// <summary>
     /// Gets or sets the document created date.
@@ -65,5 +65,5 @@ public class ModificationDocument
     /// <summary>
     /// Navigation property to the related project modification change.
     /// </summary>
-    public ProjectModificationChange? ProjectModificationChange { get; set; }
+    public ProjectModification? ProjectModification { get; set; }
 }
