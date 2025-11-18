@@ -99,7 +99,8 @@ public class ProjectModificationAuditTrailHandler :
             ModificationStatus.WithSponsor => "Modification sent to sponsor",
             ModificationStatus.WithReviewBody => "Modification authorised by sponsor",
             ModificationStatus.Approved => "Modification approved by review body",
-            ModificationStatus.NotApproved => "Modification not approved by review body or sponsor",
+            ModificationStatus.NotApproved => "Modification not approved by review body",
+            ModificationStatus.NotAuthorised => "Modification not authorised by sponsor",
             _ => "",
         };
     }
