@@ -280,7 +280,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                 (string.IsNullOrEmpty(searchQuery.IrasId)
                  || x.IrasId.Contains(searchQuery.IrasId, StringComparison.OrdinalIgnoreCase))
                 && (string.IsNullOrEmpty(searchQuery.ModificationId)
-                 || x.ModificationId.Contains(searchQuery.ModificationId, StringComparison.OrdinalIgnoreCase))
+                    || x.ModificationId.Contains(searchQuery.ModificationId, StringComparison.OrdinalIgnoreCase))
                 && (string.IsNullOrEmpty(searchQuery.ChiefInvestigatorName)
                     || x.ChiefInvestigator.Contains(searchQuery.ChiefInvestigatorName,
                         StringComparison.OrdinalIgnoreCase))
@@ -311,7 +311,9 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                 && (string.IsNullOrEmpty(searchQuery.ModificationType) ||
                     x.ModificationType.Contains(searchQuery.ModificationType, StringComparison.OrdinalIgnoreCase))
                 && (string.IsNullOrEmpty(searchQuery.Status) ||
-                    x.Status.Contains(searchQuery.Status, StringComparison.OrdinalIgnoreCase)));
+                    x.Status.Contains(searchQuery.Status, StringComparison.OrdinalIgnoreCase))
+                && (!searchQuery.AllowedStatuses.Any()
+                    || searchQuery.AllowedStatuses.Contains(x.Status, StringComparer.OrdinalIgnoreCase)));
     }
 
     private static IEnumerable<ProjectModificationResult> SortModifications(
