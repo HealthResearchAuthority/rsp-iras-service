@@ -6,19 +6,10 @@ using Rsp.IrasService.Application.DTOS.Responses;
 
 namespace Rsp.IrasService.UnitTests.Application.CQRS.Handlers.QueryHandlers;
 
-public class GetModificationsForProjectHandlerTests
+public class GetModificationsForProjectHandlerTests : TestServiceBase<GetModificationsForProjectHandler>
 {
-    private readonly Mock<IProjectModificationService> _modificationServiceMock;
-    private readonly GetModificationsForProjectHandler _handler;
-
-    public GetModificationsForProjectHandlerTests()
-    {
-        _modificationServiceMock = new Mock<IProjectModificationService>();
-        _handler = new GetModificationsForProjectHandler(_modificationServiceMock.Object);
-    }
-
     [Fact]
-    public async Task Handle_ShouldReturnExpectedModificationResponse()
+    public async Task Handle_ShouldReturnExpectedModificationSearchResponse()
     {
         // Arrange
         var projectRecordId = "PR-001";
@@ -33,7 +24,7 @@ public class GetModificationsForProjectHandlerTests
             new() { ModificationId = "MOD-001", ChiefInvestigator = "Dr. Smith" }
         };
 
-        var expectedResponse = new ModificationResponse
+        var expectedResponse = new ModificationSearchResponse
         {
             Modifications = expectedModifications,
             TotalCount = expectedModifications.Count,
@@ -49,18 +40,25 @@ public class GetModificationsForProjectHandlerTests
             sortDirection: "asc"
         );
 
-        _modificationServiceMock
-            .Setup(service => service.GetModificationsForProject(
-                query.ProjectRecordId,
-                query.SearchQuery,
-                query.PageNumber,
-                query.PageSize,
-                query.SortField,
-                query.SortDirection))
+        var modificationService = Mocker.GetMock<IProjectModificationService>();
+
+        modificationService
+            .Setup
+            (
+                service => service.GetModificationsForProject
+                (
+                    query.ProjectRecordId,
+                    query.SearchQuery,
+                    query.PageNumber,
+                    query.PageSize,
+                    query.SortField,
+                    query.SortDirection
+                )
+            )
             .ReturnsAsync(expectedResponse);
 
         // Act
-        var result = await _handler.Handle(query, CancellationToken.None);
+        var result = await Sut.Handle(query, CancellationToken.None);
 
         // Assert
         result.ShouldNotBeNull();
@@ -69,14 +67,19 @@ public class GetModificationsForProjectHandlerTests
         result.Modifications.ShouldHaveSingleItem();
         result.Modifications.First().ModificationId.ShouldBe("MOD-001");
 
-        _modificationServiceMock.Verify(service =>
-            service.GetModificationsForProject(
-                query.ProjectRecordId,
-                query.SearchQuery,
-                query.PageNumber,
-                query.PageSize,
-                query.SortField,
-                query.SortDirection),
-            Times.Once);
+        modificationService.Verify
+        (
+            service =>
+                service.GetModificationsForProject
+                (
+                    query.ProjectRecordId,
+                    query.SearchQuery,
+                    query.PageNumber,
+                    query.PageSize,
+                    query.SortField,
+                    query.SortDirection
+                ),
+            Times.Once
+        );
     }
 }

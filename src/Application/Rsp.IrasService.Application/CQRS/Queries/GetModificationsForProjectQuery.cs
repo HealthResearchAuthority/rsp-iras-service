@@ -12,7 +12,7 @@ public class GetModificationsForProjectQuery
     int pageSize,
     string sortField,
     string sortDirection
-) : IRequest<ModificationResponse>
+) : IRequest<ModificationSearchResponse>
 {
     public string ProjectRecordId { get; } = projectRecordId;
     public ModificationSearchRequest SearchQuery { get; } = searchQuery;

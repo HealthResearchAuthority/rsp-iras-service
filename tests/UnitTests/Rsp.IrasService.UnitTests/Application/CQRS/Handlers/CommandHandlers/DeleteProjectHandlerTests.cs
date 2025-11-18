@@ -10,15 +10,11 @@ public class DeleteProjectHandlerTests : TestServiceBase<DeleteProjectHandler>
     public async Task Calls_Service_DeleteProject_With_Correct_Id(string projectRecordId)
     {
         // Arrange
-        var service = new Mock<IApplicationsService>();
+        var service = Mocker.GetMock<IApplicationsService>();
 
         service
             .Setup(s => s.DeleteProject(projectRecordId))
             .Returns(Task.CompletedTask).Verifiable();
-
-        Mocker.Use(service.Object);
-
-        Sut = Mocker.CreateInstance<DeleteProjectHandler>();
 
         var command = new DeleteProjectCommand(projectRecordId);
 

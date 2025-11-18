@@ -20,7 +20,7 @@ public class GetModificationsBySponsorOrganisationUserIdControllerTests : TestSe
     public async Task GetModificationsBySponsorOrganisationUserId_ShouldReturnOk_WhenModificationsExist(
         Guid sponsorOrganisationUserId,
         SponsorAuthorisationsSearchRequest searchQuery,
-        ModificationResponse mockResponse,
+        ModificationSearchResponse mockResponse,
         int pageNumber,
         int pageSize,
         string sortField,
