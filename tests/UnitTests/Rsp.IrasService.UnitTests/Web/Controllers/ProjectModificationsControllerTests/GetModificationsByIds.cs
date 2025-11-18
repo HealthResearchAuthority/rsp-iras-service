@@ -11,7 +11,7 @@ public class GetModificationsByIds : TestServiceBase<ProjectModificationsControl
     public async Task GetModificationsById_ShouldReturnOk_WhenModificationsExist
     (
         List<string> ids,
-        ModificationResponse mockResponse
+        ModificationSearchResponse mockResponse
     )
     {
         // Arrange

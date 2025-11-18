@@ -1,6 +1,4 @@
-﻿using Rsp.IrasService.Application.DTOS.Requests;
-
-namespace Rsp.IrasService.Application.DTOS.Responses;
+﻿namespace Rsp.IrasService.Application.DTOS.Responses;
 
 /// <summary>
 /// Represents the response containing details about a modification, including metadata and a list of modifications.
@@ -33,6 +31,21 @@ public record ModificationResponse
     public string Status { get; set; } = null!;
 
     /// <summary>
+    /// Overall ranking type of the modification
+    /// </summary>
+    public string? ModificationType { get; set; }
+
+    /// <summary>
+    /// Overall ranking category of the modification
+    /// </summary>
+    public string? Category { get; set; }
+
+    /// <summary>
+    /// Overall ranking review type of the modification
+    /// </summary>
+    public string? ReviewType { get; set; }
+
+    /// <summary>
     /// The user ID of the person who created the modification.
     /// </summary>
     public string CreatedBy { get; set; } = null!;
@@ -51,14 +64,4 @@ public record ModificationResponse
     /// The date and time when the modification was last updated.
     /// </summary>
     public DateTime UpdatedDate { get; set; }
-
-    /// <summary>
-    /// A collection of modification DTOs associated with this response.
-    /// </summary>
-    public IEnumerable<ModificationDto> Modifications { get; set; } = [];
-
-    /// <summary>
-    /// The total count of modifications associated with the application.
-    /// </summary>
-    public int TotalCount { get; set; }
 }

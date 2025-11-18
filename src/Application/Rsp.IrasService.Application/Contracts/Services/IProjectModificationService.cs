@@ -47,8 +47,8 @@ public interface IProjectModificationService : IInterceptable
     /// <param name="pageSize">Maximum number of records per page.</param>
     /// <param name="sortField">The field name to sort by (implementation defines allowable values).</param>
     /// <param name="sortDirection">The sort direction: typically 'asc' or 'desc' (case-insensitive).</param>
-    /// <returns>A <see cref="ModificationResponse"/> containing the page of modifications plus total count metadata.</returns>
-    Task<ModificationResponse> GetModifications
+    /// <returns>A <see cref="ModificationSearchResponse"/> containing the page of modifications plus total count metadata.</returns>
+    Task<ModificationSearchResponse> GetModifications
     (
         ModificationSearchRequest searchQuery,
         int pageNumber,
@@ -66,8 +66,8 @@ public interface IProjectModificationService : IInterceptable
     /// <param name="pageSize">Maximum number of records per page.</param>
     /// <param name="sortField">The field name to sort by (implementation defines allowable values).</param>
     /// <param name="sortDirection">The sort direction: typically 'asc' or 'desc'.</param>
-    /// <returns>A <see cref="ModificationResponse"/> containing the filtered page of modifications for the project.</returns>
-    Task<ModificationResponse> GetModificationsForProject
+    /// <returns>A <see cref="ModificationSearchResponse"/> containing the filtered page of modifications for the project.</returns>
+    Task<ModificationSearchResponse> GetModificationsForProject
     (
        string projectRecordId,
        ModificationSearchRequest searchQuery,
@@ -81,8 +81,8 @@ public interface IProjectModificationService : IInterceptable
     /// Retrieves modifications for the specified collection of modification identifiers.
     /// </summary>
     /// <param name="Ids">A list of modification identifiers (string form) to fetch.</param>
-    /// <returns>A <see cref="ModificationResponse"/> containing the matching modifications.</returns>
-    Task<ModificationResponse> GetModificationsByIds(List<string> Ids);
+    /// <returns>A <see cref="ModificationSearchResponse"/> containing the matching modifications.</returns>
+    Task<ModificationSearchResponse> GetModificationsByIds(List<string> Ids);
 
     /// <summary>
     /// Assigns the specified modifications to the given reviewer.
@@ -108,11 +108,22 @@ public interface IProjectModificationService : IInterceptable
     Task RemoveModificationChange(Guid modificationChangeId);
 
     /// <summary>
+    /// Updates an existing modification change.
+    /// </summary>
+    /// <param name="modificationChangeRequest">The request containing the updated modification change details.</param>
+    Task UpdateModificationChange(UpdateModificationChangeRequest modificationChangeRequest);
+
+    /// <summary>
     /// Updates an existing modification status by its unique identifier. And also updates
     /// the status of the associated modification changes.
     /// </summary>
     /// <param name="modificationId">The unique identifier of the modification change to remove.</param>
     Task UpdateModificationStatus(Guid modificationId, string status);
+
+    /// <summary>
+    /// Applies a partial update to an existing modification and cascades status where applicable.
+    /// </summary>
+    Task UpdateModification(UpdateModificationRequest modificationRequest);
 
     /// <summary>
     /// Deletes an existing modification by its unique identifier.
@@ -136,8 +147,8 @@ public interface IProjectModificationService : IInterceptable
     /// <param name="pageSize">The number of items per page (used for pagination).</param>
     /// <param name="sortField">The field name by which the results should be sorted.</param>
     /// <param name="sortDirection">The direction of sorting: "asc" for ascending or "desc" for descending.</param>
-    /// <returns>A <see cref="ModificationResponse"/> containing the filtered page of modifications for the project.</returns>
-    Task<ModificationResponse> GetModificationsBySponsorOrganisationUserId
+    /// <returns>A <see cref="ModificationSearchResponse"/> containing the filtered page of modifications for the project.</returns>
+    Task<ModificationSearchResponse> GetModificationsBySponsorOrganisationUserId
     (
        Guid sponsorOrganisationUserId,
        SponsorAuthorisationsSearchRequest searchQuery,
@@ -159,4 +170,19 @@ public interface IProjectModificationService : IInterceptable
     /// <param name="projectModificationId">The unique identifier of the modification</param>
     /// <returns>The modification review responses</returns>
     Task<ModificationReviewResponse> GetModificationReviewResponses(Guid projectModificationId);
+
+    Task<ProjectOverviewDocumentResponse> GetDocumentsForModification(
+        Guid modificationId,
+        ProjectOverviewDocumentSearchRequest searchQuery,
+        int pageNumber,
+        int pageSize,
+        string sortField,
+        string sortDirection);
+
+    /// <summary>
+    /// Retrieves a specific project modification by its unique identifier.
+    /// </summary>
+    /// <param name="projectModificationId">The unique identifier of the project modification to retrieve.</param>
+    /// <returns>A <see cref="ModificationResponse"/> containing the details of the requested project modification.</returns>
+    Task<ModificationResponse?> GetModification(string projectModificationId);
 }

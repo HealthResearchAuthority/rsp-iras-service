@@ -35,7 +35,7 @@ public class GetModificationDocuments : TestServiceBase<RespondentController>
                 (
                     It.Is<GetModificationDocumentsQuery>
                     (q =>
-                        q.ProjectModificationChangeId == modificationChangeId &&
+                        q.ProjectModificationId == modificationChangeId &&
                         q.ProjectRecordId == projectRecordId
                     ), It.IsAny<CancellationToken>()
                 ),
@@ -72,7 +72,7 @@ public class GetModificationDocuments : TestServiceBase<RespondentController>
                     (
                         It.Is<GetModificationDocumentsQuery>
                         (q =>
-                            q.ProjectModificationChangeId == modificationChangeId &&
+                            q.ProjectModificationId == modificationChangeId &&
                             q.ProjectRecordId == projectRecordId
                         ), It.IsAny<CancellationToken>()
                     ),

@@ -12,7 +12,7 @@ public class GetModificationsBySponsorOrganisationUserIdQuery
     int pageSize,
     string sortField,
     string sortDirection
-) : IRequest<ModificationResponse>
+) : IRequest<ModificationSearchResponse>
 {
     public Guid SponsorOrganisationUserId { get; } = sponsorOrganisationUserId;
     public SponsorAuthorisationsSearchRequest SearchQuery { get; } = searchQuery;
