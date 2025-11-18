@@ -7,4 +7,5 @@ public struct ModificationStatus
     public const string WithReviewBody = "With review body";
     public const string Approved = "Approved";
     public const string NotApproved = "Not approved";
+    public const string NotAuthorised = "Not authorised";
 }

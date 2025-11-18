@@ -412,8 +412,9 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                 &&
                 (x.Status == ModificationStatus.WithSponsor ||
                  x.Status == ModificationStatus.Approved ||
+                 x.Status == ModificationStatus.NotApproved ||
                  x.Status == ModificationStatus.WithReviewBody ||
-                 x.Status == ModificationStatus.NotApproved));
+                 x.Status == ModificationStatus.NotAuthorised));
     }
 
     /// <summary>
@@ -652,7 +653,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
 
         switch (status)
         {
-            case ModificationStatus.Approved or ModificationStatus.WithReviewBody:
+            // No update of SentToRegulatorDate when SWR approves modification (changes to ModificationStatus.NotApproved)
+            case ModificationStatus.Approved or ModificationStatus.WithReviewBody or ModificationStatus.NotAuthorised:
                 modification.SentToRegulatorDate ??= DateTime.Now;
                 break;
 
