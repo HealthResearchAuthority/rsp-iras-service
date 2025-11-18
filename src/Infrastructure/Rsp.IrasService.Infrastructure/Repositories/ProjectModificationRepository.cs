@@ -289,9 +289,11 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                 && (string.IsNullOrEmpty(searchQuery.SponsorOrganisation)
                     || x.SponsorOrganisation.Equals(searchQuery.SponsorOrganisation,
                         StringComparison.OrdinalIgnoreCase))
-                // ✅ Date-only filtering (ignore time)
-                && (!fromDate.HasValue || (x.SentToRegulatorDate.HasValue && x.SentToRegulatorDate.Value.Date >= fromDate.Value))
-                && (!toDate.HasValue || (x.SentToRegulatorDate.HasValue && x.SentToRegulatorDate.Value.Date <= toDate.Value))
+                // ✅ DateSubmitted-only filtering (ignore time)
+                && (!fromDate.HasValue ||
+                    (x.DateSubmitted.HasValue && x.DateSubmitted.Value.Date >= fromDate.Value))
+                && (!toDate.HasValue ||
+                    (x.DateSubmitted.HasValue && x.DateSubmitted.Value.Date <= toDate.Value))
                 && (searchQuery.LeadNation.Count == 0
                     || searchQuery.LeadNation.Contains(x.LeadNation, StringComparer.OrdinalIgnoreCase))
                 && (searchQuery.ParticipatingNation.Count == 0
@@ -317,7 +319,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
     {
         Func<ProjectModificationResult, object>? keySelector = sortField switch
         {
-            nameof(ProjectModificationResult.ModificationNumber) => x => x.ModificationNumber,
+            nameof(ProjectModificationResult.ModificationId) => x => x.ModificationId,
             nameof(ProjectModificationResult.ChiefInvestigator) => x => x.ChiefInvestigator.ToLowerInvariant(),
             nameof(ProjectModificationResult.ShortProjectTitle) => x => x.ShortProjectTitle.ToLowerInvariant(),
             nameof(ProjectModificationResult.ModificationType) => x => x.ModificationType.ToLowerInvariant(),
@@ -328,13 +330,15 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             nameof(ProjectModificationResult.SentToRegulatorDate) => x => x.SentToRegulatorDate!,
             nameof(ProjectModificationResult.SentToSponsorDate) => x => x.SentToSponsorDate!,
             nameof(ProjectModificationResult.ReviewerName) => x => x.ReviewerName,
+            // ✅ New combined date field
+            nameof(ProjectModificationResult.DateSubmitted) => x => x.DateSubmitted!,
             _ => null
         };
 
         if (keySelector == null)
             return modifications;
 
-        if (sortField == nameof(ProjectModificationResult.ModificationNumber))
+        if (sortField == nameof(ProjectModificationResult.ModificationId))
         {
             return sortDirection == "desc"
                 ? modifications
@@ -349,6 +353,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             ? modifications.OrderByDescending(keySelector)
             : modifications.OrderBy(keySelector);
     }
+
 
     private IQueryable<ProjectModificationResult> ProjectModificationBySponsorOrganisationUserQuery(Guid sponsorOrganisationUserId)
     {
