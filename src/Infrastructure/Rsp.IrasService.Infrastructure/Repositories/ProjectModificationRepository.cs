@@ -241,32 +241,44 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                };
     }
 
+    /// <summary>
+    /// Filters and normalises a collection of ProjectModificationResult items
+    /// based on the user's search criteria.
+    /// 
+    /// Steps:
+    /// 1. Normalise LeadNation and ParticipatingNation values using lookups.
+    /// 2. Apply all search filters (text search, dates, nations, statuses, reviewer filters, etc.).
+    /// </summary>
     private static IEnumerable<ProjectModificationResult> FilterModifications
     (
         IQueryable<ProjectModificationResult> modifications,
         ModificationSearchRequest searchQuery
     )
     {
+        // Extract date-only values from the search request (ignore time-of-day)
         var fromDate = searchQuery.FromDate?.Date;
         var toDate = searchQuery.ToDate?.Date;
 
         return modifications
-            .AsEnumerable()
+            .AsEnumerable() // Switch to in-memory so we can perform mapping logic
             .Select(mod =>
             {
+                // Map LeadNation code → Nation name (fallback to empty string if unknown)
                 mod.LeadNation = ProjectRecordConstants.NationIdMap.TryGetValue(mod.LeadNation, out var leadnation)
                     ? leadnation
                     : string.Empty;
 
-                // Map ParticipatingNation codes to names
+                // Map comma-separated ParticipatingNation codes → readable names
                 if (!string.IsNullOrWhiteSpace(mod.ParticipatingNation))
                 {
-                    var parts = mod.ParticipatingNation.Split(',',
-                        StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                    var parts = mod.ParticipatingNation.Split(
+                        ',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
                     var mapped = parts
                         .Select(code =>
                             ProjectRecordConstants.NationIdMap.TryGetValue(code, out var name) ? name : null)
                         .Where(n => !string.IsNullOrEmpty(n));
+
                     mod.ParticipatingNation = string.Join(", ", mapped);
                 }
                 else
@@ -277,39 +289,70 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                 return mod;
             })
             .Where(x =>
+                // IRAS ID text search
                 (string.IsNullOrEmpty(searchQuery.IrasId)
                  || x.IrasId.Contains(searchQuery.IrasId, StringComparison.OrdinalIgnoreCase))
+
+                // Modification ID text search
                 && (string.IsNullOrEmpty(searchQuery.ModificationId)
-                 || x.ModificationId.Contains(searchQuery.ModificationId, StringComparison.OrdinalIgnoreCase))
+                    || x.ModificationId.Contains(searchQuery.ModificationId, StringComparison.OrdinalIgnoreCase))
+
+                // Chief Investigator name search
                 && (string.IsNullOrEmpty(searchQuery.ChiefInvestigatorName)
-                    || x.ChiefInvestigator.Contains(searchQuery.ChiefInvestigatorName,
-                        StringComparison.OrdinalIgnoreCase))
+                    || x.ChiefInvestigator.Contains(searchQuery.ChiefInvestigatorName, StringComparison.OrdinalIgnoreCase))
+
+                // Short project title search
                 && (string.IsNullOrEmpty(searchQuery.ShortProjectTitle)
                     || x.ShortProjectTitle.Contains(searchQuery.ShortProjectTitle, StringComparison.OrdinalIgnoreCase))
+
+                // Sponsor organisation exact match
                 && (string.IsNullOrEmpty(searchQuery.SponsorOrganisation)
-                    || x.SponsorOrganisation.Equals(searchQuery.SponsorOrganisation,
-                        StringComparison.OrdinalIgnoreCase))
-                // ✅ Date-only filtering (ignore time)
-                && (!fromDate.HasValue || (x.SentToRegulatorDate.HasValue && x.SentToRegulatorDate.Value.Date >= fromDate.Value))
-                && (!toDate.HasValue || (x.SentToRegulatorDate.HasValue && x.SentToRegulatorDate.Value.Date <= toDate.Value))
+                    || x.SponsorOrganisation.Equals(searchQuery.SponsorOrganisation, StringComparison.OrdinalIgnoreCase))
+
+                // From date filter — requires SentToRegulatorDate to exist and be >= fromDate
+                && (!fromDate.HasValue ||
+                    (x.SentToRegulatorDate.HasValue && x.SentToRegulatorDate.Value.Date >= fromDate.Value))
+
+                // To date filter — requires SentToRegulatorDate to exist and be <= toDate
+                && (!toDate.HasValue ||
+                    (x.SentToRegulatorDate.HasValue && x.SentToRegulatorDate.Value.Date <= toDate.Value))
+
+                // Lead nation filter (if the user selected any)
                 && (searchQuery.LeadNation.Count == 0
                     || searchQuery.LeadNation.Contains(x.LeadNation, StringComparer.OrdinalIgnoreCase))
+
+                // Participating nation filter (matches at least one)
                 && (searchQuery.ParticipatingNation.Count == 0
                     || x.ParticipatingNation
                         .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
                         .Any(pn => searchQuery.ParticipatingNation.Contains(pn, StringComparer.OrdinalIgnoreCase)))
+
+                // Modification Type(s) filter — multi-select
                 && (searchQuery.ModificationTypes.Count == 0
                     || searchQuery.ModificationTypes.Contains(x.ModificationType, StringComparer.OrdinalIgnoreCase))
+
+                // Reviewer ID filter — only applied when IncludeReviewerId = true
                 && (!searchQuery.IncludeReviewerId
                     || x.ReviewerId == searchQuery.ReviewerId)
+
+                // Reviewer Name filter — only applied when IncludeReviewerName = true
                 && (!searchQuery.IncludeReviewerName
                     || (!string.IsNullOrWhiteSpace(searchQuery.ReviewerName)
                         && (x.ReviewerName ?? string.Empty)
-                        .Contains(searchQuery.ReviewerName, StringComparison.OrdinalIgnoreCase)))
-                && (string.IsNullOrEmpty(searchQuery.ModificationType) ||
-                    x.ModificationType.Contains(searchQuery.ModificationType, StringComparison.OrdinalIgnoreCase))
-                && (string.IsNullOrEmpty(searchQuery.Status) ||
-                    x.Status.Contains(searchQuery.Status, StringComparison.OrdinalIgnoreCase)));
+                           .Contains(searchQuery.ReviewerName, StringComparison.OrdinalIgnoreCase)))
+
+                // Single ModificationType text match
+                && (string.IsNullOrEmpty(searchQuery.ModificationType)
+                    || x.ModificationType.Contains(searchQuery.ModificationType, StringComparison.OrdinalIgnoreCase))
+
+                // Status match (single value)
+                && (string.IsNullOrEmpty(searchQuery.Status)
+                    || x.Status.Contains(searchQuery.Status, StringComparison.OrdinalIgnoreCase))
+
+                // Allowed statuses filter — restrict to allowed values
+                && (!searchQuery.AllowedStatuses.Any()
+                    || searchQuery.AllowedStatuses.Contains(x.Status, StringComparer.OrdinalIgnoreCase))
+            );
     }
 
     private static IEnumerable<ProjectModificationResult> SortModifications(
@@ -317,7 +360,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
     {
         Func<ProjectModificationResult, object>? keySelector = sortField switch
         {
-            nameof(ProjectModificationResult.ModificationNumber) => x => x.ModificationNumber,
+            nameof(ProjectModificationResult.ModificationId) or nameof(ProjectModificationResult.ModificationNumber) => x => x.ModificationId,
             nameof(ProjectModificationResult.ChiefInvestigator) => x => x.ChiefInvestigator.ToLowerInvariant(),
             nameof(ProjectModificationResult.ShortProjectTitle) => x => x.ShortProjectTitle.ToLowerInvariant(),
             nameof(ProjectModificationResult.ModificationType) => x => x.ModificationType.ToLowerInvariant(),
@@ -334,7 +377,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         if (keySelector == null)
             return modifications;
 
-        if (sortField == nameof(ProjectModificationResult.ModificationNumber))
+        if (sortField is nameof(ProjectModificationResult.ModificationId) or nameof(ProjectModificationResult.ModificationNumber))
         {
             return sortDirection == "desc"
                 ? modifications
@@ -349,6 +392,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             ? modifications.OrderByDescending(keySelector)
             : modifications.OrderBy(keySelector);
     }
+
 
     private IQueryable<ProjectModificationResult> ProjectModificationBySponsorOrganisationUserQuery(Guid sponsorOrganisationUserId)
     {
