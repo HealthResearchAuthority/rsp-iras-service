@@ -321,7 +321,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
     {
         Func<ProjectModificationResult, object>? keySelector = sortField switch
         {
-            nameof(ProjectModificationResult.ModificationId) => x => x.ModificationId,
+            nameof(ProjectModificationResult.ModificationId) or nameof(ProjectModificationResult.ModificationNumber) => x => x.ModificationId,
             nameof(ProjectModificationResult.ChiefInvestigator) => x => x.ChiefInvestigator.ToLowerInvariant(),
             nameof(ProjectModificationResult.ShortProjectTitle) => x => x.ShortProjectTitle.ToLowerInvariant(),
             nameof(ProjectModificationResult.ModificationType) => x => x.ModificationType.ToLowerInvariant(),
@@ -340,7 +340,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         if (keySelector == null)
             return modifications;
 
-        if (sortField == nameof(ProjectModificationResult.ModificationId))
+        if (sortField is nameof(ProjectModificationResult.ModificationId) or nameof(ProjectModificationResult.ModificationNumber))
         {
             return sortDirection == "desc"
                 ? modifications
