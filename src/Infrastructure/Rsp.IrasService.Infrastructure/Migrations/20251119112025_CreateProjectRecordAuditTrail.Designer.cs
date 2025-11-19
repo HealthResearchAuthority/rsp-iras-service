@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rsp.IrasService.Infrastructure;
 
@@ -11,9 +12,11 @@ using Rsp.IrasService.Infrastructure;
 namespace Rsp.IrasService.Infrastructure.Migrations
 {
     [DbContext(typeof(IrasContext))]
-    partial class IrasContextModelSnapshot : ModelSnapshot
+    [Migration("20251119112025_CreateProjectRecordAuditTrail")]
+    partial class CreateProjectRecordAuditTrail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +37,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DocumentTypes", (string)null);
+                    b.ToTable("DocumentTypes");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.EmailTemplate", b =>
@@ -74,7 +77,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasIndex("EventTypeId");
 
-                    b.ToTable("EmailTemplates", (string)null);
+                    b.ToTable("EmailTemplates");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.EventType", b =>
@@ -95,7 +98,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EventTypes", (string)null);
+                    b.ToTable("EventTypes");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationDocument", b =>
@@ -142,7 +145,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasIndex("ProjectRecordId");
 
-                    b.ToTable("ModificationDocuments", (string)null);
+                    b.ToTable("ModificationDocuments");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationDocumentAnswer", b =>
@@ -183,7 +186,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasIndex("ModificationDocumentId");
 
-                    b.ToTable("ModificationDocumentAnswers", (string)null);
+                    b.ToTable("ModificationDocumentAnswers");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationParticipatingOrganisation", b =>
@@ -215,7 +218,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasIndex("ProjectRecordId");
 
-                    b.ToTable("ModificationParticipatingOrganisations", (string)null);
+                    b.ToTable("ModificationParticipatingOrganisations");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationParticipatingOrganisationAnswer", b =>
@@ -258,7 +261,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasIndex("ModificationParticipatingOrganisationId");
 
-                    b.ToTable("ModificationParticipatingOrganisationAnswers", (string)null);
+                    b.ToTable("ModificationParticipatingOrganisationAnswers");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModification", b =>
@@ -333,7 +336,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasIndex("ProjectRecordId");
 
-                    b.ToTable("ProjectModifications", (string)null);
+                    b.ToTable("ProjectModifications");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModificationAnswer", b =>
@@ -380,7 +383,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasIndex("ProjectRecordId");
 
-                    b.ToTable("ProjectModificationAnswers", (string)null);
+                    b.ToTable("ProjectModificationAnswers");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModificationAuditTrail", b =>
@@ -407,7 +410,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasIndex("ProjectModificationId");
 
-                    b.ToTable("ProjectModificationAuditTrail", (string)null);
+                    b.ToTable("ProjectModificationAuditTrail");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModificationChange", b =>
@@ -458,7 +461,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasIndex("ProjectModificationId");
 
-                    b.ToTable("ProjectModificationChanges", (string)null);
+                    b.ToTable("ProjectModificationChanges");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModificationChangeAnswer", b =>
@@ -505,7 +508,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasIndex("ProjectRecordId");
 
-                    b.ToTable("ProjectModificationChangeAnswers", (string)null);
+                    b.ToTable("ProjectModificationChangeAnswers");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectPersonnel", b =>
@@ -530,7 +533,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProjectPersonnels", (string)null);
+                    b.ToTable("ProjectPersonnels");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectRecord", b =>
@@ -577,7 +580,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasIndex("ProjectPersonnelId");
 
-                    b.ToTable("ProjectRecords", (string)null);
+                    b.ToTable("ProjectRecords");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectRecordAnswer", b =>
@@ -618,7 +621,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasIndex("ProjectRecordId");
 
-                    b.ToTable("ProjectRecordAnswers", (string)null);
+                    b.ToTable("ProjectRecordAnswers");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectRecordAuditTrail", b =>
@@ -646,7 +649,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasIndex("ProjectRecordId");
 
-                    b.ToTable("ProjectRecordAuditTrail", (string)null);
+                    b.ToTable("ProjectRecordAuditTrail");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.RegulatoryBody", b =>
@@ -693,7 +696,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RegulatoryBodies", (string)null);
+                    b.ToTable("RegulatoryBodies");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.RegulatoryBodyAuditTrail", b =>
@@ -721,7 +724,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasIndex("RegulatoryBodyId");
 
-                    b.ToTable("RegulatoryBodiesAuditTrail", (string)null);
+                    b.ToTable("RegulatoryBodiesAuditTrail");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.RegulatoryBodyUser", b =>
@@ -740,7 +743,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasKey("Id", "UserId");
 
-                    b.ToTable("RegulatoryBodiesUsers", (string)null);
+                    b.ToTable("RegulatoryBodiesUsers");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.SponsorOrganisation", b =>
@@ -773,7 +776,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SponsorOrganisations", (string)null);
+                    b.ToTable("SponsorOrganisations");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.SponsorOrganisationAuditTrail", b =>
@@ -803,7 +806,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SponsorOrganisationsAuditTrail", (string)null);
+                    b.ToTable("SponsorOrganisationsAuditTrail");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.SponsorOrganisationUser", b =>
@@ -829,7 +832,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasKey("Id", "UserId");
 
-                    b.ToTable("SponsorOrganisationsUsers", (string)null);
+                    b.ToTable("SponsorOrganisationsUsers");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.EmailTemplate", b =>

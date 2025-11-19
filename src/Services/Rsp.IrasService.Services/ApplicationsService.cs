@@ -126,4 +126,15 @@ public class ApplicationsService(IProjectRecordRepository applicationRepository,
             TotalCount = totalCount
         };
     }
+
+    public async Task<ProjectRecordAuditTrailResponse> GetProjectRecordAuditTrail(string projectRecordId)
+    {
+        var auditTrail = await applicationRepository.GetProjectRecordAuditTrail(projectRecordId);
+
+        return new ProjectRecordAuditTrailResponse
+        {
+            Items = auditTrail.Adapt<IEnumerable<ProjectRecordAuditTrailDto>>(),
+            TotalCount = auditTrail.Count()
+        };
+    }
 }

@@ -1,9 +1,12 @@
-﻿namespace Rsp.IrasService.Domain.Entities;
+﻿using Rsp.IrasService.Domain.Attributes;
+using Rsp.IrasService.Domain.Interfaces;
+
+namespace Rsp.IrasService.Domain.Entities;
 
 /// <summary>
 /// Represents a project record, including its details and associated modifications.
 /// </summary>
-public class ProjectRecord
+public class ProjectRecord : IAuditable
 {
     /// <summary>
     /// Gets or sets the unique identifier for the project record.
@@ -33,6 +36,7 @@ public class ProjectRecord
     /// <summary>
     /// Gets or sets the status of the project.
     /// </summary>
+    [Auditable]
     public string? Status { get; set; }
 
     /// <summary>

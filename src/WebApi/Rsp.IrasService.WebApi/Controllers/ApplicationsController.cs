@@ -206,4 +206,11 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
 
         return Ok(result);
     }
+
+    [HttpGet("audittrail")]
+    public async Task<ProjectRecordAuditTrailResponse> GetAuditTrailResponse(string projectRecordId)
+    {
+        var query = new GetProjectRecordAuditTrailQuery(projectRecordId);
+        return await mediator.Send(query);
+    }
 }
