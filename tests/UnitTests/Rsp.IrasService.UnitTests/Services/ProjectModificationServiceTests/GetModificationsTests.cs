@@ -72,6 +72,7 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
             UpdatedDate = DateTime.Now,
             Status = "Active",
             SentToRegulatorDate = new DateTime(2023, 12, 31, 0, 0, 0, DateTimeKind.Utc),
+            SentToSponsorDate = new DateTime(2023, 11, 30, 0, 0, 0, DateTimeKind.Utc),
         };
 
         var answers = new List<ProjectRecordAnswer>
