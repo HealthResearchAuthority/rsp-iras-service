@@ -46,4 +46,9 @@ public class ModificationDocumentDto
     /// Gets or sets if the scan is successful or not.
     /// </summary>
     public bool? IsMalwareScanSuccessful { get; set; }
+
+    /// <summary>
+    /// Gets or sets the date the document was created.
+    /// </summary>
+    public DateTime CreatedDate { get; set; }
 }
