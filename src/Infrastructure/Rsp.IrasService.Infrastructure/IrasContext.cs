@@ -27,6 +27,7 @@ public class IrasContext(DbContextOptions<IrasContext> options) : DbContext(opti
     public DbSet<SponsorOrganisationUser> SponsorOrganisationsUsers { get; set; }
     public DbSet<SponsorOrganisationAuditTrail> SponsorOrganisationsAuditTrail { get; set; }
     public DbSet<ProjectModificationAuditTrail> ProjectModificationAuditTrail { get; set; }
+    public DbSet<ProjectRecordAuditTrail> ProjectRecordAuditTrail { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

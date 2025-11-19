@@ -1,5 +1,4 @@
 ﻿using Rsp.IrasService.Application.Contracts.Repositories;
-using Rsp.IrasService.Application.DTOS.Responses;
 using Rsp.IrasService.Domain.Entities;
 using Rsp.IrasService.Services;
 
@@ -11,8 +10,7 @@ public class GetModificationAuditTrailTests : TestServiceBase<ProjectModificatio
     public async Task Returns_List_Of_ModificationAuditTrail
     (
         Guid projectModificationId,
-        IEnumerable<ProjectModificationAuditTrail> auditTrails,
-        ModificationAuditTrailResponse expectedResponse
+        IEnumerable<ProjectModificationAuditTrail> auditTrails
     )
     {
         // Arrange

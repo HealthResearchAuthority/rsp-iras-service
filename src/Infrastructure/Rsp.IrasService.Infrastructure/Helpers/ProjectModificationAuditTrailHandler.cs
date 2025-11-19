@@ -45,7 +45,7 @@ public class ProjectModificationAuditTrailHandler :
             DateTimeStamp = DateTime.UtcNow,
             ProjectModificationId = projectModification.Id,
             User = userEmail,
-            Description = $"Modification created"
+            Description = "Modification created"
         };
     }
 
@@ -58,10 +58,8 @@ public class ProjectModificationAuditTrailHandler :
     {
         var modifiedAuditableProps = entry.Properties
             .Where(p =>
-                Attribute.IsDefined
-                    (p.Metadata.PropertyInfo!, typeof(AuditableAttribute)) &&
-                !Equals(p.OriginalValue, p.CurrentValue)
-            );
+                Attribute.IsDefined(p.Metadata.PropertyInfo!, typeof(AuditableAttribute)) &&
+                !Equals(p.OriginalValue, p.CurrentValue));
 
         var result = new List<ProjectModificationAuditTrail>();
 

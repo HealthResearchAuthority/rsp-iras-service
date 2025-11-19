@@ -13,7 +13,8 @@ public class AuditTrailInterceptor(
     IAuditTrailDetailsService auditTrailDetailsService,
     IEnumerable<IAuditTrailHandler<SponsorOrganisationAuditTrail>> sponsorHandlers,
     IEnumerable<IAuditTrailHandler<RegulatoryBodyAuditTrail>> regulatoryHandlers,
-    IEnumerable<IAuditTrailHandler<ProjectModificationAuditTrail>> projectModificationHandlers
+    IEnumerable<IAuditTrailHandler<ProjectModificationAuditTrail>> projectModificationHandlers,
+    IEnumerable<IAuditTrailHandler<ProjectRecordAuditTrail>> projectRecordHandlers
 ) : SaveChangesInterceptor
 {
     public override async ValueTask<InterceptionResult<int>> SavingChangesAsync(
@@ -40,6 +41,7 @@ public class AuditTrailInterceptor(
         var sponsorRecords = Collect(sponsorHandlers, auditableEntries, userEmail);
         var regulatoryRecords = Collect(regulatoryHandlers, auditableEntries, userEmail);
         var projectModificationRecords = Collect(projectModificationHandlers, auditableEntries, userEmail);
+        var projectRecordRecords = Collect(projectRecordHandlers, auditableEntries, userEmail);
 
         if (sponsorRecords.Count > 0)
         {
@@ -54,6 +56,11 @@ public class AuditTrailInterceptor(
         if (projectModificationRecords.Count > 0)
         {
             await db.Set<ProjectModificationAuditTrail>().AddRangeAsync(projectModificationRecords, cancellationToken);
+        }
+
+        if (projectRecordRecords.Count > 0)
+        {
+            await db.Set<ProjectRecordAuditTrail>().AddRangeAsync(projectRecordRecords, cancellationToken);
         }
 
         return result;

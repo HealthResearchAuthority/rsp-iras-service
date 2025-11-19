@@ -49,4 +49,6 @@ public interface IProjectRecordRepository
         string? sortField,
         string? sortDirection
     );
+
+    Task<IEnumerable<ProjectRecordAuditTrail>> GetProjectRecordAuditTrail(string projectRecordId);
 }

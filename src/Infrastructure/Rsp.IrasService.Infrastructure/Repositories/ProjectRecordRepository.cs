@@ -336,4 +336,12 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
 
         return recordsList;
     }
+
+    public async Task<IEnumerable<ProjectRecordAuditTrail>> GetProjectRecordAuditTrail(string projectRecordId)
+    {
+        return await irasContext
+            .ProjectRecordAuditTrail
+            .Where(x => x.ProjectRecordId == projectRecordId)
+            .ToListAsync();
+    }
 }
