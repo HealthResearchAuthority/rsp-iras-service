@@ -65,4 +65,6 @@ public interface IApplicationsService : IInterceptable
         int? pageSize,
         string? sortField,
         string? sortDirection);
+
+    Task<ProjectRecordAuditTrailResponse> GetProjectRecordAuditTrail(string projectRecordId);
 }
