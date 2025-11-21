@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Application.Constants;
 using Rsp.IrasService.Application.Contracts.Repositories;
 using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.IrasService.Application.Extensions;
 using Rsp.IrasService.Application.Specifications;
 using Rsp.IrasService.Domain.Entities;
 
@@ -91,7 +92,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         var modifications = ProjectModificationQuery(projectRecordId);
 
         var filtered = FilterModifications(modifications, searchQuery);
-        var sorted = SortModifications(filtered, sortField, sortDirection);
+        var sorted = SortModifications(filtered, sortField, sortDirection, searchQuery.UseBackstageStatus);
 
         return sorted
             .Skip((pageNumber - 1) * pageSize)
@@ -356,8 +357,22 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
     }
 
     private static IEnumerable<ProjectModificationResult> SortModifications(
-        IEnumerable<ProjectModificationResult> modifications, string sortField, string sortDirection)
+        IEnumerable<ProjectModificationResult> modifications, string sortField, string sortDirection, bool useBackstageStatuses = false)
     {
+        // Base sequence we’ll sort over
+        var source = modifications;
+
+        // If we're using Backstage statuses and sorting by Status,
+        // first update Status on each item, then let the normal sort use it.
+        if (useBackstageStatuses)
+        {
+            source = source.Select(m =>
+            {
+                m.Status = m.Status.ToBackstageDisplayStatus(m.ReviewerName);
+                return m;
+            });
+        }
+
         Func<ProjectModificationResult, object>? keySelector = sortField switch
         {
             nameof(ProjectModificationResult.ModificationId) or nameof(ProjectModificationResult.ModificationNumber) => x => x.ModificationId,
@@ -375,22 +390,22 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         };
 
         if (keySelector == null)
-            return modifications;
+            return source;
 
         if (sortField is nameof(ProjectModificationResult.ModificationId) or nameof(ProjectModificationResult.ModificationNumber))
         {
             return sortDirection == "desc"
-                ? modifications
+                ? source
                     .OrderByDescending(m => int.TryParse(m.IrasId, out var irasId) ? irasId : 0)
                     .ThenByDescending(m => m.ModificationNumber)
-                : modifications
+                : source
                     .OrderBy(m => int.TryParse(m.IrasId, out var irasId) ? irasId : 0)
                     .ThenBy(m => m.ModificationNumber);
         }
 
         return sortDirection == "desc"
-            ? modifications.OrderByDescending(keySelector)
-            : modifications.OrderBy(keySelector);
+            ? source.OrderByDescending(keySelector)
+            : source.OrderBy(keySelector);
     }
 
 
