@@ -8,4 +8,10 @@ public struct ModificationStatus
     public const string Approved = "Approved";
     public const string NotApproved = "Not approved";
     public const string NotAuthorised = "Not authorised";
+
+
+    // BACKSTAGE VALUES
+    public const string Received = "Received";
+    public const string ReviewInProgress = "Review in progress";
+
 }

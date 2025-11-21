@@ -20,9 +20,9 @@ public static class ModificationStatusExtensions
 
         // With reviewer name → "Review in progress"
         if (!string.IsNullOrWhiteSpace(reviewerName))
-            return "Review in progress";
+            return ModificationStatus.ReviewInProgress;
 
         // Without reviewer name → "Received"
-        return "Received";
+        return ModificationStatus.Received;
     }
 }
