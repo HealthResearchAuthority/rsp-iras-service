@@ -4,7 +4,7 @@ using Rsp.IrasService.Application.DTOS.Responses;
 
 namespace Rsp.IrasService.Application.CQRS.Queries;
 
-public class GetDocumentsForModificationQuery : IRequest<ProjectOverviewDocumentResponse>
+public class GetDocumentsForModificationQuery : BaseQuery, IRequest<ProjectOverviewDocumentResponse>
 {
     public required Guid ModificationId { get; set; }
     public required ProjectOverviewDocumentSearchRequest SearchQuery { get; set; }

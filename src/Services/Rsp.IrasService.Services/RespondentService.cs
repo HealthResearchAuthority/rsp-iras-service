@@ -199,9 +199,9 @@ public class RespondentService(IProjectPersonnelRepository projectPersonnelRepos
     }
 
     /// <summary>
-    /// Retrieves the documents uploaded for a given modification change, record, and personnel.
+    /// Retrieves the documents uploaded for a given modification, record, and personnel.
     /// </summary>
-    /// <param name="projectModificationChangeId">The unique identifier of the project modification change.</param>
+    /// <param name="projectModificationId">The unique identifier of the project modification.</param>
     /// <param name="projectRecordId">The identifier of the related project record.</param>
     /// <param name="projectPersonnelId">The identifier of the project personnel who uploaded the documents.</param>
     /// <returns>A collection of modification documents as <see cref="ModificationDocumentDto"/>.</returns>
