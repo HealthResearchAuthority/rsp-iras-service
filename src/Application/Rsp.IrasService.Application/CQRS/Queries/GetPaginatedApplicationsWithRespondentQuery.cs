@@ -4,7 +4,7 @@ using Rsp.IrasService.Application.DTOS.Responses;
 
 namespace Rsp.IrasService.Application.CQRS.Queries;
 
-public class GetPaginatedApplicationsWithRespondentQuery : IRequest<PaginatedResponse<ApplicationResponse>>
+public class GetPaginatedApplicationsWithRespondentQuery : BaseQuery, IRequest<PaginatedResponse<ApplicationResponse>>
 {
     public string RespondentId { get; set; } = null!;
     public ApplicationSearchRequest SearchQuery { get; set; } = null!;

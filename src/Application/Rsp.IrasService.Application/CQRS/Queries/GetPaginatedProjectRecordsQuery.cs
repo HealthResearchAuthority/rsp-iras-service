@@ -4,7 +4,7 @@ using Rsp.IrasService.Application.DTOS.Responses;
 
 namespace Rsp.IrasService.Application.CQRS.Queries;
 
-public class GetPaginatedProjectRecordsQuery : IRequest<PaginatedResponse<CompleteProjectRecordResponse>>
+public class GetPaginatedProjectRecordsQuery : BaseQuery, IRequest<PaginatedResponse<CompleteProjectRecordResponse>>
 {
     public ProjectRecordSearchRequest SearchQuery { get; set; } = null!;
     public int PageIndex { get; set; } = 1;

@@ -2,6 +2,7 @@
 using Rsp.IrasService.Application.Contracts.Services;
 using Rsp.IrasService.Application.CQRS.Queries;
 using Rsp.IrasService.Application.DTOS.Responses;
+using Rsp.IrasService.Application.Extensions;
 
 namespace Rsp.IrasService.Application.CQRS.Handlers.QueryHandlers;
 
@@ -9,7 +10,7 @@ public class GetModificationsHandler(IProjectModificationService projectModifica
 {
     public async Task<ModificationSearchResponse> Handle(GetModificationsQuery request, CancellationToken cancellationToken)
     {
-        return await projectModificationService.GetModifications
+        var response = await projectModificationService.GetModifications
         (
             request.SearchQuery,
             request.PageNumber,
@@ -17,5 +18,7 @@ public class GetModificationsHandler(IProjectModificationService projectModifica
             request.SortField,
             request.SortDirection
         );
+
+        return response.FilterByAllowedStatuses(request);
     }
 }
