@@ -245,7 +245,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
     /// <summary>
     /// Filters and normalises a collection of ProjectModificationResult items
     /// based on the user's search criteria.
-    /// 
+    ///
     /// Steps:
     /// 1. Normalise LeadNation and ParticipatingNation values using lookups.
     /// 2. Apply all search filters (text search, dates, nations, statuses, reviewer filters, etc.).
@@ -378,7 +378,9 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             nameof(ProjectModificationResult.ModificationId) or nameof(ProjectModificationResult.ModificationNumber) => x => x.ModificationId,
             nameof(ProjectModificationResult.ChiefInvestigator) => x => x.ChiefInvestigator.ToLowerInvariant(),
             nameof(ProjectModificationResult.ShortProjectTitle) => x => x.ShortProjectTitle.ToLowerInvariant(),
-            nameof(ProjectModificationResult.ModificationType) => x => x.ModificationType.ToLowerInvariant(),
+            nameof(ProjectModificationResult.ModificationType) => x => string.IsNullOrEmpty(x.ModificationType) ? string.Empty : x.ModificationType.ToLowerInvariant(),
+            nameof(ProjectModificationResult.ReviewType) => x => string.IsNullOrEmpty(x.ReviewType) ? string.Empty : x.ReviewType.ToLowerInvariant(),
+            nameof(ProjectModificationResult.Category) => x => string.IsNullOrEmpty(x.Category) ? string.Empty : x.Category.ToLowerInvariant(),
             nameof(ProjectModificationResult.SponsorOrganisation) => x => x.SponsorOrganisation.ToLowerInvariant(),
             nameof(ProjectModificationResult.LeadNation) => x => x.LeadNation.ToLowerInvariant(),
             nameof(ProjectModificationResult.CreatedAt) => x => x.CreatedAt,
@@ -407,7 +409,6 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             ? source.OrderByDescending(keySelector)
             : source.OrderBy(keySelector);
     }
-
 
     private IQueryable<ProjectModificationResult> ProjectModificationBySponsorOrganisationUserQuery(Guid sponsorOrganisationUserId)
     {
