@@ -25,12 +25,6 @@ public class AllowedStatusesPopulationBehavior<TRequest, TResponse>
     /// </summary>
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-        // If AllowedStatuses already provided by caller, preserve it and continue.
-        if (request.AllowedStatuses?.Count > 0)
-        {
-            return await next();
-        }
-
         // Try to get the current HttpContext. If not available, do nothing.
         var httpContext = httpContextAccessor.HttpContext;
 
@@ -39,9 +33,16 @@ public class AllowedStatusesPopulationBehavior<TRequest, TResponse>
             return await next();
         }
 
-        // Ensure we have an authenticated user principal.
+        // If the user is in admin role, by pass the population
+        // as admin has access to all statuses.
         var user = httpContext.User;
-        if (user?.Identity == null || !user.Identity.IsAuthenticated)
+        if (user.IsInRole("system_administrator"))
+        {
+            return await next();
+        }
+
+        // If AllowedStatuses already provided by caller, preserve it and continue.
+        if (request.AllowedStatuses?.Count > 0)
         {
             return await next();
         }
