@@ -1,5 +1,6 @@
 ﻿using Rsp.IrasService.Application;
 using Rsp.IrasService.Application.Authentication.Helpers;
+using Rsp.IrasService.Application.Behaviors;
 using Rsp.IrasService.Application.Contracts.Repositories;
 using Rsp.IrasService.Application.Contracts.Services;
 using Rsp.IrasService.Domain.Entities;
@@ -63,7 +64,17 @@ public static class ServicesConfiguration
         // Single merged interceptor
         services.AddScoped<AuditTrailInterceptor>();
 
-        services.AddMediatR(option => option.RegisterServicesFromAssemblyContaining<IApplication>());
+        // Register IHttpContextAccessor used by pipeline to read user claims
+        services.AddHttpContextAccessor();
+
+        // Register MediatR and pipeline behaviours
+        services.AddMediatR(option =>
+        {
+            option.RegisterServicesFromAssemblyContaining<IApplication>();
+
+            // Pipeline behaviours for AllowedStatuses handling
+            option.AddOpenBehavior(typeof(AllowedStatusesPopulationBehavior<,>));
+        });
 
         return services;
     }

@@ -3,4 +3,4 @@ using Rsp.IrasService.Application.DTOS.Responses;
 
 namespace Rsp.IrasService.Application.CQRS.Queries;
 
-public class GetApplicationsQuery : IRequest<IEnumerable<ApplicationResponse>>;
+public class GetApplicationsQuery : BaseQuery, IRequest<IEnumerable<ApplicationResponse>>;

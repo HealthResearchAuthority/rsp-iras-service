@@ -2,6 +2,7 @@
 using Rsp.IrasService.Application.Contracts.Services;
 using Rsp.IrasService.Application.CQRS.Queries;
 using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.IrasService.Application.Extensions;
 
 namespace Rsp.IrasService.Application.CQRS.Handlers.QueryHandlers;
 
@@ -18,6 +19,8 @@ public class GetModificationDocumentsHandler(IRespondentService respondentServic
     /// <returns>A collection of respondent answer DTOs.</returns>
     public async Task<IEnumerable<ModificationDocumentDto>> Handle(GetModificationDocumentsQuery request, CancellationToken cancellationToken)
     {
-        return await respondentService.GetModificationDocumentResponses(request.ProjectModificationId, request.ProjectRecordId, request.ProjectPersonnelId);
+        var docs = await respondentService.GetModificationDocumentResponses(request.ProjectModificationId, request.ProjectRecordId, request.ProjectPersonnelId);
+
+        return docs.FilterByAllowedStatuses(request, d => d.Status);
     }
 }

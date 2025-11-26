@@ -12,7 +12,7 @@ public class GetDocumentsForProjectOverviewQuery
     int pageSize,
     string sortField,
     string sortDirection
-) : IRequest<ProjectOverviewDocumentResponse>
+) : BaseQuery, IRequest<ProjectOverviewDocumentResponse>
 {
     public string ProjectRecordId { get; } = projectRecordId;
     public ProjectOverviewDocumentSearchRequest SearchQuery { get; } = searchQuery;

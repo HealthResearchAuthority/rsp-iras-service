@@ -2,6 +2,7 @@
 using Rsp.IrasService.Application.Contracts.Services;
 using Rsp.IrasService.Application.CQRS.Queries;
 using Rsp.IrasService.Application.DTOS.Responses;
+using Rsp.IrasService.Application.Extensions;
 
 namespace Rsp.IrasService.Application.CQRS.Handlers.QueryHandlers;
 
@@ -9,6 +10,8 @@ public class GetApplicationWithStatusHandler(IApplicationsService applicationsSe
 {
     public async Task<ApplicationResponse> Handle(GetApplicationWithStatusQuery request, CancellationToken cancellationToken)
     {
-        return await applicationsService.GetApplication(request.ApplicationId, request.ApplicationStatus);
+        var application = await applicationsService.GetApplication(request.ApplicationId, request.ApplicationStatus);
+
+        return application.FilterSingleOrNull(request, a => a.Status)!;
     }
 }
