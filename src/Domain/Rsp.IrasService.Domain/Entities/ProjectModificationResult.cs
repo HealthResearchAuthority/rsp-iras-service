@@ -8,9 +8,9 @@ public class ProjectModificationResult
     public string IrasId { get; set; } = null!;
     public int ModificationNumber { get; set; }
     public string ShortProjectTitle { get; set; } = null!;
-    public string? ModificationType { get; set; }
-    public string? Category { get; set; }
-    public string? ReviewType { get; set; }
+    public string ModificationType { get; set; } = null!;
+    public string Category { get; set; } = null!;
+    public string ReviewType { get; set; } = null!;
     public string ChiefInvestigator { get; set; } = null!;
     public string LeadNation { get; set; } = null!;
     public string ParticipatingNation { get; set; } = null!;
