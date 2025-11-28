@@ -353,6 +353,14 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                 // Allowed statuses filter — restrict to allowed values
                 && (!searchQuery.AllowedStatuses.Any()
                     || searchQuery.AllowedStatuses.Contains(x.Status, StringComparer.OrdinalIgnoreCase))
+
+                // ReviewType match (single value)
+                && (string.IsNullOrEmpty(searchQuery.ReviewType)
+                    || x.ReviewType.Contains(searchQuery.ReviewType, StringComparison.OrdinalIgnoreCase))
+
+                // Category match (single value)
+                && (string.IsNullOrEmpty(searchQuery.Category)
+                    || x.Category.Contains(searchQuery.Category, StringComparison.OrdinalIgnoreCase))
             );
     }
 
