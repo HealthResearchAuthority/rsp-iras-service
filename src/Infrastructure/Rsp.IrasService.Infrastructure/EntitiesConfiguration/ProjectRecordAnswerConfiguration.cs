@@ -8,13 +8,7 @@ public class ProjectRecordAnswerConfiguration : IEntityTypeConfiguration<Project
 {
     public void Configure(EntityTypeBuilder<ProjectRecordAnswer> builder)
     {
-        builder.HasKey(ra => new { ra.ProjectPersonnelId, ra.QuestionId, ra.ProjectRecordId });
-
-        builder
-            .HasOne(ra => ra.ProjectPersonnel)
-            .WithMany()
-            .HasForeignKey(r => r.ProjectPersonnelId)
-            .OnDelete(DeleteBehavior.NoAction);
+        builder.HasKey(ra => new { ra.UserId, ra.QuestionId, ra.ProjectRecordId });
 
         builder
             .Property(e => e.VersionId)

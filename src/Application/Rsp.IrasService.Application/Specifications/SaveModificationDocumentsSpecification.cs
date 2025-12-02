@@ -15,6 +15,6 @@ public class SaveModificationDocumentsSpecification : Specification<Modification
     public SaveModificationDocumentsSpecification(Guid projectModificationId, string projectRecordId, string respondentId)
     {
         Query
-            .Where(entity => entity.ProjectModificationId == projectModificationId && entity.ProjectRecordId == projectRecordId && entity.ProjectPersonnelId == respondentId);
+            .Where(entity => entity.ProjectModificationId == projectModificationId && entity.ProjectRecordId == projectRecordId && entity.UserId == respondentId);
     }
 }

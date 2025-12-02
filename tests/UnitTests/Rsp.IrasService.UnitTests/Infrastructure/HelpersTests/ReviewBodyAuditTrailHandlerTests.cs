@@ -45,7 +45,7 @@ public class ReviewBodyAuditTrailHandlerTests
     public void GenerateAuditTrails_ShouldReturnEmptyList_WhenEntityIsNotReviewBody()
     {
         // Arrange
-        var entity = new ProjectPersonnel { Id = "id" };
+        var entity = new DocumentType { Id = Guid.NewGuid(), Name = "name" };
         var systemAdminEmail = "adminEmail";
 
         var entityEntry = MockEntityEntry(entity);

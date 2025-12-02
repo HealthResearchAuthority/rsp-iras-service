@@ -28,15 +28,9 @@ public class MappingRegister : IRegister
             .NewConfig<ProjectRecord, ApplicationRequest>()
             .Map(dest => dest.StartDate, source => source.CreatedDate);
 
-        // RespondentDto -> ProjectPersonnel mapping
-        config
-            .NewConfig<RespondentDto, ProjectPersonnel>()
-            .Map(dest => dest.Email, source => source.EmailAddress);
-
         // RespondentAnswerDto -> ProjectRecordAnswer mapping
         config
             .NewConfig<RespondentAnswerDto, ProjectRecordAnswer>()
-            .Ignore(ra => ra.ProjectPersonnelId)
             .Ignore(ra => ra.ProjectRecordId)
             .Map(dest => dest.VersionId, source => source.VersionId)
             .Map(dest => dest.Category, source => source.CategoryId)
@@ -59,7 +53,6 @@ public class MappingRegister : IRegister
         config
             .NewConfig<RespondentAnswerDto, ProjectModificationChangeAnswer>()
             .Ignore(ra => ra.ProjectModificationChangeId)
-            .Ignore(ra => ra.ProjectPersonnelId)
             .Ignore(ra => ra.ProjectRecordId)
             .Map(dest => dest.VersionId, source => source.VersionId)
             .Map(dest => dest.Category, source => source.CategoryId)
@@ -82,7 +75,6 @@ public class MappingRegister : IRegister
         config
             .NewConfig<RespondentAnswerDto, ProjectModificationAnswer>()
             .Ignore(ra => ra.ProjectModificationId)
-            .Ignore(ra => ra.ProjectPersonnelId)
             .Ignore(ra => ra.ProjectRecordId)
             .Map(dest => dest.VersionId, source => source.VersionId)
             .Map(dest => dest.Category, source => source.CategoryId)

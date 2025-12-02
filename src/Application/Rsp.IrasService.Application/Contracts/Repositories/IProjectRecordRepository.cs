@@ -12,7 +12,7 @@ public interface IProjectRecordRepository
     /// Adds a new ProjectRecord to the database
     /// </summary>
     /// <param name="irasApplication">The application values</param>
-    Task<ProjectRecord> CreateProjectRecord(ProjectRecord irasApplication, ProjectPersonnel respondent);
+    Task<ProjectRecord> CreateProjectRecord(ProjectRecord irasApplication);
 
     /// <summary>
     /// Return a single ProjectRecord from the database

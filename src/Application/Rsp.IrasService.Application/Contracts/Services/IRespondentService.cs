@@ -71,9 +71,9 @@ public interface IRespondentService : IInterceptable
     /// </summary>
     /// <param name="projectModificationId">The modification identifier.</param>
     /// <param name="projectRecordId">The project record identifier.</param>
-    /// <param name="projectPersonnelId">The project personnel identifier.</param>
+    /// <param name="userId">The project user identifier.</param>
     /// <returns>A collection of <see cref="ModificationDocument"/> objects.</returns>
-    Task<IEnumerable<ModificationDocumentDto>> GetModificationDocumentResponses(Guid projectModificationId, string projectRecordId, string projectPersonnelId);
+    Task<IEnumerable<ModificationDocumentDto>> GetModificationDocumentResponses(Guid projectModificationId, string projectRecordId, string userId);
 
     /// <summary>
     /// Retrieves modification documents matching the given specification.
@@ -94,9 +94,9 @@ public interface IRespondentService : IInterceptable
     /// </summary>
     /// <param name="projectModificationChangeId">The modification change identifier.</param>
     /// <param name="projectRecordId">The project record identifier.</param>
-    /// <param name="projectPersonnelId">The project personnel identifier.</param>
+    /// <param name="userId">The project user identifier.</param>
     /// <returns>A collection of <see cref="ModificationParticipatingOrganisationDto"/> objects.</returns>
-    Task<IEnumerable<ModificationParticipatingOrganisationDto>> GetModificationParticipatingOrganisationResponses(Guid projectModificationChangeId, string projectRecordId, string projectPersonnelId);
+    Task<IEnumerable<ModificationParticipatingOrganisationDto>> GetModificationParticipatingOrganisationResponses(Guid projectModificationChangeId, string projectRecordId, string userId);
 
     /// <summary>
     /// Retrieves modification participating organisation answer matching the given specification.

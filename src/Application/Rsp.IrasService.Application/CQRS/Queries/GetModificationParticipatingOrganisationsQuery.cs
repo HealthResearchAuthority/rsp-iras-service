@@ -18,5 +18,5 @@ public class GetModificationParticipatingOrganisationsQuery : IRequest<IEnumerab
     /// <summary>
     /// Gets or sets the project personnel identifier.
     /// </summary>
-    public string ProjectPersonnelId { get; set; } = null!;
+    public string UserId { get; set; } = null!;
 }

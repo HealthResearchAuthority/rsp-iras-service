@@ -209,7 +209,7 @@ public class ProjectModificationServiceTests : TestServiceBase<ProjectModificati
         {
             Id = Guid.NewGuid(),
             ProjectModificationId = modId,
-            ProjectPersonnelId = "PP-1",
+            UserId = "PP-1",
             ProjectRecordId = "PR-1",
             DocumentStoragePath = "/blob/doc1.pdf",
             FileName = "doc1.pdf",

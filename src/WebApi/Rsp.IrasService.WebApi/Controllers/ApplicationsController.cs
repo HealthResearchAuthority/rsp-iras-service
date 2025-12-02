@@ -145,6 +145,10 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     [HttpPost]
     public async Task<ApplicationResponse> CreateApplication(ApplicationRequest applicationRequest)
     {
+        var userId = User.Claims.FirstOrDefault(x => x.Type == "userId")?.Value;
+
+        applicationRequest.UserId = userId!;
+
         var request = new CreateApplicationCommand(applicationRequest);
         var newApplication = await mediator.Send(request);
 

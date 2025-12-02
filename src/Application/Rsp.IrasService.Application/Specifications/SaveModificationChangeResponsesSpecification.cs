@@ -8,12 +8,12 @@ public class SaveModificationChangeResponsesSpecification : Specification<Projec
     /// <summary>
     /// Initializes a new instance of the <see cref="SaveModificationChangeResponsesSpecification"/> class.
     /// Defines a specification to return all <see cref="ProjectModificationChangeAnswer"/> records
-    /// for the specified modificationChangeId, projectRecordId, and projectPersonnelId.
+    /// for the specified modificationChangeId, projectRecordId, and userId.
     /// </summary>
     /// <param name="modificationChangeId">Unique identifier of the project modification change.</param>
     /// <param name="projectRecordId">Unique identifier of the project record.</param>
-    /// <param name="projectPersonnelId">Identifier of the project personnel who submitted the change.</param>
-    public SaveModificationChangeResponsesSpecification(Guid modificationChangeId, string projectRecordId, string projectPersonnelId)
+    /// <param name="userId">Identifier of the user who submitted the change.</param>
+    public SaveModificationChangeResponsesSpecification(Guid modificationChangeId, string projectRecordId, string userId)
     {
         Query
             .Where
@@ -21,7 +21,7 @@ public class SaveModificationChangeResponsesSpecification : Specification<Projec
                 entity =>
                 entity.ProjectModificationChangeId == modificationChangeId &&
                 entity.ProjectRecordId == projectRecordId &&
-                entity.ProjectPersonnelId == projectPersonnelId
+                entity.UserId == userId
             );
     }
 }

@@ -30,16 +30,16 @@ public class ProjectRecordRepositoryTests
     {
         var projectRecords = new List<ProjectRecord>
         {
-            new ProjectRecord { Id = "1", ShortProjectTitle = "", CreatedDate = new DateTime(2022, 1, 1, 0, 0, 0, DateTimeKind.Utc), Status = "Open", IrasId = 1, ProjectPersonnelId = respondentId, CreatedBy = "A", FullProjectTitle = "", UpdatedBy = "A" },
-            new ProjectRecord { Id = "2", ShortProjectTitle = "", CreatedDate = new DateTime(2023, 1, 1, 0, 0, 0, DateTimeKind.Utc), Status = "Closed", IrasId = 2, ProjectPersonnelId = respondentId, CreatedBy = "A", FullProjectTitle = "", UpdatedBy = "A" },
-            new ProjectRecord { Id = "3", ShortProjectTitle = "", CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc), Status = "Pending", IrasId = 3, ProjectPersonnelId = respondentId, CreatedBy = "A", FullProjectTitle = "", UpdatedBy = "A" }
+            new ProjectRecord { Id = "1", ShortProjectTitle = "", CreatedDate = new DateTime(2022, 1, 1, 0, 0, 0, DateTimeKind.Utc), Status = "Open", IrasId = 1, UserId = respondentId, CreatedBy = "A", FullProjectTitle = "", UpdatedBy = "A" },
+            new ProjectRecord { Id = "2", ShortProjectTitle = "", CreatedDate = new DateTime(2023, 1, 1, 0, 0, 0, DateTimeKind.Utc), Status = "Closed", IrasId = 2, UserId = respondentId, CreatedBy = "A", FullProjectTitle = "", UpdatedBy = "A" },
+            new ProjectRecord { Id = "3", ShortProjectTitle = "", CreatedDate = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc), Status = "Pending", IrasId = 3, UserId = respondentId, CreatedBy = "A", FullProjectTitle = "", UpdatedBy = "A" }
         };
 
         var projectRecordAnswers = new List<ProjectRecordAnswer>
         {
-            new ProjectRecordAnswer { ProjectRecordId = "1", Response = "A", ProjectPersonnelId = respondentId, QuestionId = projectTitleQuestionId, Category = applicationsTitleCategory, Section = "", VersionId = "1" },
-            new ProjectRecordAnswer { ProjectRecordId = "2", Response = "B", ProjectPersonnelId = respondentId, QuestionId = projectTitleQuestionId, Category = applicationsTitleCategory, Section = "", VersionId = "1" },
-            new ProjectRecordAnswer { ProjectRecordId = "3", Response = "C", ProjectPersonnelId = respondentId, QuestionId = projectTitleQuestionId, Category = applicationsTitleCategory, Section = "", VersionId = "1"}
+            new ProjectRecordAnswer { ProjectRecordId = "1", Response = "A", UserId = respondentId, QuestionId = projectTitleQuestionId, Category = applicationsTitleCategory, Section = "", VersionId = "1" },
+            new ProjectRecordAnswer { ProjectRecordId = "2", Response = "B", UserId = respondentId, QuestionId = projectTitleQuestionId, Category = applicationsTitleCategory, Section = "", VersionId = "1" },
+            new ProjectRecordAnswer { ProjectRecordId = "3", Response = "C", UserId = respondentId, QuestionId = projectTitleQuestionId, Category = applicationsTitleCategory, Section = "", VersionId = "1"}
         };
 
         _context.ProjectRecords.AddRange(projectRecords);

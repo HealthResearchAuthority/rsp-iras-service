@@ -16,7 +16,7 @@ public class GetModificationDocumentsQuery : BaseQuery, IRequest<IEnumerable<Mod
     public required string ProjectRecordId { get; set; }
 
     /// <summary>
-    /// Gets or sets the project personnel identifier.
+    /// Gets or sets the project user identifier.
     /// </summary>
-    public string? ProjectPersonnelId { get; set; }
+    public string? UserId { get; set; }
 }
