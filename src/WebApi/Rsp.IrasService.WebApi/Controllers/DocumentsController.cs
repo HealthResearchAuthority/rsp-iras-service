@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Diagnostics.CodeAnalysis;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -81,5 +82,18 @@ public class DocumentsController(IMediator mediator) : ControllerBase
                     }
                 });
         }
+    }
+
+    /// <summary>
+    /// Gets the document access information for a specific modification.
+    /// </summary>
+    /// <param name="modificationId">The modification identifier.</param>
+    [ExcludeFromCodeCoverage]
+    [HttpGet("access/{modificationId}")]
+    public async Task<IActionResult> DocumentAccess(Guid modificationId)
+    {
+        _ = modificationId;
+
+        return Ok();
     }
 }

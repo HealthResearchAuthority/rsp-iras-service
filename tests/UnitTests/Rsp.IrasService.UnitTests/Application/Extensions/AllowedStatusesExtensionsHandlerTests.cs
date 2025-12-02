@@ -435,11 +435,14 @@ public class AllowedStatusesExtensionsHandlerTests
 
         var mod = new ModificationResponse { Id = Guid.NewGuid(), Status = "blocked" };
         service
-            .Setup(s => s.GetModification(It.IsAny<string>())).ReturnsAsync(mod);
+            .Setup(s => s.GetModification(It.IsAny<string>(), It.IsAny<Guid>()))
+            .ReturnsAsync(mod);
 
         var handler = new GetModificationHandler(service.Object);
-        var query = new GetModificationQuery("1")
+        var query = new GetModificationQuery
         {
+            ProjectRecordId = "p1",
+            ProjectModificationId = mod.Id,
             AllowedStatuses = ["allowed"]
         };
 

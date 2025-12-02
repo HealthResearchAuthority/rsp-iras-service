@@ -37,7 +37,7 @@ public interface IProjectModificationService : IInterceptable
     /// </summary>
     /// <param name="projectModificationId">The unique identifier of the modification.</param>
     /// <returns>A <see cref="IEnumerable<ModificationChangeResponse>"/> if found; otherwise typically a not-found result should be surfaced by the implementation.</returns>
-    Task<IEnumerable<ModificationChangeResponse>> GetModificationChanges(Guid projectModificationId);
+    Task<IEnumerable<ModificationChangeResponse>> GetModificationChanges(string projectRecordId, Guid projectModificationId);
 
     /// <summary>
     /// Retrieves a paginated, optionally filtered and sorted list of modifications across all projects.
@@ -117,8 +117,9 @@ public interface IProjectModificationService : IInterceptable
     /// Updates an existing modification status by its unique identifier. And also updates
     /// the status of the associated modification changes.
     /// </summary>
+    /// <param name="projectRecordId">The unique record identifier for the project whose modification is to be updated.</param>
     /// <param name="modificationId">The unique identifier of the modification change to remove.</param>
-    Task UpdateModificationStatus(Guid modificationId, string status);
+    Task UpdateModificationStatus(string projectRecordId, Guid modificationId, string status);
 
     /// <summary>
     /// Applies a partial update to an existing modification and cascades status where applicable.
@@ -128,8 +129,9 @@ public interface IProjectModificationService : IInterceptable
     /// <summary>
     /// Deletes an existing modification by its unique identifier.
     /// </summary>
+    /// <param name="projectRecordId">The unique record identifier for the project whose modification is to be deleted.</param>
     /// <param name="modificationId">The unique identifier of the modification to delete.</param>
-    Task DeleteModification(Guid modificationId);
+    Task DeleteModification(string projectRecordId, Guid modificationId);
 
     /// <summary>
     /// Retrieves the audit trail for a specific project modification.
@@ -169,20 +171,22 @@ public interface IProjectModificationService : IInterceptable
     /// </summary>
     /// <param name="projectModificationId">The unique identifier of the modification</param>
     /// <returns>The modification review responses</returns>
-    Task<ModificationReviewResponse> GetModificationReviewResponses(Guid projectModificationId);
+    Task<ModificationReviewResponse?> GetModificationReviewResponses(string projectRecordId, Guid projectModificationId);
 
-    Task<ProjectOverviewDocumentResponse> GetDocumentsForModification(
+    Task<ProjectOverviewDocumentResponse> GetDocumentsForModification
+    (
         Guid modificationId,
         ProjectOverviewDocumentSearchRequest searchQuery,
         int pageNumber,
         int pageSize,
         string sortField,
-        string sortDirection);
+        string sortDirection
+    );
 
     /// <summary>
     /// Retrieves a specific project modification by its unique identifier.
     /// </summary>
     /// <param name="projectModificationId">The unique identifier of the project modification to retrieve.</param>
     /// <returns>A <see cref="ModificationResponse"/> containing the details of the requested project modification.</returns>
-    Task<ModificationResponse?> GetModification(string projectModificationId);
+    Task<ModificationResponse?> GetModification(string projectRecordId, Guid projectModificationId);
 }

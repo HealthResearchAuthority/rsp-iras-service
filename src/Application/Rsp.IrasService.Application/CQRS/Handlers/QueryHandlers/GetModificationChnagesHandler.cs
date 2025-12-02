@@ -26,6 +26,6 @@ public class GetModificationChangesHandler(IProjectModificationService projectMo
     public async Task<IEnumerable<ModificationChangeResponse>> Handle(GetModificationChangesQuery request, CancellationToken cancellationToken)
     {
         // Delegate directly to the domain service (no additional transformation required here).
-        return await projectModificationService.GetModificationChanges(request.ProjectModificationId);
+        return await projectModificationService.GetModificationChanges(request.ProjectRecordId, request.ProjectModificationId);
     }
 }

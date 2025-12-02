@@ -108,17 +108,22 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
     /// <summary>
     /// Retrieves a specific project modification by its unique identifier.
     /// </summary>
+    /// <param name="projectRecordId">The unique identifier of the project record.</param>
     /// <param name="projectModificationId">The unique identifier of the project modification to retrieve.</param>
     /// <returns>The project modification that matches the provided identifier.</returns>
-    [HttpGet("{projectModificationId}")]
-    public async Task<ActionResult<ModificationResponse>> GetModification(string projectModificationId)
+    [HttpGet("{projectRecordId}/{projectModificationId}")]
+    public async Task<ActionResult<ModificationResponse?>> GetModification(string projectRecordId, Guid projectModificationId)
     {
-        if (string.IsNullOrEmpty(projectModificationId))
+        if (projectModificationId == Guid.Empty)
         {
             return BadRequest("no projectModificationId provided.");
         }
 
-        var query = new GetModificationQuery(projectModificationId);
+        var query = new GetModificationQuery
+        {
+            ProjectRecordId = projectRecordId,
+            ProjectModificationId = projectModificationId
+        };
 
         return await mediator.Send(query);
     }
@@ -157,7 +162,10 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
     [HttpGet("change")]
     public async Task<ModificationChangeResponse> GetModificationChange(Guid modificationChangeId)
     {
-        var request = new GetModificationChangeQuery(modificationChangeId);
+        var request = new GetModificationChangeQuery
+        {
+            ModificationChangeId = modificationChangeId
+        };
 
         return await mediator.Send(request);
     }
@@ -168,9 +176,13 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
     /// <param name="projectModificationId">The unique identifier of the project modification whose changes are being retrieved.</param>
     /// <returns>A collection of modification change responses linked to the specified project modification.</returns>
     [HttpGet("changes")]
-    public async Task<IEnumerable<ModificationChangeResponse>> GetModificationChanges(Guid projectModificationId)
+    public async Task<IEnumerable<ModificationChangeResponse>> GetModificationChanges(string projectRecordId, Guid projectModificationId)
     {
-        var request = new GetModificationChangesQuery(projectModificationId);
+        var request = new GetModificationChangesQuery
+        {
+            ProjectRecordId = projectRecordId,
+            ProjectModificationId = projectModificationId
+        };
 
         return await mediator.Send(request);
     }
@@ -246,9 +258,14 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
     /// <param name="modificationId">The unique identifier of the modification to update.</param>
     /// <param name="status">The new status for modification to update.</param>
     [HttpPatch("status")]
-    public async Task UpdateModificationStatus(Guid modificationId, string status)
+    public async Task UpdateModificationStatus(string projectRecordId, Guid modificationId, string status)
     {
-        var request = new UpdateModificationStatusCommand(modificationId, status);
+        var request = new UpdateModificationStatusCommand
+        {
+            ProjectRecordId = projectRecordId,
+            ProjectModificationId = modificationId,
+            Status = status
+        };
 
         await mediator.Send(request);
     }
@@ -301,9 +318,13 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
     /// </summary>
     /// <param name="modificationId">The unique identifier of the modification to update.</param>
     [HttpPost("delete")]
-    public async Task DeleteModification(Guid modificationId)
+    public async Task DeleteModification(string projectRecordId, Guid modificationId)
     {
-        var request = new DeleteModificationCommand(modificationId);
+        var request = new DeleteModificationCommand
+        {
+            ProjectRecordId = projectRecordId,
+            ProjectModificationId = modificationId
+        };
 
         await mediator.Send(request);
     }
@@ -311,7 +332,11 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
     [HttpGet("audittrail")]
     public async Task<ModificationAuditTrailResponse> GetModificationAuditTrail(Guid modificationId)
     {
-        var query = new GetModificationAuditTrailQuery(modificationId);
+        var query = new GetModificationAuditTrailQuery
+        {
+            ProjectModificationId = modificationId
+        };
+
         return await mediator.Send(query);
     }
 
@@ -326,13 +351,15 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
     /// <param name="sortDirection">The direction of sorting: "asc" for ascending or "desc" for descending.</param>
     /// <returns>Returns a paginated list of modifications related to the SponsorOrganisationUserId.</returns>
     [HttpPost("getmodificationsbysponsororganisationuserid")]
-    public async Task<ActionResult<ModificationResponse>> GetModificationsBySponsorOrganisationUserId(
+    public async Task<ActionResult<ModificationResponse>> GetModificationsBySponsorOrganisationUserId
+    (
         Guid sponsorOrganisationUserId,
         [FromBody] SponsorAuthorisationsSearchRequest searchQuery,
         int pageNumber,
         int pageSize,
         string sortField,
-        string sortDirection)
+        string sortDirection
+    )
     {
         if (pageNumber <= 0)
         {
@@ -360,9 +387,14 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("getreviewresponses")]
-    public async Task<ModificationReviewResponse> GetReviewResponses(Guid modificationId)
+    public async Task<ModificationReviewResponse> GetReviewResponses(string projectRecordId, Guid modificationId)
     {
-        var query = new GetModificationReviewResponsesQuery(modificationId);
+        var query = new GetModificationReviewResponsesQuery
+        {
+            ProjectRecordId = projectRecordId,
+            ProjectModificationId = modificationId
+        };
+
         return await mediator.Send(query);
     }
 
@@ -377,13 +409,15 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
     /// <param name="sortDirection">The direction of sorting: "asc" for ascending or "desc" for descending.</param>
     /// <returns>Returns a paginated list of modifications related to the specified project record.</returns>
     [HttpPost("getdocumentsformodification")]
-    public async Task<ActionResult<ProjectOverviewDocumentResponse>> GetDocumentsForModification(
+    public async Task<ActionResult<ProjectOverviewDocumentResponse>> GetDocumentsForModification
+    (
         Guid modificationId,
         [FromBody] ProjectOverviewDocumentSearchRequest searchQuery,
         int pageNumber,
         int pageSize,
         string sortField,
-        string sortDirection)
+        string sortDirection
+    )
     {
         if (pageNumber <= 0)
         {

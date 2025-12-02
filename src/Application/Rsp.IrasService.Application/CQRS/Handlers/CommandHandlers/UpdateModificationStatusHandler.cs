@@ -18,6 +18,6 @@ public class UpdateModificationStatusHandler(IProjectModificationService project
     public async Task Handle(UpdateModificationStatusCommand request, CancellationToken cancellationToken)
     {
         // Delegate the removal to the application service. The service encapsulates the actual deletion logic.
-        await projectModificationService.UpdateModificationStatus(request.ProjectModificationId, request.Status);
+        await projectModificationService.UpdateModificationStatus(request.ProjectRecordId, request.ProjectModificationId, request.Status);
     }
 }

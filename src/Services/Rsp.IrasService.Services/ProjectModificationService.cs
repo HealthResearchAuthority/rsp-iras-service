@@ -57,9 +57,9 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
         return modificationChange.Adapt<ModificationChangeResponse>();
     }
 
-    public async Task<IEnumerable<ModificationChangeResponse>> GetModificationChanges(Guid projectModificationId)
+    public async Task<IEnumerable<ModificationChangeResponse>> GetModificationChanges(string projectRecordId, Guid projectModificationId)
     {
-        var specification = new GetModificationChangesSpecification(projectModificationId);
+        var specification = new GetModificationChangesSpecification(projectRecordId, projectModificationId);
 
         var modificationChanges = await projectModificationRepository.GetModificationChanges(specification);
 
@@ -121,13 +121,15 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
         return projectModificationRepository.AssignModificationsToReviewer(modificationIds, reviewerId, reviewerEmail, reviewerName);
     }
 
-    public Task<ProjectOverviewDocumentResponse> GetDocumentsForProjectOverview(
+    public Task<ProjectOverviewDocumentResponse> GetDocumentsForProjectOverview
+    (
         string projectRecordId,
         ProjectOverviewDocumentSearchRequest searchQuery,
         int pageNumber,
         int pageSize,
         string sortField,
-        string sortDirection)
+        string sortDirection
+    )
     {
         var modifications = projectModificationRepository.GetDocumentsForProjectOverview(searchQuery, pageNumber, pageSize, sortField, sortDirection, projectRecordId);
         var totalCount = projectModificationRepository.GetDocumentsForProjectOverviewCount(searchQuery, projectRecordId);
@@ -170,9 +172,9 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
     /// the status of the associated modification changes.
     /// </summary>
     /// <param name="modificationId">The unique identifier of the modification change to remove.</param>
-    public async Task UpdateModificationStatus(Guid modificationId, string status)
+    public async Task UpdateModificationStatus(string projectRecordId, Guid modificationId, string status)
     {
-        var specification = new GetModificationSpecification(modificationId);
+        var specification = new GetModificationSpecification(projectRecordId, modificationId);
 
         await projectModificationRepository.UpdateModificationStatus(specification, status);
     }
@@ -184,7 +186,7 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
     /// <param name="modificationRequest">The </param>
     public async Task UpdateModification(UpdateModificationRequest modificationRequest)
     {
-        var specification = new GetModificationSpecification(modificationRequest.Id);
+        var specification = new GetModificationSpecification(modificationRequest.ProjectRecordId, modificationRequest.Id);
 
         var projectModification = modificationRequest.Adapt<ProjectModification>();
 
@@ -196,9 +198,9 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
     /// the status of the associated modification changes.
     /// </summary>
     /// <param name="modificationId">The unique identifier of the modification change to remove.</param>
-    public async Task DeleteModification(Guid modificationId)
+    public async Task DeleteModification(string projectRecordId, Guid modificationId)
     {
-        var specification = new GetModificationSpecification(modificationId);
+        var specification = new GetModificationSpecification(projectRecordId, modificationId);
 
         await projectModificationRepository.DeleteModification(specification);
     }
@@ -248,28 +250,35 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
     /// </summary>
     /// <param name="projectModificationId">The unique identifier of the modification</param>
     /// <returns>The modification review responses</returns>
-    public async Task<ModificationReviewResponse> GetModificationReviewResponses(Guid projectModificationId)
+    public async Task<ModificationReviewResponse?> GetModificationReviewResponses(string projectRecordId, Guid projectModificationId)
     {
-        var modification = await projectModificationRepository.GetModificationById(projectModificationId);
+        var specification = new GetModificationSpecification(projectRecordId, projectModificationId);
 
-        var result = new ModificationReviewResponse
+        var modification = await projectModificationRepository.GetModification(specification);
+
+        if (modification == null)
+        {
+            return null;
+        }
+
+        return new ModificationReviewResponse
         {
             ModificationId = modification.Id,
             Comment = modification.ReviewerComments,
             ReasonNotApproved = modification.ReasonNotApproved,
             ReviewOutcome = modification.ProvisionalReviewOutcome
         };
-
-        return result;
     }
 
-    public Task<ProjectOverviewDocumentResponse> GetDocumentsForModification(
+    public Task<ProjectOverviewDocumentResponse> GetDocumentsForModification
+    (
         Guid modificationId,
         ProjectOverviewDocumentSearchRequest searchQuery,
         int pageNumber,
         int pageSize,
         string sortField,
-        string sortDirection)
+        string sortDirection
+    )
     {
         var modifications = projectModificationRepository.GetDocumentsForModification(searchQuery, pageNumber, pageSize, sortField, sortDirection, modificationId);
         var totalCount = projectModificationRepository.GetDocumentsForModificationCount(searchQuery, modificationId);
@@ -281,9 +290,9 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
         });
     }
 
-    public async Task<ModificationResponse?> GetModification(string projectModificationId)
+    public async Task<ModificationResponse?> GetModification(string projectRecordId, Guid projectModificationId)
     {
-        var specification = new GetModificationSpecification(Guid.Parse(projectModificationId));
+        var specification = new GetModificationSpecification(projectRecordId, projectModificationId);
 
         var modification = await projectModificationRepository.GetModification(specification);
 

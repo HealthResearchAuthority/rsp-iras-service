@@ -2,9 +2,9 @@
 
 namespace Rsp.IrasService.Application.CQRS.Commands;
 
-public class UpdateModificationStatusCommand(Guid modificationId, string status) : IRequest
+public class UpdateModificationStatusCommand : IRequest
 {
-    public Guid ProjectModificationId { get; set; } = modificationId;
-
-    public string Status { get; set; } = status;
+    public required string ProjectRecordId { get; set; }
+    public required Guid ProjectModificationId { get; set; }
+    public required string Status { get; set; }
 }

@@ -34,7 +34,7 @@ public class ModificationControllerMiscTests : TestServiceBase<ProjectModificati
             .ReturnsAsync(new List<ModificationChangeResponse>());
 
         // Act
-        var res = await Sut.GetModificationChanges(id);
+        var res = await Sut.GetModificationChanges("PR1", id);
 
         // Assert
         res.ShouldNotBeNull();
@@ -68,7 +68,7 @@ public class ModificationControllerMiscTests : TestServiceBase<ProjectModificati
             .Returns(Task.CompletedTask);
 
         // Act
-        await Sut.UpdateModificationStatus(id, status);
+        await Sut.UpdateModificationStatus("PR1", id, status);
 
         // Assert
         mediator.Verify(m => m.Send(It.Is<UpdateModificationStatusCommand>(q => q.ProjectModificationId == id && q.Status == status), It.IsAny<CancellationToken>()), Times.Once);
@@ -84,7 +84,7 @@ public class ModificationControllerMiscTests : TestServiceBase<ProjectModificati
             .Returns(Task.CompletedTask);
 
         // Act
-        await Sut.DeleteModification(id);
+        await Sut.DeleteModification("PR1", id);
 
         // Assert
         mediator.Verify(m => m.Send(It.Is<DeleteModificationCommand>(q => q.ProjectModificationId == id), It.IsAny<CancellationToken>()), Times.Once);

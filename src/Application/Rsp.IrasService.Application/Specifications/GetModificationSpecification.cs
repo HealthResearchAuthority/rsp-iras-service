@@ -16,8 +16,8 @@ public class GetModificationSpecification : Specification<ProjectModification>
     /// Initializes a new instance of the <see cref="GetModificationSpecification"/> class.
     /// </summary>
     /// <param name="modificationId">The unique identifier of the modification change to retrieve.</param>
-    public GetModificationSpecification(Guid modificationId)
+    public GetModificationSpecification(string projectRecordId, Guid modificationId)
     {
-        Query.Where(entity => entity.Id == modificationId);
+        Query.Where(entity => entity.Id == modificationId && entity.ProjectRecordId == projectRecordId);
     }
 }

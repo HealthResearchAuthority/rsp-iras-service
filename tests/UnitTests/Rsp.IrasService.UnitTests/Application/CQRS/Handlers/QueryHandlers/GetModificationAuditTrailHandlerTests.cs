@@ -13,7 +13,10 @@ public class GetModificationAuditTrailHandlerTests
         var svc = new Mock<IProjectModificationService>();
         var handler = new GetModificationAuditTrailHandler(svc.Object);
         var id = Guid.NewGuid();
-        var query = new GetModificationAuditTrailQuery(id);
+        var query = new GetModificationAuditTrailQuery
+        {
+            ProjectModificationId = id
+        };
 
         // Act
         await handler.Handle(query, CancellationToken.None);

@@ -19,7 +19,7 @@ public class GetReviewResponses : TestServiceBase<ProjectModificationsController
             .ReturnsAsync(expectedResponse);
 
         // Act
-        var result = await Sut.GetReviewResponses(modificationId);
+        var result = await Sut.GetReviewResponses("PR1", modificationId);
 
         result.ShouldBeEquivalentTo(expectedResponse);
     }

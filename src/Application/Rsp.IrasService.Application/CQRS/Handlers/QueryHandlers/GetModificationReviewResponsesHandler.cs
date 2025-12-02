@@ -9,6 +9,6 @@ public class GetModificationReviewResponsesHandler(IProjectModificationService p
 {
     public async Task<ModificationReviewResponse> Handle(GetModificationReviewResponsesQuery request, CancellationToken cancellationToken)
     {
-        return await projectModificationService.GetModificationReviewResponses(request.ProjectModificationId);
+        return await projectModificationService.GetModificationReviewResponses(request.ProjectRecordId, request.ProjectModificationId);
     }
 }
