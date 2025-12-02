@@ -10,7 +10,7 @@ public class GetModificationHandler(IProjectModificationService projectModificat
 {
     public async Task<ModificationResponse?> Handle(GetModificationQuery request, CancellationToken cancellationToken)
     {
-        var modification = await projectModificationService.GetModification(request.ProjectModificationId);
+        var modification = await projectModificationService.GetModification(request.ProjectRecordId, request.ProjectModificationId);
 
         return modification?.FilterSingleOrNull(request, m => m.Status);
     }

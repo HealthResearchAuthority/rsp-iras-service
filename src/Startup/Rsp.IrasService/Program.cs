@@ -14,6 +14,7 @@ using Rsp.IrasService.Configuration.Database;
 using Rsp.IrasService.Configuration.Dependencies;
 using Rsp.IrasService.Configuration.Swagger;
 using Rsp.IrasService.Extensions;
+using Rsp.IrasService.Infrastructure.Middlewares;
 using Rsp.Logging.ActionFilters;
 using Rsp.Logging.Extensions;
 using Rsp.Logging.Interceptors;
@@ -97,7 +98,6 @@ services
             options.Filters.Add<LogActionFilter>();
         }
         options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
-
     })
     .AddJsonOptions(options =>
     {
@@ -155,6 +155,9 @@ app.UseAuthentication();
 app.UseRequestTracing();
 
 app.UseAuthorization();
+
+// verify project record, modification or document access
+app.UseAccessValidation();
 
 app.MapControllers();
 

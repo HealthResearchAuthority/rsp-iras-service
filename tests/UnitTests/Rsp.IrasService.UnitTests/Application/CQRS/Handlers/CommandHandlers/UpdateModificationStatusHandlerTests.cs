@@ -14,12 +14,17 @@ public class UpdateModificationStatusHandlerTests
         var handler = new UpdateModificationStatusHandler(service.Object);
         var id = Guid.NewGuid();
         const string status = "Submitted";
-        var cmd = new UpdateModificationStatusCommand(id, status);
+        var cmd = new UpdateModificationStatusCommand
+        {
+            ProjectRecordId = "PR1",
+            ProjectModificationId = id,
+            Status = status
+        };
 
         // Act
         await handler.Handle(cmd, CancellationToken.None);
 
         // Assert
-        service.Verify(s => s.UpdateModificationStatus(id, status), Times.Once);
+        service.Verify(s => s.UpdateModificationStatus("PR1", id, status), Times.Once);
     }
 }

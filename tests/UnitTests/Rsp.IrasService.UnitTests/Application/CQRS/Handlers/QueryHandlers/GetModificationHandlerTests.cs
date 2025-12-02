@@ -13,13 +13,17 @@ public class GetModificationHandlerTests : TestServiceBase<GetModificationHandle
         // Arrange
         var service = Mocker.GetMock<IProjectModificationService>();
 
-        var id = Guid.NewGuid().ToString();
-        var query = new GetModificationQuery(id);
+        var id = Guid.NewGuid();
+        var query = new GetModificationQuery
+        {
+            ProjectRecordId = response.ProjectRecordId,
+            ProjectModificationId = id
+        };
 
-        response.Id = Guid.Parse(id);
+        response.Id = id;
 
         service
-            .Setup(s => s.GetModification(id))
+            .Setup(s => s.GetModification(It.IsAny<string>(), It.IsAny<Guid>()))
             .ReturnsAsync(response);
 
         // Act
@@ -28,7 +32,7 @@ public class GetModificationHandlerTests : TestServiceBase<GetModificationHandle
         // Assert
         result.ShouldNotBeNull();
         result.ShouldBe(response);
-        service.Verify(s => s.GetModification(id), Times.Once);
+        service.Verify(s => s.GetModification(query.ProjectRecordId, query.ProjectModificationId), Times.Once);
     }
 
     [Fact]
@@ -37,16 +41,22 @@ public class GetModificationHandlerTests : TestServiceBase<GetModificationHandle
         // Arrange
         var svc = new Mock<IProjectModificationService>();
         var handler = new GetModificationHandler(svc.Object);
-        var id = Guid.NewGuid().ToString();
-        var query = new GetModificationQuery(id);
+        var id = Guid.NewGuid();
+        var query = new GetModificationQuery
+        {
+            ProjectRecordId = id.ToString(),
+            ProjectModificationId = id
+        };
 
-        svc.Setup(s => s.GetModification(id)).ReturnsAsync((ModificationResponse?)null);
+        svc
+            .Setup(s => s.GetModification(It.IsAny<string>(), It.IsAny<Guid>()))
+            .ReturnsAsync((ModificationResponse?)null);
 
         // Act
         var result = await handler.Handle(query, CancellationToken.None);
 
         // Assert
         result.ShouldBeNull();
-        svc.Verify(s => s.GetModification(id), Times.Once);
+        svc.Verify(s => s.GetModification(query.ProjectRecordId, query.ProjectModificationId), Times.Once);
     }
 }

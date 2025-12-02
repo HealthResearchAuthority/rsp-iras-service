@@ -93,11 +93,11 @@ public class GetModificationSpecificationTests
         var id = Guid.NewGuid();
         var data = new List<ProjectModification>
         {
-            new() { Id = id },
-            new() { Id = Guid.NewGuid() },
+            new() { ProjectRecordId = "PR1", Id = id },
+            new() { ProjectRecordId = "PR2", Id = Guid.NewGuid() },
         };
 
-        var spec = new GetModificationSpecification(id);
+        var spec = new GetModificationSpecification("PR1", id);
         var result = spec.Evaluate(data).ToList();
 
         result.Count.ShouldBe(1);

@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Rsp.IrasService.Application.CQRS.Queries;
+using Rsp.IrasService.Domain.Constants;
 
 namespace Rsp.IrasService.Application.Behaviors;
 
@@ -36,7 +37,7 @@ public class AllowedStatusesPopulationBehavior<TRequest, TResponse>
         // If the user is in admin role, by pass the population
         // as admin has access to all statuses.
         var user = httpContext.User;
-        if (user.IsInRole("system_administrator"))
+        if (user.IsInRole(Roles.SystemAdministrator))
         {
             return await next();
         }

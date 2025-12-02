@@ -13,7 +13,10 @@ public class GetModificationChangeHandlerTests
         var svc = new Mock<IProjectModificationService>();
         var handler = new GetModificationChangeHandler(svc.Object);
         var id = Guid.NewGuid();
-        var query = new GetModificationChangeQuery(id);
+        var query = new GetModificationChangeQuery
+        {
+            ModificationChangeId = id
+        };
 
         // Act
         await handler.Handle(query, CancellationToken.None);

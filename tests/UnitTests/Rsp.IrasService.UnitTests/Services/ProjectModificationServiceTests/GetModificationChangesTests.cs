@@ -11,7 +11,7 @@ namespace Rsp.IrasService.UnitTests.Services.ProjectModificationServiceTests;
 public class GetModificationChangesTests : TestServiceBase<ProjectModificationService>
 {
     [Theory, AutoData]
-    public async Task Returns_List_Of_ModificationChangeResponse(Guid projectModificationId, List<ProjectModificationChange> changes)
+    public async Task Returns_List_Of_ModificationChangeResponse(string projectRecordId, Guid projectModificationId, List<ProjectModificationChange> changes)
     {
         // Arrange
         var repo = new Mock<IProjectModificationRepository>();
@@ -22,7 +22,7 @@ public class GetModificationChangesTests : TestServiceBase<ProjectModificationSe
         Sut = Mocker.CreateInstance<ProjectModificationService>();
 
         // Act
-        var result = await Sut.GetModificationChanges(projectModificationId);
+        var result = await Sut.GetModificationChanges(projectRecordId, projectModificationId);
 
         // Assert
         result.ShouldNotBeNull();

@@ -125,13 +125,15 @@ public interface IProjectModificationRepository
     /// <returns>Task representing the asynchronous operation.</returns>
     Task AssignModificationsToReviewer(List<string> modificationIds, string reviewerId, string reviewerEmail, string reviewerName);
 
-    IEnumerable<ProjectOverviewDocumentResult> GetDocumentsForProjectOverview(
+    IEnumerable<ProjectOverviewDocumentResult> GetDocumentsForProjectOverview
+    (
         ProjectOverviewDocumentSearchRequest searchQuery,
         int pageNumber,
         int pageSize,
         string sortField,
         string sortDirection,
-        string? projectRecordId = null);
+        string? projectRecordId = null
+    );
 
     int GetDocumentsForProjectOverviewCount(ProjectOverviewDocumentSearchRequest searchQuery, string? projectRecordId = null);
 
@@ -186,20 +188,15 @@ public interface IProjectModificationRepository
     /// <param name="modificationReviewRequest">The request object containing the review values</param>
     Task SaveModificationReviewResponses(ModificationReviewRequest modificationReviewRequest);
 
-    /// <summary>
-    /// Gets modification for a specific projectModificationId
-    /// </summary>
-    /// <param name="projectModificationId">The unique identifier of the modification</param>
-    /// <returns>The project modification record</returns>
-    public Task<ProjectModification> GetModificationById(Guid projectModificationId);
-
-    IEnumerable<ProjectOverviewDocumentResult> GetDocumentsForModification(
+    IEnumerable<ProjectOverviewDocumentResult> GetDocumentsForModification
+    (
         ProjectOverviewDocumentSearchRequest searchQuery,
         int pageNumber,
         int pageSize,
         string sortField,
         string sortDirection,
-        Guid modificationId);
+        Guid modificationId
+    );
 
     int GetDocumentsForModificationCount(ProjectOverviewDocumentSearchRequest searchQuery, Guid modificationId);
 

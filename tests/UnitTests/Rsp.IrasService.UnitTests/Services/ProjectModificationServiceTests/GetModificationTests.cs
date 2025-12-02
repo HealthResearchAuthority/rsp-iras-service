@@ -42,7 +42,7 @@ public class GetModificationTests : TestServiceBase<ProjectModificationService>
         Sut = Mocker.CreateInstance<ProjectModificationService>();
 
         // Act
-        var response = await Sut.GetModification(mod.Id.ToString());
+        var response = await Sut.GetModification("PR-1", mod.Id);
 
         // Assert
         response.ShouldNotBeNull();
@@ -58,7 +58,7 @@ public class GetModificationTests : TestServiceBase<ProjectModificationService>
         Sut = Mocker.CreateInstance<ProjectModificationService>();
 
         // Act
-        var response = await Sut.GetModification(Guid.NewGuid().ToString());
+        var response = await Sut.GetModification("PR1", Guid.NewGuid());
 
         // Assert
         response.ShouldBeNull();

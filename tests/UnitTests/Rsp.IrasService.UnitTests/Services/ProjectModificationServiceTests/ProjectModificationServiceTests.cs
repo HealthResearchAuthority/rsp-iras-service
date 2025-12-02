@@ -76,7 +76,7 @@ public class ProjectModificationServiceTests : TestServiceBase<ProjectModificati
         var newStatus = "Submitted";
 
         // Act
-        await Sut.UpdateModificationStatus(modId, newStatus);
+        await Sut.UpdateModificationStatus("PR-1", modId, newStatus);
 
         // Assert - reload and verify status changes persisted
         var updated = await _context.ProjectModifications
@@ -96,18 +96,21 @@ public class ProjectModificationServiceTests : TestServiceBase<ProjectModificati
 
         const string newStatus = "Submitted";
 
+        projectModification.ProjectRecordId = "PR-1";
         projectModification.Id = modId;
 
         await _context.ProjectModifications.AddAsync(projectModification);
         await _context.SaveChangesAsync();
 
         Mocker.Use<IProjectModificationRepository>(_modificationRepository);
+
         Sut = Mocker.CreateInstance<ProjectModificationService>();
 
         updateModificationRequest.ProjectModificationChanges[0].Id = projectModification.ProjectModificationChanges.ElementAt(0).Id;
         updateModificationRequest.ProjectModificationChanges[1].Id = projectModification.ProjectModificationChanges.ElementAt(1).Id;
         updateModificationRequest.ProjectModificationChanges[2].Id = projectModification.ProjectModificationChanges.ElementAt(2).Id;
 
+        updateModificationRequest.ProjectRecordId = "PR-1";
         updateModificationRequest.Id = modId;
         updateModificationRequest.Status = newStatus;
         updateModificationRequest.CreatedDate = now;
@@ -238,7 +241,7 @@ public class ProjectModificationServiceTests : TestServiceBase<ProjectModificati
         Sut = Mocker.CreateInstance<ProjectModificationService>();
 
         // Act
-        await Sut.DeleteModification(modification.Id);
+        await Sut.DeleteModification("PR-1", modification.Id);
 
         // Assert
         (await _context.ProjectModificationChanges.FindAsync(change.Id)).ShouldBeNull();

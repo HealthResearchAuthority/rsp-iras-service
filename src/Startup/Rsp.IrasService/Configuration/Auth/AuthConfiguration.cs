@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.FeatureManagement;
 using Microsoft.Net.Http.Headers;
 using Rsp.IrasService.Application.Authentication.Helpers;
-using Rsp.IrasService.Application.Authorization.Handlers;
 using Rsp.IrasService.Application.Settings;
 using Rsp.Logging.Extensions;
 
@@ -24,7 +23,7 @@ public static class AuthConfiguration
     /// <param name="config"><see cref="IConfiguration"/></param>
     public static IServiceCollection AddAuthenticationAndAuthorization(this IServiceCollection services, AppSettings appSettings, IConfiguration config)
     {
-        //Check if there is a 
+        //Check if there is a
         ConfigureJwt(services, appSettings, config);
 
         ConfigureAuthorization(services);
@@ -84,7 +83,7 @@ public static class AuthConfiguration
             .AddJwtBearer("FunctionAppBearer", options =>
             {
                 options.Authority = appSettings.MicrosoftEntra.Authority;
-                options.Audience = appSettings.MicrosoftEntra.Audience; 
+                options.Audience = appSettings.MicrosoftEntra.Audience;
                 options.Events = events;
             })
             .AddPolicyScheme("dynamicBearer", null, options =>
@@ -92,26 +91,26 @@ public static class AuthConfiguration
                 options.ForwardDefaultSelector = context =>
                 {
                     var tokenHelper = context.Request.HttpContext.RequestServices.GetRequiredService<ITokenHelper>();
-                        var authToken = context.Request.Headers[HeaderNames.Authorization];
+                    var authToken = context.Request.Headers[HeaderNames.Authorization];
 
-                        // if we don't have token, there is nothing to forward to
-                        if (string.IsNullOrWhiteSpace(authToken))
-                        {
-                            return JwtBearerDefaults.AuthenticationScheme;
-                        }
+                    // if we don't have token, there is nothing to forward to
+                    if (string.IsNullOrWhiteSpace(authToken))
+                    {
+                        return JwtBearerDefaults.AuthenticationScheme;
+                    }
 
-                        // replace the "Bearer " if present in the token
-                        var token = tokenHelper.DeBearerizeAuthToken(authToken);
-                        var jwtHandler = new JwtSecurityTokenHandler();
+                    // replace the "Bearer " if present in the token
+                    var token = tokenHelper.DeBearerizeAuthToken(authToken);
+                    var jwtHandler = new JwtSecurityTokenHandler();
 
-                        // if we can't read the token, return the empty scheme
-                        if (!jwtHandler.CanReadToken(token))
-                        {
-                            return JwtBearerDefaults.AuthenticationScheme;
-                        }
+                    // if we can't read the token, return the empty scheme
+                    if (!jwtHandler.CanReadToken(token))
+                    {
+                        return JwtBearerDefaults.AuthenticationScheme;
+                    }
 
-                        // get the token to verify the issuer
-                        var jwtSecurityToken = jwtHandler.ReadJwtToken(token);
+                    // get the token to verify the issuer
+                    var jwtSecurityToken = jwtHandler.ReadJwtToken(token);
 
                     // based on the issuer, we will forward the request to the appropriate scheme
                     // if the token issuer is the one for OneLogin, use the default JwtBearer scheme
@@ -141,10 +140,5 @@ public static class AuthConfiguration
                 .RequireAuthenticatedUser()
                 .Build();
         });
-
-        // add an authorization handler to handle the application access requirements
-        // for a reviewer. The requirement is linked to the the custom [ApplicationAccess]
-        // Authorize attribute.
-        services.AddSingleton<IAuthorizationHandler, ReviewerAccessRequirementHandler>();
     }
 }

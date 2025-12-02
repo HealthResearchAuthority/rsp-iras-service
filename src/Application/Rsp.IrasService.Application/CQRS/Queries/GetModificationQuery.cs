@@ -3,7 +3,8 @@ using Rsp.IrasService.Application.DTOS.Responses;
 
 namespace Rsp.IrasService.Application.CQRS.Queries;
 
-public class GetModificationQuery(string projectModificationId) : BaseQuery, IRequest<ModificationResponse?>
+public class GetModificationQuery : BaseQuery, IRequest<ModificationResponse?>
 {
-    public string ProjectModificationId { get; } = projectModificationId;
+    public required string ProjectRecordId { get; set; }
+    public required Guid ProjectModificationId { get; set; }
 }

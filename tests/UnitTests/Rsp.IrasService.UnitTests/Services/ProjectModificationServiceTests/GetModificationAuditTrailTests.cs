@@ -9,14 +9,21 @@ public class GetModificationAuditTrailTests : TestServiceBase<ProjectModificatio
     [Theory, AutoData]
     public async Task Returns_List_Of_ModificationAuditTrail
     (
-        Guid projectModificationId,
-        IEnumerable<ProjectModificationAuditTrail> auditTrails
+        Guid projectModificationId
     )
     {
+        var fixture = new Fixture();
+        var auditTrails = fixture
+            .Build<ProjectModificationAuditTrail>()
+            .Without(e => e.ProjectModification)
+            .CreateMany();
+
         // Arrange
         var repo = new Mock<IProjectModificationRepository>();
 
-        repo.Setup(r => r.GetModificationAuditTrail(It.IsAny<Guid>())).ReturnsAsync(auditTrails);
+        repo
+            .Setup(r => r.GetModificationAuditTrail(It.IsAny<Guid>()))
+            .ReturnsAsync(auditTrails);
 
         Mocker.Use(repo.Object);
         Sut = Mocker.CreateInstance<ProjectModificationService>();
