@@ -104,7 +104,6 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
         var applicationRequest = new ApplicationRequest
         {
             Id = Guid.NewGuid().ToString(),
-            Respondent = new RespondentDto { Id = fixedRespondentId },
             CreatedBy = "CreatedBy",
             FullProjectTitle = "Description",
             ShortProjectTitle = "Title",
@@ -114,7 +113,7 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
         var existingApplication = new ProjectRecord
         {
             Id = applicationRequest.Id,
-            ProjectPersonnelId = fixedRespondentId,
+            UserId = fixedRespondentId,
             CreatedBy = applicationRequest.CreatedBy,
             FullProjectTitle = applicationRequest.FullProjectTitle,
             ShortProjectTitle = applicationRequest.ShortProjectTitle,
@@ -140,7 +139,7 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
             .FirstOrDefaultAsync(a => a.Id == existingApplication.Id);
 
         dbApplication.ShouldNotBeNull();
-        dbApplication.ProjectPersonnelId.ShouldBe(fixedRespondentId);
+        dbApplication.UserId.ShouldBe(fixedRespondentId);
 
         (await _context.ProjectRecords.CountAsync()).ShouldBe(1);
     }

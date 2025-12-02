@@ -10,15 +10,15 @@ public class GetModificationParticipatingOrganisationsSpecification : Specificat
     /// </summary>
     /// <param name="modificationChangeId">Unique Id of the change added to the modification.</param>
     /// <param name="projectRecordId">Unique Id of the application to get. Default: null for all records.</param>
-    /// <param name="projectPersonnelId">Unique Id of the personnel to get. Default: null for all records.</param>
-    public GetModificationParticipatingOrganisationsSpecification(Guid modificationChangeId, string projectRecordId, string projectPersonnelId)
+    /// <param name="userId">Unique Id of the user to get. Default: null for all records.</param>
+    public GetModificationParticipatingOrganisationsSpecification(Guid modificationChangeId, string projectRecordId, string userId)
     {
         Query
             .AsNoTracking()
             .Where(entity =>
                 entity.ProjectModificationChangeId == modificationChangeId &&
                 entity.ProjectRecordId == projectRecordId &&
-                entity.ProjectPersonnelId == projectPersonnelId
+                entity.UserId == userId
             );
     }
 }

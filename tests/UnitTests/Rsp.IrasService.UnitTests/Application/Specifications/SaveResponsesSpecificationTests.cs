@@ -16,7 +16,7 @@ public class SaveResponsesSpecificationTests
         // Arrange
         var respondentAnswers = generator.Take(5).ToList();
         var applicationId = respondentAnswers[0].ProjectRecordId;
-        var respondentId = respondentAnswers[0].ProjectPersonnelId;
+        var respondentId = respondentAnswers[0].UserId;
 
         var spec = new SaveResponsesSpecification(applicationId, respondentId);
 
@@ -27,7 +27,7 @@ public class SaveResponsesSpecificationTests
 
         // Assert
         result.ShouldNotBeNull();
-        result.ShouldAllBe(answer => answer.ProjectRecordId == applicationId && answer.ProjectPersonnelId == respondentId);
+        result.ShouldAllBe(answer => answer.ProjectRecordId == applicationId && answer.UserId == respondentId);
     }
 
     /// <summary>

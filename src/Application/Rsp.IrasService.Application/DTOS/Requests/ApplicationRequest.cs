@@ -38,9 +38,9 @@ public record ApplicationRequest
     public string UpdatedBy { get; set; } = null!;
 
     /// <summary>
-    /// Respondent creating the application
+    /// Id of the user creating the application
     /// </summary>
-    public RespondentDto Respondent { get; set; } = null!;
+    public string UserId { get; set; } = null!;
 
     /// <summary>
     /// IRAS ID of the application

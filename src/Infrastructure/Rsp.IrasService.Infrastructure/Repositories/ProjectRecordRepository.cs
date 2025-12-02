@@ -13,19 +13,8 @@ namespace Rsp.IrasService.Infrastructure.Repositories;
 public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRepository
 
 {
-    public async Task<ProjectRecord> CreateProjectRecord(ProjectRecord irasApplication, ProjectPersonnel respondent)
+    public async Task<ProjectRecord> CreateProjectRecord(ProjectRecord irasApplication)
     {
-        var respondentEntity = await irasContext
-            .ProjectPersonnels
-            .SingleOrDefaultAsync(r => r.Id == respondent.Id);
-
-        if (respondentEntity == null)
-        {
-            await irasContext.ProjectPersonnels.AddAsync(respondent);
-        }
-
-        irasApplication.ProjectPersonnelId = respondent.Id;
-
         var entity = await irasContext.ProjectRecords.AddAsync(irasApplication);
 
         await irasContext.SaveChangesAsync();
@@ -74,7 +63,7 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
                                   select new ProjectRecord
                                   {
                                       Id = projectRecord.Id,
-                                      ProjectPersonnelId = projectRecord.ProjectPersonnelId,
+                                      UserId = projectRecord.UserId,
                                       FullProjectTitle = projectRecord.FullProjectTitle,
                                       IsActive = projectRecord.IsActive,
                                       Status = projectRecord.Status,

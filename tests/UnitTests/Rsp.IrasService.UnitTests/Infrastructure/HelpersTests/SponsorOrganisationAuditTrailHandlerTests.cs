@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Rsp.IrasService.Domain.Entities;
 using Rsp.IrasService.Infrastructure;
 using Rsp.IrasService.Infrastructure.Helpers;
-using Shouldly;
 
 namespace Rsp.IrasService.UnitTests.Infrastructure.HelpersTests;
 
@@ -46,7 +45,7 @@ public class SponsorOrganisationAuditTrailHandlerTests
     public void GenerateAuditTrails_ShouldReturnEmptyList_WhenEntityIsNotSponsorOrganisation()
     {
         // Arrange
-        var entity = new ProjectPersonnel { Id = "id" };
+        var entity = new DocumentType { Id = Guid.NewGuid(), Name = "name" };
         var systemAdminEmail = "adminEmail";
         var entityEntry = MockEntityEntry(entity);
 

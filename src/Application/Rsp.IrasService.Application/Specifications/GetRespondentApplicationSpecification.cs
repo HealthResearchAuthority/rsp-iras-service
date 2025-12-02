@@ -17,8 +17,8 @@ public class GetRespondentApplicationSpecification : Specification<ProjectRecord
     {
         Query
             .AsNoTracking()
-            .Where(entity => entity.Id == id && entity.ProjectPersonnelId == respondentId, id != null)
-            .Where(entity => entity.ProjectPersonnelId == respondentId, id == null)
+            .Where(entity => entity.Id == id && entity.UserId == respondentId, id != null)
+            .Where(entity => entity.UserId == respondentId, id == null)
             .Skip(records, id == null && records == 0)
             .Take(records, id == null && records != 0);
     }
@@ -43,7 +43,7 @@ public class GetRespondentApplicationSpecification : Specification<ProjectRecord
         var builder = Query
             .AsNoTracking();
 
-        builder.Where(entity => entity.ProjectPersonnelId == respondentId);
+        builder.Where(entity => entity.UserId == respondentId);
 
         if (!string.IsNullOrWhiteSpace(searchQuery.SearchTitleTerm))
         {

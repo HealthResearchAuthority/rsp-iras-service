@@ -8,19 +8,13 @@ public class ProjectModificationChangeAnswerConfiguration : IEntityTypeConfigura
 {
     public void Configure(EntityTypeBuilder<ProjectModificationChangeAnswer> builder)
     {
-        builder.HasKey(ra => new { ra.ProjectModificationChangeId, ra.QuestionId, ra.ProjectPersonnelId });
+        builder.HasKey(ra => new { ra.ProjectModificationChangeId, ra.QuestionId, ra.UserId });
 
         builder
             .HasOne(ra => ra.ProjectModificationChange)
             .WithMany()
             .HasForeignKey(r => r.ProjectModificationChangeId)
             .OnDelete(DeleteBehavior.Cascade);
-
-        builder
-            .HasOne(ra => ra.ProjectPersonnel)
-            .WithMany()
-            .HasForeignKey(r => r.ProjectPersonnelId)
-            .OnDelete(DeleteBehavior.NoAction);
 
         builder
             .HasOne(ra => ra.ProjectRecord)

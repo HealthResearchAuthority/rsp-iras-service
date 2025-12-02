@@ -297,7 +297,7 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
                 // Update existing document entry
                 existingAnswer.ProjectModificationId = answer.ProjectModificationId;
                 existingAnswer.ProjectRecordId = answer.ProjectRecordId;
-                existingAnswer.ProjectPersonnelId = answer.ProjectPersonnelId;
+                existingAnswer.UserId = answer.UserId;
                 existingAnswer.FileName = answer.FileName;
                 existingAnswer.DocumentStoragePath = answer.DocumentStoragePath;
                 existingAnswer.FileSize = answer.FileSize;
@@ -335,7 +335,7 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
                 // Update organisation entry
                 existingAnswer.ProjectModificationChangeId = answer.ProjectModificationChangeId;
                 existingAnswer.ProjectRecordId = answer.ProjectRecordId;
-                existingAnswer.ProjectPersonnelId = answer.ProjectPersonnelId;
+                existingAnswer.UserId = answer.UserId;
                 existingAnswer.OrganisationId = answer.OrganisationId;
 
                 continue;

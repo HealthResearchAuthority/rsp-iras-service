@@ -28,7 +28,7 @@ public class RespondentService(IProjectPersonnelRepository projectPersonnelRepos
         {
             var respondentAnswer = answer.Adapt<ProjectRecordAnswer>();
             respondentAnswer.ProjectRecordId = projectRecordId;
-            respondentAnswer.ProjectPersonnelId = respondentId;
+            respondentAnswer.UserId = respondentId;
 
             respondentAnswers.Add(respondentAnswer);
         }
@@ -48,7 +48,7 @@ public class RespondentService(IProjectPersonnelRepository projectPersonnelRepos
 
         var modificationId = modificationAnswersRequest.ProjectModificationId;
         var projectRecordId = modificationAnswersRequest.ProjectRecordId;
-        var projectPersonnelId = modificationAnswersRequest.ProjectPersonnelId;
+        var userId = modificationAnswersRequest.UserId;
 
         foreach (var answer in modificationAnswersRequest.ModificationAnswers)
         {
@@ -56,12 +56,12 @@ public class RespondentService(IProjectPersonnelRepository projectPersonnelRepos
 
             respondentAnswer.ProjectModificationId = modificationId;
             respondentAnswer.ProjectRecordId = projectRecordId;
-            respondentAnswer.ProjectPersonnelId = projectPersonnelId;
+            respondentAnswer.UserId = userId;
 
             respondentAnswers.Add(respondentAnswer);
         }
 
-        var specification = new SaveModificationResponsesSpecification(modificationId, projectRecordId, projectPersonnelId);
+        var specification = new SaveModificationResponsesSpecification(modificationId, projectRecordId, userId);
 
         await projectPersonnelRepository.SaveModificationResponses(specification, respondentAnswers);
     }
@@ -76,7 +76,7 @@ public class RespondentService(IProjectPersonnelRepository projectPersonnelRepos
 
         var modificationChangeId = modificationAnswersRequest.ProjectModificationChangeId;
         var projectRecordId = modificationAnswersRequest.ProjectRecordId;
-        var projectPersonnelId = modificationAnswersRequest.ProjectPersonnelId;
+        var userId = modificationAnswersRequest.UserId;
 
         foreach (var answer in modificationAnswersRequest.ModificationChangeAnswers)
         {
@@ -84,12 +84,12 @@ public class RespondentService(IProjectPersonnelRepository projectPersonnelRepos
 
             respondentAnswer.ProjectModificationChangeId = modificationChangeId;
             respondentAnswer.ProjectRecordId = projectRecordId;
-            respondentAnswer.ProjectPersonnelId = projectPersonnelId;
+            respondentAnswer.UserId = userId;
 
             respondentAnswers.Add(respondentAnswer);
         }
 
-        var specification = new SaveModificationChangeResponsesSpecification(modificationChangeId, projectRecordId, projectPersonnelId);
+        var specification = new SaveModificationChangeResponsesSpecification(modificationChangeId, projectRecordId, userId);
 
         await projectPersonnelRepository.SaveModificationChangeResponses(specification, respondentAnswers);
     }
@@ -203,11 +203,11 @@ public class RespondentService(IProjectPersonnelRepository projectPersonnelRepos
     /// </summary>
     /// <param name="projectModificationId">The unique identifier of the project modification.</param>
     /// <param name="projectRecordId">The identifier of the related project record.</param>
-    /// <param name="projectPersonnelId">The identifier of the project personnel who uploaded the documents.</param>
+    /// <param name="userId">The identifier of the user who uploaded the documents.</param>
     /// <returns>A collection of modification documents as <see cref="ModificationDocumentDto"/>.</returns>
-    public async Task<IEnumerable<ModificationDocumentDto>> GetModificationDocumentResponses(Guid projectModificationId, string projectRecordId, string projectPersonnelId)
+    public async Task<IEnumerable<ModificationDocumentDto>> GetModificationDocumentResponses(Guid projectModificationId, string projectRecordId, string userId)
     {
-        var specification = new GetModificationDocumentSpecification(projectModificationId, projectRecordId, projectPersonnelId);
+        var specification = new GetModificationDocumentSpecification(projectModificationId, projectRecordId, userId);
 
         var responses = await projectPersonnelRepository.GetResponses(specification);
 
@@ -237,11 +237,11 @@ public class RespondentService(IProjectPersonnelRepository projectPersonnelRepos
     /// </summary>
     /// <param name="projectModificationChangeId">The identifier of the modification change.</param>
     /// <param name="projectRecordId">The identifier of the project record.</param>
-    /// <param name="projectPersonnelId">The identifier of the project personnel who added the organisations.</param>
+    /// <param name="userId">The identifier of the user who added the organisations.</param>
     /// <returns>A collection of participating organisations as <see cref="ModificationParticipatingOrganisationDto"/>.</returns>
-    public async Task<IEnumerable<ModificationParticipatingOrganisationDto>> GetModificationParticipatingOrganisationResponses(Guid projectModificationChangeId, string projectRecordId, string projectPersonnelId)
+    public async Task<IEnumerable<ModificationParticipatingOrganisationDto>> GetModificationParticipatingOrganisationResponses(Guid projectModificationChangeId, string projectRecordId, string userId)
     {
-        var specification = new GetModificationParticipatingOrganisationsSpecification(projectModificationChangeId, projectRecordId, projectPersonnelId);
+        var specification = new GetModificationParticipatingOrganisationsSpecification(projectModificationChangeId, projectRecordId, userId);
 
         var responses = await projectPersonnelRepository.GetResponses(specification);
 
@@ -278,7 +278,7 @@ public class RespondentService(IProjectPersonnelRepository projectPersonnelRepos
         var specification = new SaveModificationDocumentsSpecification(
             respondentAnswers[0].ProjectModificationId,
             respondentAnswers[0].ProjectRecordId,
-            respondentAnswers[0].ProjectPersonnelId
+            respondentAnswers[0].UserId
         );
 
         var respondentDocuments = new List<ModificationDocument>();
@@ -334,7 +334,7 @@ public class RespondentService(IProjectPersonnelRepository projectPersonnelRepos
         var specification = new SaveModificationParticipatingOrganisationsSpecification(
             respondentAnswers[0].ProjectModificationChangeId,
             respondentAnswers[0].ProjectRecordId,
-            respondentAnswers[0].ProjectPersonnelId
+            respondentAnswers[0].UserId
         );
 
         var respondentDocuments = new List<ModificationParticipatingOrganisation>();

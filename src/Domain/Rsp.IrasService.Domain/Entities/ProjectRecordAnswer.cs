@@ -2,7 +2,7 @@
 
 public class ProjectRecordAnswer
 {
-    public string ProjectPersonnelId { get; set; } = null!;
+    public string UserId { get; set; } = null!;
     public string ProjectRecordId { get; set; } = null!;
     public string QuestionId { get; set; } = null!;
     public string VersionId { get; set; } = null!;
@@ -11,6 +11,5 @@ public class ProjectRecordAnswer
     public string? Response { get; set; }
     public string? OptionType { get; set; }
     public string? SelectedOptions { get; set; }
-    public ProjectPersonnel? ProjectPersonnel { get; set; }
     public ProjectRecord? ProjectRecord { get; set; }
 }

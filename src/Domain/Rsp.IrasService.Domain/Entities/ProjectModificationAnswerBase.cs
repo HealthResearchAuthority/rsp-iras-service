@@ -16,9 +16,9 @@ public abstract class ProjectModificationAnswerBase
     public string VersionId { get; set; } = null!;
 
     /// <summary>
-    /// Gets or sets the identifier of the project personnel related to this answer.
+    /// Gets or sets the identifier of the user related to this answer.
     /// </summary>
-    public string ProjectPersonnelId { get; set; } = null!;
+    public string UserId { get; set; } = null!;
 
     /// <summary>
     /// Gets or sets the identifier of the project record related to this answer.

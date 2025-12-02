@@ -18,6 +18,6 @@ public class GetModificationParticipatingOrganisationsHandler(IRespondentService
     /// <returns>A collection of respondent answer DTOs.</returns>
     public async Task<IEnumerable<ModificationParticipatingOrganisationDto>> Handle(GetModificationParticipatingOrganisationsQuery request, CancellationToken cancellationToken)
     {
-        return await respondentService.GetModificationParticipatingOrganisationResponses(request.ProjectModificationChangeId, request.ProjectRecordId, request.ProjectPersonnelId);
+        return await respondentService.GetModificationParticipatingOrganisationResponses(request.ProjectModificationChangeId, request.ProjectRecordId, request.UserId);
     }
 }

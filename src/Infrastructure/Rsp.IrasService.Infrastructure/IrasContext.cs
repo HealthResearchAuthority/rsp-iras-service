@@ -7,7 +7,6 @@ namespace Rsp.IrasService.Infrastructure;
 public class IrasContext(DbContextOptions<IrasContext> options) : DbContext(options)
 {
     public DbSet<ProjectRecord> ProjectRecords { get; set; }
-    public DbSet<ProjectPersonnel> ProjectPersonnels { get; set; }
     public DbSet<ProjectRecordAnswer> ProjectRecordAnswers { get; set; }
     public DbSet<EventType> EventTypes { get; set; }
     public DbSet<EmailTemplate> EmailTemplates { get; set; }
@@ -34,7 +33,6 @@ public class IrasContext(DbContextOptions<IrasContext> options) : DbContext(opti
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.ApplyConfiguration(new ProjectRecordConfiguration());
-        modelBuilder.ApplyConfiguration(new ProjectPersonnelConfiguration());
         modelBuilder.ApplyConfiguration(new ProjectRecordAnswerConfiguration());
         modelBuilder.ApplyConfiguration(new EventTypeConfiguration());
         modelBuilder.ApplyConfiguration(new EmailTemplateConfiguration());

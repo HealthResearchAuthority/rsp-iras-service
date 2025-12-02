@@ -19,7 +19,7 @@ public class GetModificationDocumentsHandler(IRespondentService respondentServic
     /// <returns>A collection of respondent answer DTOs.</returns>
     public async Task<IEnumerable<ModificationDocumentDto>> Handle(GetModificationDocumentsQuery request, CancellationToken cancellationToken)
     {
-        var docs = await respondentService.GetModificationDocumentResponses(request.ProjectModificationId, request.ProjectRecordId, request.ProjectPersonnelId);
+        var docs = await respondentService.GetModificationDocumentResponses(request.ProjectModificationId, request.ProjectRecordId, request.UserId);
 
         return docs.FilterByAllowedStatuses(request, d => d.Status);
     }

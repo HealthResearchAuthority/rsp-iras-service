@@ -26,7 +26,7 @@ public class ModificationParticipatingOrganisationDto
     public string ProjectRecordId { get; set; } = null!;
 
     /// <summary>
-    /// Gets or sets the project personnel identifier.
+    /// Gets or sets the project user identifier.
     /// </summary>
-    public string ProjectPersonnelId { get; set; } = null!;
+    public string UserId { get; set; } = null!;
 }
