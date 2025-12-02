@@ -96,7 +96,6 @@ public static class AllowedStatusesExtensions
 
         // Update the response in-place to reflect the filtered results.
         response.Modifications = filtered;
-        response.TotalCount = filtered.Count;
 
         return response;
     }
