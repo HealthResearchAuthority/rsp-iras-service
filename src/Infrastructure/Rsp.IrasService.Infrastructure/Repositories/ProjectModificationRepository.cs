@@ -344,11 +344,11 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
 
                 // Single ModificationType text match
                 && (string.IsNullOrEmpty(searchQuery.ModificationType)
-                    || x.ModificationType.Contains(searchQuery.ModificationType, StringComparison.OrdinalIgnoreCase))
+                    || x.ModificationType.Equals(searchQuery.ModificationType, StringComparison.OrdinalIgnoreCase))
 
                 // Status match (single value)
                 && (string.IsNullOrEmpty(searchQuery.Status)
-                    || x.Status.Contains(searchQuery.Status, StringComparison.OrdinalIgnoreCase))
+                    || x.Status.Equals(searchQuery.Status, StringComparison.OrdinalIgnoreCase))
 
                 // Allowed statuses filter — restrict to allowed values
                 && (!searchQuery.AllowedStatuses.Any()
@@ -356,11 +356,11 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
 
                 // ReviewType match (single value)
                 && (string.IsNullOrEmpty(searchQuery.ReviewType)
-                    || x.ReviewType.Contains(searchQuery.ReviewType, StringComparison.OrdinalIgnoreCase))
+                    || x.ReviewType.Equals(searchQuery.ReviewType, StringComparison.OrdinalIgnoreCase))
 
                 // Category match (single value)
                 && (string.IsNullOrEmpty(searchQuery.Category)
-                    || x.Category.Contains(searchQuery.Category, StringComparison.OrdinalIgnoreCase))
+                    || x.Category.Equals(searchQuery.Category, StringComparison.OrdinalIgnoreCase))
             );
     }
 
