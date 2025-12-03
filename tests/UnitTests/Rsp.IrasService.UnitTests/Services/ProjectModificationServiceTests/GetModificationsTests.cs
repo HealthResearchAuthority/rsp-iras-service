@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Application.Constants;
 using Rsp.IrasService.Application.Contracts.Repositories;
 using Rsp.IrasService.Application.DTOS.Requests;
@@ -256,7 +257,9 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
         mockRepo.Setup(r => r.GetModificationsCount(searchRequest, null))
                 .Returns(domainModifications.Count);
 
-        var service = new ProjectModificationService(mockRepo.Object);
+        var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+
+        var service = new ProjectModificationService(mockRepo.Object, mockHttpContextAccessor.Object);
 
         // Act
         var result = await service.GetModifications(searchRequest, pageNumber, pageSize, sortField, sortDirection);
@@ -286,7 +289,9 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
         mockRepo.Setup(r => r.GetModificationsCount(searchRequest, projectRecordId))
                 .Returns(domainModifications.Count);
 
-        var service = new ProjectModificationService(mockRepo.Object);
+        var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+
+        var service = new ProjectModificationService(mockRepo.Object, mockHttpContextAccessor.Object);
 
         // Act
         var result = await service.GetModificationsForProject(projectRecordId, searchRequest, pageNumber, pageSize, sortField, sortDirection);
@@ -316,7 +321,9 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
         mockRepo.Setup(r => r.GetModificationsBySponsorOrganisationUserCount(searchQuery, sponsorOrganisationUserId))
                 .Returns(domainModifications.Count);
 
-        var service = new ProjectModificationService(mockRepo.Object);
+        var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+
+        var service = new ProjectModificationService(mockRepo.Object, mockHttpContextAccessor.Object);
 
         // Act
         var result = await service.GetModificationsBySponsorOrganisationUserId(sponsorOrganisationUserId, searchQuery, pageNumber, pageSize, sortField, sortDirection);
@@ -341,7 +348,9 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
             .Setup(r => r.GetModificationsByIds(ids))
             .Returns(domainModifications);
 
-        var service = new ProjectModificationService(mockRepo.Object);
+        var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+
+        var service = new ProjectModificationService(mockRepo.Object, mockHttpContextAccessor.Object);
 
         // Act
         var result = await service.GetModificationsByIds(ids);
