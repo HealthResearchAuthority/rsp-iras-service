@@ -14,7 +14,6 @@ using Rsp.IrasService.Configuration.Database;
 using Rsp.IrasService.Configuration.Dependencies;
 using Rsp.IrasService.Configuration.Swagger;
 using Rsp.IrasService.Extensions;
-using Rsp.IrasService.Infrastructure.Middlewares;
 using Rsp.Logging.ActionFilters;
 using Rsp.Logging.Extensions;
 using Rsp.Logging.Interceptors;
@@ -156,7 +155,7 @@ app.UseRequestTracing();
 
 app.UseAuthorization();
 
-// verify project record, modification or document access
+// verify access to project records, modifications, and documents
 app.UseAccessValidation();
 
 app.MapControllers();
