@@ -1,4 +1,5 @@
-﻿using Rsp.IrasService.Application.Contracts.Repositories;
+﻿using Microsoft.AspNetCore.Http;
+using Rsp.IrasService.Application.Contracts.Repositories;
 using Rsp.IrasService.Application.Contracts.Services;
 using Rsp.IrasService.Application.CQRS.Handlers.QueryHandlers;
 using Rsp.IrasService.Application.CQRS.Queries;
@@ -101,7 +102,9 @@ public class GetDocumentsForProjectOverviewTests
         mockRepo.Setup(r => r.GetDocumentsForProjectOverviewCount(searchRequest, projectRecordId))
                 .Returns(domainDocuments.Count);
 
-        var service = new ProjectModificationService(mockRepo.Object);
+        var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+
+        var service = new ProjectModificationService(mockRepo.Object, mockHttpContextAccessor.Object);
 
         // Act
         var result = await service.GetDocumentsForProjectOverview(projectRecordId, searchRequest, pageNumber, pageSize, sortField, sortDirection);
