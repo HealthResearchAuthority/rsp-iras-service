@@ -88,7 +88,7 @@ public class SponsorOrganisationAuditTrailHandlerTests
 
         // Assert
         var auditTrail = result.Single();
-        auditTrail.Description.ShouldBe("name was enabled");
+        auditTrail.Description.ShouldBe("name enabled");
         auditTrail.SponsorOrganisationId.ShouldBe(id);
         auditTrail.User.ShouldBe(systemAdminEmail);
     }
