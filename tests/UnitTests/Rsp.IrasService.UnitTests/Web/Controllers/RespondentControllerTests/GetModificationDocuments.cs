@@ -7,11 +7,11 @@ namespace Rsp.IrasService.UnitTests.Web.Controllers.RespondentControllerTests;
 public class GetModificationDocuments : TestServiceBase<RespondentController>
 {
     [Theory, AutoData]
-    public async Task GetModificationDocuments_ByModificationChangeIdAndProjectRecordIdAndProjectPersonnelId_ReturnsExpected
+    public async Task GetModificationDocuments_ByModificationChangeIdAndProjectRecordIdAndUserId_ReturnsExpected
     (
         Guid modificationChangeId,
         string projectRecordId,
-        string projectPersonnelId,
+        string userId,
         List<ModificationDocumentDto> expected
     )
     {
@@ -23,7 +23,7 @@ public class GetModificationDocuments : TestServiceBase<RespondentController>
             .ReturnsAsync(expected);
 
         // Act
-        var result = await Sut.GetModificationDocuments(modificationChangeId, projectRecordId, projectPersonnelId);
+        var result = await Sut.GetModificationDocuments(modificationChangeId, projectRecordId, userId);
 
         // Assert
         result.ShouldBeEquivalentTo(expected);
@@ -48,7 +48,6 @@ public class GetModificationDocuments : TestServiceBase<RespondentController>
     (
         Guid modificationChangeId,
         string projectRecordId,
-        string projectPersonnelId,
         List<ModificationDocumentDto> expected
     )
     {

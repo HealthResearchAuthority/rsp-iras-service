@@ -40,7 +40,7 @@ public class GetRespondentApplications : TestServiceBase<ApplicationsService>
             new()
             {
                 Id = Guid.NewGuid().ToString(),
-                Respondent = new RespondentDto { Id = fixedRespondentId },
+                UserId = fixedRespondentId,
                 CreatedBy = "User1",
                 FullProjectTitle = "Description1",
                 ShortProjectTitle = "Title1",
@@ -49,7 +49,7 @@ public class GetRespondentApplications : TestServiceBase<ApplicationsService>
             new()
             {
                 Id = Guid.NewGuid().ToString(),
-                Respondent = new RespondentDto { Id = fixedRespondentId },
+                UserId = fixedRespondentId,
                 CreatedBy = "User2",
                 FullProjectTitle = "Description2",
                 ShortProjectTitle = "Title2",
@@ -60,7 +60,7 @@ public class GetRespondentApplications : TestServiceBase<ApplicationsService>
         var researchApplications = applicationRequests.Select(request => new ProjectRecord
         {
             Id = request.Id,
-            ProjectPersonnelId = request.Respondent.Id,
+            UserId = request.UserId,
             CreatedBy = request.CreatedBy,
             FullProjectTitle = request.FullProjectTitle,
             ShortProjectTitle = request.ShortProjectTitle,
@@ -71,7 +71,7 @@ public class GetRespondentApplications : TestServiceBase<ApplicationsService>
         researchApplications.Add(new ProjectRecord
         {
             Id = Guid.NewGuid().ToString(),
-            ProjectPersonnelId = "OtherRespondent",
+            UserId = "OtherRespondent",
             CreatedBy = "User3",
             FullProjectTitle = "Description3",
             ShortProjectTitle = "Title3",

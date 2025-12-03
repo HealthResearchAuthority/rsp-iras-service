@@ -14,9 +14,9 @@ public class ProjectRecord : IAuditable
     public string Id { get; set; } = null!;
 
     /// <summary>
-    /// Gets or sets the identifier for the project personnel associated with this record.
+    /// Gets or sets the identifier for the user associated with this record.
     /// </summary>
-    public string ProjectPersonnelId { get; set; } = null!;
+    public string UserId { get; set; } = null!;
 
     /// <summary>
     /// Gets or sets the title of the project.

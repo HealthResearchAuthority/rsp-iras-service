@@ -2,7 +2,8 @@
 
 namespace Rsp.IrasService.Application.CQRS.Commands;
 
-public class DeleteModificationCommand(Guid modificationId) : IRequest
+public class DeleteModificationCommand : IRequest
 {
-    public Guid ProjectModificationId { get; set; } = modificationId;
+    public required string ProjectRecordId { get; set; }
+    public required Guid ProjectModificationId { get; set; }
 }

@@ -48,7 +48,7 @@ public class UpdateModificationDocument : TestServiceBase<IrasService.Services.D
         {
             Id = Guid.NewGuid(),
             ProjectModificationId = Guid.NewGuid(),
-            ProjectPersonnelId = "person-123",
+            UserId = "person-123",
             ProjectRecordId = "record-456",
             DocumentStoragePath = "original/path.pdf",
             FileName = "original.pdf",
@@ -65,7 +65,7 @@ public class UpdateModificationDocument : TestServiceBase<IrasService.Services.D
             Id = existingDocument.Id,
             DocumentStoragePath = "original/path.pdf",
             FileName = existingDocument.FileName,
-            ProjectPersonnelId = existingDocument.ProjectPersonnelId,
+            UserId = existingDocument.UserId,
             ProjectRecordId = existingDocument.ProjectRecordId,
             ProjectModificationId = existingDocument.ProjectModificationId,
             Status = "Clean",

@@ -34,7 +34,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DocumentTypes", (string)null);
+                    b.ToTable("DocumentTypes");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.EmailTemplate", b =>
@@ -74,7 +74,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasIndex("EventTypeId");
 
-                    b.ToTable("EmailTemplates", (string)null);
+                    b.ToTable("EmailTemplates");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.EventType", b =>
@@ -95,7 +95,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EventTypes", (string)null);
+                    b.ToTable("EventTypes");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationDocument", b =>
@@ -123,10 +123,6 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Property<Guid>("ProjectModificationId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ProjectPersonnelId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("ProjectRecordId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -134,15 +130,17 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProjectModificationId");
 
-                    b.HasIndex("ProjectPersonnelId");
-
                     b.HasIndex("ProjectRecordId");
 
-                    b.ToTable("ModificationDocuments", (string)null);
+                    b.ToTable("ModificationDocuments");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationDocumentAnswer", b =>
@@ -183,7 +181,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasIndex("ModificationDocumentId");
 
-                    b.ToTable("ModificationDocumentAnswers", (string)null);
+                    b.ToTable("ModificationDocumentAnswers");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationParticipatingOrganisation", b =>
@@ -199,23 +197,21 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Property<Guid>("ProjectModificationChangeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ProjectPersonnelId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("ProjectRecordId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProjectModificationChangeId");
 
-                    b.HasIndex("ProjectPersonnelId");
-
                     b.HasIndex("ProjectRecordId");
 
-                    b.ToTable("ModificationParticipatingOrganisations", (string)null);
+                    b.ToTable("ModificationParticipatingOrganisations");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationParticipatingOrganisationAnswer", b =>
@@ -258,7 +254,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasIndex("ModificationParticipatingOrganisationId");
 
-                    b.ToTable("ModificationParticipatingOrganisationAnswers", (string)null);
+                    b.ToTable("ModificationParticipatingOrganisationAnswers");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModification", b =>
@@ -333,7 +329,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasIndex("ProjectRecordId");
 
-                    b.ToTable("ProjectModifications", (string)null);
+                    b.ToTable("ProjectModifications");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModificationAnswer", b =>
@@ -344,7 +340,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Property<string>("QuestionId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ProjectPersonnelId")
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Category")
@@ -374,13 +370,11 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("published version");
 
-                    b.HasKey("ProjectModificationId", "QuestionId", "ProjectPersonnelId");
-
-                    b.HasIndex("ProjectPersonnelId");
+                    b.HasKey("ProjectModificationId", "QuestionId", "UserId");
 
                     b.HasIndex("ProjectRecordId");
 
-                    b.ToTable("ProjectModificationAnswers", (string)null);
+                    b.ToTable("ProjectModificationAnswers");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModificationAuditTrail", b =>
@@ -407,7 +401,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasIndex("ProjectModificationId");
 
-                    b.ToTable("ProjectModificationAuditTrail", (string)null);
+                    b.ToTable("ProjectModificationAuditTrail");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModificationChange", b =>
@@ -458,7 +452,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasIndex("ProjectModificationId");
 
-                    b.ToTable("ProjectModificationChanges", (string)null);
+                    b.ToTable("ProjectModificationChanges");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModificationChangeAnswer", b =>
@@ -469,7 +463,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Property<string>("QuestionId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ProjectPersonnelId")
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Category")
@@ -499,38 +493,11 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("published version");
 
-                    b.HasKey("ProjectModificationChangeId", "QuestionId", "ProjectPersonnelId");
-
-                    b.HasIndex("ProjectPersonnelId");
+                    b.HasKey("ProjectModificationChangeId", "QuestionId", "UserId");
 
                     b.HasIndex("ProjectRecordId");
 
-                    b.ToTable("ProjectModificationChangeAnswers", (string)null);
-                });
-
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectPersonnel", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FamilyName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("GivenName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Role")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ProjectPersonnels", (string)null);
+                    b.ToTable("ProjectModificationChangeAnswers");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectRecord", b =>
@@ -555,10 +522,6 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<string>("ProjectPersonnelId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("ShortProjectTitle")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -573,16 +536,18 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectPersonnelId");
-
-                    b.ToTable("ProjectRecords", (string)null);
+                    b.ToTable("ProjectRecords");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectRecordAnswer", b =>
                 {
-                    b.Property<string>("ProjectPersonnelId")
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("QuestionId")
@@ -614,11 +579,11 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("published version");
 
-                    b.HasKey("ProjectPersonnelId", "QuestionId", "ProjectRecordId");
+                    b.HasKey("UserId", "QuestionId", "ProjectRecordId");
 
                     b.HasIndex("ProjectRecordId");
 
-                    b.ToTable("ProjectRecordAnswers", (string)null);
+                    b.ToTable("ProjectRecordAnswers");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectRecordAuditTrail", b =>
@@ -646,7 +611,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasIndex("ProjectRecordId");
 
-                    b.ToTable("ProjectRecordAuditTrail", (string)null);
+                    b.ToTable("ProjectRecordAuditTrail");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.RegulatoryBody", b =>
@@ -693,7 +658,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RegulatoryBodies", (string)null);
+                    b.ToTable("RegulatoryBodies");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.RegulatoryBodyAuditTrail", b =>
@@ -721,7 +686,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasIndex("RegulatoryBodyId");
 
-                    b.ToTable("RegulatoryBodiesAuditTrail", (string)null);
+                    b.ToTable("RegulatoryBodiesAuditTrail");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.RegulatoryBodyUser", b =>
@@ -740,7 +705,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasKey("Id", "UserId");
 
-                    b.ToTable("RegulatoryBodiesUsers", (string)null);
+                    b.ToTable("RegulatoryBodiesUsers");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.SponsorOrganisation", b =>
@@ -773,7 +738,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SponsorOrganisations", (string)null);
+                    b.ToTable("SponsorOrganisations");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.SponsorOrganisationAuditTrail", b =>
@@ -803,7 +768,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SponsorOrganisationsAuditTrail", (string)null);
+                    b.ToTable("SponsorOrganisationsAuditTrail");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.SponsorOrganisationUser", b =>
@@ -829,7 +794,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.HasKey("Id", "UserId");
 
-                    b.ToTable("SponsorOrganisationsUsers", (string)null);
+                    b.ToTable("SponsorOrganisationsUsers");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.EmailTemplate", b =>
@@ -851,12 +816,6 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectPersonnel", "ProjectPersonnel")
-                        .WithMany()
-                        .HasForeignKey("ProjectPersonnelId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.HasOne("Rsp.IrasService.Domain.Entities.ProjectRecord", "ProjectRecord")
                         .WithMany()
                         .HasForeignKey("ProjectRecordId")
@@ -864,8 +823,6 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("ProjectModification");
-
-                    b.Navigation("ProjectPersonnel");
 
                     b.Navigation("ProjectRecord");
                 });
@@ -889,12 +846,6 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectPersonnel", "ProjectPersonnel")
-                        .WithMany()
-                        .HasForeignKey("ProjectPersonnelId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.HasOne("Rsp.IrasService.Domain.Entities.ProjectRecord", "ProjectRecord")
                         .WithMany()
                         .HasForeignKey("ProjectRecordId")
@@ -902,8 +853,6 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("ProjectModificationChange");
-
-                    b.Navigation("ProjectPersonnel");
 
                     b.Navigation("ProjectRecord");
                 });
@@ -936,12 +885,6 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectPersonnel", "ProjectPersonnel")
-                        .WithMany()
-                        .HasForeignKey("ProjectPersonnelId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.HasOne("Rsp.IrasService.Domain.Entities.ProjectRecord", "ProjectRecord")
                         .WithMany()
                         .HasForeignKey("ProjectRecordId")
@@ -949,8 +892,6 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("ProjectModification");
-
-                    b.Navigation("ProjectPersonnel");
 
                     b.Navigation("ProjectRecord");
                 });
@@ -983,12 +924,6 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectPersonnel", "ProjectPersonnel")
-                        .WithMany()
-                        .HasForeignKey("ProjectPersonnelId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.HasOne("Rsp.IrasService.Domain.Entities.ProjectRecord", "ProjectRecord")
                         .WithMany()
                         .HasForeignKey("ProjectRecordId")
@@ -997,35 +932,16 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
                     b.Navigation("ProjectModificationChange");
 
-                    b.Navigation("ProjectPersonnel");
-
                     b.Navigation("ProjectRecord");
-                });
-
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectRecord", b =>
-                {
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectPersonnel", null)
-                        .WithMany("ProjectRecords")
-                        .HasForeignKey("ProjectPersonnelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectRecordAnswer", b =>
                 {
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectPersonnel", "ProjectPersonnel")
-                        .WithMany()
-                        .HasForeignKey("ProjectPersonnelId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.HasOne("Rsp.IrasService.Domain.Entities.ProjectRecord", "ProjectRecord")
                         .WithMany("ProjectRecordAnswers")
                         .HasForeignKey("ProjectRecordId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("ProjectPersonnel");
 
                     b.Navigation("ProjectRecord");
                 });
@@ -1073,11 +989,6 @@ namespace Rsp.IrasService.Infrastructure.Migrations
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModification", b =>
                 {
                     b.Navigation("ProjectModificationChanges");
-                });
-
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectPersonnel", b =>
-                {
-                    b.Navigation("ProjectRecords");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectRecord", b =>

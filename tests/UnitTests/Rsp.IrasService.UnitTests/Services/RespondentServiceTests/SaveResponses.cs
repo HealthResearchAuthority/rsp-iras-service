@@ -77,7 +77,7 @@ public class SaveResponses : TestServiceBase<RespondentService>
             var expectedAnswer =
                 respondentAnswersRequest.RespondentAnswers.First(a => a.QuestionId == savedResponse.QuestionId);
             savedResponse.ProjectRecordId.ShouldBe(fixedApplicationId);
-            savedResponse.ProjectPersonnelId.ShouldBe(fixedRespondentId);
+            savedResponse.UserId.ShouldBe(fixedRespondentId);
             savedResponse.QuestionId.ShouldBe(expectedAnswer.QuestionId);
             savedResponse.Category.ShouldBe(expectedAnswer.CategoryId);
             savedResponse.Section.ShouldBe(expectedAnswer.SectionId);

@@ -15,9 +15,8 @@ public class ApplicationsService(IProjectRecordRepository applicationRepository,
     public async Task<ApplicationResponse> CreateApplication(ApplicationRequest applicationRequest)
     {
         var irasApplication = applicationRequest.Adapt<ProjectRecord>();
-        var respondent = applicationRequest.Respondent.Adapt<ProjectPersonnel>();
 
-        var createdApplication = await applicationRepository.CreateProjectRecord(irasApplication, respondent);
+        var createdApplication = await applicationRepository.CreateProjectRecord(irasApplication);
 
         return createdApplication.Adapt<ApplicationResponse>();
     }
@@ -85,9 +84,6 @@ public class ApplicationsService(IProjectRecordRepository applicationRepository,
     public async Task<ApplicationResponse> UpdateApplication(ApplicationRequest applicationRequest)
     {
         var irasApplication = applicationRequest.Adapt<ProjectRecord>();
-        var respondent = applicationRequest.Respondent.Adapt<ProjectPersonnel>();
-
-        irasApplication.ProjectPersonnelId = respondent.Id;
 
         var updatedApplication = await applicationRepository.UpdateProjectRecord(irasApplication);
 

@@ -1,4 +1,5 @@
 ﻿using Rsp.IrasService.Application.Contracts.Repositories;
+using Rsp.IrasService.Application.Specifications;
 using Rsp.IrasService.Domain.Entities;
 using Rsp.IrasService.Services;
 
@@ -15,11 +16,14 @@ public class GetReviewResponsesTests : TestServiceBase<ProjectModificationServic
     {
         // Arrange
         var repo = Mocker.GetMock<IProjectModificationRepository>();
-        repo.Setup(r => r.GetModificationById(It.IsAny<Guid>())).ReturnsAsync(repoResponse);
+
+        repo
+            .Setup(r => r.GetModification(It.IsAny<GetModificationSpecification>()))
+            .ReturnsAsync(repoResponse);
 
         // Act
         Sut = Mocker.CreateInstance<ProjectModificationService>();
-        var result = await Sut.GetModificationReviewResponses(projectModificationId);
+        var result = await Sut.GetModificationReviewResponses("PR1", projectModificationId);
 
         // Assert
         result.ShouldNotBeNull();

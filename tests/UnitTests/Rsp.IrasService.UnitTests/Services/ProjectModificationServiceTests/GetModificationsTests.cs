@@ -34,13 +34,13 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
         // Arrange
         var recordId = Guid.NewGuid().ToString();
         var modificationId = Guid.NewGuid().ToString();
-        var projectPersonnelId = Guid.NewGuid().ToString();
+        var userId = Guid.NewGuid().ToString();
 
         var record = new ProjectRecord
         {
             Id = recordId,
             IrasId = 123456,
-            ProjectPersonnelId = projectPersonnelId,
+            UserId = userId,
             CreatedBy = "Test",
             CreatedDate = DateTime.Now,
             UpdatedBy = "Test",
@@ -79,7 +79,7 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
         {
             new()
             {
-                ProjectPersonnelId = projectPersonnelId,
+                UserId = userId,
                 ProjectRecordId = recordId,
                 QuestionId = ProjectRecordConstants.ChiefInvestigator,
                 Response = "Dr Smith",
@@ -89,7 +89,7 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
             },
             new()
             {
-                ProjectPersonnelId = projectPersonnelId, ProjectRecordId = recordId,
+                UserId = userId, ProjectRecordId = recordId,
                 QuestionId = ProjectRecordConstants.LeadNation, SelectedOptions = "OPT0018",
                 Category = "Cat1",
                 Section = "Section1",
@@ -97,7 +97,7 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
             },
             new()
             {
-                ProjectPersonnelId = projectPersonnelId, ProjectRecordId = recordId,
+                UserId = userId, ProjectRecordId = recordId,
                 QuestionId = ProjectRecordConstants.ParticipatingNation, SelectedOptions = "OPT0019,OPT0020",
                 Category = "Cat1",
                 Section = "Section1",
@@ -105,7 +105,7 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
             },
             new()
             {
-                ProjectPersonnelId = projectPersonnelId, ProjectRecordId = recordId,
+                UserId = userId, ProjectRecordId = recordId,
                 QuestionId = ProjectRecordConstants.ShortProjectTitle, Response = "Short Title",
                 Category = "Cat1",
                 Section = "Section1",
@@ -113,7 +113,7 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
             },
             new()
             {
-                ProjectPersonnelId = projectPersonnelId, ProjectRecordId = recordId,
+                UserId = userId, ProjectRecordId = recordId,
                 QuestionId = ProjectRecordConstants.SponsorOrganisation, Response = "1111",
                 Category = "Cat1",
                 Section = "Section1",
@@ -164,13 +164,13 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
         // Arrange
         var recordId = Guid.NewGuid().ToString();
         var modificationId = Guid.NewGuid().ToString();
-        var projectPersonnelId = Guid.NewGuid().ToString();
+        var userId = Guid.NewGuid().ToString();
 
         var record = new ProjectRecord
         {
             Id = recordId,
             IrasId = 123456,
-            ProjectPersonnelId = projectPersonnelId,
+            UserId = userId,
             CreatedBy = "Test",
             CreatedDate = DateTime.Now,
             UpdatedBy = "Test",
@@ -208,7 +208,7 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
     {
         new()
         {
-            ProjectPersonnelId = projectPersonnelId,
+            UserId = userId,
             ProjectRecordId = recordId,
             QuestionId = ProjectRecordConstants.SponsorOrganisation,
             Response = sponsorValue,

@@ -9,14 +9,15 @@ namespace Rsp.IrasService.UnitTests.Services.ProjectModificationServiceTests;
 /// <summary>
 ///     Covers the tests for GetModificationChange method
 /// </summary>
-public class GetModificationChangeTests : TestServiceBase<ProjectModificationService>
+public class GetModificationChangeTests() : TestServiceBase<ProjectModificationService>
 {
     [Theory, AutoData]
     public async Task Returns_ModificationChangeResponse(ProjectModificationChange expected)
     {
         // Arrange
         var repo = new Mock<IProjectModificationRepository>();
-        repo.Setup(r => r.GetModificationChange(It.IsAny<GetModificationChangeSpecification>()))
+        repo
+            .Setup(r => r.GetModificationChange(It.IsAny<GetModificationChangeSpecification>()))
             .ReturnsAsync(expected);
 
         Mocker.Use(repo.Object);

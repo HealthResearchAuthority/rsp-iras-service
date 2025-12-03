@@ -93,11 +93,11 @@ public class GetModificationSpecificationTests
         var id = Guid.NewGuid();
         var data = new List<ProjectModification>
         {
-            new() { Id = id },
-            new() { Id = Guid.NewGuid() },
+            new() { ProjectRecordId = "PR1", Id = id },
+            new() { ProjectRecordId = "PR2", Id = Guid.NewGuid() },
         };
 
-        var spec = new GetModificationSpecification(id);
+        var spec = new GetModificationSpecification("PR1", id);
         var result = spec.Evaluate(data).ToList();
 
         result.Count.ShouldBe(1);
@@ -135,15 +135,15 @@ public class SaveModificationChangeResponsesSpecificationTests
         var personId = "P-1";
         var data = new List<ProjectModificationChangeAnswer>
         {
-            new() { ProjectModificationChangeId = changeId, ProjectRecordId = prId, ProjectPersonnelId = personId },
-            new() { ProjectModificationChangeId = changeId, ProjectRecordId = prId, ProjectPersonnelId = "P-2" },
+            new() { ProjectModificationChangeId = changeId, ProjectRecordId = prId, UserId = personId },
+            new() { ProjectModificationChangeId = changeId, ProjectRecordId = prId, UserId = "P-2" },
         };
 
         var spec = new SaveModificationChangeResponsesSpecification(changeId, prId, personId);
         var result = spec.Evaluate(data).ToList();
 
         result.Count.ShouldBe(1);
-        result.Single().ProjectPersonnelId.ShouldBe(personId);
+        result.Single().UserId.ShouldBe(personId);
     }
 }
 
@@ -157,14 +157,14 @@ public class SaveModificationResponsesSpecificationTests_V2
         var personId = "P-1";
         var data = new List<ProjectModificationAnswer>
         {
-            new() { ProjectModificationId = modId, ProjectRecordId = prId, ProjectPersonnelId = personId },
-            new() { ProjectModificationId = modId, ProjectRecordId = prId, ProjectPersonnelId = "P-2" },
+            new() { ProjectModificationId = modId, ProjectRecordId = prId, UserId = personId },
+            new() { ProjectModificationId = modId, ProjectRecordId = prId, UserId = "P-2" },
         };
 
         var spec = new SaveModificationResponsesSpecification(modId, prId, personId);
         var result = spec.Evaluate(data).ToList();
 
         result.Count.ShouldBe(1);
-        result.Single().ProjectPersonnelId.ShouldBe(personId);
+        result.Single().UserId.ShouldBe(personId);
     }
 }

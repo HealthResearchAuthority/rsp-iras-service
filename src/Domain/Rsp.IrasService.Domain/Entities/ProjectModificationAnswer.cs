@@ -11,11 +11,6 @@ public class ProjectModificationAnswer : ProjectModificationAnswerBase
     public Guid ProjectModificationId { get; set; }
 
     /// <summary>
-    /// Navigation property to the related project personnel.
-    /// </summary>
-    public ProjectPersonnel? ProjectPersonnel { get; set; }
-
-    /// <summary>
     /// Navigation property to the related project record.
     /// </summary>
     public ProjectRecord? ProjectRecord { get; set; }

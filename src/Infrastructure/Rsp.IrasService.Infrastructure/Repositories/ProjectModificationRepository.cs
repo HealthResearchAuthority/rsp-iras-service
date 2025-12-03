@@ -50,8 +50,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
     /// </summary>
     /// <param name="projectModificationChange">The project modification change entity to add.</param>
     /// <returns>The created <see cref="ProjectModificationChange"/> entity.</returns>
-    public async Task<ProjectModificationChange> CreateModificationChange(
-        ProjectModificationChange projectModificationChange)
+    public async Task<ProjectModificationChange> CreateModificationChange(ProjectModificationChange projectModificationChange)
     {
         var entity = await irasContext.ProjectModificationChanges.AddAsync(projectModificationChange);
 
@@ -60,8 +59,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         return entity.Entity;
     }
 
-    public async Task<ProjectModificationChange?> GetModificationChange(
-        GetModificationChangeSpecification specification)
+    public async Task<ProjectModificationChange?> GetModificationChange(GetModificationChangeSpecification specification)
     {
         return await irasContext
             .ProjectModificationChanges
@@ -69,15 +67,23 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             .SingleOrDefaultAsync();
     }
 
-    public Task<IEnumerable<ProjectModificationChange>> GetModificationChanges(
-        GetModificationChangesSpecification specification)
+    public async Task<IEnumerable<ProjectModificationChange>> GetModificationChanges
+    (
+        GetModificationChangesSpecification specification
+    )
     {
-        var result = irasContext
-            .ProjectModificationChanges
+        var result = await irasContext
+            .ProjectModifications
+            .Include(pm => pm.ProjectModificationChanges)
             .WithSpecification(specification)
-            .AsEnumerable();
+            .FirstOrDefaultAsync();
 
-        return Task.FromResult(result);
+        if (result == null)
+        {
+            return [];
+        }
+
+        return result.ProjectModificationChanges;
     }
 
     public IEnumerable<ProjectModificationResult> GetModifications
@@ -344,11 +350,11 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
 
                 // Single ModificationType text match
                 && (string.IsNullOrEmpty(searchQuery.ModificationType)
-                    || x.ModificationType.Contains(searchQuery.ModificationType, StringComparison.OrdinalIgnoreCase))
+                    || x.ModificationType.Equals(searchQuery.ModificationType, StringComparison.OrdinalIgnoreCase))
 
                 // Status match (single value)
                 && (string.IsNullOrEmpty(searchQuery.Status)
-                    || x.Status.Contains(searchQuery.Status, StringComparison.OrdinalIgnoreCase))
+                    || x.Status.Equals(searchQuery.Status, StringComparison.OrdinalIgnoreCase))
 
                 // Allowed statuses filter — restrict to allowed values
                 && (!searchQuery.AllowedStatuses.Any()
@@ -356,11 +362,11 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
 
                 // ReviewType match (single value)
                 && (string.IsNullOrEmpty(searchQuery.ReviewType)
-                    || x.ReviewType.Contains(searchQuery.ReviewType, StringComparison.OrdinalIgnoreCase))
+                    || x.ReviewType.Equals(searchQuery.ReviewType, StringComparison.OrdinalIgnoreCase))
 
                 // Category match (single value)
                 && (string.IsNullOrEmpty(searchQuery.Category)
-                    || x.Category.Contains(searchQuery.Category, StringComparison.OrdinalIgnoreCase))
+                    || x.Category.Equals(searchQuery.Category, StringComparison.OrdinalIgnoreCase))
             );
     }
 
@@ -909,13 +915,15 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             .FirstAsync(pm => pm.Id == projectModificationId);
     }
 
-    public IEnumerable<ProjectOverviewDocumentResult> GetDocumentsForModification(
+    public IEnumerable<ProjectOverviewDocumentResult> GetDocumentsForModification
+    (
         ProjectOverviewDocumentSearchRequest searchQuery,
         int pageNumber,
         int pageSize,
         string sortField,
         string sortDirection,
-        Guid modificationId)
+        Guid modificationId
+    )
     {
         var modifications = ModificationDocumentsQuery(searchQuery, modificationId);
 
@@ -927,20 +935,33 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             .Take(pageSize);
     }
 
-    public int GetDocumentsForModificationCount(ProjectOverviewDocumentSearchRequest searchQuery,
-        Guid modificationId)
+    public int GetDocumentsForModificationCount
+    (
+        ProjectOverviewDocumentSearchRequest searchQuery,
+        Guid modificationId
+    )
     {
         var modifications = ModificationDocumentsQuery(searchQuery, modificationId);
         return FilterModificationDocuments(modifications, searchQuery).Count();
+    }
+
+    public async Task<ProjectModification?> GetModification(GetModificationSpecification specification)
+    {
+        return await irasContext
+            .ProjectModifications
+            .WithSpecification(specification)
+            .SingleOrDefaultAsync();
     }
 
     /// <summary>
     /// Builds an IQueryable of project overview documents by walking down
     /// ProjectModifications → ProjectModificationChanges → ModificationDocuments → ModificationDocumentAnswers.
     /// </summary>
-    private IQueryable<ProjectOverviewDocumentResult> ModificationDocumentsQuery(
-    ProjectOverviewDocumentSearchRequest searchQuery,
-    Guid modificationId)
+    private IQueryable<ProjectOverviewDocumentResult> ModificationDocumentsQuery
+    (
+        ProjectOverviewDocumentSearchRequest searchQuery,
+        Guid modificationId
+    )
     {
         var docs = irasContext.ModificationDocuments.AsQueryable();
 
@@ -963,16 +984,9 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         return BuildDocumentQuery(baseQuery, irasContext.ModificationDocumentAnswers, searchQuery);
     }
 
-    private static IEnumerable<ProjectOverviewDocumentResult> FilterModificationDocuments(
-    IQueryable<ProjectOverviewDocumentResult> docs,
-    ProjectOverviewDocumentSearchRequest searchQuery)
-    => ApplyDocumentFilter(docs, searchQuery);
-
-    public async Task<ProjectModification?> GetModification(GetModificationSpecification specification)
-    {
-        return await irasContext
-            .ProjectModifications
-            .WithSpecification(specification)
-            .SingleOrDefaultAsync();
-    }
+    private static IEnumerable<ProjectOverviewDocumentResult> FilterModificationDocuments
+    (
+        IQueryable<ProjectOverviewDocumentResult> docs,
+        ProjectOverviewDocumentSearchRequest searchQuery
+    ) => ApplyDocumentFilter(docs, searchQuery);
 }

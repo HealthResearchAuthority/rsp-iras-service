@@ -252,15 +252,15 @@ public class RespondentController(IMediator mediator) : ControllerBase
     /// <param name="modificationId">The modification change identifier.</param>
     /// <param name="projectRecordId">The project record identifier.</param>
     /// <returns>A collection of documents for the modification.</returns>
-    [HttpGet("modificationdocument/{modificationId}/{projectRecordId}/{projectPersonnelId}")]
+    [HttpGet("modificationdocument/{modificationId}/{projectRecordId}/{userId}")]
     [Produces<IEnumerable<ModificationDocumentDto>>]
-    public async Task<IEnumerable<ModificationDocumentDto>> GetModificationDocuments(Guid modificationId, string projectRecordId, string projectPersonnelId)
+    public async Task<IEnumerable<ModificationDocumentDto>> GetModificationDocuments(Guid modificationId, string projectRecordId, string userId)
     {
         var command = new GetModificationDocumentsQuery
         {
             ProjectModificationId = modificationId,
             ProjectRecordId = projectRecordId,
-            ProjectPersonnelId = projectPersonnelId
+            UserId = userId
         };
 
         return await mediator.Send(command);

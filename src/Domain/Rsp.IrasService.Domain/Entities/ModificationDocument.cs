@@ -13,9 +13,9 @@ public class ModificationDocument
     public Guid ProjectModificationId { get; set; }
 
     /// <summary>
-    /// Gets or sets the identifier of the project personnel related to this document.
+    /// Gets or sets the identifier of the user related to this document.
     /// </summary>
-    public string ProjectPersonnelId { get; set; } = null!;
+    public string UserId { get; set; } = null!;
 
     /// <summary>
     /// Gets or sets the identifier of the project record related to this document.
@@ -51,11 +51,6 @@ public class ModificationDocument
     /// Gets or sets the document created date.
     /// </summary>
     public DateTime CreatedDate { get; set; }
-
-    /// <summary>
-    /// Navigation property to the related project personnel.
-    /// </summary>
-    public ProjectPersonnel? ProjectPersonnel { get; set; }
 
     /// <summary>
     /// Navigation property to the related project record.

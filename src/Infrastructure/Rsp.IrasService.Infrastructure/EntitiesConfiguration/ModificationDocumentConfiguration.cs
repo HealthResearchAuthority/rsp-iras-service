@@ -17,12 +17,6 @@ public class ModificationDocumentConfiguration : IEntityTypeConfiguration<Modifi
             .OnDelete(DeleteBehavior.Cascade);
 
         builder
-            .HasOne(ra => ra.ProjectPersonnel)
-            .WithMany()
-            .HasForeignKey(r => r.ProjectPersonnelId)
-            .OnDelete(DeleteBehavior.NoAction);
-
-        builder
             .HasOne(ra => ra.ProjectRecord)
             .WithMany()
             .HasForeignKey(r => r.ProjectRecordId)

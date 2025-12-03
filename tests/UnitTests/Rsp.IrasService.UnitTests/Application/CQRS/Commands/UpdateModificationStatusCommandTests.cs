@@ -7,27 +7,17 @@ public class UpdateModificationStatusCommandTests
     private readonly Mock<IMediator> _mediatorMock = new();
 
     [Fact]
-    public void Ctor_Sets_ModificationId_And_Status()
-    {
-        // Arrange
-        var id = Guid.NewGuid();
-        const string status = "Approved";
-
-        // Act
-        var cmd = new UpdateModificationStatusCommand(id, status);
-
-        // Assert
-        cmd.ProjectModificationId.ShouldBe(id);
-        cmd.Status.ShouldBe(status);
-    }
-
-    [Fact]
     public async Task Send_UpdateModificationStatusCommand_ShouldInvokeMediator()
     {
         // Arrange
         var id = Guid.NewGuid();
         const string status = "Submitted";
-        var command = new UpdateModificationStatusCommand(id, status);
+        var command = new UpdateModificationStatusCommand
+        {
+            ProjectRecordId = "PR1",
+            ProjectModificationId = id,
+            Status = status
+        };
 
         _mediatorMock
             .Setup(m => m.Send(command, It.IsAny<CancellationToken>()))
