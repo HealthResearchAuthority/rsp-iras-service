@@ -67,6 +67,6 @@ public class SponsorOrganisationAuditTrailHandler : IAuditTrailHandler<SponsorOr
     private static string GenerateDescription(PropertyEntry property, SponsorOrganisation sponsorOrganisation)
     {
         var newStatus = property.CurrentValue as bool? == true ? "enabled" : "disabled";
-        return $"{sponsorOrganisation.RtsId} was {newStatus}";
+        return $"{sponsorOrganisation.RtsId} {newStatus}";
     }
 }
