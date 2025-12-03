@@ -3,9 +3,13 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Rsp.IrasService.Application.Constants;
+using Rsp.IrasService.Application.Contracts.Repositories;
 using Rsp.IrasService.Application.CQRS.Commands;
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.DTOS.Responses;
+using Rsp.IrasService.Application.Specifications;
+using Rsp.IrasService.Domain.Constants;
 
 namespace Rsp.IrasService.WebApi.Controllers;
 
@@ -85,15 +89,56 @@ public class DocumentsController(IMediator mediator) : ControllerBase
     }
 
     /// <summary>
-    /// Gets the document access information for a specific modification.
+    /// This endpoint checks if the current user has access to the document associated with the given modification ID.
+    /// and allow them to download.
     /// </summary>
     /// <param name="modificationId">The modification identifier.</param>
     [ExcludeFromCodeCoverage]
     [HttpGet("access/{modificationId}")]
-    public async Task<IActionResult> DocumentAccess(Guid modificationId)
+    public async Task<IActionResult> DocumentAccess
+    (
+        [FromServices] IProjectModificationRepository projectModificationRepository,
+        Guid modificationId
+    )
     {
-        _ = modificationId;
+        if
+        (
+            // SystemAdministrator is a privileged role so access check is bypassed.
+            // The applicant and sponsor roles are granted access via AccessMiddleware check
+            // so if they land here, they are authorized to see document.
+            User.IsInRole(Roles.SystemAdministrator) ||
+            User.IsInRole(Roles.Sponsor) ||
+            User.IsInRole(Roles.Applicant)
+        )
+        {
+            return Ok();
+        }
 
-        return Ok();
+        // TeamManager, WorkflowCoordinator, and StudyWideReviewer roles
+        // don't go via AccessMiddleware check, so we need to handle them here.
+        // they should not be able to access documents in draft or with sponsor modifications.
+        var specification = new GetModificationSpecification(null, modificationId);
+
+        var modification = await projectModificationRepository.GetModification(specification);
+
+        if (modification == null)
+        {
+            return new StatusCodeResult(StatusCodes.Status404NotFound);
+        }
+
+        // access is forbidden for InDraft or WithSponsor modifications
+        if
+        (
+            modification is
+            {
+                Status: ModificationStatus.InDraft or
+                        ModificationStatus.WithSponsor
+            }
+        )
+        {
+            return new StatusCodeResult(StatusCodes.Status403Forbidden);
+        }
+
+        return Ok(modification);
     }
 }
