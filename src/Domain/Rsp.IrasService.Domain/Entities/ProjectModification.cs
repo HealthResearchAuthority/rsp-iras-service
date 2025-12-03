@@ -99,15 +99,18 @@ public class ProjectModification : IAuditable
     /// <summary>
     /// Gets or sets the reviewer's comments on the modification.
     /// </summary>
+    [Auditable]
     public string? ReviewerComments { get; set; }
 
     /// <summary>
     /// Gets or sets the reason why the modification was not approved.
     /// </summary>
+    [Auditable]
     public string? ReasonNotApproved { get; set; }
 
     /// <summary>
     /// Gets or sets the provisional review outcome of the modification.
     /// </summary>
+    [Auditable]
     public string? ProvisionalReviewOutcome { get; set; }
 }
