@@ -6,9 +6,9 @@ using Rsp.IrasService.Application.Contracts.Services;
 using Rsp.IrasService.Domain.Entities;
 using Rsp.IrasService.Infrastructure.Helpers;
 using Rsp.IrasService.Infrastructure.Interceptors;
-using Rsp.IrasService.Services;
-using Rsp.IrasService.Infrastructure.Repositories;
 using Rsp.IrasService.Infrastructure.Middlewares;
+using Rsp.IrasService.Infrastructure.Repositories;
+using Rsp.IrasService.Services;
 
 namespace Rsp.IrasService.Configuration.Dependencies;
 
@@ -52,7 +52,9 @@ public static class ServicesConfiguration
 
         // Access validation repository and middleware
         services.AddTransient<IAccessValidationRepository, AccessValidationRepository>();
-        services.AddTransient<AccessValidationMiddleware>();
+        services.AddTransient<ProjectRecordAccessValidationMiddleware>();
+        services.AddTransient<ModificationAccessValidationMiddleware>();
+        services.AddTransient<DocumentAccessValidationMiddleware>();
 
         // handlers and interceptors
         // Handlers (generic)
