@@ -9,6 +9,8 @@ public record ModificationDto
     public string ModificationType { get; set; } = null!;
     public string Category { get; set; } = null!;
     public string ReviewType { get; set; } = null!;
+    public string ChiefInvestigatorFirstName { get; set; } = null!;
+    public string ChiefInvestigatorLastName { get; set; } = null!;
     public string ChiefInvestigator { get; set; } = null!;
     public string LeadNation { get; set; } = null!;
     public string ParticipatingNation { get; set; } = null!;
