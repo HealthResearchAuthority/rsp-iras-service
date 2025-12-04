@@ -1,21 +1,7 @@
-﻿namespace Rsp.IrasService.Application.DTOS.Requests;
+﻿using Rsp.IrasService.Domain.Entities;
 
-public record ModificationDto
+namespace Rsp.IrasService.Application.DTOS.Requests;
+
+public class ModificationDto : ModificationBase
 {
-    public string Id { get; set; } = null!;
-    public string ProjectRecordId { get; set; } = null!;
-    public string ModificationId { get; set; } = null!;
-    public string ShortProjectTitle { get; set; } = null!;
-    public string ModificationType { get; set; } = null!;
-    public string Category { get; set; } = null!;
-    public string ReviewType { get; set; } = null!;
-    public string ChiefInvestigator { get; set; } = null!;
-    public string LeadNation { get; set; } = null!;
-    public string ParticipatingNation { get; set; } = null!;
-    public string SponsorOrganisation { get; set; } = null!;
-    public DateTime CreatedAt { get; set; }
-    public string Status { get; set; } = null!;
-    public DateTime? SentToRegulatorDate { get; set; }
-    public DateTime? SentToSponsorDate { get; set; }
-    public string ReviewerName { get; set; }
 }
