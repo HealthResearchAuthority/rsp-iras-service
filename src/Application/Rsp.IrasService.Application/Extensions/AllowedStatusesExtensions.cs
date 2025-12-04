@@ -68,7 +68,6 @@ public static class AllowedStatusesExtensions
         return new PaginatedResponse<T>
         {
             Items = filtered,
-            TotalCount = filtered.Count
         };
     }
 

@@ -180,7 +180,6 @@ public class AllowedStatusesExtensionsHandlerTests
         var response = await handler.Handle(query, CancellationToken.None);
 
         response.Items.Count().ShouldBe(1);
-        response.TotalCount.ShouldBe(1);
         response.Items.First().Status?.ToLowerInvariant().ShouldBe("allowed");
     }
 
