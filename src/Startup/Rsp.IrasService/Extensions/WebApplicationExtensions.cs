@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Rsp.IrasService.Domain.Constants;
 using Rsp.IrasService.Infrastructure;
+using Rsp.IrasService.Infrastructure.Middlewares;
 using Rsp.Logging.Extensions;
 
 namespace Rsp.IrasService.Extensions;
@@ -33,5 +35,74 @@ public static class WebApplicationExtensions
         {
             logger.LogAsError("ERR_FAILED_MIGRATIONS", "Database Migration failed", ex);
         }
+    }
+
+    /// <summary>
+    /// Adds access validation middleware to the application pipeline.
+    /// </summary>
+    /// <param name="app">
+    /// The web application builder.
+    /// </param>
+    public static IApplicationBuilder UseAccessValidation(this WebApplication app)
+    {
+        return app.UseWhen
+        (
+            context =>
+            {
+                // If no user, allow pipeline to handle auth
+                var user = context.User;
+
+                return user.Identity?.IsAuthenticated is true &&
+                       !user.IsInRole(Roles.SystemAdministrator) &&
+                        // check for sponsor and applicant
+                        // high-privilege roles will be by passed
+                        (
+                            user.IsInRole(Roles.Applicant) ||
+                            user.IsInRole(Roles.Sponsor)
+                        );
+            }, appBuilder =>
+            {
+                // verify project record access
+                appBuilder.UseWhen
+                (
+                    context =>
+                    {
+                        var path = context.Request.Path;
+
+                        return path.StartsWithSegments("/applications");
+                    },
+                    appBuilder => appBuilder.UseProjectRecordAccessValidation()
+                );
+
+                // verify document access
+                appBuilder.UseWhen
+                (
+                    context =>
+                    {
+                        var path = context.Request.Path;
+
+                        return path.StartsWithSegments("/documents") ||
+                               path.StartsWithSegments("/respondent/modificationdocumentdetails") ||
+                               path.StartsWithSegments("/respondent/modificationdocumentanswer");
+                    },
+
+                    appBuilder => appBuilder.UseDocumentAccessValidation()
+                );
+
+                // verify modification access
+                appBuilder.UseWhen
+                (
+                    context =>
+                    {
+                        var path = context.Request.Path;
+                        return path.StartsWithSegments("/projectmodifications") ||
+                               path.StartsWithSegments("/respondent/modification") ||
+                               path.StartsWithSegments("/respondent/modificationchange");
+                    },
+
+                    appBuilder => appBuilder.UseModificationAccessValidation()
+                );
+            }
+        );
     }
 }

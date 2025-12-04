@@ -2,6 +2,8 @@
 
 public static class ProjectRecordConstants
 {
+    public const string ChiefInvestigatorFirstName = "IQA0309";
+    public const string ChiefInvestigatorLastName = "IQA0310";
     public const string ChiefInvestigator = "IQA0311";
     public const string LeadNation = "IQA0005";
     public const string ParticipatingNation = "IQA0032";

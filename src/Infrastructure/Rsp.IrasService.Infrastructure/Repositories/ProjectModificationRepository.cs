@@ -217,6 +217,14 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                    ModificationType = pm.ModificationType,
                    Category = pm.Category,
                    ReviewType = pm.ReviewType,
+                   ChiefInvestigatorFirstName = projectAnswers
+                       .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ChiefInvestigatorFirstName)
+                       .Select(a => a.Response)
+                       .FirstOrDefault() ?? string.Empty,
+                   ChiefInvestigatorLastName = projectAnswers
+                       .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ChiefInvestigatorLastName)
+                       .Select(a => a.Response)
+                       .FirstOrDefault() ?? string.Empty,
                    ChiefInvestigator = projectAnswers
                        .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ChiefInvestigator)
                        .Select(a => a.Response)
@@ -446,6 +454,14 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                    ModificationId = prm.ModificationIdentifier,
                    IrasId = proj.IrasId.HasValue ? proj.IrasId.Value.ToString() : string.Empty,
                    ModificationNumber = prm.ModificationNumber,
+                   ChiefInvestigatorFirstName = projectAnswers
+                       .Where(a => a.ProjectRecordId == proj.Id && a.QuestionId == ProjectRecordConstants.ChiefInvestigatorFirstName)
+                       .Select(a => a.Response)
+                       .FirstOrDefault() ?? string.Empty,
+                   ChiefInvestigatorLastName = projectAnswers
+                       .Where(a => a.ProjectRecordId == proj.Id && a.QuestionId == ProjectRecordConstants.ChiefInvestigatorLastName)
+                       .Select(a => a.Response)
+                       .FirstOrDefault() ?? string.Empty,
                    ChiefInvestigator = projectAnswers
                        .Where(a => a.ProjectRecordId == proj.Id && a.QuestionId == ProjectRecordConstants.ChiefInvestigator)
                        .Select(a => a.Response)
