@@ -34,7 +34,7 @@ public class SponsorOrganisationUserAuditTrailHandler : IAuditTrailHandler<Spons
             DateTimeStamp = DateTime.UtcNow,
             RtsId = sponsorOrganisationUser.RtsId,
             User = systemAdminEmail,
-            Description = $"{sponsorOrganisationUser.Email} was added to this sponsor organisation"
+            Description = $"{sponsorOrganisationUser.Email} added to {sponsorOrganisationUser.RtsId}"
         };
     }
 
@@ -66,7 +66,7 @@ public class SponsorOrganisationUserAuditTrailHandler : IAuditTrailHandler<Spons
 
     private static string GenerateDescription(PropertyEntry property, SponsorOrganisationUser sponsorOrganisationUser)
     {
-        var newStatus = property.CurrentValue as bool? == true ? "enabled" : "disabled";
-        return $"{sponsorOrganisationUser.Email} {newStatus} for {sponsorOrganisationUser.RtsId}";
+        var newStatus = property.CurrentValue as bool? == true ? "enabled for" : "disabled from";
+        return $"{sponsorOrganisationUser.Email} {newStatus} {sponsorOrganisationUser.RtsId}";
     }
 }

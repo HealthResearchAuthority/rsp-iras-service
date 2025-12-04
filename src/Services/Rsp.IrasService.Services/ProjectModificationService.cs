@@ -1,9 +1,11 @@
 ﻿using Mapster;
+using Microsoft.AspNetCore.Http;
 using Rsp.IrasService.Application.Contracts.Repositories;
 using Rsp.IrasService.Application.Contracts.Services;
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.DTOS.Responses;
 using Rsp.IrasService.Application.Specifications;
+using Rsp.IrasService.Domain.Constants;
 using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Services;
@@ -11,7 +13,7 @@ namespace Rsp.IrasService.Services;
 /// <summary>
 /// Service for managing project modifications and their changes.
 /// </summary>
-public class ProjectModificationService(IProjectModificationRepository projectModificationRepository) : IProjectModificationService
+public class ProjectModificationService(IProjectModificationRepository projectModificationRepository, IHttpContextAccessor httpContextAccessor) : IProjectModificationService
 {
     /// <summary>
     /// Adds a new project modification to the database.
@@ -208,6 +210,22 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
     public async Task<ModificationAuditTrailResponse> GetModificationAuditTrail(Guid projectModificationId)
     {
         var auditTrailEntries = await projectModificationRepository.GetModificationAuditTrail(projectModificationId);
+
+        var user = httpContextAccessor.HttpContext?.User!;
+
+        if (!(user.IsInRole(Roles.TeamManager) ||
+            user.IsInRole(Roles.WorkflowCoordinator) ||
+            user.IsInRole(Roles.StudyWideReviewer) ||
+            user.IsInRole(Roles.SystemAdministrator)))
+        {
+            auditTrailEntries = auditTrailEntries
+                .Where(entry => !entry.IsBackstageOnly)
+                .Select(entry =>
+                {
+                    entry.User = entry.ShowUserEmailToFrontstage ? entry.User : "";
+                    return entry;
+                });
+        }
 
         return new ModificationAuditTrailResponse
         {
