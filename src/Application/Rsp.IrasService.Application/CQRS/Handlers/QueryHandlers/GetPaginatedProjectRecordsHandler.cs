@@ -17,6 +17,6 @@ public class GetPaginatedProjectRecordsHandler(IApplicationsService applications
             request.SortField,
             request.SortDirection);
 
-        return result.FilterByAllowedStatuses(request, r => r.Status);
+        return result;
     }
 }

@@ -41,64 +41,6 @@ public static class AllowedStatusesExtensions
         });
     }
 
-    /// <summary>
-    /// Filters the items inside a <see cref="PaginatedResponse{T}"/> by allowed statuses from <paramref name="query"/>.
-    /// If no allowed statuses are present the original response is returned unchanged.
-    /// </summary>
-    /// <typeparam name="T">Type of items in the paginated response.</typeparam>
-    /// <param name="response">The paginated response to filter.</param>
-    /// <param name="query">Query containing allowed statuses.</param>
-    /// <param name="statusSelector">Function that selects the status string from an item.</param>
-    /// <returns>A new <see cref="PaginatedResponse{T}"/> with filtered items and corrected <see cref="PaginatedResponse{T}.TotalCount"/>.</returns>
-    public static PaginatedResponse<T> FilterByAllowedStatuses<T>(this PaginatedResponse<T> response, BaseQuery query, Func<T, string?> statusSelector)
-    {
-        if (!query.HasAllowed())
-        {
-            return response;
-        }
-
-        // Filter the items and materialize to a list to compute the accurate total count.
-        var filtered =
-            response
-                .Items
-                .FilterByAllowedStatuses(query, statusSelector)
-                .ToList();
-
-        // Return a new paginated response containing only the filtered items.
-        return new PaginatedResponse<T>
-        {
-            Items = filtered,
-            TotalCount = filtered.Count
-        };
-    }
-
-    /// <summary>
-    /// Filters the <see cref="ModificationSearchResponse.Modifications"/> collection by allowed statuses.
-    /// Updates the response in-place and adjusts the <see cref="ModificationSearchResponse.TotalCount"/>.
-    /// If no allowed statuses are defined the original response is returned unchanged.
-    /// </summary>
-    /// <param name="response">The modification search response to filter.</param>
-    /// <param name="query">Query containing allowed statuses.</param>
-    /// <returns>The same <see cref="ModificationSearchResponse"/> instance with filtered modifications and updated total count.</returns>
-    public static ModificationSearchResponse FilterByAllowedStatuses(this ModificationSearchResponse response, BaseQuery query)
-    {
-        if (!query.HasAllowed())
-        {
-            return response;
-        }
-
-        // Use the generic enumerable filter to filter modifications by their Status property.
-        var filtered =
-            response
-                .Modifications
-                .FilterByAllowedStatuses(query, m => m.Status)
-                .ToList();
-
-        // Update the response in-place to reflect the filtered results.
-        response.Modifications = filtered;
-
-        return response;
-    }
 
     /// <summary>
     /// Filters the <see cref="ProjectOverviewDocumentResponse.Documents"/> collection by allowed statuses.

@@ -20,6 +20,6 @@ public class GetModificationsForProjectHandler(IProjectModificationService proje
             request.SortDirection
         );
 
-        return response.FilterByAllowedStatuses(request);
+        return response;
     }
 }

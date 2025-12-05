@@ -12,6 +12,6 @@ public class GetModificationsByIdsHandler(IProjectModificationService projectMod
     {
         var response = await projectModificationService.GetModificationsByIds(request.Ids);
 
-        return response.FilterByAllowedStatuses(request);
+        return response;
     }
 }
