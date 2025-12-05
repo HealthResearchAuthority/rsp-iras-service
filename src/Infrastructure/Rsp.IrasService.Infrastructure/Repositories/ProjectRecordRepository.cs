@@ -273,6 +273,16 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
                 && participatingNationCode.Any(r => y.SelectedOptions.Contains(r))));
         }
 
+        // Filter by allowed statuses (case-insensitive)
+        if (request.AllowedStatuses.Any())
+        {
+            var allowed = request.AllowedStatuses
+                .Select(s => s.ToLower())
+                .ToList();
+
+            records = records.Where(x => allowed.Contains(x.Status.ToLower()));
+        }
+
         return records;
     }
 

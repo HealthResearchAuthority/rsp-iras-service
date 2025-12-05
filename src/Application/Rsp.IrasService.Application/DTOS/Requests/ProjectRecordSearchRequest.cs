@@ -9,4 +9,5 @@ public class ProjectRecordSearchRequest
     public string? ShortProjectTitle { get; set; }
     public string? SponsorOrganisation { get; set; }
     public bool ActiveProjectsOnly { get; set; }
+    public List<string> AllowedStatuses { get; set; } = [];
 }

@@ -19,6 +19,6 @@ public class GetModificationsHandler(IProjectModificationService projectModifica
             request.SortDirection
         );
 
-        return response.FilterByAllowedStatuses(request);
+        return response;
     }
 }

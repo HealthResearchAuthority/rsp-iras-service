@@ -20,6 +20,6 @@ public class GetModificationsBySponsorOrganisationUserIdHandler(IProjectModifica
             request.SortDirection
         );
 
-        return response.FilterByAllowedStatuses(request);
+        return response;
     }
 }
