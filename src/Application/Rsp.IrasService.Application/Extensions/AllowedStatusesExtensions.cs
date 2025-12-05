@@ -1,5 +1,4 @@
 using Rsp.IrasService.Application.CQRS.Queries;
-using Rsp.IrasService.Application.DTOS.Responses;
 
 namespace Rsp.IrasService.Application.Extensions;
 
@@ -39,32 +38,6 @@ public static class AllowedStatusesExtensions
             var status = statusSelector(x);
             return status != null && set.Contains(status);
         });
-    }
-
-
-    /// <summary>
-    /// Filters the <see cref="ProjectOverviewDocumentResponse.Documents"/> collection by allowed statuses.
-    /// Updates the response in-place and adjusts the <see cref="ProjectOverviewDocumentResponse.TotalCount"/>.
-    /// If no allowed statuses are defined the original response is returned unchanged.
-    /// </summary>
-    /// <param name="response">The project overview document response to filter.</param>
-    /// <param name="query">Query containing allowed statuses.</param>
-    /// <returns>The same <see cref="ProjectOverviewDocumentResponse"/> instance with filtered documents and updated total count.</returns>
-    public static ProjectOverviewDocumentResponse FilterByAllowedStatuses(this ProjectOverviewDocumentResponse response, BaseQuery query)
-    {
-        if (!query.HasAllowed())
-        {
-            return response;
-        }
-
-        // Filter documents by their Status property using the reusable enumerable filter.
-        var filtered = response.Documents.FilterByAllowedStatuses(query, d => d.Status).ToList();
-
-        // Update the response to contain only the filtered documents and correct total count.
-        response.Documents = filtered;
-        response.TotalCount = filtered.Count;
-
-        return response;
     }
 
     /// <summary>
