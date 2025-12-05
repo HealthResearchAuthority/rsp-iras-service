@@ -237,6 +237,13 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
 
         var query = new GetDocumentsForProjectOverviewQuery(projectRecordId, searchQuery, pageNumber, pageSize, sortField, sortDirection);
 
+        // If AllowedStatuses is provided in the search query, apply it to the query
+        if (searchQuery.AllowedStatuses.Count > 0)
+        {
+            // Apply allowed statuses filtering
+            query.AllowedStatuses = searchQuery.AllowedStatuses;
+        }
+
         return await mediator.Send(query);
     }
 
@@ -437,6 +444,13 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
             SortField = sortField,
             SortDirection = sortDirection
         };
+
+        // If AllowedStatuses is provided in the search query, apply it to the query
+        if (searchQuery.AllowedStatuses.Count > 0)
+        {
+            // Apply allowed statuses filtering
+            query.AllowedStatuses = searchQuery.AllowedStatuses;
+        }
 
         return await mediator.Send(query);
     }
