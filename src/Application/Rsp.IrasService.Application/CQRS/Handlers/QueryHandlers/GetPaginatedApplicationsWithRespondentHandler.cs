@@ -12,6 +12,6 @@ public class GetPaginatedApplicationsWithRespondentHandler(IApplicationsService 
     {
         var result = await applicationsService.GetPaginatedRespondentApplications(request.RespondentId, request.SearchQuery, request.PageIndex, request.PageSize, request.SortField, request.SortDirection);
 
-        return result.FilterByAllowedStatuses(request, a => a.Status);
+        return result;
     }
 }
