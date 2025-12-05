@@ -550,8 +550,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         return documents
             .AsEnumerable()
             .Where(x =>
-                string.IsNullOrEmpty(searchQuery.IrasId) ||
-                x.DocumentType.Contains(searchQuery.IrasId, StringComparison.OrdinalIgnoreCase)
+                (string.IsNullOrEmpty(searchQuery.IrasId) ||
+                x.DocumentType.Contains(searchQuery.IrasId, StringComparison.OrdinalIgnoreCase))
 
                 // Allowed statuses filter — restrict to allowed values
                 && (!searchQuery.AllowedStatuses.Any()
