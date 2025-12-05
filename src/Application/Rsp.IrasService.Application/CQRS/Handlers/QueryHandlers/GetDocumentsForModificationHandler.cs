@@ -2,7 +2,6 @@
 using Rsp.IrasService.Application.Contracts.Services;
 using Rsp.IrasService.Application.CQRS.Queries;
 using Rsp.IrasService.Application.DTOS.Responses;
-using Rsp.IrasService.Application.Extensions;
 
 namespace Rsp.IrasService.Application.CQRS.Handlers.QueryHandlers;
 
@@ -21,6 +20,6 @@ public class GetDocumentsForModificationHandler(IProjectModificationService proj
             request.SortDirection
         );
 
-        return response.FilterByAllowedStatuses(request);
+        return response;
     }
 }
