@@ -228,7 +228,7 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
         // Filter by chief investigator name
         if (!string.IsNullOrWhiteSpace(request.ChiefInvestigatorName))
         {
-            var search = request.ChiefInvestigatorName.Trim().ToLower();
+            var search = request.ChiefInvestigatorName.Trim();
 
             records = records.Where(x =>
                 (
