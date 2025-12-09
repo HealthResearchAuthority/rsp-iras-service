@@ -82,8 +82,18 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
             {
                 UserId = userId,
                 ProjectRecordId = recordId,
-                QuestionId = ProjectRecordConstants.ChiefInvestigator,
-                Response = "Dr Smith",
+                QuestionId = ProjectRecordConstants.ChiefInvestigatorFirstName,
+                Response = "Dr",
+                Category = "Cat1",
+                Section = "Section1",
+                VersionId = "1"
+            },
+            new()
+            {
+                UserId = userId,
+                ProjectRecordId = recordId,
+                QuestionId = ProjectRecordConstants.ChiefInvestigatorLastName,
+                Response = "Smith",
                 Category = "Cat1",
                 Section = "Section1",
                 VersionId = "1"
@@ -146,13 +156,15 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
         // Assert
         var list1 = results1.ToList();
         list1.Count.ShouldBe(1);
-        list1[0].ChiefInvestigator.ShouldBe("Dr Smith");
+        list1[0].ChiefInvestigatorFirstName.ShouldBe("Dr");
+        list1[0].ChiefInvestigatorLastName.ShouldBe("Smith");
         list1[0].LeadNation.ShouldBe("England");
         list1[0].ParticipatingNation.ShouldBe("Wales, Wales");
 
         var list2 = results1.ToList();
         list2.Count.ShouldBe(1);
-        list2[0].ChiefInvestigator.ShouldBe("Dr Smith");
+        list2[0].ChiefInvestigatorFirstName.ShouldBe("Dr");
+        list2[0].ChiefInvestigatorLastName.ShouldBe("Smith");
         list2[0].LeadNation.ShouldBe("England");
         list2[0].ParticipatingNation.ShouldBe("Wales, Wales");
     }
