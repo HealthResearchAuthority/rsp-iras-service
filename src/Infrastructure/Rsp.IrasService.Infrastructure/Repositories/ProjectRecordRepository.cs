@@ -226,13 +226,29 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
         }
 
         // Filter by chief investigator name
-        if (!string.IsNullOrEmpty(request.ChiefInvestigatorName))
+        if (!string.IsNullOrWhiteSpace(request.ChiefInvestigatorName))
         {
-            records = records.Where(x => x.ProjectRecordAnswers.Any(
-                y =>
-                    y.QuestionId == ProjectRecordConstants.ChiefInvestigator
-                    && y.Response != null
-                    && y.Response.Contains(request.ChiefInvestigatorName)));
+            var search = request.ChiefInvestigatorName.Trim();
+
+            records = records.Where(x =>
+                (
+                    (
+                        x.ProjectRecordAnswers
+                            .Where(a => a.QuestionId == ProjectRecordConstants.ChiefInvestigatorFirstName)
+                            .Select(a => a.Response)
+                            .FirstOrDefault() ?? string.Empty
+                    )
+                    + " " +
+                    (
+                        x.ProjectRecordAnswers
+                            .Where(a => a.QuestionId == ProjectRecordConstants.ChiefInvestigatorLastName)
+                            .Select(a => a.Response)
+                            .FirstOrDefault() ?? string.Empty
+                    )
+                )
+                .ToLower()
+                .Contains(search)
+            );
         }
 
         // Filter by sponsor organisation
