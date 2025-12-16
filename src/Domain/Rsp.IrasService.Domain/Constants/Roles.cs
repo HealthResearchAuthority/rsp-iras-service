@@ -8,4 +8,5 @@ public static class Roles
     public const string WorkflowCoordinator = "workflow_co-ordinator";
     public const string StudyWideReviewer = "study-wide_reviewer";
     public const string SystemAdministrator = "system_administrator";
+    public const string OrganisationAdministrator = "organisation_administrator";
 }
