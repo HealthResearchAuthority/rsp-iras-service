@@ -158,4 +158,19 @@ public static class TestData
 
         return items;
     }
+
+    public static async Task<IList<ProjectClosures>> SeedData(IrasContext context,
+       Generator<ProjectClosures> generator, int records)
+    {
+        // seed data using bogus
+        var items = generator
+            .Take(records)
+            .ToList();
+
+        await context.ProjectClosures.AddRangeAsync(items);
+
+        await context.SaveChangesAsync();
+
+        return items;
+    }
 }
