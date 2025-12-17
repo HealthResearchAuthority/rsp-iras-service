@@ -7,6 +7,7 @@ using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.Extensions;
 using Rsp.IrasService.Application.Specifications;
 using Rsp.IrasService.Domain.Entities;
+using Rsp.IrasService.Infrastructure.Helpers;
 
 namespace Rsp.IrasService.Infrastructure.Repositories;
 
@@ -313,8 +314,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                     || x.ModificationId.Contains(searchQuery.ModificationId, StringComparison.OrdinalIgnoreCase))
 
                 // Chief Investigator name search
-                && (string.IsNullOrEmpty(searchQuery.ChiefInvestigatorName)
-                    || x.ChiefInvestigator.Contains(searchQuery.ChiefInvestigatorName, StringComparison.OrdinalIgnoreCase))
+                && x.MatchesChiefInvestigator(searchQuery.ChiefInvestigatorName)
 
                 // Short project title search
                 && (string.IsNullOrEmpty(searchQuery.ShortProjectTitle)
