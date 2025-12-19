@@ -66,4 +66,34 @@ public class ProjectClosureServiceTests : TestServiceBase<ProjectClosureService>
         projectClosure.ProjectRecordId.ShouldBe(projectClosure.ProjectRecordId);
         projectClosure.Status.ShouldBe(projectClosure.Status);
     }
+
+    [Theory]
+    [NoRecursionInlineAutoData()]
+    public async Task GetProjectClosuresBySponsorOrganisationUserId_ShouldReturnMappedResponse(
+        Guid sponsorOrganisationUserId,
+        ProjectClosuresSearchRequest searchQuery,
+        List<ProjectClosure> projectClosures,
+        int pageNumber,
+        int pageSize,
+        string sortField,
+        string sortDirection)
+    {
+        // Arrange
+        var mockRepo = new Mock<IProjectClosureRepository>();
+        mockRepo.Setup(r => r.GetProjectClosuresBySponsorOrganisationUser(searchQuery, pageNumber, pageSize, sortField, sortDirection, sponsorOrganisationUserId))
+                .Returns(projectClosures);
+
+        mockRepo.Setup(r => r.GetProjectClosuresBySponsorOrganisationUserCount(searchQuery, sponsorOrganisationUserId))
+                .Returns(projectClosures.Count);
+
+        var service = new ProjectClosureService(mockRepo.Object);
+
+        // Act
+        var result = await service.GetProjectClosuresBySponsorOrganisationUserId(sponsorOrganisationUserId, searchQuery, pageNumber, pageSize, sortField, sortDirection);
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.ProjectClosures.ShouldNotBeNull();
+        result.ProjectClosures.Count().ShouldBe(projectClosures.Count);
+    }
 }
