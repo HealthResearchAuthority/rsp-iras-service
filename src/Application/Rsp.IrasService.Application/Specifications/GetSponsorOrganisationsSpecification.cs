@@ -6,7 +6,12 @@ namespace Rsp.IrasService.Application.Specifications;
 
 public class GetSponsorOrganisationsSpecification : Specification<SponsorOrganisation>
 {
-    public GetSponsorOrganisationsSpecification(int pageNumber, int pageSize, string sortField, string sortDirection ,SponsorOrganisationSearchRequest? searchQuery)
+    public GetSponsorOrganisationsSpecification(
+        int pageNumber,
+        int pageSize,
+        string sortField,
+        string sortDirection,
+        SponsorOrganisationSearchRequest? searchQuery)
     {
         var builder = Query
             .AsNoTracking()
@@ -23,24 +28,25 @@ public class GetSponsorOrganisationsSpecification : Specification<SponsorOrganis
 
             if (searchQuery.Status != null)
             {
-                builder.Where(x => x.IsActive == searchQuery.Status.Value);
+                builder = builder.Where(x => x.IsActive == searchQuery.Status.Value);
+            }
+
+            if (searchQuery.UserId.HasValue && searchQuery.UserId.Value != Guid.Empty)
+            {
+                builder = builder.Where(x =>
+                    x.Users.Any(u => u.UserId == searchQuery.UserId.Value));
             }
         }
 
         // Apply sorting
         builder = (sortField.ToLower(), sortDirection.ToLower()) switch
         {
-            // Sort so that active records (IsActive == true) appear first when sorting ascending
             ("isactive", "asc") => builder.OrderByDescending(x => x.IsActive),
-
-            // Sort so that inactive records (IsActive == false) appear first when sorting descending
             ("isactive", "desc") => builder.OrderBy(x => x.IsActive),
-
-            _ => builder
-                .OrderBy(x => x.IsActive)
+            _ => builder.OrderBy(x => x.IsActive)
         };
 
-        builder
+        builder = builder
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize);
     }
