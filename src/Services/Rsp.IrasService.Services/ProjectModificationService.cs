@@ -237,7 +237,7 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
     public Task<ModificationSearchResponse> GetModificationsBySponsorOrganisationUserId
     (
         Guid sponsorOrganisationUserId,
-        SponsorAuthorisationsSearchRequest searchQuery,
+        SponsorAuthorisationsModificationsSearchRequest searchQuery,
         int pageNumber,
         int pageSize,
         string sortField,

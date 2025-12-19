@@ -86,7 +86,7 @@ public interface IProjectModificationRepository
     /// </remarks>
     IEnumerable<ProjectModificationResult> GetModificationsBySponsorOrganisationUser
     (
-       SponsorAuthorisationsSearchRequest searchQuery,
+       SponsorAuthorisationsModificationsSearchRequest searchQuery,
        int pageNumber,
        int pageSize,
        string sortField,
@@ -100,7 +100,7 @@ public interface IProjectModificationRepository
     /// <param name="searchQuery">Same filtering contract as <see cref="GetModificationsBySponsorOrganisationUser"/>.</param>
     /// <param name="sponsorOrganisationUserId">Sponsor organisation user unique identifier.</param>
     /// <returns>Total number of matching records.</returns>
-    int GetModificationsBySponsorOrganisationUserCount(SponsorAuthorisationsSearchRequest searchQuery, Guid sponsorOrganisationUserId);
+    int GetModificationsBySponsorOrganisationUserCount(SponsorAuthorisationsModificationsSearchRequest searchQuery, Guid sponsorOrganisationUserId);
 
     /// <summary>
     /// Returns the total count of modifications matching the supplied search criteria (ignoring paging).

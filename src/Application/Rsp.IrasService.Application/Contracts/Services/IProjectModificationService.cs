@@ -153,7 +153,7 @@ public interface IProjectModificationService : IInterceptable
     Task<ModificationSearchResponse> GetModificationsBySponsorOrganisationUserId
     (
        Guid sponsorOrganisationUserId,
-       SponsorAuthorisationsSearchRequest searchQuery,
+       SponsorAuthorisationsModificationsSearchRequest searchQuery,
        int pageNumber,
        int pageSize,
        string sortField,

@@ -36,4 +36,24 @@ public class ProjectClosureService(IProjectClosureRepository projectClosureRepos
 
         return updateProjectClosure.Adapt<ProjectClosureResponse>();
     }
+
+    public Task<ProjectClosuresSearchResponse> GetProjectClosuresBySponsorOrganisationUserId
+    (
+        Guid sponsorOrganisationUserId,
+        ProjectClosuresSearchRequest searchQuery,
+        int pageNumber,
+        int pageSize,
+        string sortField,
+        string sortDirection
+    )
+    {
+        var projectClosures = projectClosureRepository.GetProjectClosuresBySponsorOrganisationUser(searchQuery, pageNumber, pageSize, sortField, sortDirection, sponsorOrganisationUserId);
+        var totalCount = projectClosureRepository.GetProjectClosuresBySponsorOrganisationUserCount(searchQuery, sponsorOrganisationUserId);
+
+        return Task.FromResult(new ProjectClosuresSearchResponse
+        {
+            ProjectClosures = projectClosures.Adapt<IEnumerable<ProjectClosureResponse>>(),
+            TotalCount = totalCount
+        });
+    }
 }

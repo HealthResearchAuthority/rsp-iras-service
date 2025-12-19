@@ -46,31 +46,4 @@ public class ProjectClosureRepositoryTests
         Assert.Equal("With sponsor", create.Status);
         Assert.Equal("Abc", create.ShortProjectTitle);
     }
-
-    //[Fact]
-    //public async Task GetProjectClosures_Returns_Expected_Result()
-    //{
-    //    var projectClosures = new ProjectClosure
-    //    {
-    //        Id = "1",
-    //        ProjectRecordId = "123",
-    //        ShortProjectTitle = "Abc",
-    //        ClosureDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
-    //        SentToSponsorDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
-    //        DateActioned = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
-    //        UserId = "",
-    //        Status = "With sponsor",
-    //        IrasId = 1,
-    //        CreatedBy = "A",
-    //        UpdatedBy = "A"
-    //    };
-
-    //    //act
-    //    var create = await _applicationRepository.GetProjectClosure(projectClosures.ProjectRecordId);
-
-    //    // Assert
-    //    Assert.NotNull(create);
-    //    Assert.Equal("With sponsor", create.Status);
-    //    Assert.Equal("Abc", create.ShortProjectTitle);
-    //}
 }
