@@ -4,18 +4,18 @@ using Rsp.IrasService.Application.DTOS.Responses;
 
 namespace Rsp.IrasService.Application.CQRS.Queries;
 
-public class GetModificationsBySponsorOrganisationUserIdQuery
+public class GetProjectClosuresBySponsorOrganisationUserIdQuery
 (
     Guid sponsorOrganisationUserId,
-    SponsorAuthorisationsModificationsSearchRequest searchQuery,
+    ProjectClosuresSearchRequest searchQuery,
     int pageNumber,
     int pageSize,
     string sortField,
     string sortDirection
-) : BaseQuery, IRequest<ModificationSearchResponse>
+) : BaseQuery, IRequest<ProjectClosuresSearchResponse>
 {
     public Guid SponsorOrganisationUserId { get; } = sponsorOrganisationUserId;
-    public SponsorAuthorisationsModificationsSearchRequest SearchQuery { get; } = searchQuery;
+    public ProjectClosuresSearchRequest SearchQuery { get; } = searchQuery;
     public int PageNumber { get; } = pageNumber;
     public int PageSize { get; } = pageSize;
     public string SortField { get; } = sortField;
