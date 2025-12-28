@@ -17,7 +17,7 @@ public class GetRespondentApplicationSpecificationTests
     {
         // Arrange
         var applications = generator.Take(5).ToList();
-        var respondentId = applications[0].UserId;
+        var respondentId = applications[0].CreatedBy;
         var applicationId = applications[0].Id;
 
         var spec = new GetRespondentApplicationSpecification(respondentId, id: applicationId);
@@ -30,7 +30,7 @@ public class GetRespondentApplicationSpecificationTests
         // Assert
         result.ShouldNotBeNull();
         result.Id.ShouldBe(applicationId);
-        result.UserId.ShouldBe(respondentId);
+        result.CreatedBy.ShouldBe(respondentId);
     }
 
     /// <summary>
@@ -42,7 +42,7 @@ public class GetRespondentApplicationSpecificationTests
     {
         // Arrange
         var applications = generator.Take(5).ToList();
-        var respondentId = applications[0].UserId;
+        var respondentId = applications[0].CreatedBy;
 
         var spec = new GetRespondentApplicationSpecification(respondentId);
 
@@ -53,7 +53,7 @@ public class GetRespondentApplicationSpecificationTests
 
         // Assert
         result.ShouldNotBeNull();
-        result.ShouldAllBe(application => application.UserId == respondentId);
+        result.ShouldAllBe(application => application.CreatedBy == respondentId);
     }
 
     /// <summary>
@@ -65,10 +65,10 @@ public class GetRespondentApplicationSpecificationTests
     {
         // Arrange
         var applications = generator.Take(5).ToList();
-        var respondentId = applications[0].UserId;
+        var respondentId = applications[0].CreatedBy;
 
         // Ensure all test data has the same RespondentId
-        foreach (var application in applications) application.UserId = respondentId;
+        foreach (var application in applications) application.CreatedBy = respondentId;
 
         var spec = new GetRespondentApplicationSpecification(respondentId, records: records);
 
@@ -100,11 +100,11 @@ public class GetRespondentApplicationSpecificationTests
 
         var applications = new List<ProjectRecord>
     {
-        new() { Id = "1", UserId = respondentId, ShortProjectTitle = "ABC Project", IrasId = 12334, Status = "Approved" },
-        new() { Id = "2", UserId = respondentId, ShortProjectTitle = "XYZ Initiative", IrasId = 12335, Status = "Rejected" },
-        new() { Id = "3", UserId = respondentId, ShortProjectTitle = "123 Study", IrasId = 12336, Status = "Approved,Pending" },
-        new() { Id = "4", UserId = "Other", ShortProjectTitle = "ABC Project", IrasId = 12337, Status = "Approved" },
-        new() { Id = "5", UserId = respondentId, ShortProjectTitle = "123 ABC Test", IrasId = 12339, Status = "Pending" }
+        new() { Id = "1", CreatedBy = respondentId, ShortProjectTitle = "ABC Project", IrasId = 12334, Status = "Approved" },
+        new() { Id = "2", CreatedBy = respondentId, ShortProjectTitle = "XYZ Initiative", IrasId = 12335, Status = "Rejected" },
+        new() { Id = "3", CreatedBy = respondentId, ShortProjectTitle = "123 Study", IrasId = 12336, Status = "Approved,Pending" },
+        new() { Id = "4", CreatedBy = "Other", ShortProjectTitle = "ABC Project", IrasId = 12337, Status = "Approved" },
+        new() { Id = "5", CreatedBy = respondentId, ShortProjectTitle = "123 ABC Test", IrasId = 12339, Status = "Pending" }
     };
 
         var searchQuery = new ApplicationSearchRequest
@@ -140,10 +140,10 @@ public class GetRespondentApplicationSpecificationTests
 
         var applications = new List<ProjectRecord>
         {
-            new() { Id = "1", UserId = respondentId, CreatedDate = new DateTime(2023, 5, 10, 0, 0, 0, DateTimeKind.Utc) },
-            new() { Id = "2", UserId = respondentId, CreatedDate = new DateTime(2023, 1, 1, 0, 0, 0, DateTimeKind.Utc) },
-            new() { Id = "3", UserId = respondentId, CreatedDate = new DateTime(2023, 12, 31, 0, 0, 0, DateTimeKind.Utc) },
-            new() { Id = "4", UserId = "Other", CreatedDate = new DateTime(2023, 5, 10, 0, 0, 0, DateTimeKind.Utc) }
+            new() { Id = "1", CreatedBy = respondentId, CreatedDate = new DateTime(2023, 5, 10, 0, 0, 0, DateTimeKind.Utc) },
+            new() { Id = "2", CreatedBy = respondentId, CreatedDate = new DateTime(2023, 1, 1, 0, 0, 0, DateTimeKind.Utc) },
+            new() { Id = "3", CreatedBy = respondentId, CreatedDate = new DateTime(2023, 12, 31, 0, 0, 0, DateTimeKind.Utc) },
+            new() { Id = "4", CreatedBy = "Other", CreatedDate = new DateTime(2023, 5, 10, 0, 0, 0, DateTimeKind.Utc) }
         };
 
         var searchQuery = new ApplicationSearchRequest
@@ -169,7 +169,7 @@ public class GetRespondentApplicationSpecificationTests
         var respondentId = "R-123";
         var applications = new List<ProjectRecord>
         {
-            new() { Id = "1", UserId = respondentId, ShortProjectTitle = "ABC Project", FullProjectTitle = "Phase Alpha" }
+            new() { Id = "1", CreatedBy = respondentId, ShortProjectTitle = "ABC Project", FullProjectTitle = "Phase Alpha" }
         };
 
         ApplicationSearchRequest searchQuery = new ApplicationSearchRequest();

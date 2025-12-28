@@ -8,7 +8,7 @@ public class ProjectModificationChangeAnswerConfiguration : IEntityTypeConfigura
 {
     public void Configure(EntityTypeBuilder<ProjectModificationChangeAnswer> builder)
     {
-        builder.HasKey(ra => new { ra.ProjectModificationChangeId, ra.QuestionId, ra.UserId });
+        builder.HasKey(ra => new { ra.ProjectModificationChangeId, ra.QuestionId, ra.CreatedBy });
 
         builder
             .HasOne(ra => ra.ProjectModificationChange)

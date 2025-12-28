@@ -8,7 +8,7 @@ public class ProjectRecordAnswerConfiguration : IEntityTypeConfiguration<Project
 {
     public void Configure(EntityTypeBuilder<ProjectRecordAnswer> builder)
     {
-        builder.HasKey(ra => new { ra.UserId, ra.QuestionId, ra.ProjectRecordId });
+        builder.HasKey(ra => new { ra.CreatedBy, ra.QuestionId, ra.ProjectRecordId });
 
         builder
             .Property(e => e.VersionId)

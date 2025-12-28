@@ -6,17 +6,12 @@ namespace Rsp.Service.Domain.Entities;
 /// <summary>
 /// Represents a project record, including its details and associated modifications.
 /// </summary>
-public class ProjectRecord : IAuditable
+public class ProjectRecord : IAuditable, ICreatable, IUpdatable
 {
     /// <summary>
     /// Gets or sets the unique identifier for the project record.
     /// </summary>
     public string Id { get; set; } = null!;
-
-    /// <summary>
-    /// Gets or sets the identifier for the user associated with this record.
-    /// </summary>
-    public string UserId { get; set; } = null!;
 
     /// <summary>
     /// Gets or sets the title of the project.

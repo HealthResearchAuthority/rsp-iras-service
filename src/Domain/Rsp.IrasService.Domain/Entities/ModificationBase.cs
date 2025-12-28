@@ -1,6 +1,6 @@
 ﻿namespace Rsp.Service.Domain.Entities;
 
-public class ModificationBase
+public class ModificationBase : ICreatable
 {
     public string Id { get; set; } = null!;
     public string ProjectRecordId { get; set; } = null!;
@@ -15,7 +15,8 @@ public class ModificationBase
     public string LeadNation { get; set; } = null!;
     public string ParticipatingNation { get; set; } = null!;
     public string SponsorOrganisation { get; set; } = null!;
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedDate { get; set; }
+    public string CreatedBy { get; set; } = null!;
     public string Status { get; set; } = null!;
     public DateTime? SentToRegulatorDate { get; set; }
     public DateTime? SentToSponsorDate { get; set; }

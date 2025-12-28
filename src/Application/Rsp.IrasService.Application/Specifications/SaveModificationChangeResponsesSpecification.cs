@@ -21,7 +21,7 @@ public class SaveModificationChangeResponsesSpecification : Specification<Projec
                 entity =>
                 entity.ProjectModificationChangeId == modificationChangeId &&
                 entity.ProjectRecordId == projectRecordId &&
-                entity.UserId == userId
+                entity.CreatedBy == userId
             );
     }
 }

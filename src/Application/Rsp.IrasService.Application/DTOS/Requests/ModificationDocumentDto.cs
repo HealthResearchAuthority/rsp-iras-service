@@ -20,7 +20,7 @@ public class ModificationDocumentDto
     /// <summary>
     /// Gets or sets the project user identifier.
     /// </summary>
-    public string UserId { get; set; } = null!;
+    public string CreatedBy { get; set; } = null!;
 
     /// <summary>
     /// Gets or sets the document file name.
