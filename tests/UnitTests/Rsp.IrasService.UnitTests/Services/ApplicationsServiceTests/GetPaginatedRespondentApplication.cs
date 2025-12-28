@@ -62,8 +62,7 @@ public class GetPaginatedRespondentApplications : TestServiceBase<ApplicationsSe
         var researchApplications = applicationRequests.Select(request => new ProjectRecord
         {
             Id = request.Id,
-            UserId = request.UserId,
-            CreatedBy = request.CreatedBy,
+            CreatedBy = request.UserId,
             FullProjectTitle = request.FullProjectTitle,
             ShortProjectTitle = request.ShortProjectTitle,
             UpdatedBy = request.UpdatedBy
@@ -73,8 +72,7 @@ public class GetPaginatedRespondentApplications : TestServiceBase<ApplicationsSe
         researchApplications.Add(new ProjectRecord
         {
             Id = Guid.NewGuid().ToString(),
-            UserId = "OtherRespondent",
-            CreatedBy = "User3",
+            CreatedBy = "OtherRespondent",
             FullProjectTitle = "Description3",
             ShortProjectTitle = "Title3",
             UpdatedBy = "Updater3"
@@ -96,7 +94,7 @@ public class GetPaginatedRespondentApplications : TestServiceBase<ApplicationsSe
         foreach (var application in result.Items)
         {
             var expectedApplication = applicationRequests.First(a => a.Id == application.Id);
-            application.CreatedBy.ShouldBe(expectedApplication.CreatedBy);
+            application.CreatedBy.ShouldBe(fixedRespondentId);
             application.FullProjectTitle.ShouldBe(expectedApplication.FullProjectTitle);
             application.ShortProjectTitle.ShouldBe(expectedApplication.ShortProjectTitle);
             application.UpdatedBy.ShouldBe(expectedApplication.UpdatedBy);
@@ -136,7 +134,7 @@ public class GetPaginatedRespondentApplications : TestServiceBase<ApplicationsSe
 
         foreach (var record in generatedRecords)
         {
-            record.UserId = respondentId;
+            record.CreatedBy = respondentId;
         }
 
         await _context.ProjectRecords.AddRangeAsync(generatedRecords);
@@ -164,7 +162,7 @@ public class GetPaginatedRespondentApplications : TestServiceBase<ApplicationsSe
 
         foreach (var record in generatedRecords)
         {
-            record.UserId = respondentId;
+            record.CreatedBy = respondentId;
         }
 
         await _context.ProjectRecords.AddRangeAsync(generatedRecords);

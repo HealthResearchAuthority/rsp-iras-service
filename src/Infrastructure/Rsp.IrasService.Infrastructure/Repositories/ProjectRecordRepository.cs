@@ -63,13 +63,12 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
                                   select new ProjectRecord
                                   {
                                       Id = projectRecord.Id,
-                                      UserId = projectRecord.UserId,
+                                      CreatedBy = projectRecord.CreatedBy,
                                       FullProjectTitle = projectRecord.FullProjectTitle,
                                       IsActive = projectRecord.IsActive,
                                       Status = projectRecord.Status,
                                       CreatedDate = projectRecord.CreatedDate,
                                       UpdatedDate = projectRecord.UpdatedDate,
-                                      CreatedBy = projectRecord.CreatedBy,
                                       UpdatedBy = projectRecord.UpdatedBy,
                                       IrasId = projectRecord.IrasId,
                                       ProjectModifications = projectRecord.ProjectModifications,

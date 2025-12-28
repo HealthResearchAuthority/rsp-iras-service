@@ -135,15 +135,15 @@ public class SaveModificationChangeResponsesSpecificationTests
         var personId = "P-1";
         var data = new List<ProjectModificationChangeAnswer>
         {
-            new() { ProjectModificationChangeId = changeId, ProjectRecordId = prId, UserId = personId },
-            new() { ProjectModificationChangeId = changeId, ProjectRecordId = prId, UserId = "P-2" },
+            new() { ProjectModificationChangeId = changeId, ProjectRecordId = prId, CreatedBy = personId },
+            new() { ProjectModificationChangeId = changeId, ProjectRecordId = prId, CreatedBy = "P-2" },
         };
 
         var spec = new SaveModificationChangeResponsesSpecification(changeId, prId, personId);
         var result = spec.Evaluate(data).ToList();
 
         result.Count.ShouldBe(1);
-        result.Single().UserId.ShouldBe(personId);
+        result.Single().CreatedBy.ShouldBe(personId);
     }
 }
 
@@ -157,14 +157,14 @@ public class SaveModificationResponsesSpecificationTests_V2
         var personId = "P-1";
         var data = new List<ProjectModificationAnswer>
         {
-            new() { ProjectModificationId = modId, ProjectRecordId = prId, UserId = personId },
-            new() { ProjectModificationId = modId, ProjectRecordId = prId, UserId = "P-2" },
+            new() { ProjectModificationId = modId, ProjectRecordId = prId, CreatedBy = personId },
+            new() { ProjectModificationId = modId, ProjectRecordId = prId, CreatedBy = "P-2" },
         };
 
         var spec = new SaveModificationResponsesSpecification(modId, prId, personId);
         var result = spec.Evaluate(data).ToList();
 
         result.Count.ShouldBe(1);
-        result.Single().UserId.ShouldBe(personId);
+        result.Single().CreatedBy.ShouldBe(personId);
     }
 }

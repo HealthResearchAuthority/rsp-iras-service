@@ -1,8 +1,10 @@
-﻿namespace Rsp.Service.Domain.Entities;
+﻿using Rsp.Service.Domain.Interfaces;
 
-public class ProjectRecordAnswer
+namespace Rsp.Service.Domain.Entities;
+
+public class ProjectRecordAnswer : ICreatable, IUpdatable
 {
-    public string UserId { get; set; } = null!;
+    public string CreatedBy { get; set; } = null!;
     public string ProjectRecordId { get; set; } = null!;
     public string QuestionId { get; set; } = null!;
     public string VersionId { get; set; } = null!;
@@ -12,4 +14,7 @@ public class ProjectRecordAnswer
     public string? OptionType { get; set; }
     public string? SelectedOptions { get; set; }
     public ProjectRecord? ProjectRecord { get; set; }
+    public DateTime CreatedDate { get; set; }
+    public string UpdatedBy { get; set; } = null!;
+    public DateTime UpdatedDate { get; set; }
 }

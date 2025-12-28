@@ -34,7 +34,7 @@ public static class ServicesConfiguration
         services.AddTransient<IEmailTemplateService, EmailTemplateService>();
         services.AddTransient<IReviewBodyService, ReviewBodyService>();
         services.AddTransient<IReviewBodyAuditTrailService, ReviewBodyAuditTrailService>();
-        services.AddTransient<IAuditTrailDetailsService, AuditTrailDetailsService>();
+        services.AddTransient<IContextAccessorService, ContextAccessorService>();
         services.AddTransient<IProjectModificationService, ProjectModificationService>();
         services.AddTransient<IDocumentService, DocumentService>();
         services.AddTransient<ISponsorOrganisationsService, SponsorOrganisationsService>();
@@ -59,6 +59,8 @@ public static class ServicesConfiguration
         services.AddTransient<DocumentAccessValidationMiddleware>();
 
         // handlers and interceptors
+        services.AddScoped<CreatableUpdatableInterceptor>();
+
         // Handlers (generic)
         services.AddScoped<IAuditTrailHandler<SponsorOrganisationAuditTrail>, SponsorOrganisationAuditTrailHandler>();
         services.AddScoped<IAuditTrailHandler<SponsorOrganisationAuditTrail>, SponsorOrganisationUserAuditTrailHandler>();

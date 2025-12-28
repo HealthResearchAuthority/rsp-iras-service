@@ -212,7 +212,7 @@ public class ProjectModificationServiceTests : TestServiceBase<ProjectModificati
         {
             Id = Guid.NewGuid(),
             ProjectModificationId = modId,
-            UserId = "PP-1",
+            CreatedBy = "PP-1",
             ProjectRecordId = "PR-1",
             DocumentStoragePath = "/blob/doc1.pdf",
             FileName = "doc1.pdf",
@@ -228,7 +228,9 @@ public class ProjectModificationServiceTests : TestServiceBase<ProjectModificati
             VersionId = "V1",
             Category = "Cat",
             Section = "Sec",
-            Response = "Yes"
+            Response = "Yes",
+            CreatedBy = "PP-1",
+            UpdatedBy = "PP-1"
         };
 
         await _context.ProjectModifications.AddAsync(modification);

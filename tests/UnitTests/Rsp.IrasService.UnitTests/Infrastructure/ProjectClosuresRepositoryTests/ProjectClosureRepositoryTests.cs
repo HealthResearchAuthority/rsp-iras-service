@@ -132,7 +132,7 @@ public class ProjectClosureRepositoryTests
             _context.ProjectRecordAnswers.Add(new ProjectRecordAnswer
             {
                 // Required properties (string types per your model)
-                UserId = Guid.NewGuid().ToString(),
+                CreatedBy = Guid.NewGuid().ToString(),
                 Category = defaultCategory,
                 Section = defaultSection,
                 VersionId = defaultVersionId,
@@ -152,13 +152,12 @@ public class ProjectClosureRepositoryTests
                 {
                     Id = c.ProjectRecordId,
                     Status = ProjectRecordStatus.Active,
-                    CreatedBy = "seed",
+                    CreatedBy = c.UserId ?? Guid.NewGuid().ToString(),
                     UpdatedBy = "seed",
                     CreatedDate = DateTime.UtcNow.AddDays(-7),
                     UpdatedDate = DateTime.UtcNow.AddDays(-7),
                     FullProjectTitle = $"Full title for {c.ProjectRecordId}",
                     ShortProjectTitle = c.ShortProjectTitle ?? $"Short {c.ProjectRecordId}",
-                    UserId = c.UserId ?? Guid.NewGuid().ToString(),
                 });
             }
         }
