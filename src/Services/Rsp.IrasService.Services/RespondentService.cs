@@ -28,7 +28,8 @@ public class RespondentService(IProjectPersonnelRepository projectPersonnelRepos
         {
             var respondentAnswer = answer.Adapt<ProjectRecordAnswer>();
             respondentAnswer.ProjectRecordId = projectRecordId;
-            respondentAnswer.UserId = respondentId;
+            respondentAnswer.CreatedBy ??= respondentId;
+            respondentAnswer.UpdatedBy = respondentId;
 
             respondentAnswers.Add(respondentAnswer);
         }
@@ -56,7 +57,7 @@ public class RespondentService(IProjectPersonnelRepository projectPersonnelRepos
 
             respondentAnswer.ProjectModificationId = modificationId;
             respondentAnswer.ProjectRecordId = projectRecordId;
-            respondentAnswer.UserId = userId;
+            respondentAnswer.CreatedBy = userId;
 
             respondentAnswers.Add(respondentAnswer);
         }
@@ -84,7 +85,7 @@ public class RespondentService(IProjectPersonnelRepository projectPersonnelRepos
 
             respondentAnswer.ProjectModificationChangeId = modificationChangeId;
             respondentAnswer.ProjectRecordId = projectRecordId;
-            respondentAnswer.UserId = userId;
+            respondentAnswer.CreatedBy = userId;
 
             respondentAnswers.Add(respondentAnswer);
         }
@@ -278,7 +279,7 @@ public class RespondentService(IProjectPersonnelRepository projectPersonnelRepos
         var specification = new SaveModificationDocumentsSpecification(
             respondentAnswers[0].ProjectModificationId,
             respondentAnswers[0].ProjectRecordId,
-            respondentAnswers[0].UserId
+            respondentAnswers[0].CreatedBy
         );
 
         var respondentDocuments = new List<ModificationDocument>();

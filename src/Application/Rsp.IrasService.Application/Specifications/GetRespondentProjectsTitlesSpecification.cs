@@ -19,7 +19,7 @@ public class GetRespondentProjectsTitlesSpecification : Specification<ProjectRec
         Query
             .AsNoTracking()
             .Where(entity =>
-                entity.UserId == respondentId &&
+                entity.CreatedBy == respondentId &&
                 entity.QuestionId == projectTitleQuestionId);
     }
 }

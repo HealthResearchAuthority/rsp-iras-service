@@ -19,6 +19,6 @@ public class SaveResponsesSpecification : Specification<ProjectRecordAnswer>
     public SaveResponsesSpecification(string projectRecordId, string respondentId)
     {
         Query
-            .Where(entity => entity.ProjectRecordId == projectRecordId && entity.UserId == respondentId);
+            .Where(entity => entity.ProjectRecordId == projectRecordId && entity.CreatedBy == respondentId);
     }
 }
