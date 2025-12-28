@@ -42,7 +42,6 @@ public class UpdateProjectRecordStatusTests : TestServiceBase<ApplicationsServic
         {
             Id = applicationRequest.Id,
             Status = applicationRequest.Status,
-            UserId = fixedRespondentId,
             CreatedBy = applicationRequest.CreatedBy,
             FullProjectTitle = applicationRequest.FullProjectTitle,
             ShortProjectTitle = applicationRequest.ShortProjectTitle,
@@ -66,7 +65,7 @@ public class UpdateProjectRecordStatusTests : TestServiceBase<ApplicationsServic
             .FirstOrDefaultAsync(a => a.Id == existingProjectRecord.Id);
 
         dbApplication.ShouldNotBeNull();
-        dbApplication.UserId.ShouldBe(fixedRespondentId);
+        dbApplication.CreatedBy.ShouldBe(applicationRequest.CreatedBy);
         (await _context.ProjectRecords.CountAsync()).ShouldBe(1);
     }
 }

@@ -152,7 +152,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                           ProjectRecordId = pm.ProjectRecordId,
                           ShortProjectTitle = pr.ShortProjectTitle,
                           Status = pm.Status,
-                          CreatedAt = pm.CreatedDate,
+                          CreatedDate = pm.CreatedDate,
                           ReviewerName = pm.ReviewerName
                       };
 
@@ -245,7 +245,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                                    a.QuestionId == ProjectRecordConstants.SponsorOrganisation)
                        .Select(a => a.Response)
                        .FirstOrDefault() ?? string.Empty,
-                   CreatedAt = pm.CreatedDate,
+                   CreatedDate = pm.CreatedDate,
                    ReviewerId = pm.ReviewerId,
                    Status = pm.Status,
                    SentToRegulatorDate = pm.SentToRegulatorDate,
@@ -402,7 +402,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             nameof(ProjectModificationResult.Category) => x => string.IsNullOrEmpty(x.Category) ? string.Empty : x.Category.ToLowerInvariant(),
             nameof(ProjectModificationResult.SponsorOrganisation) => x => x.SponsorOrganisation.ToLowerInvariant(),
             nameof(ProjectModificationResult.LeadNation) => x => x.LeadNation.ToLowerInvariant(),
-            nameof(ProjectModificationResult.CreatedAt) => x => x.CreatedAt,
+            nameof(ProjectModificationResult.CreatedDate) => x => x.CreatedDate,
             nameof(ProjectModificationResult.Status) => x => x.Status,
             nameof(ProjectModificationResult.SentToRegulatorDate) => x => x.SentToRegulatorDate!,
             nameof(ProjectModificationResult.SentToSponsorDate) => x => x.SentToSponsorDate!,
@@ -475,7 +475,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                        .FirstOrDefault() ?? string.Empty,
                    ShortProjectTitle = proj.ShortProjectTitle,
                    SponsorOrganisation = rtsId ?? string.Empty,
-                   CreatedAt = prm.CreatedDate,
+                   CreatedDate = prm.CreatedDate,
                    ReviewerId = prm.ReviewerId,
                    Status = prm.Status,
                    SentToRegulatorDate = prm.SentToRegulatorDate,
@@ -988,8 +988,6 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                 if (existingReason.Reason != newReason)
                 {
                     existingReason.Reason = newReasons[reasonSequence - 1];
-                    existingReason.UpdatedDate = DateTime.UtcNow;
-                    existingReason.UpdatedBy = userId;
                 }
             }
 
@@ -1002,10 +1000,6 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                     Sequence = i + 1,
                     ProjectModificationId = modificationReviewRequest.ProjectModificationId,
                     Reason = newReasons[i],
-                    CreatedBy = userId,
-                    CreatedDate = DateTime.UtcNow,
-                    UpdatedBy = userId,
-                    UpdatedDate = DateTime.UtcNow,
                 });
             }
 

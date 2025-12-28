@@ -42,19 +42,19 @@ public class GetResponses : TestServiceBase<RespondentService>
         {
             new()
             {
-                ProjectRecordId = fixedApplicationId, UserId = fixedRespondentId, QuestionId = "Q1",
+                ProjectRecordId = fixedApplicationId, CreatedBy = fixedRespondentId, QuestionId = "Q1", UpdatedBy = fixedRespondentId,
                 VersionId = "v1", Category = "Category-1", Section = "Section-1", Response = "Answer1", OptionType = "Single",
                 SelectedOptions = "OptionA"
             },
             new()
             {
-                ProjectRecordId = fixedApplicationId, UserId = fixedRespondentId, QuestionId = "Q2",
+                ProjectRecordId = fixedApplicationId, CreatedBy = fixedRespondentId, QuestionId = "Q2", UpdatedBy = fixedRespondentId,
                 VersionId = "v1", Category = "Category-2", Section = "Section-2", Response = "Answer2", OptionType = "Multiple",
                 SelectedOptions = "OptionB,OptionC"
             },
             new()
             {
-                ProjectRecordId = "OtherApplication", UserId = "OtherRespondent", QuestionId = "Q3",
+                ProjectRecordId = "OtherApplication", CreatedBy = "OtherRespondent", QuestionId = "Q3", UpdatedBy = fixedRespondentId,
                 VersionId = "v1", Category = "Category-1", Section = "Section-3", Response = "Answer3", OptionType = "Single",
                 SelectedOptions = "OptionD"
             } // Should be filtered out
@@ -91,19 +91,19 @@ public class GetResponses : TestServiceBase<RespondentService>
         {
             new()
             {
-                ProjectRecordId = fixedApplicationId, UserId = fixedRespondentId, QuestionId = "Q1",
+                ProjectRecordId = fixedApplicationId, CreatedBy = fixedRespondentId, QuestionId = "Q1", UpdatedBy = fixedRespondentId,
                 VersionId = "v1", Category = fixedCategoryId, Section = "Section-1", Response = "Answer1", OptionType = "Single",
                 SelectedOptions = "OptionA"
             },
             new()
             {
-                ProjectRecordId = fixedApplicationId, UserId = fixedRespondentId, QuestionId = "Q2",
+                ProjectRecordId = fixedApplicationId, CreatedBy = fixedRespondentId, QuestionId = "Q2", UpdatedBy = fixedRespondentId,
                 VersionId = "v1", Category = "Category-2", Section = "Section-2", Response = "Answer2", OptionType = "Multiple",
                 SelectedOptions = "OptionB,OptionC"
             }, // Should be filtered out
             new()
             {
-                ProjectRecordId = fixedApplicationId, UserId = fixedRespondentId, QuestionId = "Q3",
+                ProjectRecordId = fixedApplicationId, CreatedBy = fixedRespondentId, QuestionId = "Q3", UpdatedBy = fixedRespondentId,
                 VersionId = "v1", Category = fixedCategoryId, Section = "Section-3", Response = "Answer3", OptionType = "Single",
                 SelectedOptions = "OptionD"
             }
@@ -248,7 +248,7 @@ internal class TestRespondentRepository : IProjectPersonnelRepository
         _effectiveAnswers = answers.Select(a => new EffectiveProjectRecordAnswer
         {
             ProjectRecordId = a.ProjectRecordId,
-            UserId = a.UserId,
+            CreatedBy = a.CreatedBy,
             QuestionId = a.QuestionId,
             VersionId = a.VersionId,
             Category = a.Category,

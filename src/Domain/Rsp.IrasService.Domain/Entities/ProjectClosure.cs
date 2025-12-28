@@ -6,7 +6,7 @@ namespace Rsp.Service.Domain.Entities;
 /// <summary>
 /// Represents a project closure records, including both the researcher’s submitted project closure request and the sponsor’s actions taken
 /// </summary>
-public class ProjectClosure : IAuditable
+public class ProjectClosure : IAuditable, ICreatable, IUpdatable
 {
     /// <summary>
     /// Gets or sets the unique identifier for the project closure.
@@ -32,11 +32,6 @@ public class ProjectClosure : IAuditable
     /// Gets or sets the identifier for researcher entered date from the screen i.e actual project closure date
     /// </summary>
     public DateTime? ClosureDate { get; set; }
-
-    /// <summary>
-    /// Gets or sets the identifier for the researcher email.
-    /// </summary>
-    public string? UserId { get; set; }
 
     /// <summary>
     /// Gets or sets the identifier for researcher when submit to sponsor for project closure.
@@ -65,14 +60,24 @@ public class ProjectClosure : IAuditable
     public string? Status { get; set; }
 
     /// <summary>
-    /// Gets or sets the user who created the project record.
+    /// Gets or sets the identifier for the researcher email.
     /// </summary>
     public string CreatedBy { get; set; } = null!;
 
     /// <summary>
-    /// Gets or sets the user who last updated the project record.
+    /// Gets or sets the date and time when the project closure was created.
+    /// </summary>
+    public DateTime CreatedDate { get; set; }
+
+    /// <summary>
+    /// Gets or sets the user who last updated the project closure.
     /// </summary>
     public string UpdatedBy { get; set; } = null!;
+
+    /// <summary>
+    /// Gets or sets the date and time when the project closure was last updated.
+    /// </summary>
+    public DateTime UpdatedDate { get; set; }
 
     // navigation properties
     public ProjectRecord ProjectRecord { get; set; } = null!;

@@ -41,8 +41,7 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
         {
             Id = recordId,
             IrasId = 123456,
-            UserId = userId,
-            CreatedBy = "Test",
+            CreatedBy = userId,
             CreatedDate = DateTime.Now,
             UpdatedBy = "Test",
             UpdatedDate = DateTime.Now,
@@ -80,7 +79,8 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
         {
             new()
             {
-                UserId = userId,
+                CreatedBy = userId,
+                UpdatedBy = userId,
                 ProjectRecordId = recordId,
                 QuestionId = ProjectRecordConstants.ChiefInvestigatorFirstName,
                 Response = "Dr",
@@ -90,7 +90,8 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
             },
             new()
             {
-                UserId = userId,
+                CreatedBy = userId,
+                UpdatedBy = userId,
                 ProjectRecordId = recordId,
                 QuestionId = ProjectRecordConstants.ChiefInvestigatorLastName,
                 Response = "Smith",
@@ -100,7 +101,8 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
             },
             new()
             {
-                UserId = userId, ProjectRecordId = recordId,
+                CreatedBy = userId, ProjectRecordId = recordId,
+                UpdatedBy = userId,
                 QuestionId = ProjectRecordConstants.LeadNation, SelectedOptions = "OPT0018",
                 Category = "Cat1",
                 Section = "Section1",
@@ -108,7 +110,8 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
             },
             new()
             {
-                UserId = userId, ProjectRecordId = recordId,
+                CreatedBy = userId, ProjectRecordId = recordId,
+                UpdatedBy = userId,
                 QuestionId = ProjectRecordConstants.ParticipatingNation, SelectedOptions = "OPT0019,OPT0020",
                 Category = "Cat1",
                 Section = "Section1",
@@ -116,7 +119,8 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
             },
             new()
             {
-                UserId = userId, ProjectRecordId = recordId,
+                CreatedBy = userId, ProjectRecordId = recordId,
+                UpdatedBy = userId,
                 QuestionId = ProjectRecordConstants.ShortProjectTitle, Response = "Short Title",
                 Category = "Cat1",
                 Section = "Section1",
@@ -124,7 +128,8 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
             },
             new()
             {
-                UserId = userId, ProjectRecordId = recordId,
+                CreatedBy = userId, ProjectRecordId = recordId,
+                UpdatedBy = userId,
                 QuestionId = ProjectRecordConstants.SponsorOrganisation, Response = "1111",
                 Category = "Cat1",
                 Section = "Section1",
@@ -179,7 +184,6 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
         {
             Id = recordId,
             IrasId = 111111,
-            UserId = "u1",
             CreatedBy = "t",
             CreatedDate = DateTime.UtcNow,
             UpdatedBy = "t",
@@ -244,8 +248,7 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
         {
             Id = recordId,
             IrasId = 123456,
-            UserId = userId,
-            CreatedBy = "Test",
+            CreatedBy = userId,
             CreatedDate = DateTime.Now,
             UpdatedBy = "Test",
             UpdatedDate = DateTime.Now,
@@ -282,7 +285,8 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
     {
         new()
         {
-            UserId = userId,
+            CreatedBy = userId,
+            UpdatedBy = userId,
             ProjectRecordId = recordId,
             QuestionId = ProjectRecordConstants.SponsorOrganisation,
             Response = sponsorValue,
@@ -443,7 +447,6 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
         {
             Id = recordId,
             IrasId = 111111,
-            UserId = "u1",
             CreatedBy = "t",
             CreatedDate = DateTime.UtcNow,
             UpdatedBy = "t",
@@ -517,7 +520,6 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
         {
             Id = recordId,
             IrasId = 111111,
-            UserId = "u1",
             CreatedBy = "t",
             CreatedDate = DateTime.UtcNow,
             UpdatedBy = "t",

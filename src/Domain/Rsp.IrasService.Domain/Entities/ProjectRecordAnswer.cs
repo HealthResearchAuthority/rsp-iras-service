@@ -1,6 +1,8 @@
-﻿namespace Rsp.Service.Domain.Entities;
+﻿using Rsp.Service.Domain.Interfaces;
 
-public class ProjectRecordAnswer : ProjectRecordAnswerBase
+namespace Rsp.Service.Domain.Entities;
+
+public class ProjectRecordAnswer : ProjectRecordAnswerBase, ICreatable, IUpdatable
 {
     public ProjectRecord? ProjectRecord { get; set; }
 }

@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Http;
 namespace Rsp.Service.Infrastructure.Helpers;
 
 [ExcludeFromCodeCoverage]
-public class AuditTrailDetailsService(IHttpContextAccessor contextAccessor) : IAuditTrailDetailsService
+public class ContextAccessorService(IHttpContextAccessor contextAccessor) : IContextAccessorService
 {
-    public string GetEmailFromHttpContext()
+    public string GetUserEmail()
     {
         var claimsPrincipal = contextAccessor?.HttpContext?.User;
 
@@ -19,5 +19,12 @@ public class AuditTrailDetailsService(IHttpContextAccessor contextAccessor) : IA
         return string.IsNullOrWhiteSpace(email)
             ? "System generated"
             : email;
+    }
+
+    public string GetUserId()
+    {
+        var claimsPrinciple = contextAccessor?.HttpContext?.User;
+
+        return claimsPrinciple?.Claims?.FirstOrDefault(x => x.Type == "userId")?.Value ?? "System generated";
     }
 }

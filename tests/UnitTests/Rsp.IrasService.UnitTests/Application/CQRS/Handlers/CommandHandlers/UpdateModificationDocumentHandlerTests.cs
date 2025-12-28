@@ -24,7 +24,7 @@ public class UpdateModificationDocumentHandlerTests
         {
             Id = Guid.NewGuid(),
             ProjectModificationId = Guid.NewGuid(),
-            UserId = "person-123",
+            CreatedBy = "person-123",
             ProjectRecordId = "record-456",
             DocumentStoragePath = "updated/path.pdf",
             FileName = "doc.pdf"

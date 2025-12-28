@@ -8,10 +8,10 @@ public class ProjectRecordAnswerConfiguration : IEntityTypeConfiguration<Project
 {
     public void Configure(EntityTypeBuilder<ProjectRecordAnswer> builder)
     {
-        builder.HasKey(ra => new { ra.UserId, ra.QuestionId, ra.ProjectRecordId });
+        builder.HasKey(ra => new { ra.CreatedBy, ra.QuestionId, ra.ProjectRecordId });
 
         builder
-            .HasIndex(e => new { e.ProjectRecordId, e.QuestionId, e.UserId })
+            .HasIndex(e => new { e.ProjectRecordId, e.QuestionId, e.CreatedBy })
             .IncludeProperties(e => new { e.Response, e.SelectedOptions, e.OptionType, e.Category, e.Section, e.VersionId });
 
         builder

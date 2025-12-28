@@ -18,7 +18,7 @@ public class GetModificationParticipatingOrganisationsSpecification : Specificat
             .Where(entity =>
                 entity.ProjectModificationChangeId == modificationChangeId &&
                 entity.ProjectRecordId == projectRecordId &&
-                entity.UserId == userId
+                entity.CreatedBy == userId
             );
     }
 }

@@ -1,6 +1,8 @@
-﻿namespace Rsp.Service.Domain.Entities;
+﻿using Rsp.Service.Domain.Interfaces;
 
-public class ModificationParticipatingOrganisationAnswer
+namespace Rsp.Service.Domain.Entities;
+
+public class ModificationParticipatingOrganisationAnswer : ICreatable, IUpdatable
 {
     /// <summary>
     /// Gets or sets the unique identifier for this modification document.
@@ -46,6 +48,26 @@ public class ModificationParticipatingOrganisationAnswer
     /// Gets or sets the selected options, if applicable.
     /// </summary>
     public string? SelectedOptions { get; set; }
+
+    /// <summary>
+    /// Gets or sets the identifier of the user related to this answer.
+    /// </summary>
+    public string CreatedBy { get; set; } = null!;
+
+    /// <summary>
+    /// Gets or sets the date and time when this record was created (in UTC).
+    /// </summary>
+    public DateTime CreatedDate { get; set; }
+
+    /// <summary>
+    /// Gets or sets the identifier of the user who last updated this record
+    /// </summary>
+    public string UpdatedBy { get; set; } = null!;
+
+    /// <summary>
+    /// Gets or sets the date and time when this record was last updated (in UTC).
+    /// </summary>
+    public DateTime UpdatedDate { get; set; }
 
     /// <summary>
     /// Navigation property to the related modification participating organisation.
