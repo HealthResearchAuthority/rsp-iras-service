@@ -19,7 +19,7 @@ public class AccessValidationRepository(IrasContext irasContext) : IAccessValida
             .FirstOrDefaultAsync(pr => pr.Id == projectRecordId && pr.IsActive);
 
         // 1. Applicant: if we have project record check if project belongs to the user
-        if (projectRecord != null && projectRecord.UserId == userId)
+        if (projectRecord != null && projectRecord.CreatedBy == userId)
         {
             return true;
         }
@@ -76,14 +76,14 @@ public class AccessValidationRepository(IrasContext irasContext) : IAccessValida
             projectRecord != null &&
             modification != null &&
             modification.ProjectRecordId == projectRecord.Id &&
-            projectRecord.UserId == userId
+            projectRecord.CreatedBy == userId
         )
         {
             return true;
         }
 
         // 2. Applicant: if we have project record, check if the user is the creator (UserId) of the project record
-        if (projectRecord != null && projectRecord.UserId == userId)
+        if (projectRecord != null && projectRecord.CreatedBy == userId)
         {
             return true;
         }
@@ -166,7 +166,7 @@ public class AccessValidationRepository(IrasContext irasContext) : IAccessValida
         }
 
         // 2. Applicant: if we have project record, check if the user is the creator (UserId) of the project record
-        if (projectRecord != null && projectRecord.UserId == userId)
+        if (projectRecord != null && projectRecord.CreatedBy == userId)
         {
             return true;
         }
@@ -179,7 +179,7 @@ public class AccessValidationRepository(IrasContext irasContext) : IAccessValida
     {
         var document = await irasContext.ModificationDocuments
             .AsNoTracking()
-            .FirstOrDefaultAsync(d => d.Id == documentId && d.UserId == userId);
+            .FirstOrDefaultAsync(d => d.Id == documentId && d.CreatedBy == userId);
 
         if (document != null)
         {

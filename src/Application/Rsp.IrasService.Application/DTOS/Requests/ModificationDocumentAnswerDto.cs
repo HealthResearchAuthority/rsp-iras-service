@@ -54,4 +54,7 @@ public class ModificationDocumentAnswerDto
     /// Multiple answers
     /// </summary>
     public List<string> Answers { get; set; } = [];
+
+    public string CreatedBy { get; set; } = null!;
+    public string UpdatedBy { get; set; } = null!;
 }
