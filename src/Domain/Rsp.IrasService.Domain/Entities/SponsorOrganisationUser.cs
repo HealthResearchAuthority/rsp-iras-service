@@ -14,6 +14,9 @@ public class SponsorOrganisationUser : IAuditable
     [Auditable]
     public bool IsActive { get; set; }
 
+    [Auditable]
     public bool IsAuthoriser { get; set; }
+
+    [Auditable]
     public string SponsorRole { get; set; } = null!;
 }
