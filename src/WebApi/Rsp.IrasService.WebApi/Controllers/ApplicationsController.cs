@@ -217,4 +217,20 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
         var query = new GetProjectRecordAuditTrailQuery(projectRecordId);
         return await mediator.Send(query);
     }
+
+    /// <summary>
+    /// Updates the project record status
+    /// </summary>
+    /// <param name="applicationRequest">Research Application Request</param>
+    [HttpPut("updateprojectrecordstatus")]
+    public async Task<ApplicationResponse> UpdateProjectRecordStatus(ApplicationRequest applicationRequest)
+    {
+        var userId = User.Claims.FirstOrDefault(x => x.Type == "userId")?.Value;
+
+        applicationRequest.UserId = userId!;
+
+        var request = new UpdateProjectRecordStatusCommand(applicationRequest);
+
+        return await mediator.Send(request);
+    }
 }
