@@ -359,4 +359,24 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
             .Where(x => x.ProjectRecordId == projectRecordId)
             .ToListAsync();
     }
+
+    public async Task<ProjectRecord?> UpdateProjectRecordStatus(ProjectRecord projectRecord)
+    {
+        var entity = await irasContext
+            .ProjectRecords
+            .FirstOrDefaultAsync(record => record.Id == projectRecord.Id);
+
+        if (entity == null)
+        {
+            return null;
+        }
+
+        entity.Status = projectRecord.Status;
+        entity.UpdatedBy = projectRecord.UpdatedBy;
+        entity.UpdatedDate = DateTime.UtcNow;
+
+        await irasContext.SaveChangesAsync();
+
+        return entity;
+    }
 }
