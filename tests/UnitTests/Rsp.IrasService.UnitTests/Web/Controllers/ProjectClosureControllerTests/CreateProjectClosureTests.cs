@@ -64,7 +64,7 @@ public class CreateProjectClosureTests : TestServiceBase<ProjectClosureControlle
             .ReturnsAsync(mockResponse);
 
         // Act
-        var result = await Sut.GetProjectClosure(projecrRecordId);
+        var result = await Sut.GetProjectClosureById(projecrRecordId);
 
         // Assert
         var okResult = result.Result.ShouldBeOfType<OkObjectResult>();
