@@ -33,8 +33,8 @@ public class ProjectClosureController(IMediator mediator) : ControllerBase
     /// Returns a single project closure record
     /// </summary>
     /// <param name="projectRecordId">Researcher Project Record Id</param>
-    [HttpGet("getprojectclosure")]
-    public async Task<ActionResult<ProjectClosureResponse>> GetProjectClosure(string projectRecordId)
+    [HttpGet("getprojectclosurebyid")]
+    public async Task<ActionResult<ProjectClosureResponse>> GetProjectClosureById(string projectRecordId)
     {
         var request = new GetProjectClosureQuery(projectRecordId);
 
