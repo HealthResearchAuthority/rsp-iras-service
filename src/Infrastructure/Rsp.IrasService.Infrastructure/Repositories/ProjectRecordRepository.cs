@@ -140,6 +140,8 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
             ("irasid", "desc") => projectRecords.OrderByDescending(x => x.IrasId),
             ("leadnation", "asc") => projectRecords.OrderBy(x => x.LeadNation),
             ("leadnation", "desc") => projectRecords.OrderByDescending(x => x.LeadNation),
+            ("createddate", "asc") => projectRecords.OrderBy(x => x.CreatedDate),
+            ("createddate", "desc") => projectRecords.OrderByDescending(x => x.CreatedDate),
             _ => projectRecords.OrderBy(x => x.IrasId),
         };
 
@@ -207,6 +209,16 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
         if (request.ActiveProjectsOnly)
         {
             records = records.Where(x => x.IsActive);
+        }
+
+        if (request.FromDate.HasValue)
+        {
+            records = records.Where(x => x.CreatedDate >= request.FromDate.Value);
+        }
+
+        if (request.ToDate.HasValue)
+        {
+            records = records.Where(x => x.CreatedDate <= request.ToDate.Value);
         }
 
         // match IRAS ID
