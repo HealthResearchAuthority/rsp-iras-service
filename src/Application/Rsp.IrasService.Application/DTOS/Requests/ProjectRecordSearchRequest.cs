@@ -2,6 +2,8 @@
 
 public class ProjectRecordSearchRequest
 {
+    public DateTime? FromDate { get; set; }
+    public DateTime? ToDate { get; set; }
     public string? IrasId { get; set; }
     public string? ChiefInvestigatorName { get; set; }
     public List<string> LeadNation { get; set; } = [];

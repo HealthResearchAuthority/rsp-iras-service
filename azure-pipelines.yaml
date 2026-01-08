@@ -3,8 +3,13 @@ name: $(Build.DefinitionName)_$(Build.SourceBranchName)_$(date:yyyyMMdd)$(rev:.r
 pool:
   name: "rsp-manageddevopspool"
 
+  # added dev branch to trigger
 trigger:
-  - main
+  batch: true
+  branches:
+    include:
+      - main
+      - dev
 
 parameters:
   - name: env

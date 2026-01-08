@@ -70,7 +70,7 @@ public class SponsorOrganisationAuditTrailHandlerTests
 
         // Assert
         var auditTrail = result.Single();
-        auditTrail.Description.ShouldBe("name created");
+        auditTrail.Description.ShouldBe("Sponsor organisation created");
     }
 
     [Fact]

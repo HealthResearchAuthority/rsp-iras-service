@@ -33,7 +33,7 @@ public class SponsorOrganisationAuditTrailHandler : IAuditTrailHandler<SponsorOr
             RtsId = sponsorOrganisation.RtsId,
             SponsorOrganisationId = sponsorOrganisation.Id,
             User = systemAdminEmail,
-            Description = $"{sponsorOrganisation.RtsId} created"
+            Description = $"Sponsor organisation created"
         };
     }
 

@@ -140,6 +140,8 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
             ("irasid", "desc") => projectRecords.OrderByDescending(x => x.IrasId),
             ("leadnation", "asc") => projectRecords.OrderBy(x => x.LeadNation),
             ("leadnation", "desc") => projectRecords.OrderByDescending(x => x.LeadNation),
+            ("createddate", "asc") => projectRecords.OrderBy(x => x.CreatedDate),
+            ("createddate", "desc") => projectRecords.OrderByDescending(x => x.CreatedDate),
             _ => projectRecords.OrderBy(x => x.IrasId),
         };
 
@@ -209,6 +211,16 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
             records = records.Where(x => x.IsActive);
         }
 
+        if (request.FromDate.HasValue)
+        {
+            records = records.Where(x => x.CreatedDate >= request.FromDate.Value);
+        }
+
+        if (request.ToDate.HasValue)
+        {
+            records = records.Where(x => x.CreatedDate <= request.ToDate.Value);
+        }
+
         // match IRAS ID
         if (!string.IsNullOrEmpty(request.IrasId))
         {
@@ -226,13 +238,29 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
         }
 
         // Filter by chief investigator name
-        if (!string.IsNullOrEmpty(request.ChiefInvestigatorName))
+        if (!string.IsNullOrWhiteSpace(request.ChiefInvestigatorName))
         {
-            records = records.Where(x => x.ProjectRecordAnswers.Any(
-                y =>
-                    y.QuestionId == ProjectRecordConstants.ChiefInvestigator
-                    && y.Response != null
-                    && y.Response.Contains(request.ChiefInvestigatorName)));
+            var search = request.ChiefInvestigatorName.Trim();
+
+            records = records.Where(x =>
+                (
+                    (
+                        x.ProjectRecordAnswers
+                            .Where(a => a.QuestionId == ProjectRecordConstants.ChiefInvestigatorFirstName)
+                            .Select(a => a.Response)
+                            .FirstOrDefault() ?? string.Empty
+                    )
+                    + " " +
+                    (
+                        x.ProjectRecordAnswers
+                            .Where(a => a.QuestionId == ProjectRecordConstants.ChiefInvestigatorLastName)
+                            .Select(a => a.Response)
+                            .FirstOrDefault() ?? string.Empty
+                    )
+                )
+                .ToLower()
+                .Contains(search)
+            );
         }
 
         // Filter by sponsor organisation

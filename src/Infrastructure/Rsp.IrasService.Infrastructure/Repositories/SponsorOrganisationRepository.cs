@@ -3,6 +3,7 @@ using Ardalis.Specification.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Application.Contracts.Repositories;
 using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.IrasService.Domain.Constants;
 using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Infrastructure.Repositories;
@@ -69,6 +70,8 @@ public class SponsorOrganisationRepository(IrasContext irasContext) : ISponsorOr
         {
             sponsorOrganisation.UpdatedDate = DateTime.Now;
         }
+
+        user.SponsorRole ??= Roles.Sponsor;
 
         await irasContext.SaveChangesAsync();
         return addedUser.Entity;
