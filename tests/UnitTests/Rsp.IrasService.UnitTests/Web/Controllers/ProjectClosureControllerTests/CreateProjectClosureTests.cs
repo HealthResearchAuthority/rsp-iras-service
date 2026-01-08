@@ -67,8 +67,18 @@ public class CreateProjectClosureTests : TestServiceBase<ProjectClosureControlle
         var result = await Sut.GetProjectClosureById(projecrRecordId);
 
         // Assert
-        var okResult = result.Result.ShouldBeOfType<OkObjectResult>();
-        okResult.StatusCode.ShouldBe(200);
-        okResult.Value.ShouldBe(mockResponse);
+        result.Value.ShouldBe(mockResponse);
+
+        // Verify
+        mockMediator.Verify
+        (
+            m => m
+            .Send
+            (
+                It.Is<GetProjectClosureQuery>(c => c.ProjectRecordId == projecrRecordId),
+                default
+            ),
+            Times.Once
+        );
     }
 }
