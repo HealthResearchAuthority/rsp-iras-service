@@ -28,6 +28,8 @@ public class ProjectClosureRepositoryTests
         var projectClosures = new ProjectClosure
         {
             Id = "1",
+            ProjectClosureNumber = 1,
+            TransactionId = "C1234/1",
             ProjectRecordId = "123",
             ShortProjectTitle = "Abc",
             ClosureDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
@@ -72,6 +74,8 @@ public class ProjectClosureRepositoryTests
             {
                 Id = "1",
                 ProjectRecordId = "PR-1",
+                ProjectClosureNumber = 1,
+                TransactionId = "C1234/1",
                 ShortProjectTitle = "Alpha",
                 Status = "Open",
                 IrasId = 100,
@@ -87,6 +91,8 @@ public class ProjectClosureRepositoryTests
                 Id = "2",
                 ProjectRecordId = "PR-2",
                 ShortProjectTitle = "Bravo",
+                ProjectClosureNumber = 1,
+                TransactionId = "C1234/1",
                 Status = "Closed",
                 IrasId = 200,
                 SentToSponsorDate = DateTime.UtcNow.AddDays(-2),
@@ -100,6 +106,8 @@ public class ProjectClosureRepositoryTests
             {
                 Id = "3",
                 ProjectRecordId = "PR-3",
+                ProjectClosureNumber = 1,
+                TransactionId = "C1234/1",
                 ShortProjectTitle = "Charlie",
                 Status = "With sponsor",
                 IrasId = 300,

@@ -10,6 +10,16 @@ public class ProjectClosureResponse
     public string ProjectRecordId { get; set; } = null!;
 
     /// <summary>
+    /// Gets or sets the sequential number of the project closure.
+    /// </summary>
+    public int ProjectClosureNumber { get; set; }
+
+    /// <summary>
+    /// Gets or sets the unique identifier for the project closure. This is a combination of IrasId and ProjectClosureNumber
+    /// </summary>
+    public string TransactionId { get; set; } = null!;
+
+    /// <summary>
     /// Gets or sets the identifier for researcher entered date from the screen i.e actual project closure date
     /// </summary>
     public DateTime? ClosureDate { get; set; }
@@ -43,6 +53,7 @@ public class ProjectClosureResponse
     /// Gets or sets the status of the project closure.
     /// </summary>
     public string? Status { get; set; }
+
     /// <summary>
     /// UserId of the person initiated the application
     /// </summary>
@@ -52,5 +63,4 @@ public class ProjectClosureResponse
     /// UserId of the person updated the application
     /// </summary>
     public string UpdatedBy { get; set; } = null!;
-
 }

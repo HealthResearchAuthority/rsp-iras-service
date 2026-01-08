@@ -12,8 +12,26 @@ public class ProjectClosureRepository(IrasContext irasContext) : IProjectClosure
 {
     public async Task<ProjectClosure> CreateProjectClosure(ProjectClosure projectClosure)
     {
+        // Retrieve the current maximum project closure number for the given ProjectRecordId.
+        // This ensures that each project closure for a project is sequentially numbered.
+        var projectClosureNumber = await irasContext.ProjectClosures
+            .Where(pc => pc.ProjectRecordId == projectClosure.ProjectRecordId)
+            .MaxAsync(pc => (int?)pc.ProjectClosureNumber) ?? 0;
+
+        // Increment the project closure number for the new project closure.
+        projectClosure.ProjectClosureNumber = projectClosureNumber + 1;
+
+        // Update the Id to include the new project closure number.
+        // This typically forms a unique identifier such as "IRASID/1", "IRASID/2", etc.
+        projectClosure.TransactionId += projectClosure.ProjectClosureNumber;
+
+        // Add the new ProjectModification entity to the context for tracking.
         var entity = await irasContext.ProjectClosures.AddAsync(projectClosure);
+
+        // Persist the changes to the database.
         await irasContext.SaveChangesAsync();
+
+        // Return the newly created ProjectModification entity.
         return entity.Entity;
     }
 

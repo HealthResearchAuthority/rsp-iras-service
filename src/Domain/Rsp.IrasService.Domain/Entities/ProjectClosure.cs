@@ -14,6 +14,16 @@ public class ProjectClosure : IAuditable
     public string Id { get; set; } = null!;
 
     /// <summary>
+    /// Gets or sets the sequential number of the project closure.
+    /// </summary>
+    public int ProjectClosureNumber { get; set; }
+
+    /// <summary>
+    /// Gets or sets the unique identifier for the project closure. This is a combination of IrasId and ProjectClosureNumber
+    /// </summary>
+    public string TransactionId { get; set; } = null!;
+
+    /// <summary>
     /// Gets or sets the identifier for the researcher associated with this projectrecord table.
     /// </summary>
     public string ProjectRecordId { get; set; } = null!;
