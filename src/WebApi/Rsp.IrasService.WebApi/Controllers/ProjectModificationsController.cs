@@ -361,7 +361,7 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
     public async Task<ActionResult<ModificationResponse>> GetModificationsBySponsorOrganisationUserId
     (
         Guid sponsorOrganisationUserId,
-        [FromBody] SponsorAuthorisationsSearchRequest searchQuery,
+        [FromBody] SponsorAuthorisationsModificationsSearchRequest searchQuery,
         int pageNumber,
         int pageSize,
         string sortField,

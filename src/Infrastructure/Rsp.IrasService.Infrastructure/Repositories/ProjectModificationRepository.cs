@@ -114,7 +114,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
 
     public IEnumerable<ProjectModificationResult> GetModificationsBySponsorOrganisationUser
     (
-       SponsorAuthorisationsSearchRequest searchQuery,
+       SponsorAuthorisationsModificationsSearchRequest searchQuery,
        int pageNumber,
        int pageSize,
        string sortField,
@@ -131,7 +131,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             .Take(pageSize);
     }
 
-    public int GetModificationsBySponsorOrganisationUserCount(SponsorAuthorisationsSearchRequest searchQuery, Guid sponsorOrganisationUserId)
+    public int GetModificationsBySponsorOrganisationUserCount(SponsorAuthorisationsModificationsSearchRequest searchQuery, Guid sponsorOrganisationUserId)
     {
         var modifications = ProjectModificationBySponsorOrganisationUserQuery(sponsorOrganisationUserId);
         return FilterModificationsBySponsorOrganisationUserQuery(modifications, searchQuery).Count();
@@ -489,7 +489,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
 
     private static IEnumerable<ProjectModificationResult> FilterModificationsBySponsorOrganisationUserQuery(
     IQueryable<ProjectModificationResult> modifications,
-    SponsorAuthorisationsSearchRequest searchQuery)
+    SponsorAuthorisationsModificationsSearchRequest searchQuery)
     {
         var term = searchQuery.SearchTerm?.Trim();
 

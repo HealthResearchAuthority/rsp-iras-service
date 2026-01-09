@@ -318,7 +318,7 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
     [Theory, AutoData]
     public async Task GetModificationsBySponsorOrganisationUserId_ShouldReturnMappedResponse(
     Guid sponsorOrganisationUserId,
-    SponsorAuthorisationsSearchRequest searchQuery,
+    SponsorAuthorisationsModificationsSearchRequest searchQuery,
     List<ProjectModificationResult> domainModifications,
     int pageNumber,
     int pageSize,

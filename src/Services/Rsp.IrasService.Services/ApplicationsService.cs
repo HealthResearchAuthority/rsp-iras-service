@@ -133,4 +133,13 @@ public class ApplicationsService(IProjectRecordRepository applicationRepository,
             TotalCount = auditTrail.Count()
         };
     }
+
+    public async Task<ApplicationResponse> UpdateProjectRecordStatus(ApplicationRequest applicationRequest)
+    {
+        var irasApplication = applicationRequest.Adapt<ProjectRecord>();
+
+        var updatedApplication = await applicationRepository.UpdateProjectRecordStatus(irasApplication);
+
+        return updatedApplication.Adapt<ApplicationResponse>();
+    }
 }
