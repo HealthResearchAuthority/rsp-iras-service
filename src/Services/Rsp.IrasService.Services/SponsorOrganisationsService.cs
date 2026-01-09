@@ -96,4 +96,12 @@ public class SponsorOrganisationsService(ISponsorOrganisationsRepository sponsor
         var entities = await sponsorOrganisationsRepository.GetSponsorOrganisations(spec);
         return entities.Select(e => e.Adapt<SponsorOrganisationDto>());
     }
+
+    public async Task<SponsorOrganisationUserDto?> UpdateUserInSponsorOrganisation(SponsorOrganisationUserDto sponsorOrganisationUserDto)
+    {
+        var userProfileEntity = sponsorOrganisationUserDto.Adapt<SponsorOrganisationUser>();
+        var response = await sponsorOrganisationsRepository.UpdateUserInSponsorOrganisation(userProfileEntity);
+
+        return response.Adapt<SponsorOrganisationUserDto?>();
+    }
 }
