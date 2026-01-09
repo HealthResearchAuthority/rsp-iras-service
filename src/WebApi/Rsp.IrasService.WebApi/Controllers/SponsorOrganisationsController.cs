@@ -5,7 +5,6 @@ using Rsp.IrasService.Application.CQRS.Commands;
 using Rsp.IrasService.Application.CQRS.Queries;
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.DTOS.Responses;
-using Rsp.IrasService.Application.Specifications;
 
 namespace Rsp.IrasService.WebApi.Controllers;
 
@@ -79,6 +78,18 @@ public class SponsorOrganisationsController(IMediator mediator) : ControllerBase
         Guid userId)
     {
         var request = new GetSponsorOrganisationUserCommand(rtsId, userId);
+        return await mediator.Send(request);
+    }
+
+    /// <summary>
+    ///     Updates a user in a Sponsor Organisation
+    /// </summary>
+    /// <param name="user">User profile</param>
+    [HttpPut("{rtsId}/user/{userId}")]
+    public async Task<ActionResult<SponsorOrganisationUserDto>> UpdateUser(
+        SponsorOrganisationUserDto user)
+    {
+        var request = new UpdateSponsorOrganisationUserCommand(user);
         return await mediator.Send(request);
     }
 
