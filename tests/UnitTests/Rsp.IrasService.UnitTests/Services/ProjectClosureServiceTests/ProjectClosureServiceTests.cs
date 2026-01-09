@@ -2,6 +2,7 @@
 using Rsp.IrasService.Application.Contracts.Repositories;
 using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Application.DTOS.Responses;
+using Rsp.IrasService.Application.Specifications;
 using Rsp.IrasService.Domain.Entities;
 using Rsp.IrasService.Infrastructure;
 using Rsp.IrasService.Infrastructure.Repositories;
@@ -95,5 +96,38 @@ public class ProjectClosureServiceTests : TestServiceBase<ProjectClosureService>
         result.ShouldNotBeNull();
         result.ProjectClosures.ShouldNotBeNull();
         result.ProjectClosures.Count().ShouldBe(projectClosures.Count);
+    }
+
+    [Theory, AutoData]
+    public async Task Calls_Repository_With_Spec_And_Arguments(
+            string projectRecordId,
+            string status,
+            string userId)
+    {
+        // Arrange
+        var repoMock = new Mock<IProjectClosureRepository>(MockBehavior.Strict);
+
+        repoMock
+            .Setup(r => r.UpdateProjectClosureStatus(
+                It.Is<GetProjectClosureSpecification>(spec =>
+                    spec != null
+                ),
+                status,
+                userId))
+            .ReturnsAsync((ProjectClosure?)null) // return value is ignored by the service
+            .Verifiable();
+
+        Mocker.Use<IProjectClosureRepository>(repoMock.Object);
+        Sut = Mocker.CreateInstance<ProjectClosureService>();
+
+        // Act
+        await Sut.UpdateProjectClosureStatus(projectRecordId, status, userId);
+
+        // Assert (no result to assert, we just verify the interaction)
+        repoMock.Verify(r => r.UpdateProjectClosureStatus(
+            It.Is<GetProjectClosureSpecification>(spec => spec != null),
+            status,
+            userId),
+            Times.Once);
     }
 }

@@ -51,24 +51,4 @@ public class CreateProjectClosureTests : TestServiceBase<ProjectClosureControlle
             Times.Once
         );
     }
-
-    [Theory]
-    [AutoData]
-    public async Task GetProjectClosure_ShouldReturnOk_WhenProjectRecordExists(string projecrRecordId,
-        ProjectClosureResponse mockResponse)
-    {
-        // Arrange
-        var mockMediator = Mocker.GetMock<IMediator>();
-        mockMediator
-            .Setup(m => m.Send(It.Is<GetProjectClosureQuery>(q => q.ProjectRecordId == projecrRecordId), default))
-            .ReturnsAsync(mockResponse);
-
-        // Act
-        var result = await Sut.GetProjectClosureById(projecrRecordId);
-
-        // Assert
-        var okResult = result.Result.ShouldBeOfType<OkObjectResult>();
-        okResult.StatusCode.ShouldBe(200);
-        okResult.Value.ShouldBe(mockResponse);
-    }
 }

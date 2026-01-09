@@ -23,10 +23,12 @@ public interface IProjectClosureService : IInterceptable
     Task<ProjectClosureResponse> GetProjectClosure(string projectRecordId);
 
     /// <summary>
-    /// Updates the values of an project closure record
+    /// Updates the values of an project closure record (and project record status to closed for Authorised project closure status)
     /// </summary>
-    /// <param name="projectClosureRequest">The application values</param>
-    Task<ProjectClosureResponse> UpdateProjectClosureStatus(ProjectClosureRequest projectClosureRequest);
+    /// <param name="projectRecordId">Id of the application</param>
+    /// <param name="status">New project closure status</param>
+    /// <param name="userId">Id of the user</param>
+    Task UpdateProjectClosureStatus(string projectRecordId, string status, string userId);
 
     /// <summary>
     /// Gets project closures records for specific sponsorOrganisationUserId with filtering, sorting and pagination

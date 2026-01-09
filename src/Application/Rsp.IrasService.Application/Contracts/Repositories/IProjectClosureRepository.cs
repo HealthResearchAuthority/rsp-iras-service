@@ -21,11 +21,13 @@ public interface IProjectClosureRepository
     Task<ProjectClosure?> GetProjectClosure(ISpecification<ProjectClosure> specification);
 
     /// <summary>
-    /// Update the projectClosure records
+    /// Update the projectClosure records (and projectRecord status to closed for Authorised project closure status)
     /// </summary>
-    /// <param name="projectClosure"></param>
+    /// <param name="specification"></param>
+    /// <param name="status"></param>
+    /// <param name="userId"></param>
     /// <returns></returns>
-    Task<ProjectClosure> UpdateProjectClosureStatus(ProjectClosure projectClosure);
+    Task<ProjectClosure?> UpdateProjectClosureStatus(ISpecification<ProjectClosure> specification, string status, string userId);
 
     /// <summary>
     /// Retrieves a paged, sorted list of sponsor organisation user project closures matching the supplied search criteria.

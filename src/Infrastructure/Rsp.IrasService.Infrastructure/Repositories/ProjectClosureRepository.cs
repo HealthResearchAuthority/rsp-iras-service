@@ -25,20 +25,32 @@ public class ProjectClosureRepository(IrasContext irasContext) : IProjectClosure
            .FirstOrDefaultAsync();
     }
 
-    public async Task<ProjectClosure> UpdateProjectClosureStatus(ProjectClosure projectClosure)
+    public async Task<ProjectClosure?> UpdateProjectClosureStatus(ISpecification<ProjectClosure> specification, string status, string userId)
     {
-        var entity = await irasContext
-            .ProjectClosures
-            .FirstOrDefaultAsync(record => record.ProjectRecordId == projectClosure.ProjectRecordId);
+        var projectClosure = await irasContext
+           .ProjectClosures
+           .WithSpecification(specification)
+           .Include(pc => pc.ProjectRecord)
+           .FirstOrDefaultAsync();
 
-        if (entity == null)
+        if (projectClosure != null)
         {
-            return null;
+            projectClosure.Status = status;
+            projectClosure.UpdatedBy = userId;
+            projectClosure.DateActioned = DateTime.UtcNow;
+
+            if (status == nameof(ProjectClosureStatus.Authorised))
+            {
+                var projectRecord = projectClosure.ProjectRecord;
+                projectRecord.Status = ProjectRecordStatus.Closed;
+                projectRecord.UpdatedBy = userId;
+                projectRecord.UpdatedDate = DateTime.UtcNow;
+            }
+
+            await irasContext.SaveChangesAsync();
         }
 
-        entity.Status = projectClosure.Status;
-        entity.UpdatedBy = projectClosure.UpdatedBy;
-        return entity;
+        return projectClosure;
     }
 
     public IEnumerable<ProjectClosure> GetProjectClosuresBySponsorOrganisationUser

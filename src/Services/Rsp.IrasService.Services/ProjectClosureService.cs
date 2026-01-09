@@ -28,13 +28,11 @@ public class ProjectClosureService(IProjectClosureRepository projectClosureRepos
         return projectClosureFromDb.Adapt<ProjectClosureResponse>();
     }
 
-    public async Task<ProjectClosureResponse> UpdateProjectClosureStatus(ProjectClosureRequest projectClosureRequest)
+    public async Task UpdateProjectClosureStatus(string projectRecordId, string status, string userId)
     {
-        var projectClosure = projectClosureRequest.Adapt<ProjectClosure>();
+        var specification = new GetProjectClosureSpecification(projectRecordId);
 
-        var updateProjectClosure = await projectClosureRepository.UpdateProjectClosureStatus(projectClosure);
-
-        return updateProjectClosure.Adapt<ProjectClosureResponse>();
+        await projectClosureRepository.UpdateProjectClosureStatus(specification, status, userId);
     }
 
     public Task<ProjectClosuresSearchResponse> GetProjectClosuresBySponsorOrganisationUserId
