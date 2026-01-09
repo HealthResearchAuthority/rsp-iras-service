@@ -5,7 +5,7 @@ public class ProjectClosureResponse
     public Guid Id { get; set; }
 
     /// <summary>
-    /// Gets or sets the identifier for the researcher associated with this projectrecord table.
+    /// Gets or sets the identifier for the researcher which is associated with projectrecord.
     /// </summary>
     public string ProjectRecordId { get; set; } = null!;
 
@@ -15,52 +15,52 @@ public class ProjectClosureResponse
     public int ProjectClosureNumber { get; set; }
 
     /// <summary>
-    /// Gets or sets the unique identifier for the project closure. This is a combination of IrasId and ProjectClosureNumber
+    /// Unique identifier for the project closure. This will be a combination of IrasId and ProjectClosureNumber
     /// </summary>
     public string TransactionId { get; set; } = null!;
 
     /// <summary>
-    /// Gets or sets the identifier for researcher entered date from the screen i.e actual project closure date
+    /// Gets or sets the identifier actual project closure date
     /// </summary>
     public DateTime? ClosureDate { get; set; }
 
     /// <summary>
-    /// Gets or sets the identifier for the researcher email.
+    /// Gets or sets the identifier for the email.
     /// </summary>
     public string? UserId { get; set; }
 
     /// <summary>
-    /// Gets or sets the identifier for researcher when submit to sponsor for project closure.
+    /// Gets or sets the identifier for researcher for project closure.
     /// </summary>
     public DateTime? SentToSponsorDate { get; set; }
 
     /// <summary>
-    /// Gets or sets the identifier when sponsor takes action to authorise or not authorise project closure.
+    /// Gets or sets the identifier when sponsor authorise.
     /// </summary>
     public DateTime? DateActioned { get; set; }
 
     /// <summary>
-    /// Gets or sets the title of the project.
+    /// Gets or sets the project title
     /// </summary>
     public string ShortProjectTitle { get; set; } = null!;
 
     /// <summary>
-    /// Gets or sets the IRAS identifier associated with the project, if any.
+    /// Gets or sets the IRAS identifier of the project
     /// </summary>
     public int? IrasId { get; set; }
 
     /// <summary>
-    /// Gets or sets the status of the project closure.
+    /// Gets or sets the project closure status
     /// </summary>
     public string? Status { get; set; }
 
     /// <summary>
-    /// UserId of the person initiated the application
+    /// Gets or sets userid of the person initiated the application
     /// </summary>
     public string CreatedBy { get; set; } = null!;
 
     /// <summary>
-    /// UserId of the person updated the application
+    /// Gets or sets userId of the person updated the application
     /// </summary>
     public string UpdatedBy { get; set; } = null!;
 }
