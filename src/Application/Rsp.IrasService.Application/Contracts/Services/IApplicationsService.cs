@@ -67,4 +67,11 @@ public interface IApplicationsService : IInterceptable
         string? sortDirection);
 
     Task<ProjectRecordAuditTrailResponse> GetProjectRecordAuditTrail(string projectRecordId);
+
+    /// <summary>
+    /// Update the project record status to pendig closure
+    /// </summary>
+    /// <param name="applicationRequest"></param>
+    /// <returns></returns>
+    Task<ApplicationResponse> UpdateProjectRecordStatus(ApplicationRequest applicationRequest);
 }

@@ -11,7 +11,7 @@ public class GetModificationsBySponsorOrganisationUserIdHandlerTests : TestServi
     [Theory, AutoData]
     public async Task Handle_ShouldReturnExpectedModificationSearchResponse
     (
-        SponsorAuthorisationsSearchRequest searchQuery
+        SponsorAuthorisationsModificationsSearchRequest searchQuery
     )
     {
         // Arrange
