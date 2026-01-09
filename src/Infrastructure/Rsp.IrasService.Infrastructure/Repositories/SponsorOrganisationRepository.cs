@@ -151,4 +151,17 @@ public class SponsorOrganisationRepository(IrasContext irasContext) : ISponsorOr
             .Where(x => x.RtsId == rtsId)
             .ToListAsync();
     }
+
+    public async Task<SponsorOrganisationUser> UpdateUserInSponsorOrganisation(SponsorOrganisationUser user)
+    {
+        var existingUserProfile = await irasContext.SponsorOrganisationsUsers
+            .FirstAsync(x => x.RtsId == user.RtsId && x.UserId == user.UserId);
+
+        existingUserProfile.SponsorRole = user.SponsorRole;
+        existingUserProfile.IsAuthoriser = user.IsAuthoriser;
+
+        await irasContext.SaveChangesAsync();
+
+        return existingUserProfile;
+    }
 }
