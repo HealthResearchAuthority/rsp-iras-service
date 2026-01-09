@@ -21,7 +21,7 @@ public class GetProjectClosuresBySponsorOrganisationUserIdHandlerTests
         {
             new()
             {
-                Id = "PC-001",
+                Id = Guid.NewGuid(),
                 ProjectRecordId = "PR-1001",
                 ShortProjectTitle = "Alpha Study",
                 Status = "With sponsor",
@@ -63,7 +63,6 @@ public class GetProjectClosuresBySponsorOrganisationUserIdHandlerTests
         result.ShouldNotBeNull();
         result.TotalCount.ShouldBe(1);
         result.ProjectClosures.ShouldHaveSingleItem();
-        result.ProjectClosures.First().Id.ShouldBe("PC-001");
         result.ProjectClosures.First().ProjectRecordId.ShouldBe("PR-1001");
         result.ProjectClosures.First().ShortProjectTitle.ShouldBe("Alpha Study");
         result.ProjectClosures.First().Status.ShouldBe("With sponsor");

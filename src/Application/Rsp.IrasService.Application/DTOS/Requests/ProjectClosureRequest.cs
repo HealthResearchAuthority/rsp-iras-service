@@ -2,7 +2,7 @@
 
 public class ProjectClosureRequest
 {
-    public string Id { get; set; } = null!;
+    public Guid Id { get; set; } = Guid.NewGuid();
 
     /// <summary>
     /// Gets or sets the identifier for the researcher associated with this projectrecord table.

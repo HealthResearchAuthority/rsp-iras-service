@@ -20,7 +20,7 @@ public interface IProjectClosureService : IInterceptable
     /// Returns a single project closure
     /// </summary>
     /// <param name="projectRecordId">Id of the application</param>
-    Task<ProjectClosureResponse> GetProjectClosure(string projectRecordId);
+    Task<ProjectClosuresSearchResponse> GetProjectClosuresByProjectRecordId(string projectRecordId);
 
     /// <summary>
     /// Updates the values of an project closure record

@@ -57,14 +57,11 @@ public class ProjectClosureServiceTests : TestServiceBase<ProjectClosureService>
         var projectRecordId = projectClosures[Random.Shared.Next(0, 4)].ProjectRecordId;
 
         // Act
-        var projectClosure = await Sut.GetProjectClosure(projectRecordId);
+        var result = await Sut.GetProjectClosuresByProjectRecordId(projectRecordId);
 
         // Assert
-        projectClosure.ShouldNotBeNull();
-        projectClosure.ShouldBeOfType<ProjectClosureResponse>();
-        projectClosure.Id.ShouldBe(projectClosure.Id);
-        projectClosure.ProjectRecordId.ShouldBe(projectClosure.ProjectRecordId);
-        projectClosure.Status.ShouldBe(projectClosure.Status);
+        result.ShouldNotBeNull();
+        result.ProjectClosures.ShouldNotBeNull();
     }
 
     [Theory]

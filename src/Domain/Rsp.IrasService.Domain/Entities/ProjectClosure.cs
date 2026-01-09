@@ -11,7 +11,7 @@ public class ProjectClosure : IAuditable
     /// <summary>
     /// Gets or sets the unique identifier for the project closure.
     /// </summary>
-    public string Id { get; set; } = null!;
+    public Guid Id { get; set; }
 
     /// <summary>
     /// Gets or sets the sequential number of the project closure.

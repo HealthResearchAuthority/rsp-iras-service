@@ -1,5 +1,4 @@
 ﻿using Ardalis.Specification;
-using Ardalis.Specification.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Application.Constants;
 using Rsp.IrasService.Application.Contracts.Repositories;
@@ -35,12 +34,13 @@ public class ProjectClosureRepository(IrasContext irasContext) : IProjectClosure
         return entity.Entity;
     }
 
-    public async Task<ProjectClosure?> GetProjectClosure(ISpecification<ProjectClosure> specification)
+    public async Task<IEnumerable<ProjectClosure>> GetProjectClosures(string projectRecordId)
     {
-        return await irasContext
+        var result = await irasContext
            .ProjectClosures
-           .WithSpecification(specification)
-           .FirstOrDefaultAsync();
+            .Where(x => x.ProjectRecordId == projectRecordId).ToListAsync();
+
+        return result;
     }
 
     public async Task<ProjectClosure> UpdateProjectClosureStatus(ProjectClosure projectClosure)

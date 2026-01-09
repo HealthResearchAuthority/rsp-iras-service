@@ -5,10 +5,10 @@ using Rsp.IrasService.Application.DTOS.Responses;
 
 namespace Rsp.IrasService.Application.CQRS.Handlers.QueryHandlers;
 
-public class GetProjectClosureHandler(IProjectClosureService projectClosureService) : IRequestHandler<GetProjectClosureQuery, ProjectClosureResponse>
+public class GetProjectClosureHandler(IProjectClosureService projectClosureService) : IRequestHandler<GetProjectClosureQuery, ProjectClosuresSearchResponse>
 {
-    public async Task<ProjectClosureResponse> Handle(GetProjectClosureQuery request, CancellationToken cancellationToken)
+    public async Task<ProjectClosuresSearchResponse> Handle(GetProjectClosureQuery request, CancellationToken cancellationToken)
     {
-        return await projectClosureService.GetProjectClosure(request.ProjectRecordId);
+        return await projectClosureService.GetProjectClosuresByProjectRecordId(request.ProjectRecordId);
     }
 }

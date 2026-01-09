@@ -1,5 +1,4 @@
-﻿using Ardalis.Specification;
-using Rsp.IrasService.Application.DTOS.Requests;
+﻿using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Application.Contracts.Repositories;
@@ -16,9 +15,9 @@ public interface IProjectClosureRepository
     /// <summary>
     /// Returns the singale projcect closure record from database
     /// </summary>
-    /// <param name="specification"></param>
+    /// <param name="projectRecordId"></param>
     /// <returns></returns>
-    Task<ProjectClosure?> GetProjectClosure(ISpecification<ProjectClosure> specification);
+    Task<IEnumerable<ProjectClosure>> GetProjectClosures(string projectRecordId);
 
     /// <summary>
     /// Update the projectClosure records
