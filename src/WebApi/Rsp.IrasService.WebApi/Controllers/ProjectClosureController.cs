@@ -30,10 +30,10 @@ public class ProjectClosureController(IMediator mediator) : ControllerBase
     }
 
     /// <summary>
-    /// Returns a single project closure record
+    /// Returns a project closure search response
     /// </summary>
     /// <param name="projectRecordId">Researcher Project Record Id</param>
-    [HttpGet("getprojectclosurebyid")]
+    [HttpGet("getprojectclosuresbyid")]
     public async Task<ActionResult<ProjectClosuresSearchResponse>> GetProjectClosuresByProjectRecordId(string projectRecordId)
     {
         var request = new GetProjectClosureQuery(projectRecordId);
@@ -74,5 +74,28 @@ public class ProjectClosureController(IMediator mediator) : ControllerBase
         var query = new GetProjectClosuresBySponsorOrganisationUserIdQuery(sponsorOrganisationUserId, searchQuery, pageNumber, pageSize, sortField, sortDirection);
 
         return await mediator.Send(query);
+    }
+
+    /// <summary>
+    /// Updates the project closure status to either Authorised or Not authorised.
+    /// If the status is set to Authorised, the method also closes the associated project record
+    /// by updating its status to Closed.
+    /// </summary>
+    /// <param name="projectRecordId">The unique identifier of the project record whose closure status will be updated.</param>
+    /// <param name="status">The new closure status to apply (Authorised or Not authorised).</param>
+    /// <returns>An API response indicating the result of the operation.</returns>
+    [HttpPatch("updateprojectclosurestatus")]
+    public async Task UpdateProjectClosureStatus(string projectRecordId, string status)
+    {
+        var userId = User.Claims.FirstOrDefault(x => x.Type == "userId")?.Value;
+
+        var request = new UpdateProjectClosureStatusCommand
+        {
+            ProjectRecordId = projectRecordId,
+            Status = status,
+            UserId = userId
+        };
+
+        await mediator.Send(request);
     }
 }

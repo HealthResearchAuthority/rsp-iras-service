@@ -1,4 +1,5 @@
 ﻿using Ardalis.Specification;
+using Ardalis.Specification.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Application.Constants;
 using Rsp.IrasService.Application.Contracts.Repositories;
@@ -11,27 +12,35 @@ public class ProjectClosureRepository(IrasContext irasContext) : IProjectClosure
 {
     public async Task<ProjectClosure> CreateProjectClosure(ProjectClosure projectClosure)
     {
-        // Retrieve the current maximum project closure number for the given ProjectRecordId.
-        // This ensures that each project closure for a project is sequentially numbered.
-        var projectClosureNumber = await irasContext.ProjectClosures
-            .Where(pc => pc.ProjectRecordId == projectClosure.ProjectRecordId)
-            .MaxAsync(pc => (int?)pc.ProjectClosureNumber) ?? 0;
-
-        // Increment the project closure number for the new project closure.
-        projectClosure.ProjectClosureNumber = projectClosureNumber + 1;
-
-        // Update the Id to include the new project closure number.
-        // This typically forms a unique identifier such as "IRASID/1", "IRASID/2", etc.
-        projectClosure.TransactionId += projectClosure.ProjectClosureNumber;
-
-        // Add the new ProjectModification entity to the context for tracking.
         var entity = await irasContext.ProjectClosures.AddAsync(projectClosure);
-
-        // Persist the changes to the database.
         await irasContext.SaveChangesAsync();
-
-        // Return the newly created ProjectModification entity.
         return entity.Entity;
+    }
+
+    public async Task<ProjectClosure?> UpdateProjectClosureStatus(ISpecification<ProjectClosure> specification, string status, string userId)
+    {
+        var projectClosure = await irasContext
+           .ProjectClosures
+           .WithSpecification(specification)
+           .Where(x => x.Status == ProjectClosureStatus.WithSponsor)
+           .Include(pc => pc.ProjectRecord)
+           .FirstOrDefaultAsync();
+
+        if (projectClosure != null)
+        {
+            projectClosure.Status = status;
+            projectClosure.UpdatedBy = userId;
+            projectClosure.DateActioned = DateTime.UtcNow;
+
+            var projectRecord = projectClosure.ProjectRecord;
+            projectRecord.Status = status == nameof(ProjectClosureStatus.Authorised) ? ProjectRecordStatus.Closed : ProjectRecordStatus.Active;
+            projectRecord.UpdatedBy = userId;
+            projectRecord.UpdatedDate = DateTime.UtcNow;
+
+            await irasContext.SaveChangesAsync();
+        }
+
+        return projectClosure;
     }
 
     public async Task<IEnumerable<ProjectClosure>> GetProjectClosures(string projectRecordId)
@@ -41,22 +50,6 @@ public class ProjectClosureRepository(IrasContext irasContext) : IProjectClosure
             .Where(x => x.ProjectRecordId == projectRecordId).ToListAsync();
 
         return result;
-    }
-
-    public async Task<ProjectClosure> UpdateProjectClosureStatus(ProjectClosure projectClosure)
-    {
-        var entity = await irasContext
-            .ProjectClosures
-            .FirstOrDefaultAsync(record => record.ProjectRecordId == projectClosure.ProjectRecordId);
-
-        if (entity == null)
-        {
-            return null;
-        }
-
-        entity.Status = projectClosure.Status;
-        entity.UpdatedBy = projectClosure.UpdatedBy;
-        return entity;
     }
 
     public IEnumerable<ProjectClosure> GetProjectClosuresBySponsorOrganisationUser

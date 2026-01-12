@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Application.Constants;
 using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.IrasService.Application.Specifications;
 using Rsp.IrasService.Domain.Entities;
 using Rsp.IrasService.Infrastructure;
 using Rsp.IrasService.Infrastructure.Repositories;
@@ -78,7 +79,7 @@ public class ProjectClosureRepositoryTests
                 ProjectClosureNumber = 1,
                 TransactionId = "C1234/1",
                 ShortProjectTitle = "Alpha",
-                Status = "Open",
+                Status = "With sponsor",
                 IrasId = 100,
                 SentToSponsorDate = DateTime.UtcNow.AddDays(-3),
                 ClosureDate = DateTime.UtcNow.AddDays(-2),
@@ -141,6 +142,25 @@ public class ProjectClosureRepositoryTests
                 QuestionId = ProjectRecordConstants.SponsorOrganisation,
                 Response = kvp.Value
             });
+        }
+
+        foreach (var c in list)
+        {
+            if (!await _context.ProjectRecords.AnyAsync(r => r.Id == c.ProjectRecordId))
+            {
+                _context.ProjectRecords.Add(new ProjectRecord
+                {
+                    Id = c.ProjectRecordId,
+                    Status = ProjectRecordStatus.Active,
+                    CreatedBy = "seed",
+                    UpdatedBy = "seed",
+                    CreatedDate = DateTime.UtcNow.AddDays(-7),
+                    UpdatedDate = DateTime.UtcNow.AddDays(-7),
+                    FullProjectTitle = $"Full title for {c.ProjectRecordId}",
+                    ShortProjectTitle = c.ShortProjectTitle ?? $"Short {c.ProjectRecordId}",
+                    UserId = c.UserId ?? Guid.NewGuid().ToString(),
+                });
+            }
         }
 
         await _context.SaveChangesAsync();
@@ -334,5 +354,129 @@ public class ProjectClosureRepositoryTests
 
         list.ShouldBeEmpty();
         total.ShouldBe(0);
+    }
+
+    [Fact]
+    public async Task UpdateProjectClosureStatus_Authorised_Updates_Closure_And_Closes_ProjectRecord()
+    {
+        // Arrange
+        var userId = "user-123";
+
+        // Seed a scenario with at least one ProjectClosure & ProjectRecord linked
+        var _ = await SeedScenarioAsync(mainRtsId: "RTS-XYZ");
+
+        // Pick any existing project closure
+        var existingClosure = await _context.ProjectClosures
+            .Include(pc => pc.ProjectRecord)
+            .FirstOrDefaultAsync();
+
+        existingClosure.ShouldNotBeNull();
+
+        var projectRecordId = existingClosure!.ProjectRecordId;
+
+        // Before update: ensure record not closed yet
+        existingClosure.Status.ShouldNotBe(nameof(ProjectClosureStatus.Authorised));
+        existingClosure.ProjectRecord.Status.ShouldNotBe(ProjectRecordStatus.Closed);
+
+        var spec = new GetProjectClosureSpecification(projectRecordId);
+
+        // Act
+        var updated = await _repository.UpdateProjectClosureStatus(
+            spec,
+            status: nameof(ProjectClosureStatus.Authorised),
+            userId: userId);
+
+        // Assert: return value
+        updated.ShouldNotBeNull();
+
+        // Refresh from context to check persisted values
+        var persistedClosure = await _context.ProjectClosures
+            .Include(pc => pc.ProjectRecord)
+            .FirstOrDefaultAsync(pc => pc.ProjectRecordId == projectRecordId);
+
+        persistedClosure.ShouldNotBeNull();
+        persistedClosure!.Status.ShouldBe(nameof(ProjectClosureStatus.Authorised));
+        persistedClosure.UpdatedBy.ShouldBe(userId);
+        persistedClosure.DateActioned.ShouldNotBe(default); // DateActioned set
+
+        var persistedRecord = persistedClosure.ProjectRecord;
+        persistedRecord.ShouldNotBeNull();
+        persistedRecord.Status.ShouldBe(ProjectRecordStatus.Closed);
+        persistedRecord.UpdatedBy.ShouldBe(userId);
+        persistedRecord.UpdatedDate.ShouldNotBe(default); // UpdatedDate set
+    }
+
+    [Fact]
+    public async Task UpdateProjectClosureStatus_NotAuthorised_Updates_Closure_Without_Closing_ProjectRecord()
+    {
+        // Arrange
+        var userId = "tester-42";
+
+        var _ = await SeedScenarioAsync(mainRtsId: "RTS-ABC");
+
+        var existingClosure = await _context.ProjectClosures
+            .Include(pc => pc.ProjectRecord)
+            .FirstOrDefaultAsync();
+
+        existingClosure.ShouldNotBeNull();
+
+        var projectRecordId = existingClosure!.ProjectRecordId;
+
+        var spec = new GetProjectClosureSpecification(projectRecordId);
+
+        // Act: set to NotAuthorised
+        var updated = await _repository.UpdateProjectClosureStatus(
+            spec,
+            status: nameof(ProjectClosureStatus.NotAuthorised),
+            userId: userId);
+
+        // Assert: return value
+        updated.ShouldNotBeNull();
+
+        var persistedClosure = await _context.ProjectClosures
+            .Include(pc => pc.ProjectRecord)
+            .FirstOrDefaultAsync(pc => pc.ProjectRecordId == projectRecordId);
+
+        persistedClosure.ShouldNotBeNull();
+        persistedClosure!.Status.ShouldBe(nameof(ProjectClosureStatus.NotAuthorised));
+        persistedClosure.UpdatedBy.ShouldBe(userId);
+        persistedClosure.DateActioned.ShouldNotBe(default);
+
+        var persistedRecord = persistedClosure.ProjectRecord;
+        persistedRecord.ShouldNotBeNull();
+        persistedRecord.Status.ShouldNotBe(ProjectRecordStatus.Closed);
+    }
+
+    [Fact]
+    public async Task UpdateProjectClosureStatus_Spec_Not_Matching_Returns_Null_And_Makes_No_Changes()
+    {
+        // Arrange
+        var userId = "no-change-user";
+        var _ = await SeedScenarioAsync(mainRtsId: "RTS-DEF");
+
+        // existing closure to get baseline counts
+        var beforeCount = await _context.ProjectClosures.CountAsync();
+
+        // Spec points to a non-existent project record id
+        var nonExistingProjectRecordId = "PR-NOT-THERE";
+        var spec = new GetProjectClosureSpecification(nonExistingProjectRecordId);
+
+        // Act
+        var updated = await _repository.UpdateProjectClosureStatus(
+            spec,
+            status: nameof(ProjectClosureStatus.Authorised),
+            userId: userId);
+
+        // Assert
+        updated.ShouldBeNull();
+
+        // Ensure nothing got added/removed and no accidental changes occurred
+        var afterCount = await _context.ProjectClosures.CountAsync();
+        afterCount.ShouldBe(beforeCount);
+
+        // Optional: verify none of the closures have been modified to Authorised or UpdatedBy=userId
+        var anyModified = await _context.ProjectClosures
+            .AnyAsync(pc => pc.Status == nameof(ProjectClosureStatus.Authorised) && pc.UpdatedBy == userId);
+        anyModified.ShouldBeFalse();
     }
 }
