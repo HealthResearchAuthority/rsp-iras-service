@@ -27,6 +27,7 @@ public class IrasContext(DbContextOptions<IrasContext> options) : DbContext(opti
     public DbSet<SponsorOrganisationAuditTrail> SponsorOrganisationsAuditTrail { get; set; }
     public DbSet<ProjectModificationAuditTrail> ProjectModificationAuditTrail { get; set; }
     public DbSet<ProjectRecordAuditTrail> ProjectRecordAuditTrail { get; set; }
+    public DbSet<ProjectClosure> ProjectClosures { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -53,5 +54,6 @@ public class IrasContext(DbContextOptions<IrasContext> options) : DbContext(opti
         modelBuilder.ApplyConfiguration(new ModificationDocumentAnswerConfiguration());
         modelBuilder.ApplyConfiguration(new ModificationParticipatingOrganisationConfiguration());
         modelBuilder.ApplyConfiguration(new ModificationParticipatingOrganisationAnswerConfiguration());
+        modelBuilder.ApplyConfiguration(new ProjectClosureConfiguration());
     }
 }
