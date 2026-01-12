@@ -444,9 +444,7 @@ public class ProjectClosureRepositoryTests
 
         var persistedRecord = persistedClosure.ProjectRecord;
         persistedRecord.ShouldNotBeNull();
-        persistedRecord.Status.ShouldNotBe(ProjectRecordStatus.Closed); // remains unchanged
-        // UpdatedBy/UpdatedDate for record should remain unchanged (depending on your seed)
-        // If the seed sets these, assert they are NOT set to userId or DateTime.UtcNow here
+        persistedRecord.Status.ShouldNotBe(ProjectRecordStatus.Closed);
     }
 
     [Fact]
