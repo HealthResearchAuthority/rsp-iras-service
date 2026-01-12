@@ -486,4 +486,20 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
 
         await irasContext.SaveChangesAsync();
     }
+
+    /// <summary>
+    /// Saves a list of documents audit trail.
+    /// </summary>
+    /// <param name="documentsAuditTrail">The list of modification documents audit trail to save.</param>
+    public async Task SaveModificationDocumentsAuditTrail(
+        List<ModificationDocumentsAuditTrail> documentsAuditTrail)
+    {
+        foreach (var answer in documentsAuditTrail)
+        {
+            // Add new documents audit trail entry
+            await irasContext.ModificationDocumentsAuditTrail.AddAsync(answer);
+        }
+
+        await irasContext.SaveChangesAsync();
+    }
 }

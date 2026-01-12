@@ -7,15 +7,15 @@ namespace Rsp.IrasService.Application.CQRS.Handlers.CommandHandlers;
 /// <summary>
 /// Handler for saving modification documents audit trail.
 /// </summary>
-public class SaveModificationDocumentsHandler(IRespondentService respondentService) : IRequestHandler<SaveModificationDocumentsCommand>
+public class SaveModificationDocumentsAuditTrailHandler(IRespondentService respondentService) : IRequestHandler<SaveModificationDocumentsAuditTrailCommand>
 {
     /// <summary>
     /// Handles saving the modification documents audit trail.
     /// </summary>
     /// <param name="request">The command containing the documents audit trail to save.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
-    public async Task Handle(SaveModificationDocumentsCommand request, CancellationToken cancellationToken)
+    public async Task Handle(SaveModificationDocumentsAuditTrailCommand request, CancellationToken cancellationToken)
     {
-        await respondentService.SaveModificationDocumentResponses(request.ModificationDocumentsRequest);
+        await respondentService.SaveModificationDocumentsAuditTrail(request.DocumentsAuditTrailRequest);
     }
 }

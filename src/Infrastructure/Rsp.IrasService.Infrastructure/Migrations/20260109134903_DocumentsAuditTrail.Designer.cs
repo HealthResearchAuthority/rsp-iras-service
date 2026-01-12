@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rsp.IrasService.Infrastructure;
 
@@ -11,9 +12,11 @@ using Rsp.IrasService.Infrastructure;
 namespace Rsp.IrasService.Infrastructure.Migrations
 {
     [DbContext(typeof(IrasContext))]
-    partial class IrasContextModelSnapshot : ModelSnapshot
+    [Migration("20260109134903_DocumentsAuditTrail")]
+    partial class DocumentsAuditTrail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -286,60 +289,6 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.HasIndex("ModificationParticipatingOrganisationId");
 
                     b.ToTable("ModificationParticipatingOrganisationAnswers");
-                });
-
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectClosure", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("ClosureDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("DateActioned")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("IrasId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProjectClosureNumber")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ProjectRecordId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime?>("SentToSponsorDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ShortProjectTitle")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TransactionId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UpdatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectRecordId");
-
-                    b.ToTable("ProjectClosures");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModification", b =>
@@ -975,17 +924,6 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("ModificationParticipatingOrganisation");
-                });
-
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectClosure", b =>
-                {
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectRecord", "ProjectRecord")
-                        .WithMany()
-                        .HasForeignKey("ProjectRecordId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ProjectRecord");
                 });
 
             modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModification", b =>
