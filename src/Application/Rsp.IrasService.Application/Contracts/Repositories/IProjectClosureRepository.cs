@@ -1,4 +1,5 @@
-﻿using Rsp.IrasService.Application.DTOS.Requests;
+﻿using Ardalis.Specification;
+using Rsp.IrasService.Application.DTOS.Requests;
 using Rsp.IrasService.Domain.Entities;
 
 namespace Rsp.IrasService.Application.Contracts.Repositories;
@@ -10,21 +11,23 @@ public interface IProjectClosureRepository
     /// </summary>
     /// <param name="projectClosure"></param>
     /// <returns></returns>
-    Task<ProjectClosure> CreateProjectClosure(ProjectClosure projectClosure);
+    Task<ProjectClosure> CreateProjectClosure(ProjectClosure projectClosure);    
+
+    /// <summary>
+    /// Update the projectClosure records (and projectRecord status to closed for Authorised project closure status)
+    /// </summary>
+    /// <param name="specification"></param>
+    /// <param name="status"></param>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    Task<ProjectClosure?> UpdateProjectClosureStatus(ISpecification<ProjectClosure> specification, string status, string userId);
 
     /// <summary>
     /// Returns the singale projcect closure record from database
     /// </summary>
     /// <param name="projectRecordId"></param>
     /// <returns></returns>
-    Task<IEnumerable<ProjectClosure>> GetProjectClosures(string projectRecordId);
-
-    /// <summary>
-    /// Update the projectClosure records
-    /// </summary>
-    /// <param name="projectClosure"></param>
-    /// <returns></returns>
-    Task<ProjectClosure> UpdateProjectClosureStatus(ProjectClosure projectClosure);
+    Task<IEnumerable<ProjectClosure>> GetProjectClosures(string projectRecordId);    
 
     /// <summary>
     /// Retrieves a paged, sorted list of sponsor organisation user project closures matching the supplied search criteria.
