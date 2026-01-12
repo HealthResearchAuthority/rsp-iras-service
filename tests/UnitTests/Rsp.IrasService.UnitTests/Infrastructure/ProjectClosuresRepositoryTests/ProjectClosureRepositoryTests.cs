@@ -79,7 +79,7 @@ public class ProjectClosureRepositoryTests
                 ProjectClosureNumber = 1,
                 TransactionId = "C1234/1",
                 ShortProjectTitle = "Alpha",
-                Status = "Open",
+                Status = "With sponsor",
                 IrasId = 100,
                 SentToSponsorDate = DateTime.UtcNow.AddDays(-3),
                 ClosureDate = DateTime.UtcNow.AddDays(-2),

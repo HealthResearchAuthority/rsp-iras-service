@@ -22,6 +22,7 @@ public class ProjectClosureRepository(IrasContext irasContext) : IProjectClosure
         var projectClosure = await irasContext
            .ProjectClosures
            .WithSpecification(specification)
+           .Where(x => x.Status == ProjectClosureStatus.WithSponsor)
            .Include(pc => pc.ProjectRecord)
            .FirstOrDefaultAsync();
 
