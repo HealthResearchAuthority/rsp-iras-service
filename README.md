@@ -41,15 +41,15 @@ dotnet build
 2. To run the tests, use the following command. Path to the test project is needed if you are running the tests from outside the test project directory.
 
 ```
- dotnet test .\tests\UnitTests\Rsp.IrasService.UnitTests\ --no-build
+ dotnet test .\tests\UnitTests\Rsp.Service.UnitTests\ --no-build
 
- dotnet test .\tests\IntegrationTests\Rsp.IrasService.IntegrationTests\ --no-build
+ dotnet test .\tests\IntegrationTests\Rsp.Service.IntegrationTests\ --no-build
 ```
 
 3. To run the application, use the following command:
 
 ```
-dotnet run --project .\src\WebApi\Rsp.IrasService.WebApi\
+dotnet run --project .\src\WebApi\Rsp.Service.WebApi\
 ```
 # License
 

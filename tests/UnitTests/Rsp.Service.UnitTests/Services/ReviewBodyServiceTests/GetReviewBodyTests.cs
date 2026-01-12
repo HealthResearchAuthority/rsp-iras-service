@@ -1,0 +1,44 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Rsp.Service.Application.Contracts.Repositories;
+using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Infrastructure;
+using Rsp.Service.Infrastructure.Repositories;
+using Rsp.Service.Services;
+
+namespace Rsp.Service.UnitTests.Services.ReviewBodyServiceTests;
+
+public class GetReviewBodyTests : TestServiceBase<ReviewBodyService>
+{
+    private readonly RspContext _context;
+    private readonly RegulatoryBodyRepository _reviewBodyRepository;
+
+    public GetReviewBodyTests()
+    {
+        var options = new DbContextOptionsBuilder<RspContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString("N"))
+            .Options;
+
+        _context = new RspContext(options);
+        _reviewBodyRepository = new RegulatoryBodyRepository(_context);
+    }
+
+    [Theory]
+    [AutoData]
+    public async Task Gets_ReviewBody_Correctly(ReviewBodyDto reviewBodyDto)
+    {
+        // Arrange
+        Mocker.Use<IRegulatoryBodyRepository>(_reviewBodyRepository);
+        Sut = Mocker.CreateInstance<ReviewBodyService>();
+
+        // Seed via the service to ensure an entity exists
+        var created = await Sut.CreateReviewBody(reviewBodyDto);
+
+        // Act
+        var result = await Sut.GetReviewBody(created.Id);
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.ShouldBeOfType<ReviewBodyDto>();
+        result.Id.ShouldBe(created.Id);
+    }
+}

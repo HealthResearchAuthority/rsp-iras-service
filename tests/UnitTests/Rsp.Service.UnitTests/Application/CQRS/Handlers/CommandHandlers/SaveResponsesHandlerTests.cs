@@ -1,0 +1,63 @@
+﻿using Rsp.Service.Application.Contracts.Services;
+using Rsp.Service.Application.CQRS.Commands;
+using Rsp.Service.Application.CQRS.Handlers.CommandHandlers;
+using Rsp.Service.Application.DTOS.Requests;
+
+namespace Rsp.Service.UnitTests.Application.CQRS.Handlers.CommandHandlers;
+
+public class SaveResponsesHandlerTests
+{
+    private readonly SaveResponsesHandler _handler;
+    private readonly Mock<IRespondentService> _respondentServiceMock;
+
+    public SaveResponsesHandlerTests()
+    {
+        _respondentServiceMock = new Mock<IRespondentService>();
+        _handler = new SaveResponsesHandler(_respondentServiceMock.Object);
+    }
+
+    [Fact]
+    public async Task Handle_SaveResponsesCommand_ShouldCallServiceOnce()
+    {
+        // Arrange
+        var request = new RespondentAnswersRequest
+        {
+            Id = "R-123",
+            RespondentAnswers =
+            [
+                new()
+                {
+                    QuestionId = "Q1",
+                    CategoryId = "C1",
+                    SectionId = "S1",
+                    AnswerText = "Yes",
+                    OptionType = "Single",
+                    SelectedOption = "Yes",
+                    Answers = ["Yes"]
+                },
+                new()
+                {
+                    QuestionId = "Q2",
+                    CategoryId = "C2",
+                    SectionId = "S2",
+                    AnswerText = "No",
+                    OptionType = "Multiple",
+                    SelectedOption = "No",
+                    Answers = ["No", "Maybe"]
+                }
+            ]
+        };
+
+        var command = new SaveResponsesCommand(request);
+
+        _respondentServiceMock
+            .Setup(service => service.SaveResponses(request))
+            .Returns(Task.CompletedTask); // Since it returns void
+
+        // Act
+        await _handler.Handle(command, CancellationToken.None);
+
+        // Assert
+        _respondentServiceMock.Verify(service => service.SaveResponses(request), Times.Once);
+    }
+}
