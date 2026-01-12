@@ -19,20 +19,21 @@ public class ProjectClosureService(IProjectClosureRepository projectClosureRepos
         return createdProjectClosure.Adapt<ProjectClosureResponse>();
     }
 
-    public async Task<ProjectClosureResponse> GetProjectClosure(string projectRecordId)
-    {
-        var specification = new GetProjectClosureSpecification(projectRecordId);
-
-        var projectClosureFromDb = await projectClosureRepository.GetProjectClosure(specification);
-
-        return projectClosureFromDb.Adapt<ProjectClosureResponse>();
-    }
-
     public async Task UpdateProjectClosureStatus(string projectRecordId, string status, string userId)
     {
         var specification = new GetProjectClosureSpecification(projectRecordId);
 
         await projectClosureRepository.UpdateProjectClosureStatus(specification, status, userId);
+    }
+
+    public async Task<ProjectClosuresSearchResponse> GetProjectClosuresByProjectRecordId(string projectRecordId)
+    {
+        var projectClosures = await projectClosureRepository.GetProjectClosures(projectRecordId);
+        return new ProjectClosuresSearchResponse
+        {
+            ProjectClosures = projectClosures.Select(pc => pc.Adapt<ProjectClosureResponse>()),
+            TotalCount = projectClosures.Count()
+        };
     }
 
     public Task<ProjectClosuresSearchResponse> GetProjectClosuresBySponsorOrganisationUserId

@@ -21,17 +21,30 @@ public class GetProjectClosureHandlerTests
     {
         // Arrange
         var projectRecordId = "123";
-        var expectedResponse = new ProjectClosureResponse
+        var expectedClosures = new List<ProjectClosureResponse>
         {
-            Id = "123",
-            ShortProjectTitle = "Sample Project",
-            Status = "With sponsor"
+            new()
+            {
+                Id = Guid.NewGuid(),
+                ProjectRecordId = "PR-1001",
+                ShortProjectTitle = "Alpha Study",
+                Status = "With sponsor",
+                IrasId = 123,
+                ProjectClosureNumber=1,
+                TransactionId="C12345/1"
+            }
+        };
+
+        var expectedResponse = new ProjectClosuresSearchResponse
+        {
+            ProjectClosures = expectedClosures,
+            TotalCount = expectedClosures.Count
         };
 
         var query = new GetProjectClosureQuery(projectRecordId);
 
         _projectClosureServiceMock
-            .Setup(service => service.GetProjectClosure(projectRecordId))
+            .Setup(service => service.GetProjectClosuresByProjectRecordId(projectRecordId))
             .ReturnsAsync(expectedResponse);
 
         // Act
@@ -39,10 +52,9 @@ public class GetProjectClosureHandlerTests
 
         // Assert
         result.ShouldNotBeNull();
-        result.Id.ShouldBe(expectedResponse.Id);
-        result.ShortProjectTitle.ShouldBe(expectedResponse.ShortProjectTitle);
-        result.Status.ShouldBe(expectedResponse.Status);
-
-        _projectClosureServiceMock.Verify(service => service.GetProjectClosure(projectRecordId), Times.Once);
+        result.TotalCount.ShouldBe(1);
+        result.ProjectClosures?.First()?.ShortProjectTitle.ShouldBe(expectedResponse?.ProjectClosures?.First()?.ShortProjectTitle);
+        result.ProjectClosures?.First()?.Status.ShouldBe(expectedResponse?.ProjectClosures?.First()?.Status);
+        _projectClosureServiceMock.Verify(service => service.GetProjectClosuresByProjectRecordId(projectRecordId), Times.Once);
     }
 }

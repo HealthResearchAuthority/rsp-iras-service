@@ -15,15 +15,7 @@ public class ProjectClosureRepository(IrasContext irasContext) : IProjectClosure
         var entity = await irasContext.ProjectClosures.AddAsync(projectClosure);
         await irasContext.SaveChangesAsync();
         return entity.Entity;
-    }
-
-    public async Task<ProjectClosure?> GetProjectClosure(ISpecification<ProjectClosure> specification)
-    {
-        return await irasContext
-           .ProjectClosures
-           .WithSpecification(specification)
-           .FirstOrDefaultAsync();
-    }
+    }    
 
     public async Task<ProjectClosure?> UpdateProjectClosureStatus(ISpecification<ProjectClosure> specification, string status, string userId)
     {
@@ -51,8 +43,38 @@ public class ProjectClosureRepository(IrasContext irasContext) : IProjectClosure
         }
 
         return projectClosure;
+        // Retrieve the current maximum project closure number for the given ProjectRecordId.
+        // This ensures that each project closure for a project is sequentially numbered.
+        var projectClosureNumber = await irasContext.ProjectClosures
+            .Where(pc => pc.ProjectRecordId == projectClosure.ProjectRecordId)
+            .MaxAsync(pc => (int?)pc.ProjectClosureNumber) ?? 0;
+
+        // Increment the project closure number for the new project closure.
+        projectClosure.ProjectClosureNumber = projectClosureNumber + 1;
+
+        // Update the Id to include the new project closure number.
+        // This typically forms a unique identifier such as "IRASID/1", "IRASID/2", etc.
+        projectClosure.TransactionId += projectClosure.ProjectClosureNumber;
+
+        // Add the new ProjectModification entity to the context for tracking.
+        var entity = await irasContext.ProjectClosures.AddAsync(projectClosure);
+
+        // Persist the changes to the database.
+        await irasContext.SaveChangesAsync();
+
+        // Return the newly created ProjectModification entity.
+        return entity.Entity;
     }
 
+    public async Task<IEnumerable<ProjectClosure>> GetProjectClosures(string projectRecordId)
+    {
+        var result = await irasContext
+           .ProjectClosures
+            .Where(x => x.ProjectRecordId == projectRecordId).ToListAsync();
+
+        return result;
+    }
+    
     public IEnumerable<ProjectClosure> GetProjectClosuresBySponsorOrganisationUser
     (
        ProjectClosuresSearchRequest searchQuery,

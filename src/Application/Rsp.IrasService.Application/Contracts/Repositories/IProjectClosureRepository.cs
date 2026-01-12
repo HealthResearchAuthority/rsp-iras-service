@@ -11,14 +11,7 @@ public interface IProjectClosureRepository
     /// </summary>
     /// <param name="projectClosure"></param>
     /// <returns></returns>
-    Task<ProjectClosure> CreateProjectClosure(ProjectClosure projectClosure);
-
-    /// <summary>
-    /// Returns the singale projcect closure record from database
-    /// </summary>
-    /// <param name="specification"></param>
-    /// <returns></returns>
-    Task<ProjectClosure?> GetProjectClosure(ISpecification<ProjectClosure> specification);
+    Task<ProjectClosure> CreateProjectClosure(ProjectClosure projectClosure);    
 
     /// <summary>
     /// Update the projectClosure records (and projectRecord status to closed for Authorised project closure status)
@@ -28,6 +21,13 @@ public interface IProjectClosureRepository
     /// <param name="userId"></param>
     /// <returns></returns>
     Task<ProjectClosure?> UpdateProjectClosureStatus(ISpecification<ProjectClosure> specification, string status, string userId);
+
+    /// <summary>
+    /// Returns the singale projcect closure record from database
+    /// </summary>
+    /// <param name="projectRecordId"></param>
+    /// <returns></returns>
+    Task<IEnumerable<ProjectClosure>> GetProjectClosures(string projectRecordId);    
 
     /// <summary>
     /// Retrieves a paged, sorted list of sponsor organisation user project closures matching the supplied search criteria.

@@ -23,7 +23,7 @@ public class CreateProjectClosureHandlerTests
         // Arrange
         var request = new ProjectClosureRequest
         {
-            Id = "App-123",
+            Id = Guid.NewGuid(),
             ProjectRecordId = "123",
             ShortProjectTitle = "New Project",
             Status = "with sponsor",
@@ -35,7 +35,7 @@ public class CreateProjectClosureHandlerTests
 
         var expectedResponse = new ProjectClosureResponse
         {
-            Id = "App-123",
+            Id = Guid.NewGuid(),
             ProjectRecordId = "123",
             Status = "with sponsor",
         };
