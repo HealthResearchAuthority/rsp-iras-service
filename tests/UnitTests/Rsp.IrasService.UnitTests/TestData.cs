@@ -1,7 +1,7 @@
-﻿using Rsp.IrasService.Domain.Entities;
-using Rsp.IrasService.Infrastructure;
+﻿using Rsp.Service.Domain.Entities;
+using Rsp.Service.Infrastructure;
 
-namespace Rsp.IrasService.UnitTests;
+namespace Rsp.Service.UnitTests;
 
 /// <summary>
 ///     Data seeding class

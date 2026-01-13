@@ -1,9 +1,9 @@
-using Rsp.IrasService.Application.CQRS.Commands;
-using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Application.DTOS.Responses;
-using Rsp.IrasService.WebApi.Controllers;
+using Rsp.Service.Application.CQRS.Commands;
+using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Application.DTOS.Responses;
+using Rsp.Service.WebApi.Controllers;
 
-namespace Rsp.IrasService.UnitTests.Web.Controllers.ProjectModificationsControllerTests;
+namespace Rsp.Service.UnitTests.Web.Controllers.ProjectModificationsControllerTests;
 
 public class CreateModification : TestServiceBase<ProjectModificationsController>
 {

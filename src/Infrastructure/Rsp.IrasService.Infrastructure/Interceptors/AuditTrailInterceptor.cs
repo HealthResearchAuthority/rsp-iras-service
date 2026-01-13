@@ -2,11 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Rsp.IrasService.Domain.Entities;
-using Rsp.IrasService.Domain.Interfaces;
-using Rsp.IrasService.Infrastructure.Helpers;
+using Rsp.Service.Domain.Entities;
+using Rsp.Service.Domain.Interfaces;
+using Rsp.Service.Infrastructure.Helpers;
 
-namespace Rsp.IrasService.Infrastructure.Interceptors;
+namespace Rsp.Service.Infrastructure.Interceptors;
 
 [ExcludeFromCodeCoverage]
 public class AuditTrailInterceptor(

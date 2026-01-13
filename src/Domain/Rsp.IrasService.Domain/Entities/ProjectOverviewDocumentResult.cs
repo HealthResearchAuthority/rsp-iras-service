@@ -1,4 +1,4 @@
-﻿namespace Rsp.IrasService.Domain.Entities;
+﻿namespace Rsp.Service.Domain.Entities;
 
 public class ProjectOverviewDocumentResult
 {

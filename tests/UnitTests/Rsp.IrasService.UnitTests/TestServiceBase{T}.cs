@@ -1,4 +1,4 @@
-﻿namespace Rsp.IrasService.UnitTests;
+﻿namespace Rsp.Service.UnitTests;
 
 public class TestServiceBase<T> : TestServiceBase where T : class
 {

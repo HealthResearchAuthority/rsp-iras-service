@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Primitives;
 
-namespace Rsp.IrasService.Application.Authentication.Helpers;
+namespace Rsp.Service.Application.Authentication.Helpers;
 
 public interface ITokenHelper
 {

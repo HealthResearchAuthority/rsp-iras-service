@@ -1,4 +1,4 @@
-﻿namespace Rsp.IrasService.Application.DTOS.Responses;
+﻿namespace Rsp.Service.Application.DTOS.Responses;
 
 /// <summary>
 /// Represents a response containing details about a modification change in the application.

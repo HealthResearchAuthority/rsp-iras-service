@@ -1,8 +1,8 @@
 ﻿using Azure.Identity;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
-using Rsp.IrasService.Application.Settings;
+using Rsp.Service.Application.Settings;
 
-namespace Rsp.IrasService.Configuration.AppConfiguration;
+namespace Rsp.Service.Configuration.AppConfiguration;
 
 /// <summary>
 /// Defines extension methods for adding Azure App Configuration

@@ -2,7 +2,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 
-namespace Rsp.IrasService.Infrastructure.Helpers;
+namespace Rsp.Service.Infrastructure.Helpers;
 
 [ExcludeFromCodeCoverage]
 public class AuditTrailDetailsService(IHttpContextAccessor contextAccessor) : IAuditTrailDetailsService

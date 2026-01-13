@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.Service.Application.DTOS.Requests;
 
-namespace Rsp.IrasService.Application.CQRS.Commands;
+namespace Rsp.Service.Application.CQRS.Commands;
 
 public class UpdateModificationCommand() : IRequest
 {

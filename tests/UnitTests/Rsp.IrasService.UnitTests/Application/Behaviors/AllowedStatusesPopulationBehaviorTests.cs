@@ -1,11 +1,11 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
-using Rsp.IrasService.Application.Behaviors;
-using Rsp.IrasService.Application.CQRS.Queries;
-using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Application.DTOS.Responses;
+using Rsp.Service.Application.Behaviors;
+using Rsp.Service.Application.CQRS.Queries;
+using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Application.DTOS.Responses;
 
-namespace Rsp.IrasService.UnitTests.Application.Behaviors;
+namespace Rsp.Service.UnitTests.Application.Behaviors;
 
 public class AllowedStatusesPopulationBehaviorTests
 {

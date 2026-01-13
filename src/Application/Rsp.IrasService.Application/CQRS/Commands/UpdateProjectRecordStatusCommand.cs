@@ -1,10 +1,9 @@
 ﻿using MediatR;
-using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Application.DTOS.Responses;
 
-namespace Rsp.IrasService.Application.CQRS.Commands;
+namespace Rsp.Service.Application.CQRS.Commands;
 
-public class UpdateProjectRecordStatusCommand(ApplicationRequest updateApplicationRequest) : IRequest<ApplicationResponse>
+public class UpdateProjectRecordStatusCommand : IRequest
 {
-    public ApplicationRequest UpdateApplicationRequest { get; set; } = updateApplicationRequest;
+    public string ProjectRecordId { get; set; }
+    public string Status { get; set; }
 }

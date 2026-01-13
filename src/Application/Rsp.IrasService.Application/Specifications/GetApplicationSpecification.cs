@@ -1,7 +1,7 @@
 ﻿using Ardalis.Specification;
-using Rsp.IrasService.Domain.Entities;
+using Rsp.Service.Domain.Entities;
 
-namespace Rsp.IrasService.Application.Specifications;
+namespace Rsp.Service.Application.Specifications;
 
 public class GetApplicationSpecification : Specification<ProjectRecord>
 {
@@ -33,5 +33,10 @@ public class GetApplicationSpecification : Specification<ProjectRecord>
             .Where(entity => entity.Status == status, id == null)
             .Skip(records, id == null && records == 0)
             .Take(records, id == null && records != 0);
+    }
+
+    public GetApplicationSpecification(string projectRecordId)
+    {
+        Query.Where(entity => entity.Id == projectRecordId);
     }
 }

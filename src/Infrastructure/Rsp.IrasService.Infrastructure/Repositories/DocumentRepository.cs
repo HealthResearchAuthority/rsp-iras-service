@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Rsp.IrasService.Application.Contracts.Repositories;
-using Rsp.IrasService.Domain.Entities;
+using Rsp.Service.Application.Constants;
+using Rsp.Service.Application.Contracts.Repositories;
+using Rsp.Service.Domain.Entities;
 
-namespace Rsp.IrasService.Infrastructure.Repositories;
+namespace Rsp.Service.Infrastructure.Repositories;
 
 /// <summary>
 ///     Repository for managing project personnel responses and modification responses.
@@ -21,10 +22,27 @@ public class DocumentRepository(IrasContext irasContext) : IDocumentRepository
         }
 
         existing.IsMalwareScanSuccessful = modificationDocument.IsMalwareScanSuccessful;
-        if(modificationDocument.IsMalwareScanSuccessful == false)
+        if (modificationDocument.IsMalwareScanSuccessful == false)
         {
             existing.Status = "Failed";
         }
+
+        // Create audit trail entry
+        var auditDescription = modificationDocument.IsMalwareScanSuccessful == true
+            ? DocumentAuditEvents.MalwareScanSuccessful
+            : DocumentAuditEvents.MalwareScanUnsuccessful;
+
+        var auditEntry = new ModificationDocumentsAuditTrail
+        {
+            Id = Guid.NewGuid(),
+            ProjectModificationId = existing.ProjectModificationId,
+            DateTimeStamp = DateTime.UtcNow,
+            Description = auditDescription,
+            FileName = existing.FileName,
+            User = existing.UserId
+        };
+
+        irasContext.ModificationDocumentsAuditTrail.Add(auditEntry);
 
         await irasContext.SaveChangesAsync();
         return 200;

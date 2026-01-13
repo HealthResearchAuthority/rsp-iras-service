@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 
-namespace Rsp.IrasService.Infrastructure.Helpers;
+namespace Rsp.Service.Infrastructure.Helpers;
 
 [ExcludeFromCodeCoverage]
 public static class JsonHelper

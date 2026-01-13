@@ -1,12 +1,12 @@
 using Microsoft.EntityFrameworkCore;
-using Rsp.IrasService.Application.Contracts.Repositories;
-using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Application.DTOS.Responses;
-using Rsp.IrasService.Infrastructure;
-using Rsp.IrasService.Infrastructure.Repositories;
-using Rsp.IrasService.Services;
+using Rsp.Service.Application.Contracts.Repositories;
+using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Application.DTOS.Responses;
+using Rsp.Service.Infrastructure;
+using Rsp.Service.Infrastructure.Repositories;
+using Rsp.Service.Services;
 
-namespace Rsp.IrasService.UnitTests.Services.RespondentServiceTests;
+namespace Rsp.Service.UnitTests.Services.RespondentServiceTests;
 
 /// <summary>
 ///     Covers the tests for GetModificationResponses(modificationId, projectRecordId, categoryId)

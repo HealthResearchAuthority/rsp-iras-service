@@ -2,11 +2,11 @@
 using Microsoft.FeatureManagement;
 using Microsoft.IdentityModel.Tokens;
 using NetDevPack.Security.JwtExtensions;
-using Rsp.IrasService.Application.Constants;
-using Rsp.IrasService.Application.Settings;
+using Rsp.Service.Application.Constants;
+using Rsp.Service.Application.Settings;
 using System.Linq;
 
-namespace Rsp.IrasService.Configuration.Auth;
+namespace Rsp.Service.Configuration.Auth;
 
 /// <summary>
 /// JwtBearer Configuration

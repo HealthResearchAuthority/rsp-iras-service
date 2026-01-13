@@ -1,9 +1,9 @@
-﻿using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Application.DTOS.Responses;
-using Rsp.IrasService.Domain.Entities;
+﻿using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Application.DTOS.Responses;
+using Rsp.Service.Domain.Entities;
 using Rsp.Logging.Interceptors;
 
-namespace Rsp.IrasService.Application.Contracts.Services;
+namespace Rsp.Service.Application.Contracts.Services;
 
 /// <summary>
 /// Interface to create, read, and update respondent project records in the database.
@@ -151,4 +151,10 @@ public interface IRespondentService : IInterceptable
     /// </summary>
     /// <param name="respondentAnswers">The list of modification documents to save.</param>
     Task DeleteModificationDocumentResponses(List<ModificationDocumentDto> respondentAnswers);
+
+    /// <summary>
+    /// Saves the provided project modification documents audit trail.
+    /// </summary>
+    /// <param name="documentsAuditTrail">The list of documents audit trail to save.</param>
+    Task SaveModificationDocumentsAuditTrail(List<ModificationDocumentsAuditTrailDto> documentsAuditTrail);
 }

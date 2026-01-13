@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Rsp.IrasService.Domain.Entities;
-using Rsp.IrasService.Infrastructure.EntitiesConfiguration;
+using Rsp.Service.Domain.Entities;
+using Rsp.Service.Infrastructure.EntitiesConfiguration;
 
-namespace Rsp.IrasService.Infrastructure;
+namespace Rsp.Service.Infrastructure;
 
 public class IrasContext(DbContextOptions<IrasContext> options) : DbContext(options)
 {
@@ -28,6 +28,7 @@ public class IrasContext(DbContextOptions<IrasContext> options) : DbContext(opti
     public DbSet<ProjectModificationAuditTrail> ProjectModificationAuditTrail { get; set; }
     public DbSet<ProjectRecordAuditTrail> ProjectRecordAuditTrail { get; set; }
     public DbSet<ProjectClosure> ProjectClosures { get; set; }
+    public DbSet<ModificationDocumentsAuditTrail> ModificationDocumentsAuditTrail { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -1,9 +1,9 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
-using Rsp.IrasService.Application.Contracts.Repositories;
-using Rsp.IrasService.Infrastructure.Middlewares;
+using Rsp.Service.Application.Contracts.Repositories;
+using Rsp.Service.Infrastructure.Middlewares;
 
-namespace Rsp.IrasService.UnitTests.Infrastructure.Middlewares.DocumentAccessValidationMiddlewareTests;
+namespace Rsp.Service.UnitTests.Infrastructure.Middlewares.DocumentAccessValidationMiddlewareTests;
 
 public class DocumentAccessValidationMiddlewareTests : TestServiceBase<DocumentAccessValidationMiddleware>
 {

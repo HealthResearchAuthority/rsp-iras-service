@@ -1,7 +1,7 @@
-﻿using Rsp.IrasService.Application.CQRS.Commands;
-using Rsp.IrasService.WebApi.Controllers;
+﻿using Rsp.Service.Application.CQRS.Commands;
+using Rsp.Service.WebApi.Controllers;
 
-namespace Rsp.IrasService.UnitTests.Web.Controllers.ProjectModificationsControllerTests;
+namespace Rsp.Service.UnitTests.Web.Controllers.ProjectModificationsControllerTests;
 
 public class AssignModificationsToReviewer : TestServiceBase<ProjectModificationsController>
 {

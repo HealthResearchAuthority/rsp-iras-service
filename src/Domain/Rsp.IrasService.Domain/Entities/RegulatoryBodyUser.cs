@@ -1,6 +1,6 @@
-﻿using Rsp.IrasService.Domain.Interfaces;
+﻿using Rsp.Service.Domain.Interfaces;
 
-namespace Rsp.IrasService.Domain.Entities;
+namespace Rsp.Service.Domain.Entities;
 
 public class RegulatoryBodyUser : IAuditable
 {

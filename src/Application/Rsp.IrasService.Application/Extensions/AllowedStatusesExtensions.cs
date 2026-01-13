@@ -1,6 +1,6 @@
-using Rsp.IrasService.Application.CQRS.Queries;
+using Rsp.Service.Application.CQRS.Queries;
 
-namespace Rsp.IrasService.Application.Extensions;
+namespace Rsp.Service.Application.Extensions;
 
 public static class AllowedStatusesExtensions
 {

@@ -1,6 +1,6 @@
-﻿using Rsp.IrasService.Domain.Entities;
+﻿using Rsp.Service.Domain.Entities;
 
-namespace Rsp.IrasService.UnitTests.Customisation;
+namespace Rsp.Service.UnitTests.Customisation;
 
 public class RemoveNavigationPropertiesCustomization : ICustomization
 {

@@ -1,4 +1,4 @@
-﻿namespace Rsp.IrasService.Application.Settings;
+﻿namespace Rsp.Service.Application.Settings;
 
 public class MicrosoftEntra
 {

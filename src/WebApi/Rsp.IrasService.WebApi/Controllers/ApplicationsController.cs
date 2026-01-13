@@ -1,13 +1,13 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Rsp.IrasService.Application.CQRS.Commands;
-using Rsp.IrasService.Application.CQRS.Queries;
-using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Application.DTOS.Responses;
-using Rsp.IrasService.Domain.Entities;
+using Rsp.Service.Application.CQRS.Commands;
+using Rsp.Service.Application.CQRS.Queries;
+using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Application.DTOS.Responses;
+using Rsp.Service.Domain.Entities;
 
-namespace Rsp.IrasService.WebApi.Controllers;
+namespace Rsp.Service.WebApi.Controllers;
 
 [Authorize]
 [ApiController]
@@ -221,16 +221,13 @@ public class ApplicationsController(IMediator mediator) : ControllerBase
     /// <summary>
     /// Updates the project record status
     /// </summary>
-    /// <param name="applicationRequest">Research Application Request</param>
+    /// <param name="projectRecordId">Project record id</param>
+    /// <param name="status">Status of project record</param>
     [HttpPut("updateprojectrecordstatus")]
-    public async Task<ApplicationResponse> UpdateProjectRecordStatus(ApplicationRequest applicationRequest)
+    public async Task UpdateProjectRecordStatus(string projectRecordId, string status)
     {
-        var userId = User.Claims.FirstOrDefault(x => x.Type == "userId")?.Value;
+        var request = new UpdateProjectRecordStatusCommand { ProjectRecordId = projectRecordId, Status = status };
 
-        applicationRequest.UserId = userId!;
-
-        var request = new UpdateProjectRecordStatusCommand(applicationRequest);
-
-        return await mediator.Send(request);
+        await mediator.Send(request);
     }
 }

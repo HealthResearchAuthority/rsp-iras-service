@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.FeatureManagement;
 using Microsoft.Net.Http.Headers;
-using Rsp.IrasService.Application.Authentication.Helpers;
-using Rsp.IrasService.Application.Settings;
+using Rsp.Service.Application.Authentication.Helpers;
+using Rsp.Service.Application.Settings;
 using Rsp.Logging.Extensions;
 
-namespace Rsp.IrasService.Configuration.Auth;
+namespace Rsp.Service.Configuration.Auth;
 
 /// <summary>
 /// Authentication and Authorization configuration

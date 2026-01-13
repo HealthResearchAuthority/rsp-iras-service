@@ -1,14 +1,14 @@
 ﻿using Ardalis.Specification;
 using Ardalis.Specification.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Rsp.IrasService.Application.Constants;
-using Rsp.IrasService.Application.Contracts.Repositories;
-using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Application.DTOS.Responses;
-using Rsp.IrasService.Application.Specifications;
-using Rsp.IrasService.Domain.Entities;
+using Rsp.Service.Application.Constants;
+using Rsp.Service.Application.Contracts.Repositories;
+using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Application.DTOS.Responses;
+using Rsp.Service.Application.Specifications;
+using Rsp.Service.Domain.Entities;
 
-namespace Rsp.IrasService.Infrastructure.Repositories;
+namespace Rsp.Service.Infrastructure.Repositories;
 
 public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRepository
 
@@ -372,19 +372,19 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
             .ToListAsync();
     }
 
-    public async Task<ProjectRecord?> UpdateProjectRecordStatus(ProjectRecord projectRecord)
+    public async Task<ProjectRecord?> UpdateProjectRecordStatus(GetApplicationSpecification specification, string status)
     {
         var entity = await irasContext
             .ProjectRecords
-            .FirstOrDefaultAsync(record => record.Id == projectRecord.Id);
+            .WithSpecification(specification)
+            .FirstOrDefaultAsync();
 
         if (entity == null)
         {
             return null;
         }
 
-        entity.Status = projectRecord.Status;
-        entity.UpdatedBy = projectRecord.UpdatedBy;
+        entity.Status = status;
         entity.UpdatedDate = DateTime.UtcNow;
 
         await irasContext.SaveChangesAsync();

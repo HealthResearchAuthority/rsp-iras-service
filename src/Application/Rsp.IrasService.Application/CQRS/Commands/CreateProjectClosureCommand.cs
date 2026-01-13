@@ -1,8 +1,8 @@
 ﻿using MediatR;
-using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Application.DTOS.Responses;
+using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Application.DTOS.Responses;
 
-namespace Rsp.IrasService.Application.CQRS.Commands;
+namespace Rsp.Service.Application.CQRS.Commands;
 
 public class CreateProjectClosureCommand(ProjectClosureRequest createProjectClosureRequest) : IRequest<ProjectClosureResponse>
 {

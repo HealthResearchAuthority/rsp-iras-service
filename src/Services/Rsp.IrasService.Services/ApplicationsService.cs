@@ -1,14 +1,14 @@
 ﻿using Mapster;
-using Rsp.IrasService.Application.Constants;
-using Rsp.IrasService.Application.Contracts.Repositories;
-using Rsp.IrasService.Application.Contracts.Services;
-using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Application.DTOS.Responses;
-using Rsp.IrasService.Application.Settings;
-using Rsp.IrasService.Application.Specifications;
-using Rsp.IrasService.Domain.Entities;
+using Rsp.Service.Application.Constants;
+using Rsp.Service.Application.Contracts.Repositories;
+using Rsp.Service.Application.Contracts.Services;
+using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Application.DTOS.Responses;
+using Rsp.Service.Application.Settings;
+using Rsp.Service.Application.Specifications;
+using Rsp.Service.Domain.Entities;
 
-namespace Rsp.IrasService.Services;
+namespace Rsp.Service.Services;
 
 public class ApplicationsService(IProjectRecordRepository applicationRepository, AppSettings appSettings) : IApplicationsService
 {
@@ -134,12 +134,10 @@ public class ApplicationsService(IProjectRecordRepository applicationRepository,
         };
     }
 
-    public async Task<ApplicationResponse> UpdateProjectRecordStatus(ApplicationRequest applicationRequest)
+    public async Task UpdateProjectRecordStatus(string projectRecordId, string status)
     {
-        var irasApplication = applicationRequest.Adapt<ProjectRecord>();
+        var specification = new GetApplicationSpecification(projectRecordId);
 
-        var updatedApplication = await applicationRepository.UpdateProjectRecordStatus(irasApplication);
-
-        return updatedApplication.Adapt<ApplicationResponse>();
+        await applicationRepository.UpdateProjectRecordStatus(specification, status);
     }
 }

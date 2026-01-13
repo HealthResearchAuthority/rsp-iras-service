@@ -1,8 +1,8 @@
-﻿using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Application.DTOS.Responses;
+﻿using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Application.DTOS.Responses;
 using Rsp.Logging.Interceptors;
 
-namespace Rsp.IrasService.Application.Contracts.Services;
+namespace Rsp.Service.Application.Contracts.Services;
 
 /// <summary>
 /// Interface to create/read/update the project closure records in the database. Marked as IInterceptable to enable

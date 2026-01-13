@@ -1,10 +1,10 @@
 ﻿using MediatR;
-using Rsp.IrasService.Application.Contracts.Services;
-using Rsp.IrasService.Application.CQRS.Queries;
-using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Application.Extensions;
+using Rsp.Service.Application.Contracts.Services;
+using Rsp.Service.Application.CQRS.Queries;
+using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Application.Extensions;
 
-namespace Rsp.IrasService.Application.CQRS.Handlers.QueryHandlers;
+namespace Rsp.Service.Application.CQRS.Handlers.QueryHandlers;
 
 public class GetModificationDocumentDetailsHandler(IRespondentService respondentService) : IRequestHandler<GetModificationDocumentDetailsQuery, ModificationDocumentDto?>
 {

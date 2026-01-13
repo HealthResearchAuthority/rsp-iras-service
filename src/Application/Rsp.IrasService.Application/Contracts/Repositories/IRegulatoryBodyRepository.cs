@@ -1,8 +1,8 @@
 ﻿using Ardalis.Specification;
-using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Domain.Entities;
+using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Domain.Entities;
 
-namespace Rsp.IrasService.Application.Contracts.Repositories;
+namespace Rsp.Service.Application.Contracts.Repositories;
 
 public interface IRegulatoryBodyRepository
 {

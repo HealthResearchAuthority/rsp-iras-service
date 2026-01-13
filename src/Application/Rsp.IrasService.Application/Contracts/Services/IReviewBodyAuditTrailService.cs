@@ -1,6 +1,6 @@
-﻿using Rsp.IrasService.Application.DTOS.Responses;
+﻿using Rsp.Service.Application.DTOS.Responses;
 
-namespace Rsp.IrasService.Application.Contracts.Services;
+namespace Rsp.Service.Application.Contracts.Services;
 
 public interface IReviewBodyAuditTrailService
 {

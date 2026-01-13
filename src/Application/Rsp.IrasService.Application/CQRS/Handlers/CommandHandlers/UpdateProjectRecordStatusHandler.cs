@@ -1,15 +1,20 @@
 ﻿using MediatR;
-using Rsp.IrasService.Application.Contracts.Services;
-using Rsp.IrasService.Application.CQRS.Commands;
-using Rsp.IrasService.Application.DTOS.Responses;
+using Rsp.Service.Application.Contracts.Services;
+using Rsp.Service.Application.CQRS.Commands;
 
-namespace Rsp.IrasService.Application.CQRS.Handlers.CommandHandlers;
+namespace Rsp.Service.Application.CQRS.Handlers.CommandHandlers;
 
 public class UpdateProjectRecordStatusHandler(IApplicationsService applicationsService)
-    : IRequestHandler<UpdateProjectRecordStatusCommand, ApplicationResponse>
+    : IRequestHandler<UpdateProjectRecordStatusCommand>
 {
-    public async Task<ApplicationResponse> Handle(UpdateProjectRecordStatusCommand request, CancellationToken cancellationToken)
+    /// <summary>
+    /// Processes the <see cref="UpdateProjectRecordStatusCommand"/> and updates the specified project record status.
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public async Task Handle(UpdateProjectRecordStatusCommand request, CancellationToken cancellationToken)
     {
-        return await applicationsService.UpdateProjectRecordStatus(request.UpdateApplicationRequest);
+        await applicationsService.UpdateProjectRecordStatus(request.ProjectRecordId, request.Status);
     }
 }

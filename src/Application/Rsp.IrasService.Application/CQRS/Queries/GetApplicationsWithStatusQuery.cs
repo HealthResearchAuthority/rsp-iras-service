@@ -1,4 +1,4 @@
-﻿namespace Rsp.IrasService.Application.CQRS.Queries;
+﻿namespace Rsp.Service.Application.CQRS.Queries;
 
 public class GetApplicationsWithStatusQuery : GetApplicationsQuery
 {

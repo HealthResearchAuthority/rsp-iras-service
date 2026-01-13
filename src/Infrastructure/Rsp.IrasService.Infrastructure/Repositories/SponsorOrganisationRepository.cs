@@ -1,12 +1,12 @@
 ﻿using Ardalis.Specification;
 using Ardalis.Specification.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Rsp.IrasService.Application.Contracts.Repositories;
-using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Domain.Constants;
-using Rsp.IrasService.Domain.Entities;
+using Rsp.Service.Application.Contracts.Repositories;
+using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Domain.Constants;
+using Rsp.Service.Domain.Entities;
 
-namespace Rsp.IrasService.Infrastructure.Repositories;
+namespace Rsp.Service.Infrastructure.Repositories;
 
 public class SponsorOrganisationRepository(IrasContext irasContext) : ISponsorOrganisationsRepository
 {

@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Rsp.IrasService.Domain.Entities;
-using Rsp.IrasService.Infrastructure;
-using Rsp.IrasService.Infrastructure.Helpers;
+using Rsp.Service.Domain.Entities;
+using Rsp.Service.Infrastructure;
+using Rsp.Service.Infrastructure.Helpers;
 
-namespace Rsp.IrasService.UnitTests.Infrastructure.HelpersTests;
+namespace Rsp.Service.UnitTests.Infrastructure.HelpersTests;
 
 public class SponsorOrganisationAuditTrailHandlerTests
 {

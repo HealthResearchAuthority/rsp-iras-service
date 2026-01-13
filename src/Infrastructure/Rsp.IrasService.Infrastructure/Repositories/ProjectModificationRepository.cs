@@ -1,15 +1,15 @@
 ﻿using Ardalis.Specification;
 using Ardalis.Specification.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Rsp.IrasService.Application.Constants;
-using Rsp.IrasService.Application.Contracts.Repositories;
-using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Application.Extensions;
-using Rsp.IrasService.Application.Specifications;
-using Rsp.IrasService.Domain.Entities;
-using Rsp.IrasService.Infrastructure.Helpers;
+using Rsp.Service.Application.Constants;
+using Rsp.Service.Application.Contracts.Repositories;
+using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Application.Extensions;
+using Rsp.Service.Application.Specifications;
+using Rsp.Service.Domain.Entities;
+using Rsp.Service.Infrastructure.Helpers;
 
-namespace Rsp.IrasService.Infrastructure.Repositories;
+namespace Rsp.Service.Infrastructure.Repositories;
 
 /// <summary>
 /// Repository for managing <see cref="ProjectModification"/> and <see cref="ProjectModificationChange"/> entities in the database.

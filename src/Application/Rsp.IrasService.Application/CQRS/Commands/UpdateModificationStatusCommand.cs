@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Rsp.IrasService.Application.CQRS.Commands;
+namespace Rsp.Service.Application.CQRS.Commands;
 
 public class UpdateModificationStatusCommand : IRequest
 {

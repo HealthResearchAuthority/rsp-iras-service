@@ -1,3 +1,3 @@
-﻿namespace Rsp.IrasService.Application;
+﻿namespace Rsp.Service.Application;
 
 public interface IApplication;

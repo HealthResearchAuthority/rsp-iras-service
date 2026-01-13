@@ -1,4 +1,4 @@
-﻿namespace Rsp.IrasService.Application.Constants;
+﻿namespace Rsp.Service.Application.Constants;
 
 public struct ProjectRecordStatus
 {

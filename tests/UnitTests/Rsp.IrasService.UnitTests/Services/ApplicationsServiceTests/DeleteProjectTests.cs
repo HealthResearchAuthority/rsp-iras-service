@@ -1,9 +1,9 @@
-using Rsp.IrasService.Application.Contracts.Repositories;
-using Rsp.IrasService.Application.Settings;
-using Rsp.IrasService.Application.Specifications;
-using Rsp.IrasService.Services;
+using Rsp.Service.Application.Contracts.Repositories;
+using Rsp.Service.Application.Settings;
+using Rsp.Service.Application.Specifications;
+using Rsp.Service.Services;
 
-namespace Rsp.IrasService.UnitTests.Services.ApplicationsServiceTests;
+namespace Rsp.Service.UnitTests.Services.ApplicationsServiceTests;
 
 public class DeleteProjectTests : TestServiceBase<ApplicationsService>
 {

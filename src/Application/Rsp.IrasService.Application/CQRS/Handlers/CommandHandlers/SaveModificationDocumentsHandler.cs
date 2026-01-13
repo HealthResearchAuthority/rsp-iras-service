@@ -1,18 +1,18 @@
 ﻿using MediatR;
-using Rsp.IrasService.Application.Contracts.Services;
-using Rsp.IrasService.Application.CQRS.Commands;
+using Rsp.Service.Application.Contracts.Services;
+using Rsp.Service.Application.CQRS.Commands;
 
-namespace Rsp.IrasService.Application.CQRS.Handlers.CommandHandlers;
+namespace Rsp.Service.Application.CQRS.Handlers.CommandHandlers;
 
 /// <summary>
-/// Handler for saving modification answers.
+/// Handler for saving modification documents audit trail.
 /// </summary>
 public class SaveModificationDocumentsHandler(IRespondentService respondentService) : IRequestHandler<SaveModificationDocumentsCommand>
 {
     /// <summary>
-    /// Handles saving the modification answers.
+    /// Handles saving the modification documents audit trail.
     /// </summary>
-    /// <param name="request">The command containing the answers to save.</param>
+    /// <param name="request">The command containing the documents audit trail to save.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     public async Task Handle(SaveModificationDocumentsCommand request, CancellationToken cancellationToken)
     {

@@ -1,8 +1,8 @@
-﻿using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Application.DTOS.Responses;
+﻿using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Application.DTOS.Responses;
 using Rsp.Logging.Interceptors;
 
-namespace Rsp.IrasService.Application.Contracts.Services;
+namespace Rsp.Service.Application.Contracts.Services;
 
 /// <summary>
 /// Interface to create/read/update the application records in the database. Marked as IInterceptable to enable
@@ -71,7 +71,8 @@ public interface IApplicationsService : IInterceptable
     /// <summary>
     /// Update the project record status to pendig closure
     /// </summary>
-    /// <param name="applicationRequest"></param>
+    /// <param name="projectRecordId"></param>
+    /// <param name="status"></param>
     /// <returns></returns>
-    Task<ApplicationResponse> UpdateProjectRecordStatus(ApplicationRequest applicationRequest);
+    Task UpdateProjectRecordStatus(string projectRecordId, string status);
 }

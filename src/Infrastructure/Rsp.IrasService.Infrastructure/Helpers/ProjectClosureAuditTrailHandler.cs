@@ -1,10 +1,10 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Rsp.IrasService.Domain.Attributes;
-using Rsp.IrasService.Domain.Entities;
+using Rsp.Service.Domain.Attributes;
+using Rsp.Service.Domain.Entities;
 
-namespace Rsp.IrasService.Infrastructure.Helpers;
+namespace Rsp.Service.Infrastructure.Helpers;
 
 [ExcludeFromCodeCoverage]
 public class ProjectClosureAuditTrailHandler : IAuditTrailHandler<ProjectRecordAuditTrail>

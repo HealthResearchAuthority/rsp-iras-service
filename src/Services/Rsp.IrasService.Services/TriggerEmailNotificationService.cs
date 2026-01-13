@@ -1,7 +1,7 @@
-﻿using Rsp.IrasService.Application.Contracts.Services;
-using Rsp.IrasService.Application.DTOS.Requests;
+﻿using Rsp.Service.Application.Contracts.Services;
+using Rsp.Service.Application.DTOS.Requests;
 
-namespace Rsp.IrasService.Services;
+namespace Rsp.Service.Services;
 
 public class TriggerEmailNotificationService(
     IEmailTemplateService templateService,

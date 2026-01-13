@@ -1,7 +1,7 @@
-﻿using Rsp.IrasService.Domain.Attributes;
-using Rsp.IrasService.Domain.Interfaces;
+﻿using Rsp.Service.Domain.Attributes;
+using Rsp.Service.Domain.Interfaces;
 
-namespace Rsp.IrasService.Domain.Entities;
+namespace Rsp.Service.Domain.Entities;
 
 /// <summary>
 /// Represents a project record, including its details and associated modifications.

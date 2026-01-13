@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Rsp.IrasService.Application.Contracts.Repositories;
-using Rsp.IrasService.Domain.Entities;
-using Rsp.IrasService.Infrastructure;
-using Rsp.IrasService.Infrastructure.Repositories;
-using Rsp.IrasService.Services;
+using Rsp.Service.Application.Contracts.Repositories;
+using Rsp.Service.Domain.Entities;
+using Rsp.Service.Infrastructure;
+using Rsp.Service.Infrastructure.Repositories;
+using Rsp.Service.Services;
 
-namespace Rsp.IrasService.UnitTests.Services.EventTypeServiceTests
+namespace Rsp.Service.UnitTests.Services.EventTypeServiceTests
 {
     public class GetEventTypeById : TestServiceBase<EventTypeService>
     {

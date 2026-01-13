@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Rsp.IrasService.Domain.Constants;
-using Rsp.IrasService.Infrastructure;
-using Rsp.IrasService.Infrastructure.Middlewares;
+using Rsp.Service.Domain.Constants;
+using Rsp.Service.Infrastructure;
+using Rsp.Service.Infrastructure.Middlewares;
 using Rsp.Logging.Extensions;
 
-namespace Rsp.IrasService.Extensions;
+namespace Rsp.Service.Extensions;
 
 /// <summary>
 /// Define an extension method on WebApplication to support migrating and seeding the database

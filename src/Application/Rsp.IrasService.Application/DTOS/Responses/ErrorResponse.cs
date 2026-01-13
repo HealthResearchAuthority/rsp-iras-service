@@ -1,4 +1,4 @@
-﻿namespace Rsp.IrasService.Application.DTOS.Responses;
+﻿namespace Rsp.Service.Application.DTOS.Responses;
 
 public class ErrorResponse
 {

@@ -1,19 +1,37 @@
 ﻿using Ardalis.Specification;
 using Ardalis.Specification.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Rsp.IrasService.Application.Constants;
-using Rsp.IrasService.Application.Contracts.Repositories;
-using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Domain.Entities;
+using Rsp.Service.Application.Constants;
+using Rsp.Service.Application.Contracts.Repositories;
+using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Domain.Entities;
 
-namespace Rsp.IrasService.Infrastructure.Repositories;
+namespace Rsp.Service.Infrastructure.Repositories;
 
 public class ProjectClosureRepository(IrasContext irasContext) : IProjectClosureRepository
 {
     public async Task<ProjectClosure> CreateProjectClosure(ProjectClosure projectClosure)
     {
+        // Retrieve the current maximum project closure number for the given ProjectRecordId.
+        // This ensures that each project closure for a project is sequentially numbered.
+        var projectClosureNumber = await irasContext.ProjectClosures
+            .Where(pc => pc.ProjectRecordId == projectClosure.ProjectRecordId)
+            .MaxAsync(pc => (int?)pc.ProjectClosureNumber) ?? 0;
+
+        // Increment the project closure number for the new project closure.
+        projectClosure.ProjectClosureNumber = projectClosureNumber + 1;
+
+        // Update the Id to include the new project closure number.
+        // This typically forms a unique identifier such as "IRASID/1", "IRASID/2", etc.
+        projectClosure.TransactionId += projectClosure.ProjectClosureNumber;
+
+        // Add the new ProjectModification entity to the context for tracking.
         var entity = await irasContext.ProjectClosures.AddAsync(projectClosure);
+
+        // Persist the changes to the database.
         await irasContext.SaveChangesAsync();
+
+        // Return the newly created ProjectModification entity.
         return entity.Entity;
     }
 

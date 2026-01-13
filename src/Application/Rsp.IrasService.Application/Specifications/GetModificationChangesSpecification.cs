@@ -1,8 +1,8 @@
 ﻿using Ardalis.Specification;
-using Rsp.IrasService.Application.DTOS.Responses;
-using Rsp.IrasService.Domain.Entities;
+using Rsp.Service.Application.DTOS.Responses;
+using Rsp.Service.Domain.Entities;
 
-namespace Rsp.IrasService.Application.Specifications;
+namespace Rsp.Service.Application.Specifications;
 
 /// <summary>
 /// Specification for retrieving all <see cref="ProjectModification"/> records associated

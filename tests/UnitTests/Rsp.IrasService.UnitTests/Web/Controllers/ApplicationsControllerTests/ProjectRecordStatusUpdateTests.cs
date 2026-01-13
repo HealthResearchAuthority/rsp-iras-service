@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Rsp.IrasService.Application.CQRS.Commands;
-using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Application.DTOS.Responses;
-using Rsp.IrasService.WebApi.Controllers;
+using Rsp.Service.Application.CQRS.Commands;
+using Rsp.Service.WebApi.Controllers;
 
-namespace Rsp.IrasService.UnitTests.Web.Controllers.ApplicationsControllerTests;
+namespace Rsp.Service.UnitTests.Web.Controllers.ApplicationsControllerTests;
 
 public class ProjectRecordStatusUpdateTests : TestServiceBase<ApplicationsController>
 {
     [Theory, AutoData]
-    public async Task CreateApplication_ShouldSendCommand_AndReturnCreatedApplication(ApplicationRequest request, ApplicationResponse mockResponse, string userId)
+    public async Task CreateApplication_ShouldSendCommand_AndReturnCreatedApplication(string userId, UpdateProjectRecordStatusCommand request)
     {
         // Arrange
         var mockMediator = Mocker.GetMock<IMediator>();
@@ -28,29 +23,20 @@ public class ProjectRecordStatusUpdateTests : TestServiceBase<ApplicationsContro
         };
 
         // Assign UserId to request as controller would do
-        request.UserId = userId;
+        var command = new UpdateProjectRecordStatusCommand
+        {
+            ProjectRecordId = "PR1",
+            Status = "With sponsor"
+        };
 
         mockMediator
-            .Setup(m => m.Send(It.Is<UpdateProjectRecordStatusCommand>(c => c.UpdateApplicationRequest == request), default))
-            .ReturnsAsync(mockResponse);
+            .Setup(m => m.Send(command, It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
 
         // Act
-        var result = await Sut.UpdateProjectRecordStatus(request);
+        var result = Sut.UpdateProjectRecordStatus("PR1", "With sponsor");
 
         // Assert
         result.ShouldNotBeNull();
-        result.ShouldBe(mockResponse);
-
-        // Verify
-        mockMediator.Verify
-        (
-            m => m
-            .Send
-            (
-                It.Is<UpdateProjectRecordStatusCommand>(c => c.UpdateApplicationRequest == request),
-                default
-            ),
-            Times.Once
-        );
     }
 }

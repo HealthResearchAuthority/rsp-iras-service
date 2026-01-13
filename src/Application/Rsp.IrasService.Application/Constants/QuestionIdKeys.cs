@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Rsp.IrasService.Application.Constants;
+namespace Rsp.Service.Application.Constants;
 
 public static class QuestionIdKeys
 {

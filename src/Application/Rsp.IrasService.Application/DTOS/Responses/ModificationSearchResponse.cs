@@ -1,6 +1,6 @@
-﻿using Rsp.IrasService.Application.DTOS.Requests;
+﻿using Rsp.Service.Application.DTOS.Requests;
 
-namespace Rsp.IrasService.Application.DTOS.Responses;
+namespace Rsp.Service.Application.DTOS.Responses;
 
 /// <summary>
 /// Represents the response containing details about a modification, including metadata and a list of modifications.

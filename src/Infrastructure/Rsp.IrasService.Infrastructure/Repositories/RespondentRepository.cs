@@ -1,11 +1,11 @@
 ﻿using Ardalis.Specification;
 using Ardalis.Specification.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Rsp.IrasService.Application.Contracts.Repositories;
-using Rsp.IrasService.Application.Enums;
-using Rsp.IrasService.Domain.Entities;
+using Rsp.Service.Application.Contracts.Repositories;
+using Rsp.Service.Application.Enums;
+using Rsp.Service.Domain.Entities;
 
-namespace Rsp.IrasService.Infrastructure.Repositories;
+namespace Rsp.Service.Infrastructure.Repositories;
 
 /// <summary>
 /// Repository for managing project personnel responses and modification responses.
@@ -482,6 +482,22 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
                 // Remove the document itself
                 irasContext.ModificationDocuments.Remove(doc);
             }
+        }
+
+        await irasContext.SaveChangesAsync();
+    }
+
+    /// <summary>
+    /// Saves a list of documents audit trail.
+    /// </summary>
+    /// <param name="documentsAuditTrail">The list of modification documents audit trail to save.</param>
+    public async Task SaveModificationDocumentsAuditTrail(
+        List<ModificationDocumentsAuditTrail> documentsAuditTrail)
+    {
+        foreach (var answer in documentsAuditTrail)
+        {
+            // Add new documents audit trail entry
+            await irasContext.ModificationDocumentsAuditTrail.AddAsync(answer);
         }
 
         await irasContext.SaveChangesAsync();

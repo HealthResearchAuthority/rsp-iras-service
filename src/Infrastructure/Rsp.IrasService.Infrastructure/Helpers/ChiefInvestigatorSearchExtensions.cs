@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Rsp.IrasService.Domain.Entities;
+using Rsp.Service.Domain.Entities;
 
-namespace Rsp.IrasService.Infrastructure.Helpers;
+namespace Rsp.Service.Infrastructure.Helpers;
 
 [ExcludeFromCodeCoverage]
 public static class ChiefInvestigatorSearchExtensions
