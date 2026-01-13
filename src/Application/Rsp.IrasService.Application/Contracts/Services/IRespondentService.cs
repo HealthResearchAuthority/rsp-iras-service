@@ -1,9 +1,9 @@
-﻿using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Application.DTOS.Responses;
-using Rsp.IrasService.Domain.Entities;
+﻿using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Application.DTOS.Responses;
+using Rsp.Service.Domain.Entities;
 using Rsp.Logging.Interceptors;
 
-namespace Rsp.IrasService.Application.Contracts.Services;
+namespace Rsp.Service.Application.Contracts.Services;
 
 /// <summary>
 /// Interface to create, read, and update respondent project records in the database.

@@ -3,15 +3,15 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Rsp.IrasService.Application.Constants;
-using Rsp.IrasService.Application.Contracts.Repositories;
-using Rsp.IrasService.Application.CQRS.Commands;
-using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Application.DTOS.Responses;
-using Rsp.IrasService.Application.Specifications;
-using Rsp.IrasService.Domain.Constants;
+using Rsp.Service.Application.Constants;
+using Rsp.Service.Application.Contracts.Repositories;
+using Rsp.Service.Application.CQRS.Commands;
+using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Application.DTOS.Responses;
+using Rsp.Service.Application.Specifications;
+using Rsp.Service.Domain.Constants;
 
-namespace Rsp.IrasService.WebApi.Controllers;
+namespace Rsp.Service.WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]

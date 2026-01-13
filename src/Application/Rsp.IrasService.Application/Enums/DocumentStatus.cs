@@ -1,4 +1,4 @@
-﻿namespace Rsp.IrasService.Application.Enums;
+﻿namespace Rsp.Service.Application.Enums;
 
 public enum DocumentStatus
 {

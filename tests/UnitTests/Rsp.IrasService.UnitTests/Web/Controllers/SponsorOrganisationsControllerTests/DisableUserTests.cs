@@ -1,8 +1,8 @@
-﻿using Rsp.IrasService.Application.CQRS.Commands;
-using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.WebApi.Controllers;
+﻿using Rsp.Service.Application.CQRS.Commands;
+using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.WebApi.Controllers;
 
-namespace Rsp.IrasService.UnitTests.Web.Controllers.SponsorOrganisationsControllerTests;
+namespace Rsp.Service.UnitTests.Web.Controllers.SponsorOrganisationsControllerTests;
 
 public class DisableUserTests : TestServiceBase<SponsorOrganisationsController>
 {

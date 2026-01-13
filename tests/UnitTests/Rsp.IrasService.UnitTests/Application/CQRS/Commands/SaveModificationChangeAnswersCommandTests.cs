@@ -1,7 +1,7 @@
-using Rsp.IrasService.Application.CQRS.Commands;
-using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.Service.Application.CQRS.Commands;
+using Rsp.Service.Application.DTOS.Requests;
 
-namespace Rsp.IrasService.UnitTests.Application.CQRS.Commands;
+namespace Rsp.Service.UnitTests.Application.CQRS.Commands;
 
 public class SaveModificationChangeAnswersCommandTests
 {

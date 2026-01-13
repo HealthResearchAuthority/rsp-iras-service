@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using Rsp.IrasService.Application.Contracts.Services;
-using Rsp.IrasService.Application.CQRS.Commands;
-using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.Service.Application.Contracts.Services;
+using Rsp.Service.Application.CQRS.Commands;
+using Rsp.Service.Application.DTOS.Requests;
 
-namespace Rsp.IrasService.Application.CQRS.Handlers.CommandHandlers;
+namespace Rsp.Service.Application.CQRS.Handlers.CommandHandlers;
 
 public class EnableSponsorOrganisationHandler(ISponsorOrganisationsService sponsorOrganisationsService)
     : IRequestHandler<EnableSponsorOrganisationCommand, SponsorOrganisationDto>

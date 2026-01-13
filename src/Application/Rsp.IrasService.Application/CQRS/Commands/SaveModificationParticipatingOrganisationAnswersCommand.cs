@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.Service.Application.DTOS.Requests;
 
-namespace Rsp.IrasService.Application.CQRS.Commands;
+namespace Rsp.Service.Application.CQRS.Commands;
 
 /// <summary>
 /// Command to save participating organisation answers for a modification.

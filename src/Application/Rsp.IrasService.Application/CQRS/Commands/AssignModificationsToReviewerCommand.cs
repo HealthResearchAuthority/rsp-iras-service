@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Rsp.IrasService.Application.CQRS.Commands;
+namespace Rsp.Service.Application.CQRS.Commands;
 
 public class AssignModificationsToReviewerCommand(List<string> modificationIds, string reviewerId, string reviewerEmail, string reviewerName) : IRequest
 {

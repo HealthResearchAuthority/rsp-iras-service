@@ -1,9 +1,9 @@
-﻿using Rsp.IrasService.Application.CQRS.Queries;
-using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Application.DTOS.Responses;
-using Rsp.IrasService.WebApi.Controllers;
+﻿using Rsp.Service.Application.CQRS.Queries;
+using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Application.DTOS.Responses;
+using Rsp.Service.WebApi.Controllers;
 
-namespace Rsp.IrasService.UnitTests.Web.Controllers.ReviewBodyControllersTests;
+namespace Rsp.Service.UnitTests.Web.Controllers.ReviewBodyControllersTests;
 
 public class GetSponsorOrganisationTests : TestServiceBase
 {

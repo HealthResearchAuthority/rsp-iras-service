@@ -1,6 +1,6 @@
-﻿using Rsp.IrasService.Application.DTOS.Requests;
+﻿using Rsp.Service.Application.DTOS.Requests;
 
-namespace Rsp.IrasService.Application.Contracts.Services;
+namespace Rsp.Service.Application.Contracts.Services;
 
 public interface ITriggerEmailNotificationService
 {

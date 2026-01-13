@@ -1,8 +1,8 @@
-using Rsp.IrasService.Application.Contracts.Services;
-using Rsp.IrasService.Application.CQRS.Handlers.QueryHandlers;
-using Rsp.IrasService.Application.CQRS.Queries;
+using Rsp.Service.Application.Contracts.Services;
+using Rsp.Service.Application.CQRS.Handlers.QueryHandlers;
+using Rsp.Service.Application.CQRS.Queries;
 
-namespace Rsp.IrasService.UnitTests.Application.CQRS.Handlers.QueryHandlers;
+namespace Rsp.Service.UnitTests.Application.CQRS.Handlers.QueryHandlers;
 
 public class GetModificationChangesHandlerTests
 {

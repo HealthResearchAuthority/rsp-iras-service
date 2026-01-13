@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Application.Settings;
-using Rsp.IrasService.Domain.Entities;
-using Rsp.IrasService.Infrastructure;
-using Rsp.IrasService.Infrastructure.Repositories;
-using Rsp.IrasService.Services;
+using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Application.Settings;
+using Rsp.Service.Domain.Entities;
+using Rsp.Service.Infrastructure;
+using Rsp.Service.Infrastructure.Repositories;
+using Rsp.Service.Services;
 
-namespace Rsp.IrasService.UnitTests.Services.ApplicationsServiceTests;
+namespace Rsp.Service.UnitTests.Services.ApplicationsServiceTests;
 
 public class UpdateProjectRecordStatusTests : TestServiceBase<ApplicationsService>
 {

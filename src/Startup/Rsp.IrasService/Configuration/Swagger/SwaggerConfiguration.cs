@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 
-namespace Rsp.IrasService.Configuration.Swagger;
+namespace Rsp.Service.Configuration.Swagger;
 
 /// <summary>
 /// Swagger configuration

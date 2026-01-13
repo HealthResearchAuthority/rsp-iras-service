@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace Rsp.IrasService.Infrastructure.Migrations
+namespace Rsp.Service.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class SeedModificationsData2 : Migration

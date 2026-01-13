@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using Rsp.IrasService.Application.DTOS.Requests;
+using Rsp.Service.Application.DTOS.Requests;
 
-namespace Rsp.IrasService.Application.CQRS.Queries;
+namespace Rsp.Service.Application.CQRS.Queries;
 
 public class GetModificationDocumentsQuery : BaseQuery, IRequest<IEnumerable<ModificationDocumentDto>>
 {

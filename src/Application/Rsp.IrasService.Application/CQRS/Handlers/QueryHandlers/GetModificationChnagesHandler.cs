@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using Rsp.IrasService.Application.Contracts.Services;
-using Rsp.IrasService.Application.CQRS.Queries;
-using Rsp.IrasService.Application.DTOS.Responses;
+using Rsp.Service.Application.Contracts.Services;
+using Rsp.Service.Application.CQRS.Queries;
+using Rsp.Service.Application.DTOS.Responses;
 
-namespace Rsp.IrasService.Application.CQRS.Handlers.QueryHandlers;
+namespace Rsp.Service.Application.CQRS.Handlers.QueryHandlers;
 
 /// <summary>
 /// Handles retrieval of all <see cref="ModificationChangeResponse"/> records

@@ -1,4 +1,4 @@
-namespace Rsp.IrasService.Domain.Constants;
+namespace Rsp.Service.Domain.Constants;
 
 public static class Roles
 {

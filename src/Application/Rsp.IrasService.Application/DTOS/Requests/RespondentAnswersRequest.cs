@@ -1,4 +1,4 @@
-﻿namespace Rsp.IrasService.Application.DTOS.Requests;
+﻿namespace Rsp.Service.Application.DTOS.Requests;
 
 /// <summary>
 /// Request object containing respondent's answers for a specific project record.

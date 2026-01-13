@@ -1,7 +1,7 @@
 ﻿using Ardalis.Specification;
-using Rsp.IrasService.Domain.Entities;
+using Rsp.Service.Domain.Entities;
 
-namespace Rsp.IrasService.Application.Contracts.Repositories;
+namespace Rsp.Service.Application.Contracts.Repositories;
 
 public interface IEmailTemplateRepository
 {

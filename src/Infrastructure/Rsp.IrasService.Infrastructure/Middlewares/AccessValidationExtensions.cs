@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Builder;
 
-namespace Rsp.IrasService.Infrastructure.Middlewares;
+namespace Rsp.Service.Infrastructure.Middlewares;
 
 /// <summary>
 /// This middleware will validate if the user has access to the requested resource

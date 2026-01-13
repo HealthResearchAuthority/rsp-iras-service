@@ -1,16 +1,16 @@
-﻿using Rsp.IrasService.Application;
-using Rsp.IrasService.Application.Authentication.Helpers;
-using Rsp.IrasService.Application.Behaviors;
-using Rsp.IrasService.Application.Contracts.Repositories;
-using Rsp.IrasService.Application.Contracts.Services;
-using Rsp.IrasService.Domain.Entities;
-using Rsp.IrasService.Infrastructure.Helpers;
-using Rsp.IrasService.Infrastructure.Interceptors;
-using Rsp.IrasService.Infrastructure.Middlewares;
-using Rsp.IrasService.Infrastructure.Repositories;
-using Rsp.IrasService.Services;
+﻿using Rsp.Service.Application;
+using Rsp.Service.Application.Authentication.Helpers;
+using Rsp.Service.Application.Behaviors;
+using Rsp.Service.Application.Contracts.Repositories;
+using Rsp.Service.Application.Contracts.Services;
+using Rsp.Service.Domain.Entities;
+using Rsp.Service.Infrastructure.Helpers;
+using Rsp.Service.Infrastructure.Interceptors;
+using Rsp.Service.Infrastructure.Middlewares;
+using Rsp.Service.Infrastructure.Repositories;
+using Rsp.Service.Services;
 
-namespace Rsp.IrasService.Configuration.Dependencies;
+namespace Rsp.Service.Configuration.Dependencies;
 
 /// <summary>
 ///  User Defined Services Configuration

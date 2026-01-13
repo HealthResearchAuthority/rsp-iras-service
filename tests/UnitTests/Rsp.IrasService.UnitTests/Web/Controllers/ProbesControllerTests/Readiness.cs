@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Rsp.IrasService.WebApi.Controllers;
+using Rsp.Service.WebApi.Controllers;
 
-namespace Rsp.IrasService.UnitTests.Web.Controllers.ProbesControllerTests;
+namespace Rsp.Service.UnitTests.Web.Controllers.ProbesControllerTests;
 
 public class Readiness
 {

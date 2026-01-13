@@ -1,4 +1,4 @@
-﻿namespace Rsp.IrasService.Infrastructure.Helpers;
+﻿namespace Rsp.Service.Infrastructure.Helpers;
 
 public interface IAuditTrailDetailsService
 {

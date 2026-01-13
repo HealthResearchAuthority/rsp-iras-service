@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Rsp.IrasService.Application.Authentication.Helpers;
+namespace Rsp.Service.Application.Authentication.Helpers;
 
 public class TokenHelper : ITokenHelper
 {

@@ -1,8 +1,8 @@
-﻿using Rsp.IrasService.Application.CQRS.Queries;
-using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.WebApi.Controllers;
+﻿using Rsp.Service.Application.CQRS.Queries;
+using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.WebApi.Controllers;
 
-namespace Rsp.IrasService.UnitTests.Web.Controllers.RespondentControllerTests;
+namespace Rsp.Service.UnitTests.Web.Controllers.RespondentControllerTests;
 
 public class GetModificationDocumentAnswersTests : TestServiceBase<RespondentController>
 {

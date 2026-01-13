@@ -1,7 +1,7 @@
-﻿using Rsp.IrasService.Application.Specifications;
-using Rsp.IrasService.Domain.Entities;
+﻿using Rsp.Service.Application.Specifications;
+using Rsp.Service.Domain.Entities;
 
-namespace Rsp.IrasService.UnitTests.Application.Specifications;
+namespace Rsp.Service.UnitTests.Application.Specifications;
 
 public class GetActiveSponsorOrganisationsForEnabledUserSpecificationTests
 {

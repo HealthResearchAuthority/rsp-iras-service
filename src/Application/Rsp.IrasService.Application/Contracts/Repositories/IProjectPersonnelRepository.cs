@@ -1,7 +1,7 @@
 ﻿using Ardalis.Specification;
-using Rsp.IrasService.Domain.Entities;
+using Rsp.Service.Domain.Entities;
 
-namespace Rsp.IrasService.Application.Contracts.Repositories;
+namespace Rsp.Service.Application.Contracts.Repositories;
 
 /// <summary>
 /// Repository interface for managing project personnel responses and modifications.

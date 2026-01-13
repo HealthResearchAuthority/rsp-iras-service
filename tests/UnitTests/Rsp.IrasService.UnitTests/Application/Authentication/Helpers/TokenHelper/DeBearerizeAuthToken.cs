@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Rsp.IrasService.UnitTests.Application.Authentication.Helpers.TokenHelper;
+namespace Rsp.Service.UnitTests.Application.Authentication.Helpers.TokenHelper;
 
 public class DeBearerizeAuthToken
 {

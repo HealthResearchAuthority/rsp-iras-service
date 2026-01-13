@@ -1,9 +1,9 @@
-﻿using Rsp.IrasService.Application.Contracts.Services;
-using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Domain.Entities;
-using Rsp.IrasService.Services;
+﻿using Rsp.Service.Application.Contracts.Services;
+using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Domain.Entities;
+using Rsp.Service.Services;
 
-namespace Rsp.IrasService.UnitTests.Services.TriggerEmailNotificationServiceTests;
+namespace Rsp.Service.UnitTests.Services.TriggerEmailNotificationServiceTests;
 
 public class TriggerEmailNotificationServiceTest
 {

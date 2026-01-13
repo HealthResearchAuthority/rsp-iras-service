@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Rsp.IrasService.Domain.Entities;
-using Rsp.IrasService.Infrastructure.EntitiesConfiguration;
+using Rsp.Service.Domain.Entities;
+using Rsp.Service.Infrastructure.EntitiesConfiguration;
 
-namespace Rsp.IrasService.Infrastructure;
+namespace Rsp.Service.Infrastructure;
 
 public class IrasContext(DbContextOptions<IrasContext> options) : DbContext(options)
 {

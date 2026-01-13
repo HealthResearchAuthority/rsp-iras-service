@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Rsp.IrasService.Application.Constants;
-using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Application.Specifications;
-using Rsp.IrasService.Domain.Entities;
-using Rsp.IrasService.Infrastructure;
-using Rsp.IrasService.Infrastructure.Repositories;
+using Rsp.Service.Application.Constants;
+using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Application.Specifications;
+using Rsp.Service.Domain.Entities;
+using Rsp.Service.Infrastructure;
+using Rsp.Service.Infrastructure.Repositories;
 
-namespace Rsp.IrasService.UnitTests.Infrastructure.ProjectClosuresRepositoryTests;
+namespace Rsp.Service.UnitTests.Infrastructure.ProjectClosuresRepositoryTests;
 
 public class ProjectClosureRepositoryTests
 {

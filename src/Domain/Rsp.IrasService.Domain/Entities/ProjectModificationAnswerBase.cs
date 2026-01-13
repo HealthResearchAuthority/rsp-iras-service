@@ -1,4 +1,4 @@
-﻿namespace Rsp.IrasService.Domain.Entities;
+﻿namespace Rsp.Service.Domain.Entities;
 
 /// <summary>
 /// Represents an base answer to a project modification answer and modification change answer.

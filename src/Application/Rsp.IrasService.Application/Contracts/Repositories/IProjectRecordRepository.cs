@@ -1,10 +1,10 @@
 ﻿using Ardalis.Specification;
-using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Application.DTOS.Responses;
-using Rsp.IrasService.Application.Specifications;
-using Rsp.IrasService.Domain.Entities;
+using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Application.DTOS.Responses;
+using Rsp.Service.Application.Specifications;
+using Rsp.Service.Domain.Entities;
 
-namespace Rsp.IrasService.Application.Contracts.Repositories;
+namespace Rsp.Service.Application.Contracts.Repositories;
 
 public interface IProjectRecordRepository
 {

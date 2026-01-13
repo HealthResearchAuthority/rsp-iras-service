@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Rsp.IrasService.WebApi.Controllers;
+namespace Rsp.Service.WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]

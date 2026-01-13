@@ -1,10 +1,10 @@
 ﻿using Azure.Messaging.ServiceBus;
 using Microsoft.Extensions.Logging;
-using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Application.Settings;
-using Rsp.IrasService.Services;
+using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Application.Settings;
+using Rsp.Service.Services;
 
-namespace Rsp.IrasService.UnitTests.Services.AzureMessageQueueServiceTests;
+namespace Rsp.Service.UnitTests.Services.AzureMessageQueueServiceTests;
 
 public class AzureMessageQueueServiceTests
 {

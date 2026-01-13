@@ -1,8 +1,8 @@
 ﻿using MediatR;
-using Rsp.IrasService.Application.Contracts.Services;
-using Rsp.IrasService.Application.CQRS.Commands;
+using Rsp.Service.Application.Contracts.Services;
+using Rsp.Service.Application.CQRS.Commands;
 
-namespace Rsp.IrasService.Application.CQRS.Handlers.CommandHandlers;
+namespace Rsp.Service.Application.CQRS.Handlers.CommandHandlers;
 
 public class UpdateProjectRecordStatusHandler(IApplicationsService applicationsService)
     : IRequestHandler<UpdateProjectRecordStatusCommand>

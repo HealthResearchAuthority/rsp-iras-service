@@ -1,6 +1,6 @@
-﻿using Rsp.IrasService.Domain.Entities;
+﻿using Rsp.Service.Domain.Entities;
 
-namespace Rsp.IrasService.Application.Contracts.Services;
+namespace Rsp.Service.Application.Contracts.Services;
 
 public interface IEmailTemplateService
 {

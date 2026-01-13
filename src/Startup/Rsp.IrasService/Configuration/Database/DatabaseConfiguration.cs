@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Rsp.IrasService.Infrastructure;
-using Rsp.IrasService.Infrastructure.Interceptors;
+using Rsp.Service.Infrastructure;
+using Rsp.Service.Infrastructure.Interceptors;
 
-namespace Rsp.IrasService.Configuration.Database;
+namespace Rsp.Service.Configuration.Database;
 
 /// <summary>
 /// Adds DbContext to the application

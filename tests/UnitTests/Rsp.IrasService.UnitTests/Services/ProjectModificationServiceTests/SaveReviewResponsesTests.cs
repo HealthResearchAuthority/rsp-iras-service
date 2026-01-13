@@ -1,8 +1,8 @@
-﻿using Rsp.IrasService.Application.Contracts.Repositories;
-using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Services;
+﻿using Rsp.Service.Application.Contracts.Repositories;
+using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Services;
 
-namespace Rsp.IrasService.UnitTests.Services.ProjectModificationServiceTests;
+namespace Rsp.Service.UnitTests.Services.ProjectModificationServiceTests;
 
 public class SaveReviewResponsesTests : TestServiceBase<ProjectModificationService>
 {

@@ -1,9 +1,9 @@
-using Rsp.IrasService.Application.Contracts.Repositories;
-using Rsp.IrasService.Application.Specifications;
-using Rsp.IrasService.Domain.Entities;
-using Rsp.IrasService.Services;
+using Rsp.Service.Application.Contracts.Repositories;
+using Rsp.Service.Application.Specifications;
+using Rsp.Service.Domain.Entities;
+using Rsp.Service.Services;
 
-namespace Rsp.IrasService.UnitTests.Services.ProjectModificationServiceTests;
+namespace Rsp.Service.UnitTests.Services.ProjectModificationServiceTests;
 
 /// <summary>
 ///     Covers the tests for GetModificationChanges method

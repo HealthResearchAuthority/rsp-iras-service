@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Rsp.IrasService.Application.CQRS.Commands;
-using Rsp.IrasService.WebApi.Controllers;
+using Rsp.Service.Application.CQRS.Commands;
+using Rsp.Service.WebApi.Controllers;
 
-namespace Rsp.IrasService.UnitTests.Web.Controllers.ProjectClosureControllerTests;
+namespace Rsp.Service.UnitTests.Web.Controllers.ProjectClosureControllerTests;
 
 public class UpdateProjectClosureStatusTests : TestServiceBase<ProjectClosureController>
 {

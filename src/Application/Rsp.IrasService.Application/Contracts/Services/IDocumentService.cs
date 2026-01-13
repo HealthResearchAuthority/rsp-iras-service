@@ -1,7 +1,7 @@
-﻿using Rsp.IrasService.Application.DTOS.Requests;
+﻿using Rsp.Service.Application.DTOS.Requests;
 using Rsp.Logging.Interceptors;
 
-namespace Rsp.IrasService.Application.Contracts.Services;
+namespace Rsp.Service.Application.Contracts.Services;
 
 /// <summary>
 ///     Interface to create, read, and update document records in the database.

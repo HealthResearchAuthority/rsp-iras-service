@@ -1,9 +1,9 @@
-﻿using Rsp.IrasService.Application.Contracts.Repositories;
-using Rsp.IrasService.Domain.Entities;
-using Rsp.IrasService.Services;
-using Rsp.IrasService.UnitTests.Fixtures;
+﻿using Rsp.Service.Application.Contracts.Repositories;
+using Rsp.Service.Domain.Entities;
+using Rsp.Service.Services;
+using Rsp.Service.UnitTests.Fixtures;
 
-namespace Rsp.IrasService.UnitTests.Services.ApplicationsServiceTests;
+namespace Rsp.Service.UnitTests.Services.ApplicationsServiceTests;
 
 public class GetProjectRecordAuditTrailTests : TestServiceBase<ApplicationsService>
 {

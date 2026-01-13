@@ -1,9 +1,9 @@
-﻿using Rsp.IrasService.Application.CQRS.Queries;
-using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Application.Specifications;
-using Rsp.IrasService.Domain.Entities;
+﻿using Rsp.Service.Application.CQRS.Queries;
+using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Application.Specifications;
+using Rsp.Service.Domain.Entities;
 
-namespace Rsp.IrasService.UnitTests.Application.Specifications;
+namespace Rsp.Service.UnitTests.Application.Specifications;
 
 public class GetSponsorOrganisationSpecificationTests
 {

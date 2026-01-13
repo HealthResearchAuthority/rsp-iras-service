@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Rsp.IrasService.Application.CQRS.Queries;
-using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Application.DTOS.Responses;
-using Rsp.IrasService.WebApi.Controllers;
+using Rsp.Service.Application.CQRS.Queries;
+using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Application.DTOS.Responses;
+using Rsp.Service.WebApi.Controllers;
 
-namespace Rsp.IrasService.UnitTests.Web.Controllers.ProjectClosureControllerTests;
+namespace Rsp.Service.UnitTests.Web.Controllers.ProjectClosureControllerTests;
 
 public class GetProjectClosuresBySponsorOrganisationUserIdTests : TestServiceBase<ProjectClosureController>
 {
