@@ -34,4 +34,9 @@ public class GetApplicationSpecification : Specification<ProjectRecord>
             .Skip(records, id == null && records == 0)
             .Take(records, id == null && records != 0);
     }
+
+    public GetApplicationSpecification(string projectRecordId)
+    {
+        Query.Where(entity => entity.Id == projectRecordId);
+    }
 }

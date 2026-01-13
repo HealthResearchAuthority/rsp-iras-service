@@ -52,5 +52,11 @@ public interface IProjectRecordRepository
 
     Task<IEnumerable<ProjectRecordAuditTrail>> GetProjectRecordAuditTrail(string projectRecordId);
 
-    Task<ProjectRecord?> UpdateProjectRecordStatus(ProjectRecord projectRecord);
+    /// <summary>
+    /// Update the status of the project record
+    /// </summary>
+    /// <param name="specification"></param>
+    /// <param name="status"></param>
+    /// <returns></returns>
+    Task<ProjectRecord?> UpdateProjectRecordStatus(GetApplicationSpecification specification, string status);
 }
