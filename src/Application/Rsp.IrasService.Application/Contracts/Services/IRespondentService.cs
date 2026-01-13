@@ -151,4 +151,10 @@ public interface IRespondentService : IInterceptable
     /// </summary>
     /// <param name="respondentAnswers">The list of modification documents to save.</param>
     Task DeleteModificationDocumentResponses(List<ModificationDocumentDto> respondentAnswers);
+
+    /// <summary>
+    /// Saves the provided project modification documents audit trail.
+    /// </summary>
+    /// <param name="documentsAuditTrail">The list of documents audit trail to save.</param>
+    Task SaveModificationDocumentsAuditTrail(List<ModificationDocumentsAuditTrailDto> documentsAuditTrail);
 }

@@ -126,4 +126,10 @@ public interface IProjectPersonnelRepository
     /// <param name="specification">The specification to filter which modification documents to save.</param>
     /// <param name="respondentAnswers">The list of modification documents to save.</param>
     Task DeleteModificationDocumentResponses(ISpecification<ModificationDocument> specification, List<ModificationDocument> respondentAnswers);
+
+    /// <summary>
+    /// Saves the provided project modification documents audit trail.
+    /// </summary>
+    /// <param name="documentsAuditTrail">The list of documents audit trail to save.</param>
+    Task SaveModificationDocumentsAuditTrail(List<ModificationDocumentsAuditTrail> documentsAuditTrail);
 }

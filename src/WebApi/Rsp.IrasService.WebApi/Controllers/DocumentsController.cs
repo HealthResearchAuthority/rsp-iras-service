@@ -141,4 +141,16 @@ public class DocumentsController(IMediator mediator) : ControllerBase
 
         return Ok(modification);
     }
+
+    /// <summary>
+    /// Creates a new audit trail project modification documents.
+    /// </summary>
+    /// <param name="documentsAuditTrailRequest">The request object containing modification documents audit trails.</param>
+    [HttpPost("createdocumentsaudittrail")]
+    public async Task CreateModificationDocumentsAuditTrail([FromBody] List<ModificationDocumentsAuditTrailDto> documentsAuditTrailRequest)
+    {
+        var request = new SaveModificationDocumentsAuditTrailCommand(documentsAuditTrailRequest);
+
+        await mediator.Send(request);
+    }
 }
