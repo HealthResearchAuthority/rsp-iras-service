@@ -8,7 +8,7 @@ using Rsp.Service.Infrastructure.Repositories;
 
 namespace Rsp.Service.UnitTests.Services.DocumentService;
 
-public class UpdateModificationDocument : TestServiceBase<IrasService.Services.DocumentService>
+public class UpdateModificationDocument : TestServiceBase<Service.Services.DocumentService>
 {
     private readonly IrasContext _context;
     private readonly DocumentRepository _documentRepository;
@@ -28,7 +28,7 @@ public class UpdateModificationDocument : TestServiceBase<IrasService.Services.D
     {
         // Arrange
         Mocker.Use<IDocumentRepository>(_documentRepository);
-        Sut = Mocker.CreateInstance<IrasService.Services.DocumentService>();
+        Sut = Mocker.CreateInstance<Service.Services.DocumentService>();
 
         // Act
         var result = await Sut.UpdateModificationDocument(modificationDocumentDto);
@@ -42,7 +42,7 @@ public class UpdateModificationDocument : TestServiceBase<IrasService.Services.D
     {
         // Arrange
         Mocker.Use<IDocumentRepository>(_documentRepository);
-        Sut = Mocker.CreateInstance<IrasService.Services.DocumentService>();
+        Sut = Mocker.CreateInstance<Service.Services.DocumentService>();
 
         var existingDocument = new ModificationDocument
         {

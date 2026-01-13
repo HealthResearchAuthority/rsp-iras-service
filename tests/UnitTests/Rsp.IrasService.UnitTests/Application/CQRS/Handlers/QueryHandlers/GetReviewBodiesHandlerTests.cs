@@ -20,7 +20,7 @@ public class GetReviewBodiesHandlerTests
     public async Task Handle_GetApplicationsQuery_ShouldReturnListOfApplications()
     {
         // Arrange
-        var expectedResponse = new IrasService.Application.DTOS.Responses.AllReviewBodiesResponse
+        var expectedResponse = new Service.Application.DTOS.Responses.AllReviewBodiesResponse
         {
             ReviewBodies = new List<ReviewBodyDto>
                 {
