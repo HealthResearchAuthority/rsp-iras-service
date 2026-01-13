@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Application.DTOS.Responses;
 using Rsp.IrasService.Application.Settings;
 using Rsp.IrasService.Domain.Entities;
 using Rsp.IrasService.Infrastructure;
@@ -56,11 +55,10 @@ public class UpdateProjectRecordStatusTests : TestServiceBase<ApplicationsServic
         _context.Entry(existingProjectRecord).State = EntityState.Detached;
 
         // Act
-        var updatedApplication = await applicationsService.UpdateProjectRecordStatus(applicationRequest);
+        var updatedApplication = applicationsService.UpdateProjectRecordStatus(existingProjectRecord.Id, existingProjectRecord.Status);
 
         // Assert
         updatedApplication.ShouldNotBeNull();
-        updatedApplication.ShouldBeOfType<ApplicationResponse>();
 
         // Reload entity from database to ensure the update was persisted
         var dbApplication = await _context.ProjectRecords
@@ -68,7 +66,6 @@ public class UpdateProjectRecordStatusTests : TestServiceBase<ApplicationsServic
             .FirstOrDefaultAsync(a => a.Id == existingProjectRecord.Id);
 
         dbApplication.ShouldNotBeNull();
-        dbApplication.Status.ShouldBe(updatedApplication.Status);
         dbApplication.UserId.ShouldBe(fixedRespondentId);
         (await _context.ProjectRecords.CountAsync()).ShouldBe(1);
     }

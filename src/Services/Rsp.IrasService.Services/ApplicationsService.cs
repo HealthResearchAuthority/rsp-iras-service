@@ -134,12 +134,10 @@ public class ApplicationsService(IProjectRecordRepository applicationRepository,
         };
     }
 
-    public async Task<ApplicationResponse> UpdateProjectRecordStatus(ApplicationRequest applicationRequest)
+    public async Task UpdateProjectRecordStatus(string projectRecordId, string status)
     {
-        var irasApplication = applicationRequest.Adapt<ProjectRecord>();
+        var specification = new GetApplicationSpecification(projectRecordId);
 
-        var updatedApplication = await applicationRepository.UpdateProjectRecordStatus(irasApplication);
-
-        return updatedApplication.Adapt<ApplicationResponse>();
+        await applicationRepository.UpdateProjectRecordStatus(specification, status);
     }
 }
