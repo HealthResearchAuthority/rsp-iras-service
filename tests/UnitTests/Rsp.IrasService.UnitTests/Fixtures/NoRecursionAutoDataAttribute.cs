@@ -1,6 +1,6 @@
-﻿using Rsp.IrasService.UnitTests.Customisation;
+﻿using Rsp.Service.UnitTests.Customisation;
 
-namespace Rsp.IrasService.UnitTests.Fixtures;
+namespace Rsp.Service.UnitTests.Fixtures;
 
 public class NoRecursionAutoDataAttribute : AutoDataAttribute
 {

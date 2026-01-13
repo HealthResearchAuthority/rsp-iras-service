@@ -1,4 +1,4 @@
-namespace Rsp.IrasService.Application.Contracts.Repositories;
+namespace Rsp.Service.Application.Contracts.Repositories;
 
 public interface IAccessValidationRepository
 {

@@ -1,11 +1,11 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
-using Rsp.IrasService.Application.Contracts.Repositories;
-using Rsp.IrasService.Domain.Constants;
-using Rsp.IrasService.Domain.Entities;
-using Rsp.IrasService.Services;
+using Rsp.Service.Application.Contracts.Repositories;
+using Rsp.Service.Domain.Constants;
+using Rsp.Service.Domain.Entities;
+using Rsp.Service.Services;
 
-namespace Rsp.IrasService.UnitTests.Services.ProjectModificationServiceTests;
+namespace Rsp.Service.UnitTests.Services.ProjectModificationServiceTests;
 
 public class GetModificationAuditTrailTests : TestServiceBase<ProjectModificationService>
 {

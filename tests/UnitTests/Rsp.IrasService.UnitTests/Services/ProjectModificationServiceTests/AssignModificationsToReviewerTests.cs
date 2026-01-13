@@ -1,7 +1,7 @@
-using Rsp.IrasService.Application.Contracts.Repositories;
-using Rsp.IrasService.Services;
+using Rsp.Service.Application.Contracts.Repositories;
+using Rsp.Service.Services;
 
-namespace Rsp.IrasService.UnitTests.Services.ProjectModificationServiceTests;
+namespace Rsp.Service.UnitTests.Services.ProjectModificationServiceTests;
 
 /// <summary>
 ///     Covers the tests for AssignModificationsToReviewer method

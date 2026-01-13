@@ -1,11 +1,11 @@
 ﻿using System.Text.Json;
 using Azure.Messaging.ServiceBus;
 using Microsoft.Extensions.Logging;
-using Rsp.IrasService.Application.Contracts.Services;
-using Rsp.IrasService.Application.Settings;
+using Rsp.Service.Application.Contracts.Services;
+using Rsp.Service.Application.Settings;
 using Rsp.Logging.Extensions;
 
-namespace Rsp.IrasService.Services;
+namespace Rsp.Service.Services;
 
 public class AzureMessageQueueService : IMessageQueueService
 {

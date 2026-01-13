@@ -1,3 +1,3 @@
-﻿namespace Rsp.IrasService.Domain.Interfaces;
+﻿namespace Rsp.Service.Domain.Interfaces;
 
 public interface IAuditable;

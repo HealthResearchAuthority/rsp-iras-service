@@ -1,10 +1,10 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Rsp.IrasService.Application.CQRS.Commands;
-using Rsp.IrasService.WebApi.Controllers;
+using Rsp.Service.Application.CQRS.Commands;
+using Rsp.Service.WebApi.Controllers;
 
-namespace Rsp.IrasService.UnitTests.Web.Controllers.ApplicationsControllerTests;
+namespace Rsp.Service.UnitTests.Web.Controllers.ApplicationsControllerTests;
 
 public class ProjectRecordStatusUpdateTests : TestServiceBase<ApplicationsController>
 {

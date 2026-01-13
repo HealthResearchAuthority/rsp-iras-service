@@ -1,6 +1,6 @@
-﻿using Rsp.IrasService.Domain.Entities;
+﻿using Rsp.Service.Domain.Entities;
 
-namespace Rsp.IrasService.Application.DTOS.Requests;
+namespace Rsp.Service.Application.DTOS.Requests;
 
 public class ModificationDto : ModificationBase
 {

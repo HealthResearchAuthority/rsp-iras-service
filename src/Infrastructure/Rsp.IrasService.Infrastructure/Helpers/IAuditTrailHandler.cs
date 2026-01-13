@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace Rsp.IrasService.Infrastructure.Helpers;
+namespace Rsp.Service.Infrastructure.Helpers;
 
 public interface IAuditTrailHandler<out TAudit> where TAudit : class
 {

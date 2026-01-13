@@ -1,4 +1,4 @@
-﻿namespace Rsp.IrasService.Application.DTOS.Responses;
+﻿namespace Rsp.Service.Application.DTOS.Responses;
 
 /// <summary>
 /// Represents the response containing details about a project closures, including metadata and a list of project closures.

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Rsp.IrasService.Application.CQRS.Commands;
+namespace Rsp.Service.Application.CQRS.Commands;
 
 /// <summary>
 /// Command to delete a project by its record ID.

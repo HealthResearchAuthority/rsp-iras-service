@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 #nullable disable
 #pragma warning disable S1192
 
-namespace Rsp.IrasService.Infrastructure.Migrations
+namespace Rsp.Service.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class CreateIrasDbSchema : Migration

@@ -1,8 +1,8 @@
 ﻿using Mapster;
-using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Domain.Entities;
+using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Domain.Entities;
 
-namespace Rsp.IrasService.Application.Mappping;
+namespace Rsp.Service.Application.Mappping;
 
 /// <summary>
 /// Register for type mappings

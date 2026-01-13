@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Rsp.IrasService.UnitTests.Application.Authentication.Helpers.TokenHelper;
+namespace Rsp.Service.UnitTests.Application.Authentication.Helpers.TokenHelper;
 
 public class DeBearerizeAuthToken
 {
@@ -9,7 +9,7 @@ public class DeBearerizeAuthToken
     public void DeBearerizeAuthToken_Should_ThrowException_When_AuthTokenIsEmpty()
     {
         // Arrange
-        var helper = new IrasService.Application.Authentication.Helpers.TokenHelper();
+        var helper = new Service.Application.Authentication.Helpers.TokenHelper();
         var emptyToken = new StringValues();
 
         // Act & Assert
@@ -21,7 +21,7 @@ public class DeBearerizeAuthToken
     public void DeBearerizeAuthToken_Should_RemoveBearerPrefix_When_TokenHasBearerPrefix()
     {
         // Arrange
-        var helper = new IrasService.Application.Authentication.Helpers.TokenHelper();
+        var helper = new Service.Application.Authentication.Helpers.TokenHelper();
         var tokenWithBearer = new StringValues("Bearer some-token");
 
         // Act

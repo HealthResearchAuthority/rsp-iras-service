@@ -1,12 +1,12 @@
 ﻿using Mapster;
-using Rsp.IrasService.Application.Contracts.Repositories;
-using Rsp.IrasService.Application.Contracts.Services;
-using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Application.DTOS.Responses;
-using Rsp.IrasService.Application.Specifications;
-using Rsp.IrasService.Domain.Entities;
+using Rsp.Service.Application.Contracts.Repositories;
+using Rsp.Service.Application.Contracts.Services;
+using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Application.DTOS.Responses;
+using Rsp.Service.Application.Specifications;
+using Rsp.Service.Domain.Entities;
 
-namespace Rsp.IrasService.Services;
+namespace Rsp.Service.Services;
 
 public class ReviewBodyService(IRegulatoryBodyRepository reviewBodyRepository) : IReviewBodyService
 {

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Rsp.IrasService.Application.CQRS.Queries;
-using Rsp.IrasService.Application.DTOS.Responses;
-using Rsp.IrasService.WebApi.Controllers;
+using Rsp.Service.Application.CQRS.Queries;
+using Rsp.Service.Application.DTOS.Responses;
+using Rsp.Service.WebApi.Controllers;
 
-namespace Rsp.IrasService.UnitTests.Web.Controllers.ApplicationsControllerTests;
+namespace Rsp.Service.UnitTests.Web.Controllers.ApplicationsControllerTests;
 
 public class GetApplication : TestServiceBase
 {

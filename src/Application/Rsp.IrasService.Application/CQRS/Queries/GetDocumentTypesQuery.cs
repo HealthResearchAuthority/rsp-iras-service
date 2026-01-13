@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using Rsp.IrasService.Application.DTOS.Responses;
+using Rsp.Service.Application.DTOS.Responses;
 
-namespace Rsp.IrasService.Application.CQRS.Queries;
+namespace Rsp.Service.Application.CQRS.Queries;
 
 public class GetDocumentTypesQuery : IRequest<IEnumerable<DocumentTypeResponse>>;

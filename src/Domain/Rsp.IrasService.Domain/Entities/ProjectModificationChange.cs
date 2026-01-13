@@ -1,4 +1,4 @@
-﻿namespace Rsp.IrasService.Domain.Entities;
+﻿namespace Rsp.Service.Domain.Entities;
 
 /// <summary>
 /// Represents a change made to a project modification record, including details about the area changed,

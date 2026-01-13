@@ -1,7 +1,7 @@
 ﻿using Ardalis.Specification;
-using Rsp.IrasService.Domain.Entities;
+using Rsp.Service.Domain.Entities;
 
-namespace Rsp.IrasService.Application.Specifications;
+namespace Rsp.Service.Application.Specifications;
 
 /// <summary>
 /// Specification for retrieving <see cref="ProjectModificationAnswer"/> records based on modification change, project record, and optionally category.

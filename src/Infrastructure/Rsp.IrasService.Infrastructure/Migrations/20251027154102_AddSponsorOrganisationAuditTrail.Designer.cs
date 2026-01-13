@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Rsp.IrasService.Infrastructure;
+using Rsp.Service.Infrastructure;
 
 #nullable disable
 
-namespace Rsp.IrasService.Infrastructure.Migrations
+namespace Rsp.Service.Infrastructure.Migrations
 {
     [DbContext(typeof(IrasContext))]
     [Migration("20251027154102_AddSponsorOrganisationAuditTrail")]
@@ -25,7 +25,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.DocumentType", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.DocumentType", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -40,7 +40,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.ToTable("DocumentTypes");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.EmailTemplate", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.EmailTemplate", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -80,7 +80,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.ToTable("EmailTemplates");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.EventType", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.EventType", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -101,7 +101,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.ToTable("EventTypes");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationDocument", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.ModificationDocument", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -148,7 +148,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.ToTable("ModificationDocuments");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationDocumentAnswer", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.ModificationDocumentAnswer", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -189,7 +189,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.ToTable("ModificationDocumentAnswers");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationParticipatingOrganisation", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.ModificationParticipatingOrganisation", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -221,7 +221,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.ToTable("ModificationParticipatingOrganisations");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationParticipatingOrganisationAnswer", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.ModificationParticipatingOrganisationAnswer", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -264,7 +264,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.ToTable("ModificationParticipatingOrganisationAnswers");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModification", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.ProjectModification", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -929,7 +929,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModificationAnswer", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.ProjectModificationAnswer", b =>
                 {
                     b.Property<Guid>("ProjectModificationId")
                         .HasColumnType("uniqueidentifier");
@@ -976,7 +976,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.ToTable("ProjectModificationAnswers");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModificationChange", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.ProjectModificationChange", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1632,7 +1632,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModificationChangeAnswer", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.ProjectModificationChangeAnswer", b =>
                 {
                     b.Property<Guid>("ProjectModificationChangeId")
                         .HasColumnType("uniqueidentifier");
@@ -1679,7 +1679,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.ToTable("ProjectModificationChangeAnswers");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectPersonnel", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.ProjectPersonnel", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -1714,7 +1714,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectRecord", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.ProjectRecord", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -2337,7 +2337,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectRecordAnswer", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.ProjectRecordAnswer", b =>
                 {
                     b.Property<string>("ProjectPersonnelId")
                         .HasColumnType("nvarchar(450)");
@@ -3700,7 +3700,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.RegulatoryBody", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.RegulatoryBody", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -3747,7 +3747,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.ToTable("RegulatoryBodies");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.RegulatoryBodyAuditTrail", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.RegulatoryBodyAuditTrail", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -3775,7 +3775,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.ToTable("RegulatoryBodiesAuditTrail");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.RegulatoryBodyUser", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.RegulatoryBodyUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -3794,7 +3794,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.ToTable("RegulatoryBodiesUsers");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.SponsorOrganisation", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.SponsorOrganisation", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -3827,7 +3827,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.ToTable("SponsorOrganisations");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.SponsorOrganisationAuditTrail", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.SponsorOrganisationAuditTrail", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -3857,7 +3857,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.ToTable("SponsorOrganisationsAuditTrail");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.SponsorOrganisationUser", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.SponsorOrganisationUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -3883,9 +3883,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.ToTable("SponsorOrganisationsUsers");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.EmailTemplate", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.EmailTemplate", b =>
                 {
-                    b.HasOne("Rsp.IrasService.Domain.Entities.EventType", "EventType")
+                    b.HasOne("Rsp.Service.Domain.Entities.EventType", "EventType")
                         .WithMany()
                         .HasForeignKey("EventTypeId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -3894,21 +3894,21 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Navigation("EventType");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationDocument", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.ModificationDocument", b =>
                 {
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectModificationChange", "ProjectModificationChange")
+                    b.HasOne("Rsp.Service.Domain.Entities.ProjectModificationChange", "ProjectModificationChange")
                         .WithMany()
                         .HasForeignKey("ProjectModificationChangeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectPersonnel", "ProjectPersonnel")
+                    b.HasOne("Rsp.Service.Domain.Entities.ProjectPersonnel", "ProjectPersonnel")
                         .WithMany()
                         .HasForeignKey("ProjectPersonnelId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectRecord", "ProjectRecord")
+                    b.HasOne("Rsp.Service.Domain.Entities.ProjectRecord", "ProjectRecord")
                         .WithMany()
                         .HasForeignKey("ProjectRecordId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -3921,9 +3921,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Navigation("ProjectRecord");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationDocumentAnswer", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.ModificationDocumentAnswer", b =>
                 {
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ModificationDocument", "ModificationDocument")
+                    b.HasOne("Rsp.Service.Domain.Entities.ModificationDocument", "ModificationDocument")
                         .WithMany()
                         .HasForeignKey("ModificationDocumentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -3932,21 +3932,21 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Navigation("ModificationDocument");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationParticipatingOrganisation", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.ModificationParticipatingOrganisation", b =>
                 {
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectModificationChange", "ProjectModificationChange")
+                    b.HasOne("Rsp.Service.Domain.Entities.ProjectModificationChange", "ProjectModificationChange")
                         .WithMany()
                         .HasForeignKey("ProjectModificationChangeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectPersonnel", "ProjectPersonnel")
+                    b.HasOne("Rsp.Service.Domain.Entities.ProjectPersonnel", "ProjectPersonnel")
                         .WithMany()
                         .HasForeignKey("ProjectPersonnelId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectRecord", "ProjectRecord")
+                    b.HasOne("Rsp.Service.Domain.Entities.ProjectRecord", "ProjectRecord")
                         .WithMany()
                         .HasForeignKey("ProjectRecordId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -3959,9 +3959,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Navigation("ProjectRecord");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ModificationParticipatingOrganisationAnswer", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.ModificationParticipatingOrganisationAnswer", b =>
                 {
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ModificationParticipatingOrganisation", "ModificationParticipatingOrganisation")
+                    b.HasOne("Rsp.Service.Domain.Entities.ModificationParticipatingOrganisation", "ModificationParticipatingOrganisation")
                         .WithMany()
                         .HasForeignKey("ModificationParticipatingOrganisationId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -3970,30 +3970,30 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Navigation("ModificationParticipatingOrganisation");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModification", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.ProjectModification", b =>
                 {
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectRecord", null)
+                    b.HasOne("Rsp.Service.Domain.Entities.ProjectRecord", null)
                         .WithMany("ProjectModifications")
                         .HasForeignKey("ProjectRecordId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModificationAnswer", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.ProjectModificationAnswer", b =>
                 {
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectModification", "ProjectModification")
+                    b.HasOne("Rsp.Service.Domain.Entities.ProjectModification", "ProjectModification")
                         .WithMany()
                         .HasForeignKey("ProjectModificationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectPersonnel", "ProjectPersonnel")
+                    b.HasOne("Rsp.Service.Domain.Entities.ProjectPersonnel", "ProjectPersonnel")
                         .WithMany()
                         .HasForeignKey("ProjectPersonnelId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectRecord", "ProjectRecord")
+                    b.HasOne("Rsp.Service.Domain.Entities.ProjectRecord", "ProjectRecord")
                         .WithMany()
                         .HasForeignKey("ProjectRecordId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -4006,30 +4006,30 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Navigation("ProjectRecord");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModificationChange", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.ProjectModificationChange", b =>
                 {
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectModification", null)
+                    b.HasOne("Rsp.Service.Domain.Entities.ProjectModification", null)
                         .WithMany("ProjectModificationChanges")
                         .HasForeignKey("ProjectModificationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModificationChangeAnswer", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.ProjectModificationChangeAnswer", b =>
                 {
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectModificationChange", "ProjectModificationChange")
+                    b.HasOne("Rsp.Service.Domain.Entities.ProjectModificationChange", "ProjectModificationChange")
                         .WithMany()
                         .HasForeignKey("ProjectModificationChangeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectPersonnel", "ProjectPersonnel")
+                    b.HasOne("Rsp.Service.Domain.Entities.ProjectPersonnel", "ProjectPersonnel")
                         .WithMany()
                         .HasForeignKey("ProjectPersonnelId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectRecord", "ProjectRecord")
+                    b.HasOne("Rsp.Service.Domain.Entities.ProjectRecord", "ProjectRecord")
                         .WithMany()
                         .HasForeignKey("ProjectRecordId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -4042,24 +4042,24 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Navigation("ProjectRecord");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectRecord", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.ProjectRecord", b =>
                 {
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectPersonnel", null)
+                    b.HasOne("Rsp.Service.Domain.Entities.ProjectPersonnel", null)
                         .WithMany("ProjectRecords")
                         .HasForeignKey("ProjectPersonnelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectRecordAnswer", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.ProjectRecordAnswer", b =>
                 {
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectPersonnel", "ProjectPersonnel")
+                    b.HasOne("Rsp.Service.Domain.Entities.ProjectPersonnel", "ProjectPersonnel")
                         .WithMany()
                         .HasForeignKey("ProjectPersonnelId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ProjectRecord", "ProjectRecord")
+                    b.HasOne("Rsp.Service.Domain.Entities.ProjectRecord", "ProjectRecord")
                         .WithMany()
                         .HasForeignKey("ProjectRecordId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -4070,9 +4070,9 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Navigation("ProjectRecord");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.RegulatoryBodyAuditTrail", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.RegulatoryBodyAuditTrail", b =>
                 {
-                    b.HasOne("Rsp.IrasService.Domain.Entities.RegulatoryBody", "RegulatoryBody")
+                    b.HasOne("Rsp.Service.Domain.Entities.RegulatoryBody", "RegulatoryBody")
                         .WithMany()
                         .HasForeignKey("RegulatoryBodyId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -4081,45 +4081,45 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.Navigation("RegulatoryBody");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.RegulatoryBodyUser", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.RegulatoryBodyUser", b =>
                 {
-                    b.HasOne("Rsp.IrasService.Domain.Entities.RegulatoryBody", null)
+                    b.HasOne("Rsp.Service.Domain.Entities.RegulatoryBody", null)
                         .WithMany("Users")
                         .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.SponsorOrganisationUser", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.SponsorOrganisationUser", b =>
                 {
-                    b.HasOne("Rsp.IrasService.Domain.Entities.SponsorOrganisation", null)
+                    b.HasOne("Rsp.Service.Domain.Entities.SponsorOrganisation", null)
                         .WithMany("Users")
                         .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectModification", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.ProjectModification", b =>
                 {
                     b.Navigation("ProjectModificationChanges");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectPersonnel", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.ProjectPersonnel", b =>
                 {
                     b.Navigation("ProjectRecords");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ProjectRecord", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.ProjectRecord", b =>
                 {
                     b.Navigation("ProjectModifications");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.RegulatoryBody", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.RegulatoryBody", b =>
                 {
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.SponsorOrganisation", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.SponsorOrganisation", b =>
                 {
                     b.Navigation("Users");
                 });

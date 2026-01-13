@@ -1,8 +1,8 @@
 ﻿using Ardalis.Specification;
-using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Domain.Entities;
+using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Domain.Entities;
 
-namespace Rsp.IrasService.Application.Specifications;
+namespace Rsp.Service.Application.Specifications;
 
 public class GetRespondentApplicationSpecification : Specification<ProjectRecord>
 {

@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Rsp.IrasService.Application.Contracts.Repositories;
-using Rsp.IrasService.Application.DTOS.Requests;
-using Rsp.IrasService.Domain.Entities;
-using Rsp.IrasService.Infrastructure;
-using Rsp.IrasService.Infrastructure.Repositories;
+using Rsp.Service.Application.Contracts.Repositories;
+using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Domain.Entities;
+using Rsp.Service.Infrastructure;
+using Rsp.Service.Infrastructure.Repositories;
 
-namespace Rsp.IrasService.UnitTests.Services.DocumentService;
+namespace Rsp.Service.UnitTests.Services.DocumentService;
 
-public class UpdateModificationDocument : TestServiceBase<IrasService.Services.DocumentService>
+public class UpdateModificationDocument : TestServiceBase<Service.Services.DocumentService>
 {
     private readonly IrasContext _context;
     private readonly DocumentRepository _documentRepository;
@@ -28,7 +28,7 @@ public class UpdateModificationDocument : TestServiceBase<IrasService.Services.D
     {
         // Arrange
         Mocker.Use<IDocumentRepository>(_documentRepository);
-        Sut = Mocker.CreateInstance<IrasService.Services.DocumentService>();
+        Sut = Mocker.CreateInstance<Service.Services.DocumentService>();
 
         // Act
         var result = await Sut.UpdateModificationDocument(modificationDocumentDto);
@@ -42,7 +42,7 @@ public class UpdateModificationDocument : TestServiceBase<IrasService.Services.D
     {
         // Arrange
         Mocker.Use<IDocumentRepository>(_documentRepository);
-        Sut = Mocker.CreateInstance<IrasService.Services.DocumentService>();
+        Sut = Mocker.CreateInstance<Service.Services.DocumentService>();
 
         var existingDocument = new ModificationDocument
         {

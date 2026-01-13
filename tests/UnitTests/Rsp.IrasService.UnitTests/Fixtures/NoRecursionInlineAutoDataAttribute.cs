@@ -1,4 +1,4 @@
-﻿namespace Rsp.IrasService.UnitTests.Fixtures;
+﻿namespace Rsp.Service.UnitTests.Fixtures;
 
 public class NoRecursionInlineAutoDataAttribute : InlineAutoDataAttribute
 {

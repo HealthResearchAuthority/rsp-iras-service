@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Rsp.IrasService.Domain.Entities;
-using Rsp.IrasService.Infrastructure.Helpers;
+using Rsp.Service.Domain.Entities;
+using Rsp.Service.Infrastructure.Helpers;
 
-namespace Rsp.IrasService.Infrastructure.EntitiesConfiguration;
+namespace Rsp.Service.Infrastructure.EntitiesConfiguration;
 
 public class ProjectModificationChangeConfiguration : IEntityTypeConfiguration<ProjectModificationChange>
 {

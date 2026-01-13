@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Rsp.IrasService.Application.Contracts.Repositories;
+using Rsp.Service.Application.Contracts.Repositories;
 
-namespace Rsp.IrasService.Infrastructure.Middlewares;
+namespace Rsp.Service.Infrastructure.Middlewares;
 
 public class DocumentAccessValidationMiddleware(IAccessValidationRepository accessValidationRepository) : IMiddleware
 {

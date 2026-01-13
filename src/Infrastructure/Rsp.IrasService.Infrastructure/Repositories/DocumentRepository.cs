@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Rsp.IrasService.Application.Constants;
-using Rsp.IrasService.Application.Contracts.Repositories;
-using Rsp.IrasService.Domain.Entities;
+using Rsp.Service.Application.Constants;
+using Rsp.Service.Application.Contracts.Repositories;
+using Rsp.Service.Domain.Entities;
 
-namespace Rsp.IrasService.Infrastructure.Repositories;
+namespace Rsp.Service.Infrastructure.Repositories;
 
 /// <summary>
 ///     Repository for managing project personnel responses and modification responses.

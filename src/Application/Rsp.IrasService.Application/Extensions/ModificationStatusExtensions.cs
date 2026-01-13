@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Rsp.IrasService.Application.Constants;
+using Rsp.Service.Application.Constants;
 
-namespace Rsp.IrasService.Application.Extensions;
+namespace Rsp.Service.Application.Extensions;
 public static class ModificationStatusExtensions
 {
     public static string ToBackstageDisplayStatus(this string? status, string? reviewerName)

@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Rsp.IrasService.Domain.Entities;
+using Rsp.Service.Domain.Entities;
 
-namespace Rsp.IrasService.Infrastructure.EntitiesConfiguration;
+namespace Rsp.Service.Infrastructure.EntitiesConfiguration;
 
 public class ProjectClosureConfiguration : IEntityTypeConfiguration<ProjectClosure>
 {

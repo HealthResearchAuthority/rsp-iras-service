@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Rsp.IrasService.Infrastructure;
+using Rsp.Service.Infrastructure;
 
 #nullable disable
 
-namespace Rsp.IrasService.Infrastructure.Migrations
+namespace Rsp.Service.Infrastructure.Migrations
 {
     [DbContext(typeof(IrasContext))]
     [Migration("20241001115929_CreateIrasDbSchema")]
@@ -25,7 +25,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.ResearchApplication", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.ResearchApplication", b =>
                 {
                     b.Property<string>("ApplicationId")
                         .HasColumnType("nvarchar(450)");
@@ -63,7 +63,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.ToTable("ResearchApplications");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.Respondent", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.Respondent", b =>
                 {
                     b.Property<string>("RespondentId")
                         .HasColumnType("nvarchar(450)");
@@ -98,7 +98,7 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.ToTable("Respondents");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.RespondentAnswer", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.RespondentAnswer", b =>
                 {
                     b.Property<string>("RespondentId")
                         .HasColumnType("nvarchar(450)");
@@ -140,15 +140,15 @@ namespace Rsp.IrasService.Infrastructure.Migrations
                     b.ToTable("RespondentAnswers");
                 });
 
-            modelBuilder.Entity("Rsp.IrasService.Domain.Entities.RespondentAnswer", b =>
+            modelBuilder.Entity("Rsp.Service.Domain.Entities.RespondentAnswer", b =>
                 {
-                    b.HasOne("Rsp.IrasService.Domain.Entities.ResearchApplication", "ResearchApplication")
+                    b.HasOne("Rsp.Service.Domain.Entities.ResearchApplication", "ResearchApplication")
                         .WithMany()
                         .HasForeignKey("ApplicationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Rsp.IrasService.Domain.Entities.Respondent", "Respondent")
+                    b.HasOne("Rsp.Service.Domain.Entities.Respondent", "Respondent")
                         .WithMany()
                         .HasForeignKey("RespondentId")
                         .OnDelete(DeleteBehavior.Cascade)

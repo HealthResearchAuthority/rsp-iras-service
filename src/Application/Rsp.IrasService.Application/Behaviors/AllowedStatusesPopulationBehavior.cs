@@ -1,9 +1,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using Rsp.IrasService.Application.CQRS.Queries;
-using Rsp.IrasService.Domain.Constants;
+using Rsp.Service.Application.CQRS.Queries;
+using Rsp.Service.Domain.Constants;
 
-namespace Rsp.IrasService.Application.Behaviors;
+namespace Rsp.Service.Application.Behaviors;
 
 /// <summary>
 /// Populates BaseQuery.AllowedStatuses from the current HttpContext user claims.

@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using Rsp.IrasService.Application.DTOS.Responses;
+using Rsp.Service.Application.DTOS.Responses;
 
-namespace Rsp.IrasService.Application.CQRS.Queries;
+namespace Rsp.Service.Application.CQRS.Queries;
 
 /// <summary>
 /// Query to retrieve all modification changes associated with a specific project modification.

@@ -1,6 +1,6 @@
-﻿using Rsp.IrasService.Application.Mappping;
+﻿using Rsp.Service.Application.Mappping;
 
-namespace Rsp.IrasService.UnitTests;
+namespace Rsp.Service.UnitTests;
 
 public class TestServiceBase
 {

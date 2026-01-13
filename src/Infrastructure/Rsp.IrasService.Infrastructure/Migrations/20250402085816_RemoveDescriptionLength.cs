@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Rsp.IrasService.Infrastructure.Migrations
+namespace Rsp.Service.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class RemoveDescriptionLength : Migration
