@@ -395,4 +395,27 @@ public class RespondentService(IProjectPersonnelRepository projectPersonnelRepos
 
         await projectPersonnelRepository.DeleteModificationDocumentResponses(specification, respondentDocuments);
     }
+
+    /// <summary>
+    /// Saves the list of document responses associated with a modification change.
+    /// </summary>
+    /// <param name="documentsAuditTrail">A list of document DTOs to be saved for the specified modification.</param>
+    /// <returns>A task that represents the asynchronous save operation.</returns>
+    public async Task SaveModificationDocumentsAuditTrail(List<ModificationDocumentsAuditTrailDto> documentsAuditTrail)
+    {
+        if (documentsAuditTrail?.Any() != true)
+        {
+            return; // Exit early if the list is null or empty
+        }
+
+        var modificationDocumentsAuditTrail = new List<ModificationDocumentsAuditTrail>();
+        foreach (var answer in documentsAuditTrail)
+        {
+            var respondentAnswer = answer.Adapt<ModificationDocumentsAuditTrail>();
+
+            modificationDocumentsAuditTrail.Add(respondentAnswer);
+        }
+
+        await projectPersonnelRepository.SaveModificationDocumentsAuditTrail(modificationDocumentsAuditTrail);
+    }
 }
