@@ -49,6 +49,15 @@ public class ProjectRecordAuditTrailHandler : IAuditTrailHandler<ProjectRecordAu
 
         foreach (var p in modifiedAuditableProps)
         {
+            if (p.Metadata.Name.Equals(nameof(ProjectRecord.Status)) &&
+                p.OriginalValue is not null &&
+                p.OriginalValue.Equals(ProjectRecordStatus.PendingClosure) &&
+                p.CurrentValue is not null &&
+                p.CurrentValue.Equals(ProjectRecordStatus.Active))
+            {
+                continue; // skip the audit trail for Not authorise case, as its handled by ProjectClosureHandler
+            }
+
             var auditTrailRecord = new ProjectRecordAuditTrail
             {
                 DateTimeStamp = DateTime.UtcNow,
