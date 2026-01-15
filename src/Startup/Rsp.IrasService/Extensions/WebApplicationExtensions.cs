@@ -58,7 +58,8 @@ public static class WebApplicationExtensions
                         // high-privilege roles will be by passed
                         (
                             user.IsInRole(Roles.Applicant) ||
-                            user.IsInRole(Roles.Sponsor)
+                            user.IsInRole(Roles.Sponsor) ||
+                            user.IsInRole(Roles.OrganisationAdministrator)
                         );
             }, appBuilder =>
             {
