@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using Rsp.Service.Application.Contracts.Repositories;
 using Rsp.Service.Application.DTOS.Requests;
 using Rsp.Service.Application.DTOS.Responses;
@@ -16,11 +17,59 @@ public class GetResponses : TestServiceBase<RespondentService>
 
     public GetResponses()
     {
+        var connection = new SqliteConnection("DataSource=:memory:");
+        connection.Open();
+
         var options = new DbContextOptionsBuilder<IrasContext>()
-            .UseInMemoryDatabase(Guid.NewGuid().ToString("N"))
+            .UseSqlite(connection)
             .Options;
 
         _context = new IrasContext(options);
+
+        _context.Database.EnsureCreated();
+
+        _context.Database.ExecuteSqlRaw
+            (
+            @"
+                CREATE VIEW vw_EffectiveProjectRecordAnswers AS
+                WITH LatestModificationAnswers AS
+                (
+                    SELECT
+                        pma.ProjectRecordId,
+                        pma.QuestionId,
+                        pma.UserId,
+                        pma.Response,
+                        pma.SelectedOptions,
+                        pma.OptionType,
+                        ROW_NUMBER() OVER
+                        (
+                            PARTITION BY pma.ProjectRecordId, pma.QuestionId
+                            ORDER BY pm.CreatedDate DESC
+                        ) AS rn
+                    FROM ProjectModificationAnswers pma
+                    INNER JOIN ProjectModifications pm
+                        ON pm.Id = pma.ProjectModificationId
+                    WHERE pm.Status = 'Approved'
+                )
+                SELECT
+                    pra.UserId,
+                    pra.ProjectRecordId,
+                    pra.QuestionId,
+                    pra.VersionId,
+                    pra.Category,
+                    pra.Section,
+                    COALESCE(lma.Response, pra.Response) AS Response,
+                    COALESCE(lma.OptionType, pra.OptionType) AS OptionType,
+                    COALESCE(lma.SelectedOptions, pra.SelectedOptions) AS SelectedOptions,
+                    CASE WHEN lma.QuestionId IS NOT NULL THEN 1 ELSE 0 END AS IsModified
+                FROM ProjectRecordAnswers pra
+                LEFT JOIN LatestModificationAnswers lma
+                    ON lma.ProjectRecordId = pra.ProjectRecordId
+                    AND lma.QuestionId = pra.QuestionId
+                    AND lma.UserId = pra.UserId
+                    AND lma.rn = 1"
+            );
+
         _respondentRepository = new RespondentRepository(_context);
     }
 

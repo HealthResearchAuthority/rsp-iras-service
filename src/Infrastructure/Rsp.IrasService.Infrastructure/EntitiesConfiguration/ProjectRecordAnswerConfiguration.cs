@@ -11,6 +11,10 @@ public class ProjectRecordAnswerConfiguration : IEntityTypeConfiguration<Project
         builder.HasKey(ra => new { ra.UserId, ra.QuestionId, ra.ProjectRecordId });
 
         builder
+            .HasIndex(e => new { e.ProjectRecordId, e.QuestionId, e.UserId })
+            .IncludeProperties(e => new { e.Response, e.SelectedOptions, e.OptionType, e.Category, e.Section, e.VersionId });
+
+        builder
             .Property(e => e.VersionId)
             .HasDefaultValue("published version");
     }

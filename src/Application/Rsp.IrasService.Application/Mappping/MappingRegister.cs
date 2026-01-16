@@ -39,9 +39,9 @@ public class MappingRegister : IRegister
             .Map(dest => dest.SelectedOptions, source => source.SelectedOption, source => !string.IsNullOrWhiteSpace(source.SelectedOption))
             .Map(dest => dest.SelectedOptions, source => string.Join(',', source.Answers), source => source.Answers.Count > 0);
 
-        // ProjectRecordAnswer -> RespondentAnswerDto mapping
+        // EffectiveProjectRecordAnswer -> RespondentAnswerDto mapping
         config
-            .NewConfig<ProjectRecordAnswer, RespondentAnswerDto>()
+            .NewConfig<EffectiveProjectRecordAnswer, RespondentAnswerDto>()
             .Map(dest => dest.VersionId, source => source.VersionId)
             .Map(dest => dest.CategoryId, source => source.Category)
             .Map(dest => dest.SectionId, source => source.Section)

@@ -160,12 +160,12 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
     /// </summary>
     /// <param name="specification">The specification to filter project record answers.</param>
     /// <returns>A collection of <see cref="ProjectRecordAnswer"/> objects.</returns>
-    public Task<IEnumerable<ProjectRecordAnswer>> GetResponses(ISpecification<ProjectRecordAnswer> specification)
+    public Task<IEnumerable<EffectiveProjectRecordAnswer>> GetResponses(ISpecification<EffectiveProjectRecordAnswer> specification)
     {
         var result = irasContext
-           .ProjectRecordAnswers
-           .WithSpecification(specification)
-           .AsEnumerable();
+            .Set<EffectiveProjectRecordAnswer>()
+            .WithSpecification(specification)
+            .AsEnumerable();
 
         return Task.FromResult(result);
     }

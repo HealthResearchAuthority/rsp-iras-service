@@ -3,7 +3,7 @@ using Rsp.Service.Domain.Entities;
 
 namespace Rsp.Service.Application.Specifications;
 
-public class GetRespondentAnswersSpecification : Specification<ProjectRecordAnswer>
+public class GetRespondentAnswersSpecification : Specification<EffectiveProjectRecordAnswer>
 {
     /// <summary>
     /// Defines a specification to return all records for the applicationId and categoryId
