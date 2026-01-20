@@ -27,7 +27,7 @@ public class AccessValidationRepository(IrasContext irasContext) : IAccessValida
         var userGuid = Guid.TryParse(userId, out var guid) ? guid : Guid.Empty;
 
         // 2. Sponsor indirect access to ProjectRecord via SponsorOrganisation (project-level)
-        if (projectRecord?.Status is ProjectRecordStatus.Active)
+        if (projectRecord?.Status is ProjectRecordStatus.Active or ProjectRecordStatus.PendingClosure or ProjectRecordStatus.Closed)
         {
             if (await SponsorHasAccessToProjectRecord(userGuid, projectRecord.Id))
             {
@@ -117,7 +117,7 @@ public class AccessValidationRepository(IrasContext irasContext) : IAccessValida
         }
 
         // 4. Sponsor indirect access to ProjectRecord via SponsorOrganisation (project-level)
-        if (modificationId == Guid.Empty && projectRecord?.Status is ProjectRecordStatus.Active)
+        if (modificationId == Guid.Empty && (projectRecord?.Status is ProjectRecordStatus.Active or ProjectRecordStatus.PendingClosure or ProjectRecordStatus.Closed))
         {
             if (await SponsorHasAccessToProjectRecord(userGuid, projectRecord.Id))
             {
