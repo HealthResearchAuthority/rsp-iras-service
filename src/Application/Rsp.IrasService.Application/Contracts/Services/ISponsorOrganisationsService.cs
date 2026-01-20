@@ -1,6 +1,6 @@
-﻿using Rsp.Service.Application.DTOS.Requests;
+﻿using Rsp.Logging.Interceptors;
+using Rsp.Service.Application.DTOS.Requests;
 using Rsp.Service.Application.DTOS.Responses;
-using Rsp.Logging.Interceptors;
 
 namespace Rsp.Service.Application.Contracts.Services;
 
@@ -38,4 +38,6 @@ public interface ISponsorOrganisationsService : IInterceptable
     Task<IEnumerable<SponsorOrganisationDto>> GetSponsorOrganisationsForUser(Guid userId);
 
     Task<SponsorOrganisationUserDto?> UpdateUserInSponsorOrganisation(SponsorOrganisationUserDto sponsorOrganisationUserDto);
+
+    Task<SponsorOrganisationUserDto> GetSponsorOrganisationUserById(Guid sponsorOrganisationUserId);
 }
