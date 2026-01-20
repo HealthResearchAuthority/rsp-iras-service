@@ -104,4 +104,10 @@ public class SponsorOrganisationsService(ISponsorOrganisationsRepository sponsor
 
         return response.Adapt<SponsorOrganisationUserDto?>();
     }
+
+    public async Task<SponsorOrganisationUserDto> GetSponsorOrganisationUserById(Guid sponsorOrganisationUserId)
+    {
+        var response = await sponsorOrganisationsRepository.GetSponsorOrganisationUserById(sponsorOrganisationUserId);
+        return response.Adapt<SponsorOrganisationUserDto>();
+    }
 }
