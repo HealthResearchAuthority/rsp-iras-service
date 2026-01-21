@@ -60,8 +60,7 @@ public class GetRespondentApplications : TestServiceBase<ApplicationsService>
         var researchApplications = applicationRequests.Select(request => new ProjectRecord
         {
             Id = request.Id,
-            UserId = request.UserId,
-            CreatedBy = request.CreatedBy,
+            CreatedBy = request.UserId,
             FullProjectTitle = request.FullProjectTitle,
             ShortProjectTitle = request.ShortProjectTitle,
             UpdatedBy = request.UpdatedBy
@@ -71,8 +70,7 @@ public class GetRespondentApplications : TestServiceBase<ApplicationsService>
         researchApplications.Add(new ProjectRecord
         {
             Id = Guid.NewGuid().ToString(),
-            UserId = "OtherRespondent",
-            CreatedBy = "User3",
+            CreatedBy = "OtherRespondent",
             FullProjectTitle = "Description3",
             ShortProjectTitle = "Title3",
             UpdatedBy = "Updater3"
@@ -92,7 +90,7 @@ public class GetRespondentApplications : TestServiceBase<ApplicationsService>
         foreach (var application in result)
         {
             var expectedApplication = applicationRequests.First(a => a.Id == application.Id);
-            application.CreatedBy.ShouldBe(expectedApplication.CreatedBy);
+            application.CreatedBy.ShouldBe(fixedRespondentId);
             application.FullProjectTitle.ShouldBe(expectedApplication.FullProjectTitle);
             application.ShortProjectTitle.ShouldBe(expectedApplication.ShortProjectTitle);
             application.UpdatedBy.ShouldBe(expectedApplication.UpdatedBy);

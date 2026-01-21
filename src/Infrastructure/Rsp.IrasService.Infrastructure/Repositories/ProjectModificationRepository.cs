@@ -152,7 +152,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                               .Select(a => a.Response)
                               .FirstOrDefault() ?? string.Empty,
                           Status = pm.Status,
-                          CreatedAt = pm.CreatedDate,
+                          CreatedDate = pm.CreatedDate,
                           ReviewerName = pm.ReviewerName
                       };
 
@@ -248,7 +248,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                                    a.QuestionId == ProjectRecordConstants.SponsorOrganisation)
                        .Select(a => a.Response)
                        .FirstOrDefault() ?? string.Empty,
-                   CreatedAt = pm.CreatedDate,
+                   CreatedDate = pm.CreatedDate,
                    ReviewerId = pm.ReviewerId,
                    Status = pm.Status,
                    SentToRegulatorDate = pm.SentToRegulatorDate,
@@ -405,7 +405,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             nameof(ProjectModificationResult.Category) => x => string.IsNullOrEmpty(x.Category) ? string.Empty : x.Category.ToLowerInvariant(),
             nameof(ProjectModificationResult.SponsorOrganisation) => x => x.SponsorOrganisation.ToLowerInvariant(),
             nameof(ProjectModificationResult.LeadNation) => x => x.LeadNation.ToLowerInvariant(),
-            nameof(ProjectModificationResult.CreatedAt) => x => x.CreatedAt,
+            nameof(ProjectModificationResult.CreatedDate) => x => x.CreatedDate,
             nameof(ProjectModificationResult.Status) => x => x.Status,
             nameof(ProjectModificationResult.SentToRegulatorDate) => x => x.SentToRegulatorDate!,
             nameof(ProjectModificationResult.SentToSponsorDate) => x => x.SentToSponsorDate!,
@@ -479,7 +479,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                        .Select(a => a.Response)
                        .FirstOrDefault() ?? string.Empty,
                    SponsorOrganisation = rtsId ?? string.Empty,
-                   CreatedAt = prm.CreatedDate,
+                   CreatedDate = prm.CreatedDate,
                    ReviewerId = prm.ReviewerId,
                    Status = prm.Status,
                    SentToRegulatorDate = prm.SentToRegulatorDate,

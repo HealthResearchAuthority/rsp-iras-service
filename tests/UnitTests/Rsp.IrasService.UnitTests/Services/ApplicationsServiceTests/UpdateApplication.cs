@@ -113,8 +113,7 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
         var existingApplication = new ProjectRecord
         {
             Id = applicationRequest.Id,
-            UserId = fixedRespondentId,
-            CreatedBy = applicationRequest.CreatedBy,
+            CreatedBy = fixedRespondentId,
             FullProjectTitle = applicationRequest.FullProjectTitle,
             ShortProjectTitle = applicationRequest.ShortProjectTitle,
             UpdatedBy = applicationRequest.UpdatedBy
@@ -139,7 +138,7 @@ public class UpdateApplication : TestServiceBase<ApplicationsService>
             .FirstOrDefaultAsync(a => a.Id == existingApplication.Id);
 
         dbApplication.ShouldNotBeNull();
-        dbApplication.UserId.ShouldBe(fixedRespondentId);
+        dbApplication.CreatedBy.ShouldBe(fixedRespondentId);
 
         (await _context.ProjectRecords.CountAsync()).ShouldBe(1);
     }

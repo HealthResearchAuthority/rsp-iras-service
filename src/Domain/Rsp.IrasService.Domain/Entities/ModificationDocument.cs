@@ -1,6 +1,8 @@
-﻿namespace Rsp.Service.Domain.Entities;
+﻿using Rsp.Service.Domain.Interfaces;
 
-public class ModificationDocument
+namespace Rsp.Service.Domain.Entities;
+
+public class ModificationDocument : ICreatable
 {
     /// <summary>
     /// Gets or sets the unique identifier for this modification document.
@@ -15,7 +17,7 @@ public class ModificationDocument
     /// <summary>
     /// Gets or sets the identifier of the user related to this document.
     /// </summary>
-    public string UserId { get; set; } = null!;
+    public string CreatedBy { get; set; } = null!;
 
     /// <summary>
     /// Gets or sets the identifier of the project record related to this document.

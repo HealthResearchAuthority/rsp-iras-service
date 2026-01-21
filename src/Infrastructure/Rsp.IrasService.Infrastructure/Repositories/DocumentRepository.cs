@@ -39,7 +39,7 @@ public class DocumentRepository(IrasContext irasContext) : IDocumentRepository
             DateTimeStamp = DateTime.UtcNow,
             Description = auditDescription,
             FileName = existing.FileName,
-            User = existing.UserId
+            User = existing.CreatedBy
         };
 
         irasContext.ModificationDocumentsAuditTrail.Add(auditEntry);

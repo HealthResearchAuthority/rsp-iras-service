@@ -15,6 +15,6 @@ public class RemoveNavigationPropertiesCustomization : ICustomization
 
         fixture.Customize<ProjectRecordAnswer>(c =>
             c.Without(x => x.ProjectRecord)
-             .Without(x => x.UserId));
+             .Without(x => x.CreatedBy));
     }
 }
