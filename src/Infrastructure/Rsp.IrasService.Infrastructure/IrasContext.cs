@@ -8,7 +8,9 @@ public class IrasContext(DbContextOptions<IrasContext> options) : DbContext(opti
 {
     public DbSet<ProjectRecord> ProjectRecords { get; set; }
     public DbSet<ProjectRecordAnswer> ProjectRecordAnswers { get; set; }
+    public DbSet<EffectiveProjectRecordAnswer> EffectiveProjectRecordAnswers { get; set; }
     public DbSet<EventType> EventTypes { get; set; }
+
     public DbSet<EmailTemplate> EmailTemplates { get; set; }
     public DbSet<RegulatoryBody> RegulatoryBodies { get; set; }
     public DbSet<RegulatoryBodyUser> RegulatoryBodiesUsers { get; set; }
@@ -36,6 +38,7 @@ public class IrasContext(DbContextOptions<IrasContext> options) : DbContext(opti
 
         modelBuilder.ApplyConfiguration(new ProjectRecordConfiguration());
         modelBuilder.ApplyConfiguration(new ProjectRecordAnswerConfiguration());
+        modelBuilder.ApplyConfiguration(new EffectiveProjectRecordAnswerConfiguration());
         modelBuilder.ApplyConfiguration(new EventTypeConfiguration());
         modelBuilder.ApplyConfiguration(new EmailTemplateConfiguration());
         modelBuilder.ApplyConfiguration(new RegulatoryBodyConfiguration());

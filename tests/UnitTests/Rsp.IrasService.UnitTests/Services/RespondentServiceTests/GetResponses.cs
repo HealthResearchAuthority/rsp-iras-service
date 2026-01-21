@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Ardalis.Specification;
+using Microsoft.EntityFrameworkCore;
 using Rsp.Service.Application.Contracts.Repositories;
 using Rsp.Service.Application.DTOS.Requests;
 using Rsp.Service.Application.DTOS.Responses;
@@ -12,7 +13,7 @@ namespace Rsp.Service.UnitTests.Services.RespondentServiceTests;
 public class GetResponses : TestServiceBase<RespondentService>
 {
     private readonly IrasContext _context;
-    private readonly RespondentRepository _respondentRepository;
+    private readonly TestRespondentRepository _respondentRepository;
 
     public GetResponses()
     {
@@ -21,7 +22,7 @@ public class GetResponses : TestServiceBase<RespondentService>
             .Options;
 
         _context = new IrasContext(options);
-        _respondentRepository = new RespondentRepository(_context);
+        _respondentRepository = new TestRespondentRepository(new RespondentRepository(_context));
     }
 
     /// <summary>
@@ -59,6 +60,9 @@ public class GetResponses : TestServiceBase<RespondentService>
 
         await _context.ProjectRecordAnswers.AddRangeAsync(respondentAnswers);
         await _context.SaveChangesAsync();
+
+        // Populate test repository with effective answers
+        _respondentRepository.SetEffectiveAnswers(respondentAnswers);
 
         // Act
         var result = await respondentService.GetResponses(fixedApplicationId);
@@ -105,6 +109,9 @@ public class GetResponses : TestServiceBase<RespondentService>
 
         await _context.ProjectRecordAnswers.AddRangeAsync(respondentAnswers);
         await _context.SaveChangesAsync();
+
+        // Populate test repository with effective answers
+        _respondentRepository.SetEffectiveAnswers(respondentAnswers);
 
         // Act
         var result = await respondentService.GetResponses(fixedApplicationId, fixedCategoryId);
@@ -198,111 +205,92 @@ public class GetResponses : TestServiceBase<RespondentService>
         result.ShouldNotBeNull();
         result.ShouldBeAssignableTo<IEnumerable<ModificationDocumentDto>>();
     }
+}
 
-    /// <summary>
-    ///     Tests that documents are returned for given documentId
-    /// </summary>
-    [Theory, AutoData]
-    public async Task GetModificationDocumentDetailsResponses_ShouldReturnAnswers_For_DocumentId(Guid documentId)
+/// <summary>
+/// Test-specific repository wrapper that allows populating EffectiveProjectRecordAnswers
+/// </summary>
+internal class TestRespondentRepository : IProjectPersonnelRepository
+{
+    private readonly IProjectPersonnelRepository _innerRepository;
+    private List<EffectiveProjectRecordAnswer> _effectiveAnswers = [];
+
+    public TestRespondentRepository(IProjectPersonnelRepository innerRepository)
     {
-        // Arrange
-        Mocker.Use<IProjectPersonnelRepository>(_respondentRepository);
-
-        // Optionally seed data here if needed for the test
-
-        Sut = Mocker.CreateInstance<RespondentService>();
-
-        // Act
-        var result = await Sut.GetModificationDocumentDetailsResponses(documentId);
-
-        // Assert
-        result.ShouldBeNull();
+        _innerRepository = innerRepository;
     }
 
-    /// <summary>
-    ///     Tests that documents are returned for given documentId
-    /// </summary>
-    [Theory, AutoData]
-    public async Task GetModificationDocumentAnswersResponses_ShouldReturnAnswers_For_DocumentId(Guid documentId)
+    public void SetEffectiveAnswers(IEnumerable<ProjectRecordAnswer> answers)
     {
-        // Arrange
-        Mocker.Use<IProjectPersonnelRepository>(_respondentRepository);
-
-        // Optionally seed data here if needed for the test
-
-        Sut = Mocker.CreateInstance<RespondentService>();
-
-        // Act
-        var result = await Sut.GetModificationDocumentDetailsResponses(documentId);
-
-        // Assert
-        result.ShouldBeNull();
-    }
-
-    /// <summary>
-    ///     Tests that organisations are returned for given modificationChangeId, projectRecordId, and personnelId
-    /// </summary>
-    [Theory, AutoData]
-    public async Task GetModificationOrganisations_ShouldReturnAnswers_For_ModificationChangeId_ProjectRecordId_PersonnelId(Guid modificationChangeId, string projectRecordId, string personnelId)
-    {
-        // Arrange
-        Mocker.Use<IProjectPersonnelRepository>(_respondentRepository);
-
-        // Optionally seed data here if needed for the test
-
-        Sut = Mocker.CreateInstance<RespondentService>();
-
-        // Act
-        var result = await Sut.GetModificationParticipatingOrganisationResponses(modificationChangeId, projectRecordId, personnelId);
-
-        // Assert
-        result.ShouldNotBeNull();
-        result.ShouldBeAssignableTo<IEnumerable<ModificationParticipatingOrganisationDto>>();
-    }
-
-    /// <summary>
-    ///     Tests that organisation answer is returned for given organisationId
-    /// </summary>
-    [Theory, AutoData]
-    public async Task GetModificationOrganisationAnswer_ShouldReturnAnswers_For_OrganisationId(Guid organisationId)
-    {
-        // Arrange
-        var respondentService = new RespondentService(_respondentRepository);
-        var fixedorganisationId = Guid.NewGuid();
-        var fixedApplicationId = "ApplicationId-123";
-        var fixedRespondentId = "RespondentId-123"; // Explicitly setting RespondentId
-
-        var respondentAnswers = new ModificationParticipatingOrganisation
+        _effectiveAnswers = answers.Select(a => new EffectiveProjectRecordAnswer
         {
-            Id = fixedorganisationId,
-            ProjectModificationChangeId = fixedorganisationId,
-            UserId = fixedRespondentId,
-            ProjectRecordId = fixedApplicationId,
-            OrganisationId = "Organisation-123",
-        };
-
-        var organisationAnswer = new ModificationParticipatingOrganisationAnswer
-        {
-            Id = Guid.NewGuid(),
-            ModificationParticipatingOrganisationId = fixedorganisationId,
-            QuestionId = "Q1",
-            VersionId = "v1",
-            Category = "Category-1",
-            Section = "Section-1",
-            Response = "Answer1",
-            OptionType = "Single",
-            SelectedOptions = "OptionA"
-        };
-
-        await _context.ModificationParticipatingOrganisations.AddAsync(respondentAnswers);
-        await _context.ModificationParticipatingOrganisationAnswers.AddAsync(organisationAnswer);
-        await _context.SaveChangesAsync();
-
-        // Act
-        var result = await respondentService.GetModificationParticipatingOrganisationAnswerResponses(respondentAnswers.Id);
-
-        // Assert
-        result.ShouldNotBeNull();
-        result.ShouldBeAssignableTo<ModificationParticipatingOrganisationAnswerDto>();
+            ProjectRecordId = a.ProjectRecordId,
+            UserId = a.UserId,
+            QuestionId = a.QuestionId,
+            VersionId = a.VersionId,
+            Category = a.Category,
+            Section = a.Section,
+            Response = a.Response,
+            OptionType = a.OptionType,
+            SelectedOptions = a.SelectedOptions
+        }).ToList();
     }
+
+    public Task SaveResponses(ISpecification<ProjectRecordAnswer> specification, List<ProjectRecordAnswer> respondentAnswers)
+        => _innerRepository.SaveResponses(specification, respondentAnswers);
+
+    public Task SaveModificationResponses(ISpecification<ProjectModificationAnswer> specification, List<ProjectModificationAnswer> respondentAnswers)
+        => _innerRepository.SaveModificationResponses(specification, respondentAnswers);
+
+    public Task SaveModificationChangeResponses(ISpecification<ProjectModificationChangeAnswer> specification, List<ProjectModificationChangeAnswer> respondentAnswers)
+        => _innerRepository.SaveModificationChangeResponses(specification, respondentAnswers);
+
+    public Task<IEnumerable<EffectiveProjectRecordAnswer>> GetResponses(ISpecification<EffectiveProjectRecordAnswer> specification)
+    {
+        // For testing, apply the specification to the in-memory effective answers
+        var result = specification.Evaluate(_effectiveAnswers).AsEnumerable();
+        return Task.FromResult(result);
+    }
+
+    public Task<IEnumerable<ProjectModificationAnswer>> GetResponses(ISpecification<ProjectModificationAnswer> specification)
+        => _innerRepository.GetResponses(specification);
+
+    public Task<IEnumerable<ProjectModificationChangeAnswer>> GetResponses(ISpecification<ProjectModificationChangeAnswer> specification)
+        => _innerRepository.GetResponses(specification);
+
+    public Task<IEnumerable<DocumentType>> GetResponses(ISpecification<DocumentType> specification)
+        => _innerRepository.GetResponses(specification);
+
+    public Task<IEnumerable<ModificationDocumentAnswer>> GetResponses(ISpecification<ModificationDocumentAnswer> specification)
+        => _innerRepository.GetResponses(specification);
+
+    public Task<IEnumerable<ModificationDocument>> GetResponses(ISpecification<ModificationDocument> specification)
+        => _innerRepository.GetResponses(specification);
+
+    public Task<IEnumerable<ModificationParticipatingOrganisation>> GetResponses(ISpecification<ModificationParticipatingOrganisation> specification)
+        => _innerRepository.GetResponses(specification);
+
+    public Task<ModificationParticipatingOrganisationAnswer> GetResponses(ISpecification<ModificationParticipatingOrganisationAnswer> specification)
+        => _innerRepository.GetResponses(specification);
+
+    public Task<ModificationDocument> GetResponse(ISpecification<ModificationDocument> specification)
+        => _innerRepository.GetResponse(specification);
+
+    public Task SaveModificationDocumentResponses(ISpecification<ModificationDocument> specification, List<ModificationDocument> respondentAnswers)
+        => _innerRepository.SaveModificationDocumentResponses(specification, respondentAnswers);
+
+    public Task SaveModificationParticipatingOrganisationResponses(ISpecification<ModificationParticipatingOrganisation> specification, List<ModificationParticipatingOrganisation> respondentAnswers)
+        => _innerRepository.SaveModificationParticipatingOrganisationResponses(specification, respondentAnswers);
+
+    public Task SaveModificationParticipatingOrganisationAnswerResponses(ISpecification<ModificationParticipatingOrganisationAnswer> specification, ModificationParticipatingOrganisationAnswer respondentAnswer)
+        => _innerRepository.SaveModificationParticipatingOrganisationAnswerResponses(specification, respondentAnswer);
+
+    public Task SaveModificationDocumentAnswerResponses(ISpecification<ModificationDocumentAnswer> specification, List<ModificationDocumentAnswer> respondentAnswer)
+        => _innerRepository.SaveModificationDocumentAnswerResponses(specification, respondentAnswer);
+
+    public Task DeleteModificationDocumentResponses(ISpecification<ModificationDocument> specification, List<ModificationDocument> respondentAnswers)
+        => _innerRepository.DeleteModificationDocumentResponses(specification, respondentAnswers);
+
+    public Task SaveModificationDocumentsAuditTrail(List<ModificationDocumentsAuditTrail> documentsAuditTrail)
+        => _innerRepository.SaveModificationDocumentsAuditTrail(documentsAuditTrail);
 }

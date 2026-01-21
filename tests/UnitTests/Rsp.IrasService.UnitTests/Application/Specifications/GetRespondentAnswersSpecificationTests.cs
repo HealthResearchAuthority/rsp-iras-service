@@ -11,7 +11,7 @@ public class GetRespondentAnswersSpecificationTests
     /// </summary>
     [Theory, NoRecursionAutoData]
     public void GetRespondentAnswersSpecification_ByApplicationIdAndCategoryId_ReturnsCorrectSpecification(
-        Generator<ProjectRecordAnswer> generator)
+        Generator<EffectiveProjectRecordAnswer> generator)
     {
         // Arrange
         var respondentAnswers = generator.Take(5).ToList();
@@ -35,7 +35,7 @@ public class GetRespondentAnswersSpecificationTests
     /// </summary>
     [Theory, NoRecursionAutoData]
     public void GetRespondentAnswersSpecification_ByApplicationId_ReturnsCorrectSpecification(
-        Generator<ProjectRecordAnswer> generator)
+        Generator<EffectiveProjectRecordAnswer> generator)
     {
         // Arrange
         var respondentAnswers = generator.Take(5).ToList();
@@ -58,7 +58,7 @@ public class GetRespondentAnswersSpecificationTests
     /// </summary>
     [Theory, NoRecursionInlineAutoData(3), NoRecursionInlineAutoData(0)]
     public void GetRespondentAnswersSpecification_ByRecords_ReturnsCorrectCount(int records,
-        Generator<ProjectRecordAnswer> generator)
+        Generator<EffectiveProjectRecordAnswer> generator)
     {
         // Arrange
         var respondentAnswers = generator.Take(5).ToList();

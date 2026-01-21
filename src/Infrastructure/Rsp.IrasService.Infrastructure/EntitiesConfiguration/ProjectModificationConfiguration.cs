@@ -9,5 +9,10 @@ public class ProjectModificationConfiguration : IEntityTypeConfiguration<Project
     public void Configure(EntityTypeBuilder<ProjectModification> builder)
     {
         builder.HasKey(r => r.Id);
+
+        builder
+            .HasIndex(e => new { e.ProjectRecordId, e.CreatedDate })
+            .IsDescending(false, true)
+            .IncludeProperties(e => new { e.Status });
     }
 }
