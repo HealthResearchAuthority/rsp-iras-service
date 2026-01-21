@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Rsp.Service.Application.Contracts.Repositories;
 using Rsp.Service.Domain.Entities;
 using Rsp.Service.Infrastructure;
@@ -21,22 +23,39 @@ public class GetSponsorOrganisationUserByIdTests : TestServiceBase<SponsorOrgani
         _sponsorOrganisationRepository = new SponsorOrganisationRepository(_context);
     }
 
-    [Theory, InlineAutoData(5)]
-    public async Task GetSponsorOrganisationUserById_ShouldReturnUser(
-        int records,
-        Generator<SponsorOrganisationUser> generator)
+    [Theory, AutoData]
+    public async Task GetSponsorOrganisationUserById_ShouldReturnUser
+    (
+        Guid id,
+        string userEmail,
+        SponsorOrganisationUser response
+    )
     {
         // Arrange
-        Mocker.Use<ISponsorOrganisationsRepository>(_sponsorOrganisationRepository);
+        var mockHttpContextAccessor = new HttpContextAccessor()
+        {
+            HttpContext = new DefaultHttpContext
+            {
+                User = new ClaimsPrincipal(new ClaimsIdentity(
+                [
+                    new(ClaimTypes.Email, userEmail)
+                ]))
+            }
+        };
+        response.Email = userEmail;
+
+        var sponsorOrganisationRepositoryMock = new Mock<ISponsorOrganisationsRepository>();
+        sponsorOrganisationRepositoryMock
+            .Setup(x => x.GetSponsorOrganisationUserById(It.IsAny<Guid>(), It.IsAny<string>()))
+            .ReturnsAsync(response);
+
+        Mocker.Use(sponsorOrganisationRepositoryMock.Object);
+        Mocker.Use<IHttpContextAccessor>(mockHttpContextAccessor);
+
         Sut = Mocker.CreateInstance<SponsorOrganisationsService>();
 
-        // Seed users
-        var users = await TestData.SeedData(_context, generator, records);
-        var targetUser = users.First();
-        await _context.SaveChangesAsync();
-
         // Act
-        var result = await Sut.GetSponsorOrganisationUserById(targetUser.Id);
+        var result = await Sut.GetSponsorOrganisationUserById(id);
 
         // Assert
         result.ShouldNotBeNull();

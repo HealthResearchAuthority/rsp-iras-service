@@ -28,5 +28,5 @@ public interface ISponsorOrganisationsRepository
 
     Task<SponsorOrganisationUser> UpdateUserInSponsorOrganisation(SponsorOrganisationUser user);
 
-    Task<SponsorOrganisationUser> GetSponsorOrganisationUserById(Guid sponsorOrganisationUserId);
+    Task<SponsorOrganisationUser> GetSponsorOrganisationUserById(Guid sponsorOrganisationUserId, string email);
 }
