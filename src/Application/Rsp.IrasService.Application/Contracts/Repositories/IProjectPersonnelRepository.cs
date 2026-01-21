@@ -13,7 +13,7 @@ public interface IProjectPersonnelRepository
     /// </summary>
     /// <param name="specification">The specification to filter project record answers.</param>
     /// <returns>A collection of <see cref="ProjectRecordAnswer"/> objects.</returns>
-    Task<IEnumerable<ProjectRecordAnswer>> GetResponses(ISpecification<ProjectRecordAnswer> specification);
+    Task<IEnumerable<EffectiveProjectRecordAnswer>> GetResponses(ISpecification<EffectiveProjectRecordAnswer> specification);
 
     /// <summary>
     /// Retrieves project modification answers matching the given specification.

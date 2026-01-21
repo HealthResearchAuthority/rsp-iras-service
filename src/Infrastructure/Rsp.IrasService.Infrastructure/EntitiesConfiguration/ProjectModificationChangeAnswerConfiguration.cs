@@ -23,6 +23,10 @@ public class ProjectModificationChangeAnswerConfiguration : IEntityTypeConfigura
             .OnDelete(DeleteBehavior.NoAction);
 
         builder
+            .HasIndex(ra => new { ra.ProjectRecordId, ra.QuestionId, ra.ProjectModificationChangeId })
+            .IncludeProperties(ra => new { ra.Response, ra.SelectedOptions, ra.OptionType, ra.UserId });
+
+        builder
             .Property(e => e.VersionId)
             .HasDefaultValue("published version");
     }
