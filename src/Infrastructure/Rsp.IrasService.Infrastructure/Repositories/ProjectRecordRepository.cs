@@ -369,6 +369,7 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
         return await irasContext
             .ProjectRecordAuditTrail
             .Where(x => x.ProjectRecordId == projectRecordId)
+            .OrderByDescending(x => x.DateTimeStamp)
             .ToListAsync();
     }
 
