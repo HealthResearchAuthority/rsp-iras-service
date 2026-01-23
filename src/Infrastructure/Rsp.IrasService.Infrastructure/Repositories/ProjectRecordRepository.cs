@@ -13,6 +13,8 @@ namespace Rsp.Service.Infrastructure.Repositories;
 public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRepository
 
 {
+    private const string status = "status";
+
     public async Task<ProjectRecord> CreateProjectRecord(ProjectRecord irasApplication)
     {
         var entity = await irasContext.ProjectRecords.AddAsync(irasApplication);
@@ -88,8 +90,8 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
         {
             ("title", "asc") => query.OrderBy(x => x.ShortProjectTitle),
             ("title", "desc") => query.OrderByDescending(x => x.ShortProjectTitle),
-            ("status", "asc") => query.OrderBy(x => x.Status),
-            ("status", "desc") => query.OrderByDescending(x => x.Status),
+            (status, "asc") => query.OrderBy(x => x.Status),
+            (status, "desc") => query.OrderByDescending(x => x.Status),
             ("createddate", "asc") => query.OrderBy(x => x.CreatedDate),
             ("createddate", "desc") => query.OrderByDescending(x => x.CreatedDate),
             ("irasid", "asc") => query.OrderBy(x => x.IrasId),
@@ -142,6 +144,8 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
             ("leadnation", "desc") => projectRecords.OrderByDescending(x => x.LeadNation),
             ("createddate", "asc") => projectRecords.OrderBy(x => x.CreatedDate),
             ("createddate", "desc") => projectRecords.OrderByDescending(x => x.CreatedDate),
+            (status, "asc") => projectRecords.OrderBy(x => x.Status),
+            (status, "desc") => projectRecords.OrderByDescending(x => x.Status),
             _ => projectRecords.OrderBy(x => x.IrasId),
         };
 
