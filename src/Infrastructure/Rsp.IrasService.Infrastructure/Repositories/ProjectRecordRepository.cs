@@ -142,6 +142,8 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
             ("leadnation", "desc") => projectRecords.OrderByDescending(x => x.LeadNation),
             ("createddate", "asc") => projectRecords.OrderBy(x => x.CreatedDate),
             ("createddate", "desc") => projectRecords.OrderByDescending(x => x.CreatedDate),
+            ("status", "asc") => projectRecords.OrderBy(x => x.Status),
+            ("status", "desc") => projectRecords.OrderByDescending(x => x.Status),
             _ => projectRecords.OrderBy(x => x.IrasId),
         };
 
