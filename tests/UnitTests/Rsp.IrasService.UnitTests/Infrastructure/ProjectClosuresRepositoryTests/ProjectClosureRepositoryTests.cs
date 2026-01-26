@@ -356,6 +356,58 @@ public class ProjectClosureRepositoryTests
         total.ShouldBe(0);
     }
 
+    [Theory]
+    [InlineData("asc", new[] { "PR-A1", "PR-A2", "PR-N1", "PR-N2" })]
+    [InlineData("desc", new[] { "PR-A2", "PR-A1", "PR-N2", "PR-N1" })]
+    public async Task GetProjectClosuresBySponsorOrganisationUser_ShouldPutAuthorisedFirst_WhenSortingByClosureDate(string sortDirection, string[] expected)
+    {
+        var closures = new[]
+        {
+            // Authorised
+            new ProjectClosure { Id=Guid.NewGuid(), ProjectRecordId="PR-A1", ShortProjectTitle="A1", Status=ProjectClosureStatus.Authorised, IrasId=1, ClosureDate=new DateTime(2025,1,2,0,0,0,DateTimeKind.Utc), UserId="u1", CreatedBy="seed", UpdatedBy="seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
+            new ProjectClosure { Id=Guid.NewGuid(), ProjectRecordId="PR-A2", ShortProjectTitle="A2", Status=ProjectClosureStatus.Authorised, IrasId=2, ClosureDate=new DateTime(2025,1,3,0,0,0,DateTimeKind.Utc), UserId="u2", CreatedBy="seed", UpdatedBy="seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
+
+            // Not-Authorised
+            new ProjectClosure { Id=Guid.NewGuid(), ProjectRecordId="PR-N1", ShortProjectTitle="N1", Status=ProjectClosureStatus.WithSponsor,   IrasId=3, ClosureDate=new DateTime(2025,1,1,0,0,0,DateTimeKind.Utc), UserId="u3", CreatedBy="seed", UpdatedBy="seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
+            new ProjectClosure { Id=Guid.NewGuid(), ProjectRecordId="PR-N2", ShortProjectTitle="N2", Status=ProjectClosureStatus.NotAuthorised, IrasId=4, ClosureDate=new DateTime(2025,1,4,0,0,0,DateTimeKind.Utc), UserId="u4", CreatedBy="seed", UpdatedBy="seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
+        };
+
+        var userId = await SeedScenarioAsync(closures: closures);
+        var search = new ProjectClosuresSearchRequest { SearchTerm = null };
+
+        var list = _repository.GetProjectClosuresBySponsorOrganisationUser(
+            search, pageNumber: 1, pageSize: 50,
+            sortField: nameof(ProjectClosure.ClosureDate), sortDirection: sortDirection,
+            sponsorOrganisationUserId: userId).ToList();
+
+        list.Select(x => x.ProjectRecordId).ShouldBe(expected, ignoreOrder: false);
+    }
+
+    [Fact]
+    public async Task GetProjectClosuresBySponsorOrganisationUser_SortingByClosureDateAsc_ShouldKeepNullsAtEndOfEachGroup()
+    {
+        var closures = new[]
+        {
+            // Authorised
+            new ProjectClosure { Id=Guid.NewGuid(), ProjectRecordId="PR-A1", ShortProjectTitle="A1", Status=ProjectClosureStatus.Authorised, IrasId=1, ClosureDate=new DateTime(2025,1,2,0,0,0,DateTimeKind.Utc), UserId="u1", CreatedBy="seed", UpdatedBy="seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
+            new ProjectClosure { Id=Guid.NewGuid(), ProjectRecordId="PR-A0", ShortProjectTitle="A0", Status=ProjectClosureStatus.Authorised, IrasId=0, ClosureDate=null,                                             UserId="u0", CreatedBy="seed", UpdatedBy="seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
+
+            // Not-Authorised
+            new ProjectClosure { Id=Guid.NewGuid(), ProjectRecordId="PR-N1", ShortProjectTitle="N1", Status=ProjectClosureStatus.WithSponsor,   IrasId=2, ClosureDate=new DateTime(2025,1,1,0,0,0,DateTimeKind.Utc), UserId="u2", CreatedBy="seed", UpdatedBy="seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
+            new ProjectClosure { Id=Guid.NewGuid(), ProjectRecordId="PR-N0", ShortProjectTitle="N0", Status=ProjectClosureStatus.NotAuthorised, IrasId=3, ClosureDate=null,                                             UserId="u3", CreatedBy="seed", UpdatedBy="seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
+        };
+
+        var userId = await SeedScenarioAsync(closures: closures);
+        var search = new ProjectClosuresSearchRequest { SearchTerm = null };
+
+        var list = _repository.GetProjectClosuresBySponsorOrganisationUser(
+            search, pageNumber: 1, pageSize: 50,
+            sortField: nameof(ProjectClosure.ClosureDate), sortDirection: "asc",
+            sponsorOrganisationUserId: userId).ToList();
+
+        list.Select(x => x.ProjectRecordId).ShouldBe(new[] { "PR-A1", "PR-A0", "PR-N1", "PR-N0" }, ignoreOrder: false);
+    }
+
     [Fact]
     public async Task UpdateProjectClosureStatus_Authorised_Updates_Closure_And_Closes_ProjectRecord()
     {
@@ -478,5 +530,65 @@ public class ProjectClosureRepositoryTests
         var anyModified = await _context.ProjectClosures
             .AnyAsync(pc => pc.Status == nameof(ProjectClosureStatus.Authorised) && pc.UpdatedBy == userId);
         anyModified.ShouldBeFalse();
+    }
+
+    [Fact]
+    public async Task GetProjectClosuresBySponsorOrganisationUserWithoutPaging_ShouldReturnOnlyClosuresLinkedToUsersRtsId()
+    {
+        var closures = new[]
+        {
+            new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-1", ShortProjectTitle = "Alpha",   Status = ProjectClosureStatus.WithSponsor, IrasId = 100, SentToSponsorDate = DateTime.UtcNow.AddDays(-3), ClosureDate = DateTime.UtcNow.AddDays(-2), DateActioned = DateTime.UtcNow.AddDays(-2), UserId = "u1", CreatedBy = "seed", UpdatedBy = "seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
+            new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-2", ShortProjectTitle = "Bravo",   Status = "Closed",                         IrasId = 200, SentToSponsorDate = DateTime.UtcNow.AddDays(-2), ClosureDate = DateTime.UtcNow.AddDays(-1), DateActioned = DateTime.UtcNow.AddDays(-1), UserId = "u2", CreatedBy = "seed", UpdatedBy = "seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
+            new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-3", ShortProjectTitle = "Charlie", Status = ProjectClosureStatus.WithSponsor, IrasId = 300, SentToSponsorDate = DateTime.UtcNow.AddDays(-1), ClosureDate = DateTime.UtcNow,            DateActioned = DateTime.UtcNow,            UserId = "u3", CreatedBy = "seed", UpdatedBy = "seed", TransactionId="C2414/1", ProjectClosureNumber=1 }
+        };
+
+        var map = new Dictionary<string, string>
+        {
+            ["PR-1"] = "RTS-ABC", // include
+            ["PR-2"] = "RTS-ABC", // include
+            ["PR-3"] = "RTS-XYZ"  // exclude
+        };
+
+        var userId = await SeedScenarioAsync(mainRtsId: "RTS-ABC", closures: closures, recordIdToRtsMap: map);
+
+        var searchQuery = new ProjectClosuresSearchRequest { SearchTerm = null };
+
+        var list = _repository.GetProjectClosuresBySponsorOrganisationUserWithoutPaging(searchQuery, sponsorOrganisationUserId: userId).ToList();
+
+        list.Count.ShouldBe(2);
+        list.Select(x => x.ProjectRecordId).ShouldBe(new[] { "PR-1", "PR-2" }, ignoreOrder: true);
+    }
+
+    [Fact]
+    public async Task GetProjectClosuresBySponsorOrganisationUserWithoutPaging_ShouldRespectSearchTerm_On_IrasId_AndReturnAllMatches()
+    {
+        var closures = new[]
+        {
+        new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-1", ShortProjectTitle = "A", Status = ProjectClosureStatus.WithSponsor, IrasId = 101, SentToSponsorDate = DateTime.UtcNow, ClosureDate = DateTime.UtcNow, DateActioned = DateTime.UtcNow, UserId = "u1", CreatedBy = "seed", UpdatedBy = "seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
+        new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-2", ShortProjectTitle = "B", Status = "Closed",                         IrasId = 202, SentToSponsorDate = DateTime.UtcNow, ClosureDate = DateTime.UtcNow, DateActioned = DateTime.UtcNow, UserId = "u2", CreatedBy = "seed", UpdatedBy = "seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
+        new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-3", ShortProjectTitle = "C", Status = ProjectClosureStatus.NotAuthorised, IrasId = 1202, SentToSponsorDate = DateTime.UtcNow, ClosureDate = DateTime.UtcNow, DateActioned = DateTime.UtcNow, UserId = "u3", CreatedBy = "seed", UpdatedBy = "seed", TransactionId="C2414/1", ProjectClosureNumber=1 }
+        };
+
+        var userId = await SeedScenarioAsync(closures: closures);
+
+        var searchQuery = new ProjectClosuresSearchRequest { SearchTerm = "202" };
+
+        var list = _repository.GetProjectClosuresBySponsorOrganisationUserWithoutPaging(searchQuery, sponsorOrganisationUserId: userId).ToList();
+
+        list.Count.ShouldBe(2);
+        list.Select(x => x.ProjectRecordId).ShouldBe(new[] { "PR-2", "PR-3" }, ignoreOrder: true);
+    }
+
+    [Fact]
+    public async Task GetProjectClosuresBySponsorOrganisationUserWithoutPaging_WhenUserHasNoRtsIdOrNotFound_ReturnsEmpty()
+    {
+        var _ = await SeedScenarioAsync(mainRtsId: "RTS-ABC");
+
+        var notExistingUserId = Guid.NewGuid();
+        var searchQuery = new ProjectClosuresSearchRequest { SearchTerm = null };
+
+        var list = _repository.GetProjectClosuresBySponsorOrganisationUserWithoutPaging(searchQuery, sponsorOrganisationUserId: notExistingUserId).ToList();
+
+        list.ShouldBeEmpty();
     }
 }

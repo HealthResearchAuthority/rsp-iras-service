@@ -89,6 +89,18 @@ public class ProjectClosureRepository(IrasContext irasContext) : IProjectClosure
             .Take(pageSize);
     }
 
+    public IEnumerable<ProjectClosure> GetProjectClosuresBySponsorOrganisationUserWithoutPaging
+    (
+       ProjectClosuresSearchRequest searchQuery,
+       Guid sponsorOrganisationUserId
+    )
+    {
+        var projectclosures = ProjectClosuresBySponsorOrganisationUserQuery(sponsorOrganisationUserId);
+        var filtered = FilterProjectClosuresBySponsorOrganisationUserQuery(projectclosures, searchQuery);
+
+        return filtered;
+    }
+
     public int GetProjectClosuresBySponsorOrganisationUserCount(ProjectClosuresSearchRequest searchQuery, Guid sponsorOrganisationUserId)
     {
         var projectclosures = ProjectClosuresBySponsorOrganisationUserQuery(sponsorOrganisationUserId);
@@ -96,14 +108,29 @@ public class ProjectClosureRepository(IrasContext irasContext) : IProjectClosure
     }
 
     private static IEnumerable<ProjectClosure> SortProjectClosures(
-      IEnumerable<ProjectClosure> projectClosures, string sortField, string sortDirection)
+    IEnumerable<ProjectClosure> projectClosures, string sortField, string sortDirection)
     {
+        // For closure date sorting, records with Authorised status should be displayed first
+        if (string.Equals(sortField, nameof(ProjectClosure.ClosureDate), StringComparison.Ordinal))
+        {
+            var byAuthorisedFirst = projectClosures
+                .OrderBy(x => x.Status == ProjectClosureStatus.Authorised ? 0 : 1);
+
+            if (sortDirection == "desc")
+            {
+                return byAuthorisedFirst
+                    .ThenByDescending(x => x.ClosureDate ?? DateTime.MinValue);
+            }
+
+            return byAuthorisedFirst
+                .ThenBy(x => x.ClosureDate ?? DateTime.MaxValue);
+        }
+
         Func<ProjectClosure, object>? keySelector = sortField switch
         {
             nameof(ProjectClosure.ShortProjectTitle) => x => x.ShortProjectTitle.ToLowerInvariant(),
             nameof(ProjectClosure.IrasId) => x => x.IrasId,
             nameof(ProjectClosure.SentToSponsorDate) => x => x.SentToSponsorDate,
-            nameof(ProjectClosure.ClosureDate) => x => x.ClosureDate,
             nameof(ProjectClosure.Status) => x => x.Status,
             _ => null
         };
