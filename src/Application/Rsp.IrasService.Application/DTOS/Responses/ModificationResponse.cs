@@ -31,6 +31,16 @@ public record ModificationResponse
     public string Status { get; set; } = null!;
 
     /// <summary>
+    /// The reason for rejecting approval.
+    /// </summary>
+    public string ReasonNotApproved { get; set; } = null!;
+
+    /// <summary>
+    /// The Reviewr added comments.
+    /// </summary>
+    public string ReviewerComments { get; set; } = null!;
+
+    /// <summary>
     /// Overall ranking type of the modification
     /// </summary>
     public string? ModificationType { get; set; }
