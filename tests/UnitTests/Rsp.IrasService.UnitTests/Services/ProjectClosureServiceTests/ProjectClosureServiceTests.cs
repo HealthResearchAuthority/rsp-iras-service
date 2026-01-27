@@ -127,4 +127,28 @@ public class ProjectClosureServiceTests : TestServiceBase<ProjectClosureService>
             userId),
             Times.Once);
     }
+
+    [Theory]
+    [NoRecursionInlineAutoData()]
+    public async Task GetProjectClosuresBySponsorOrganisationUserIdWithoutPaging_ShouldReturnMappedResponse(
+        Guid sponsorOrganisationUserId,
+        ProjectClosuresSearchRequest searchQuery,
+        List<ProjectClosure> projectClosures)
+    {
+        // Arrange
+        var mockRepo = new Mock<IProjectClosureRepository>();
+        mockRepo.Setup(r => r.GetProjectClosuresBySponsorOrganisationUserWithoutPaging(searchQuery, sponsorOrganisationUserId))
+                .Returns(projectClosures.AsEnumerable());
+
+        var service = new ProjectClosureService(mockRepo.Object);
+
+        // Act
+        var result = await service.GetProjectClosuresBySponsorOrganisationUserIdWithoutPaging(sponsorOrganisationUserId, searchQuery);
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.ProjectClosures.ShouldNotBeNull();
+        result.ProjectClosures.Count().ShouldBe(projectClosures.Count);
+        result.TotalCount.ShouldBe(projectClosures.Count);
+    }
 }

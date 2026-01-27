@@ -11,7 +11,7 @@ public interface IProjectClosureRepository
     /// </summary>
     /// <param name="projectClosure"></param>
     /// <returns></returns>
-    Task<ProjectClosure> CreateProjectClosure(ProjectClosure projectClosure);    
+    Task<ProjectClosure> CreateProjectClosure(ProjectClosure projectClosure);
 
     /// <summary>
     /// Update the projectClosure records (and projectRecord status to closed for Authorised project closure status)
@@ -27,7 +27,7 @@ public interface IProjectClosureRepository
     /// </summary>
     /// <param name="projectRecordId"></param>
     /// <returns></returns>
-    Task<IEnumerable<ProjectClosure>> GetProjectClosures(string projectRecordId);    
+    Task<IEnumerable<ProjectClosure>> GetProjectClosures(string projectRecordId);
 
     /// <summary>
     /// Retrieves a paged, sorted list of sponsor organisation user project closures matching the supplied search criteria.
@@ -60,4 +60,19 @@ public interface IProjectClosureRepository
     /// <param name="sponsorOrganisationUserId">Sponsor organisation user unique identifier.</param>
     /// <returns>Total number of matching records.</returns>
     int GetProjectClosuresBySponsorOrganisationUserCount(ProjectClosuresSearchRequest searchQuery, Guid sponsorOrganisationUserId);
+
+    /// <summary>
+    /// Retrieves a collection of sponsor organisation user project closures matching the supplied search criteria.
+    /// </summary>
+    /// <param name="searchQuery">Object containing filtering criteria for project closures.</param>
+    /// <param name="sponsorOrganisationUserId">The unique identifier of the sponsor organisation user for which project closures are requested</param>
+    /// <returns>Sequence of <see cref="ProjectClosure"/> projections.</returns>
+    /// <remarks>
+    /// Expected to perform server-side filtering for efficiency, but no paging.
+    /// </remarks>
+    public IEnumerable<ProjectClosure> GetProjectClosuresBySponsorOrganisationUserWithoutPaging
+    (
+       ProjectClosuresSearchRequest searchQuery,
+       Guid sponsorOrganisationUserId
+    );
 }
