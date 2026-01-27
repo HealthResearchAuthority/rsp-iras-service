@@ -77,6 +77,24 @@ public class ProjectClosureController(IMediator mediator) : ControllerBase
     }
 
     /// <summary>
+    /// Gets project closures records for specific sponsorOrganisationUserId with filtering, but without pagination
+    /// </summary>
+    /// <param name="sponsorOrganisationUserId">The unique identifier of the sponsor organisation user for which project closures are requested.</param>
+    /// <param name="searchQuery">Object containing filtering criteria for project closures.</param>
+    /// <returns>Returns a collection of project closures.</returns>
+    [HttpPost("getprojectclosuresbysponsororganisationuseridwithoutpaging")]
+    public async Task<ActionResult<ProjectClosuresSearchResponse>> GetProjectClosuresBySponsorOrganisationUserIdWithoutPaging
+    (
+        Guid sponsorOrganisationUserId,
+        [FromBody] ProjectClosuresSearchRequest searchQuery
+    )
+    {
+        var query = new GetProjectClosuresBySponsorOrganisationUserIdWithoutPagingQuery(sponsorOrganisationUserId, searchQuery);
+
+        return await mediator.Send(query);
+    }
+
+    /// <summary>
     /// Updates the project closure status to either Authorised or Not authorised.
     /// If the status is set to Authorised, the method also closes the associated project record
     /// by updating its status to Closed.

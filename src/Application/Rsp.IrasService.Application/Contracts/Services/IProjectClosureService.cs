@@ -1,6 +1,6 @@
-﻿using Rsp.Service.Application.DTOS.Requests;
+﻿using Rsp.Logging.Interceptors;
+using Rsp.Service.Application.DTOS.Requests;
 using Rsp.Service.Application.DTOS.Responses;
-using Rsp.Logging.Interceptors;
 
 namespace Rsp.Service.Application.Contracts.Services;
 
@@ -15,7 +15,7 @@ public interface IProjectClosureService : IInterceptable
     /// </summary>
     /// <param name="projectClosureRequest">The project colsure values</param>
     Task<ProjectClosureResponse> CreateProjectClosure(ProjectClosureRequest projectClosureRequest);
-    
+
     /// <summary>
     /// Updates the values of an project closure record (and project record status to closed for Authorised project closure status)
     /// </summary>
@@ -28,7 +28,7 @@ public interface IProjectClosureService : IInterceptable
     /// Returns a single project closure
     /// </summary>
     /// <param name="projectRecordId">Id of the application</param>
-    Task<ProjectClosuresSearchResponse> GetProjectClosuresByProjectRecordId(string projectRecordId);    
+    Task<ProjectClosuresSearchResponse> GetProjectClosuresByProjectRecordId(string projectRecordId);
 
     /// <summary>
     /// Gets project closures records for specific sponsorOrganisationUserId with filtering, sorting and pagination
@@ -41,4 +41,12 @@ public interface IProjectClosureService : IInterceptable
     /// <param name="sortDirection">The direction of sorting: "asc" for ascending or "desc" for descending.</param>
     /// <returns>Returns a paginated list of project closures.</returns>
     Task<ProjectClosuresSearchResponse> GetProjectClosuresBySponsorOrganisationUserId(Guid sponsorOrganisationUserId, ProjectClosuresSearchRequest searchQuery, int pageNumber, int pageSize, string sortField, string sortDirection);
+
+    /// <summary>
+    /// Gets project closures records for specific sponsorOrganisationUserId with filtering, without pagination
+    /// </summary>
+    /// <param name="sponsorOrganisationUserId">The unique identifier of the sponsor organisation user for which project closures are requested.</param>
+    /// <param name="searchQuery">Object containing filtering criteria for project closures.</param>
+    /// <returns>Returns a collection of project closures.</returns>
+    Task<ProjectClosuresSearchResponse> GetProjectClosuresBySponsorOrganisationUserIdWithoutPaging(Guid sponsorOrganisationUserId, ProjectClosuresSearchRequest searchQuery);
 }
