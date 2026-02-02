@@ -76,7 +76,7 @@ public class ProjectModificationAuditTrailHandler :
                 nameof(projectModification.ReasonNotApproved) =>
                     GenerateReasonNotApprovedChangeDescription(p.CurrentValue?.ToString(), p.OriginalValue?.ToString()),
                 nameof(projectModification.ReviewerComments) =>
-                    [(p.OriginalValue?.ToString() == null ? "Comment added" : "Comment changed", true, false)],
+                    GenerateReviewerCommentChangeDescription(p.CurrentValue?.ToString(), p.OriginalValue?.ToString()),
                 _ => [("", true, false)]
             };
 
@@ -173,5 +173,18 @@ public class ProjectModificationAuditTrailHandler :
                 false
             )
         ];
+    }
+
+    private static List<(string Description, bool IsBackstageOnly, bool ShowUserEmailToFrontstage)> GenerateReviewerCommentChangeDescription(string? newComment, string? oldComment)
+    {
+        return [
+            (
+                oldComment == null ?
+                $"Reviewer comment added" :
+                $"Reviewer comment changed from {oldComment} to {newComment ?? "(null)"}",
+                true,
+                false
+            )
+            ];
     }
 }
