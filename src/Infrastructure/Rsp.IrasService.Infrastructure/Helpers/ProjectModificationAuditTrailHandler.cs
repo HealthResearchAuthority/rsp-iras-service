@@ -180,8 +180,8 @@ public class ProjectModificationAuditTrailHandler :
         return [
             (
                 oldComment == null ?
-                $"Reviewer comment added" :
-                $"Reviewer comment changed from {oldComment} to {newComment ?? "(null)"}",
+                $"Comment added" :
+                $"Comment changed from {oldComment} to {newComment ?? "(null)"}",
                 true,
                 false
             )
