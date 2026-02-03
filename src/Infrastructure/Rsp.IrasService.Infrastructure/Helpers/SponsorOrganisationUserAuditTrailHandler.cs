@@ -44,7 +44,6 @@ public class SponsorOrganisationUserAuditTrailHandler : IAuditTrailHandler<Spons
         {
             var sponsorRoleDisplay = FormatRole(sponsorOrganisationUser.SponsorRole);
 
-
             result.Add(new SponsorOrganisationAuditTrail
             {
                 DateTimeStamp = DateTime.UtcNow,
@@ -155,7 +154,6 @@ public class SponsorOrganisationUserAuditTrailHandler : IAuditTrailHandler<Spons
     private static SponsorOrganisationAuditTrail GenerateStatusChangeAuditTrail(PropertyEntry entry, SponsorOrganisationUser sponsorOrganisationUser, string systemAdminEmail)
     {
         var newStatus = entry.CurrentValue as bool? == true ? "enabled for" : "disabled from";
-        var newRoleDisplay = FormatRole(newStatus);
 
         return new SponsorOrganisationAuditTrail
         {
@@ -163,11 +161,11 @@ public class SponsorOrganisationUserAuditTrailHandler : IAuditTrailHandler<Spons
             RtsId = sponsorOrganisationUser.RtsId,
             SponsorOrganisationId = sponsorOrganisationUser.Id,
             User = systemAdminEmail,
-            Description = $"{sponsorOrganisationUser.Email} {newRoleDisplay} sponsor organisation"
+            Description = $"{sponsorOrganisationUser.Email} {newStatus} sponsor organisation"
         };
     }
 
-    static string? FormatRole(string? role)
+    private static string? FormatRole(string? role)
     {
         if (string.IsNullOrWhiteSpace(role))
             return role;
