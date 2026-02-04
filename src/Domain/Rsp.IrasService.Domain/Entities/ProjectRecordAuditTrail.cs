@@ -7,6 +7,7 @@ public class ProjectRecordAuditTrail
     public DateTime DateTimeStamp { get; set; }
     public string Description { get; set; } = null!;
     public string User { get; set; } = null!;
+    public string? ModificationIdentifier { get; set; }
 
     // navigation properties
     public ProjectRecord ProjectRecord { get; set; } = null!;
