@@ -138,7 +138,7 @@ public class ProjectModificationChangeAuditTrailHandler : IAuditTrailHandler<Pro
             {
                 DateTimeStamp = DateTime.UtcNow,
                 ProjectRecordId = projectRecordAnswer!.ProjectRecordId,
-                User = userEmail,
+                User = projectModification.ReviewType == ModificationStatus.ReviewType.ReviewRequired ? "Review body" : "System",
                 Description = description,
                 ModificationIdentifier = projectModification?.ModificationIdentifier
             };
