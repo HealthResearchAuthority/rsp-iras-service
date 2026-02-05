@@ -30,8 +30,8 @@ public class ProjectModificationChangeAuditTrailHandler : IAuditTrailHandler<Pro
     public bool CanHandle(object entity) => entity is ProjectModificationChange;
 
     /// <summary>
-    /// Generates audit trail records for project modification changes that have been approved.
-    /// Only processes changes for specific areas of change that are tracked.
+    /// Generates audit trail records for project modification changes that have been approved. Only
+    /// processes changes for specific areas of change that are tracked.
     /// </summary>
     /// <param name="entry">The entity entry containing the change tracking information.</param>
     /// <param name="userEmail">The email of the user making the change.</param>
@@ -63,8 +63,8 @@ public class ProjectModificationChangeAuditTrailHandler : IAuditTrailHandler<Pro
     }
 
     /// <summary>
-    /// Handles the modified state of a project modification change by generating audit trails
-    /// for each approved change answer.
+    /// Handles the modified state of a project modification change by generating audit trails for
+    /// each approved change answer.
     /// </summary>
     /// <param name="entry">The entity entry containing the change tracking information.</param>
     /// <param name="projectModificationChange">The project modification change entity.</param>
@@ -131,12 +131,16 @@ public class ProjectModificationChangeAuditTrailHandler : IAuditTrailHandler<Pro
                 continue;
             }
 
+            var projectModification = context.ProjectModifications.FirstOrDefault(x =>
+                x.Id == changeAnswer.ProjectModificationChange.ProjectModificationId);
+
             var auditTrailRecord = new ProjectRecordAuditTrail
             {
                 DateTimeStamp = DateTime.UtcNow,
                 ProjectRecordId = projectRecordAnswer!.ProjectRecordId,
                 User = userEmail,
-                Description = description
+                Description = description,
+                ModificationIdentifier = projectModification?.ModificationIdentifier
             };
 
             result.Add(auditTrailRecord);
@@ -149,7 +153,9 @@ public class ProjectModificationChangeAuditTrailHandler : IAuditTrailHandler<Pro
     /// Generates a human-readable description of the change based on the question ID.
     /// </summary>
     /// <param name="changeAnswer">The modification change answer containing the new value.</param>
-    /// <param name="projectRecordAnswer">The original project record answer containing the old value.</param>
+    /// <param name="projectRecordAnswer">
+    /// The original project record answer containing the old value.
+    /// </param>
     /// <returns>A description of the change, or an empty string if the question ID is not recognized.</returns>
     private static string GenerateChangeDescription(ProjectModificationChangeAnswer changeAnswer, EffectiveProjectRecordAnswer? projectRecordAnswer)
     {
