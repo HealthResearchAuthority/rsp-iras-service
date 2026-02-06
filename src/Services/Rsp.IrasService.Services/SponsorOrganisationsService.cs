@@ -1,5 +1,7 @@
-﻿using Ardalis.Specification;
+﻿using System.Security.Claims;
+using Ardalis.Specification;
 using Mapster;
+using Microsoft.AspNetCore.Http;
 using Rsp.Service.Application.Contracts.Repositories;
 using Rsp.Service.Application.Contracts.Services;
 using Rsp.Service.Application.DTOS.Requests;
@@ -9,7 +11,8 @@ using Rsp.Service.Domain.Entities;
 
 namespace Rsp.Service.Services;
 
-public class SponsorOrganisationsService(ISponsorOrganisationsRepository sponsorOrganisationsRepository)
+public class SponsorOrganisationsService(ISponsorOrganisationsRepository sponsorOrganisationsRepository,
+    IHttpContextAccessor httpContextAccessor)
     : ISponsorOrganisationsService
 {
     public async Task<AllSponsorOrganisationsResponse> GetSponsorOrganisations(int pageNumber, int pageSize,
@@ -103,5 +106,13 @@ public class SponsorOrganisationsService(ISponsorOrganisationsRepository sponsor
         var response = await sponsorOrganisationsRepository.UpdateUserInSponsorOrganisation(userProfileEntity);
 
         return response.Adapt<SponsorOrganisationUserDto?>();
+    }
+
+    public async Task<SponsorOrganisationUserDto> GetSponsorOrganisationUserById(Guid sponsorOrganisationUserId)
+    {
+        var email = httpContextAccessor.HttpContext!.User.Claims!.First(c => c.Type == ClaimTypes.Email).Value;
+
+        var response = await sponsorOrganisationsRepository.GetSponsorOrganisationUserById(sponsorOrganisationUserId, email);
+        return response.Adapt<SponsorOrganisationUserDto>();
     }
 }

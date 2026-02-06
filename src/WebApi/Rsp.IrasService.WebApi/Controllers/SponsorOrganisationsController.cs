@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Rsp.IrasService.Application.CQRS.Commands;
 using Rsp.Service.Application.CQRS.Commands;
 using Rsp.Service.Application.CQRS.Queries;
 using Rsp.Service.Application.DTOS.Requests;
@@ -169,6 +170,14 @@ public class SponsorOrganisationsController(IMediator mediator) : ControllerBase
         Guid userId)
     {
         var request = new GetAllActiveSponsorOrganisationsForEnabledUserCommand(userId);
+        return await mediator.Send(request);
+    }
+
+    [HttpGet("user/{sponsorOrgUserId}")]
+    public async Task<ActionResult<SponsorOrganisationUserDto>> GetSponsorOrganisationUserById(
+        Guid sponsorOrgUserId)
+    {
+        var request = new GetSponsorOrganisationUserByIdCommand(sponsorOrgUserId);
         return await mediator.Send(request);
     }
 }

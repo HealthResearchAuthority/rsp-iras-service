@@ -12,19 +12,21 @@ using Rsp.Service.Infrastructure.Helpers;
 namespace Rsp.Service.Infrastructure.Repositories;
 
 /// <summary>
-/// Repository for managing <see cref="ProjectModification"/> and <see cref="ProjectModificationChange"/> entities in the database.
+/// Repository for managing <see cref="ProjectModification"/> and <see
+/// cref="ProjectModificationChange"/> entities in the database.
 /// </summary>
 public class ProjectModificationRepository(IrasContext irasContext) : IProjectModificationRepository
 {
     /// <summary>
-    /// Adds a new <see cref="ProjectModification"/> to the database, assigning a sequential ModificationNumber and updating the ModificationIdentifier.
+    /// Adds a new <see cref="ProjectModification"/> to the database, assigning a sequential
+    /// ModificationNumber and updating the ModificationIdentifier.
     /// </summary>
     /// <param name="projectModification">The project modification entity to add.</param>
     /// <returns>The created <see cref="ProjectModification"/> entity.</returns>
     public async Task<ProjectModification> CreateModification(ProjectModification projectModification)
     {
-        // Retrieve the current maximum ModificationNumber for the given ProjectRecordId.
-        // This ensures that each modification for a project is sequentially numbered.
+        // Retrieve the current maximum ModificationNumber for the given ProjectRecordId. This
+        // ensures that each modification for a project is sequentially numbered.
         var modificationNumber = await irasContext.ProjectModifications
             .Where(pm => pm.ProjectRecordId == projectModification.ProjectRecordId)
             .MaxAsync(pm => (int?)pm.ModificationNumber) ?? 0;
@@ -32,8 +34,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         // Increment the modification number for the new modification.
         projectModification.ModificationNumber = modificationNumber + 1;
 
-        // Update the ModificationIdentifier to include the new ModificationNumber.
-        // This typically forms a unique identifier such as "IRASID/1", "IRASID/2", etc.
+        // Update the ModificationIdentifier to include the new ModificationNumber. This typically
+        // forms a unique identifier such as "IRASID/1", "IRASID/2", etc.
         projectModification.ModificationIdentifier += projectModification.ModificationNumber;
 
         // Add the new ProjectModification entity to the context for tracking.
@@ -258,8 +260,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
     }
 
     /// <summary>
-    /// Filters and normalises a collection of ProjectModificationResult items
-    /// based on the user's search criteria.
+    /// Filters and normalises a collection of ProjectModificationResult items based on the user's
+    /// search criteria.
     ///
     /// Steps:
     /// 1. Normalise LeadNation and ParticipatingNation values using lookups.
@@ -384,8 +386,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         // Base sequence we’ll sort over
         var source = modifications;
 
-        // If we're using Backstage statuses and sorting by Status,
-        // first update Status on each item, then let the normal sort use it.
+        // If we're using Backstage statuses and sorting by Status, first update Status on each
+        // item, then let the normal sort use it.
         if (useBackstageStatuses)
         {
             source = source.Select(m =>
@@ -508,8 +510,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
     }
 
     /// <summary>
-    /// Builds an IQueryable of project overview documents by walking down
-    /// ProjectModifications → ProjectModificationChanges → ModificationDocuments → ModificationDocumentAnswers.
+    /// Builds an IQueryable of project overview documents by walking down ProjectModifications →
+    /// ProjectModificationChanges → ModificationDocuments → ModificationDocumentAnswers.
     /// </summary>
     private IQueryable<ProjectOverviewDocumentResult> ProjectOverviewDocumentsQuery(
     ProjectOverviewDocumentSearchRequest searchQuery,
@@ -678,10 +680,12 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
     }
 
     /// <summary>
-    /// Removes a single <see cref="ProjectModificationChange"/> that matches the provided specification.
-    /// If no matching entity is found, the method completes without making any changes.
+    /// Removes a single <see cref="ProjectModificationChange"/> that matches the provided
+    /// specification. If no matching entity is found, the method completes without making any changes.
     /// </summary>
-    /// <param name="specification">The specification used to locate the modification change to remove.</param>
+    /// <param name="specification">
+    /// The specification used to locate the modification change to remove.
+    /// </param>
     public async Task RemoveModificationChange(ISpecification<ProjectModificationChange> specification)
     {
         // Attempt to find a single ProjectModificationChange matching the given specification.
@@ -705,15 +709,16 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
     }
 
     /// <summary>
-    /// Updates the status <see cref="ProjectModification"/> of the modification that matches the provided specification.
-    /// It also updates the status of the modification changes for this modification, to keep in sync
-    /// If no matching entity is found, the method completes without making any changes.
+    /// Updates the status <see cref="ProjectModification"/> of the modification that matches the
+    /// provided specification. It also updates the status of the modification changes for this
+    /// modification, to keep in sync If no matching entity is found, the method completes without
+    /// making any changes.
     /// </summary>
     /// <param name="specification">The specification used to locate the modification to update.</param>
     public async Task UpdateModificationStatus(ISpecification<ProjectModification> specification, string status)
     {
-        // Attempt to find a single ProjectModification matching the given specification.
-        // Using FirstOrDefaultAsync to avoid exceptions if no entity matches the criteria.
+        // Attempt to find a single ProjectModification matching the given specification. Using
+        // FirstOrDefaultAsync to avoid exceptions if no entity matches the criteria.
         var modification = await irasContext
             .ProjectModifications
             .Include(pm => pm.ProjectModificationChanges)
@@ -731,6 +736,31 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         {
             change.Status = status;
             change.UpdatedDate = DateTime.Now;
+
+            if (status == ModificationStatus.Approved)
+            {
+                var projectRecord = irasContext.ProjectRecords
+                    .FirstOrDefault(x => x.Id == modification.ProjectRecordId);
+
+                if (projectRecord != null)
+                {
+                    var shortTitle = irasContext.ProjectModificationChangeAnswers.FirstOrDefault(x =>
+                        x.ProjectModificationChangeId == change.Id && x.QuestionId == ProjectRecordConstants.ShortProjectTitle);
+
+                    if (shortTitle != null)
+                    {
+                        projectRecord.ShortProjectTitle = shortTitle.Response;
+                    }
+
+                    var fullTitle = irasContext.ProjectModificationChangeAnswers.FirstOrDefault(x =>
+                        x.ProjectModificationChangeId == change.Id && x.QuestionId == ProjectRecordConstants.FullProjectTitle);
+
+                    if (fullTitle != null)
+                    {
+                        projectRecord.FullProjectTitle = fullTitle.Response;
+                    }
+                }
+            }
         }
 
         var documents = await irasContext.ModificationDocuments
@@ -762,15 +792,15 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
     }
 
     /// <summary>
-    /// Updates the <see cref="ProjectModification"/> that matches the provided specification.
-    /// It also updates the status of the modification changes for this modification, to keep in sync
+    /// Updates the <see cref="ProjectModification"/> that matches the provided specification. It
+    /// also updates the status of the modification changes for this modification, to keep in sync
     /// If no matching entity is found, the method completes without making any changes.
     /// </summary>
     /// <param name="specification">The specification used to locate the modification to update.</param>
     public async Task UpdateModification(ISpecification<ProjectModification> specification, ProjectModification projectModification)
     {
-        // Attempt to find a single ProjectModification matching the given specification.
-        // Using FirstOrDefaultAsync to avoid exceptions if no entity matches the criteria.
+        // Attempt to find a single ProjectModification matching the given specification. Using
+        // FirstOrDefaultAsync to avoid exceptions if no entity matches the criteria.
         var existingModification = await irasContext
             .ProjectModifications
             .Include(pm => pm.ProjectModificationChanges)
@@ -808,8 +838,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
 
     /// <summary>
     /// Updates the <see cref="ProjectModificationChange"/> that matches the provided specification.
-    /// It also updates the status of the modification changes for this modification, to keep in sync
-    /// If no matching entity is found, the method completes without making any changes.
+    /// It also updates the status of the modification changes for this modification, to keep in
+    /// sync If no matching entity is found, the method completes without making any changes.
     /// </summary>
     /// <param name="specification">The specification used to locate the modification to update.</param>
     public async Task UpdateModificationChange(ISpecification<ProjectModificationChange> specification, ProjectModificationChange modificationChange)
@@ -974,8 +1004,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
     }
 
     /// <summary>
-    /// Builds an IQueryable of project overview documents by walking down
-    /// ProjectModifications → ProjectModificationChanges → ModificationDocuments → ModificationDocumentAnswers.
+    /// Builds an IQueryable of project overview documents by walking down ProjectModifications →
+    /// ProjectModificationChanges → ModificationDocuments → ModificationDocumentAnswers.
     /// </summary>
     private IQueryable<ProjectOverviewDocumentResult> ModificationDocumentsQuery
     (

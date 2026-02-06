@@ -70,6 +70,7 @@ public static class ServicesConfiguration
 
         services.AddScoped<IAuditTrailHandler<ProjectRecordAuditTrail>, ProjectRecordAuditTrailHandler>();
         services.AddScoped<IAuditTrailHandler<ProjectRecordAuditTrail>, ProjectClosureAuditTrailHandler>();
+        services.AddScoped<IAuditTrailHandler<ProjectRecordAuditTrail>, ProjectModificationChangeAuditTrailHandler>();
 
         // Single merged interceptor
         services.AddScoped<AuditTrailInterceptor>();

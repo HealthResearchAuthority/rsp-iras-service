@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rsp.Service.Infrastructure;
 
@@ -11,9 +12,11 @@ using Rsp.Service.Infrastructure;
 namespace Rsp.Service.Infrastructure.Migrations
 {
     [DbContext(typeof(IrasContext))]
-    partial class IrasContextModelSnapshot : ModelSnapshot
+    [Migration("20260115145730_AddEffectiveProjectRecordAnswers")]
+    partial class AddEffectiveProjectRecordAnswers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -452,10 +455,7 @@ namespace Rsp.Service.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectRecordId", "CreatedDate")
-                        .IsDescending(false, true);
-
-                    SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("ProjectRecordId", "CreatedDate"), new[] { "Status" });
+                    b.HasIndex("ProjectRecordId");
 
                     b.ToTable("ProjectModifications");
                 });
@@ -584,8 +584,7 @@ namespace Rsp.Service.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProjectModificationId", "CreatedDate")
-                        .IsDescending(false, true);
+                    b.HasIndex("ProjectModificationId");
 
                     b.ToTable("ProjectModificationChanges");
                 });
@@ -630,9 +629,7 @@ namespace Rsp.Service.Infrastructure.Migrations
 
                     b.HasKey("ProjectModificationChangeId", "QuestionId", "UserId");
 
-                    b.HasIndex("ProjectRecordId", "QuestionId", "ProjectModificationChangeId");
-
-                    SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("ProjectRecordId", "QuestionId", "ProjectModificationChangeId"), new[] { "Response", "SelectedOptions", "OptionType", "UserId" });
+                    b.HasIndex("ProjectRecordId");
 
                     b.ToTable("ProjectModificationChangeAnswers");
                 });
@@ -718,9 +715,7 @@ namespace Rsp.Service.Infrastructure.Migrations
 
                     b.HasKey("UserId", "QuestionId", "ProjectRecordId");
 
-                    b.HasIndex("ProjectRecordId", "QuestionId", "UserId");
-
-                    SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("ProjectRecordId", "QuestionId", "UserId"), new[] { "Response", "SelectedOptions", "OptionType", "Category", "Section", "VersionId" });
+                    b.HasIndex("ProjectRecordId");
 
                     b.ToTable("ProjectRecordAnswers");
                 });
@@ -736,9 +731,6 @@ namespace Rsp.Service.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ModificationIdentifier")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProjectRecordId")

@@ -27,4 +27,6 @@ public interface ISponsorOrganisationsRepository
     Task<IEnumerable<SponsorOrganisationAuditTrail>> GetAuditsForSponsorOrganisation(string rtsId);
 
     Task<SponsorOrganisationUser> UpdateUserInSponsorOrganisation(SponsorOrganisationUser user);
+
+    Task<SponsorOrganisationUser> GetSponsorOrganisationUserById(Guid sponsorOrganisationUserId, string email);
 }

@@ -42,15 +42,17 @@ public class SponsorOrganisationUserAuditTrailHandler : IAuditTrailHandler<Spons
 
         if (sponsorOrganisationUser.SponsorRole is not null)
         {
+            var sponsorRoleDisplay = FormatRole(sponsorOrganisationUser.SponsorRole);
+
             result.Add(new SponsorOrganisationAuditTrail
             {
                 DateTimeStamp = DateTime.UtcNow,
                 RtsId = sponsorOrganisationUser.RtsId,
                 User = systemAdminEmail,
-                Description = $"{sponsorOrganisationUser.Email} assigned {sponsorOrganisationUser.SponsorRole} for sponsor organisation"
+                Description = $"{sponsorOrganisationUser.Email} assigned {sponsorRoleDisplay} for sponsor organisation"
             });
 
-            if (sponsorOrganisationUser.SponsorRole != Roles.OrganisationAdministrator && sponsorOrganisationUser.IsAuthoriser)
+            if (sponsorOrganisationUser.IsAuthoriser)
             {
                 result.Add(new SponsorOrganisationAuditTrail
                 {
@@ -125,6 +127,9 @@ public class SponsorOrganisationUserAuditTrailHandler : IAuditTrailHandler<Spons
         var oldRole = entry.OriginalValue as string;
         var newRole = entry.CurrentValue as string;
 
+        var oldRoleDisplay = FormatRole(oldRole);
+        var newRoleDisplay = FormatRole(newRole);
+
         return
         [
             new()
@@ -133,7 +138,7 @@ public class SponsorOrganisationUserAuditTrailHandler : IAuditTrailHandler<Spons
                 RtsId = sponsorOrganisationUser.RtsId,
                 SponsorOrganisationId = sponsorOrganisationUser.Id,
                 User = systemAdminEmail,
-                Description = $"{sponsorOrganisationUser.Email} unassigned {oldRole} for sponsor organisation"
+                Description = $"{sponsorOrganisationUser.Email} unassigned {oldRoleDisplay} for sponsor organisation"
             },
             new()
             {
@@ -141,7 +146,7 @@ public class SponsorOrganisationUserAuditTrailHandler : IAuditTrailHandler<Spons
                 RtsId = sponsorOrganisationUser.RtsId,
                 SponsorOrganisationId = sponsorOrganisationUser.Id,
                 User = systemAdminEmail,
-                Description = $"{sponsorOrganisationUser.Email} assigned {newRole} for sponsor organisation"
+                Description = $"{sponsorOrganisationUser.Email} assigned {newRoleDisplay} for sponsor organisation"
             }
         ];
     }
@@ -158,5 +163,17 @@ public class SponsorOrganisationUserAuditTrailHandler : IAuditTrailHandler<Spons
             User = systemAdminEmail,
             Description = $"{sponsorOrganisationUser.Email} {newStatus} sponsor organisation"
         };
+    }
+
+    private static string? FormatRole(string? role)
+    {
+        if (string.IsNullOrWhiteSpace(role))
+            return role;
+
+        var formatted = role
+            .Replace("_", " ")
+            .ToLowerInvariant();
+
+        return char.ToUpper(formatted[0]) + formatted[1..];
     }
 }
