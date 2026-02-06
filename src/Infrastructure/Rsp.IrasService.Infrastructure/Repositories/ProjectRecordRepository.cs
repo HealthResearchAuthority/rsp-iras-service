@@ -75,7 +75,7 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
                                       UpdatedBy = projectRecord.UpdatedBy,
                                       IrasId = projectRecord.IrasId,
                                       ProjectModifications = projectRecord.ProjectModifications,
-                                      ShortProjectTitle = projectRecordAnswer != null && projectRecordAnswer.Response != null ? projectRecordAnswer.Response : projectRecord.ShortProjectTitle
+                                      ShortProjectTitle = projectRecord.ShortProjectTitle
                                   };
 
         // Apply filtering to ProjectRecords
