@@ -131,7 +131,7 @@ public class ProjectModificationChangeAuditTrailHandler : IAuditTrailHandler<Pro
                 continue;
             }
 
-            var projectModification = context.ProjectModifications.FirstOrDefault(x =>
+            var projectModification = context.ProjectModifications.First(x =>
                 x.Id == changeAnswer.ProjectModificationChange.ProjectModificationId);
 
             var auditTrailRecord = new ProjectRecordAuditTrail
