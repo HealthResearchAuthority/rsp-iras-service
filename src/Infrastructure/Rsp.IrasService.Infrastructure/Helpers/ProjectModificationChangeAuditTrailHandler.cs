@@ -131,14 +131,19 @@ public class ProjectModificationChangeAuditTrailHandler : IAuditTrailHandler<Pro
                 continue;
             }
 
-            var projectModification = context.ProjectModifications.FirstOrDefault(x =>
+            var projectModification = context.ProjectModifications.First(x =>
                 x.Id == changeAnswer.ProjectModificationChange.ProjectModificationId);
 
             var auditTrailRecord = new ProjectRecordAuditTrail
             {
                 DateTimeStamp = DateTime.UtcNow,
                 ProjectRecordId = projectRecordAnswer!.ProjectRecordId,
-                User = userEmail,
+                User = projectModification.ReviewType switch
+                {
+                    ModificationStatus.ReviewType.ReviewRequired => "Review body",
+                    ModificationStatus.ReviewType.NoReviewRequired => "System",
+                    _ => userEmail
+                },
                 Description = description,
                 ModificationIdentifier = projectModification?.ModificationIdentifier
             };
