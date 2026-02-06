@@ -17,9 +17,6 @@ namespace Rsp.Service.Infrastructure.Repositories;
 /// </summary>
 public class ProjectModificationRepository(IrasContext irasContext) : IProjectModificationRepository
 {
-    private const string ShortProjectTitleQuestionId = "IQA0002";
-    private const string FullProjectTitleQuestionId = "IQA0789";
-
     /// <summary>
     /// Adds a new <see cref="ProjectModification"/> to the database, assigning a sequential
     /// ModificationNumber and updating the ModificationIdentifier.
@@ -748,7 +745,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                 if (projectRecord != null)
                 {
                     var shortTitle = irasContext.ProjectModificationChangeAnswers.FirstOrDefault(x =>
-                        x.ProjectModificationChangeId == change.Id && x.QuestionId == ShortProjectTitleQuestionId);
+                        x.ProjectModificationChangeId == change.Id && x.QuestionId == ProjectRecordConstants.ShortProjectTitle);
 
                     if (shortTitle != null)
                     {
@@ -756,7 +753,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                     }
 
                     var fullTitle = irasContext.ProjectModificationChangeAnswers.FirstOrDefault(x =>
-                        x.ProjectModificationChangeId == change.Id && x.QuestionId == FullProjectTitleQuestionId);
+                        x.ProjectModificationChangeId == change.Id && x.QuestionId == ProjectRecordConstants.FullProjectTitle);
 
                     if (fullTitle != null)
                     {
