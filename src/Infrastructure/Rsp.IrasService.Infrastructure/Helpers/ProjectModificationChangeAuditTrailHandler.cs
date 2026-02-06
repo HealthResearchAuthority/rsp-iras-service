@@ -138,11 +138,12 @@ public class ProjectModificationChangeAuditTrailHandler : IAuditTrailHandler<Pro
             {
                 DateTimeStamp = DateTime.UtcNow,
                 ProjectRecordId = projectRecordAnswer!.ProjectRecordId,
-                User = projectModification.ReviewType == ModificationStatus.ReviewType.ReviewRequired
-                    ? "Review body"
-                    : projectModification.ReviewType == ModificationStatus.ReviewType.NoReviewRequired
-                        ? "System"
-                        : userEmail,
+                User = projectModification.ReviewType switch
+                {
+                    ModificationStatus.ReviewType.ReviewRequired => "Review body",
+                    ModificationStatus.ReviewType.NoReviewRequired => "System",
+                    _ => userEmail
+                },
                 Description = description,
                 ModificationIdentifier = projectModification?.ModificationIdentifier
             };
