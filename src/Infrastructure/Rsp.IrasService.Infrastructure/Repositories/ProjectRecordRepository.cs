@@ -52,34 +52,8 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
         string? sortDirection
     )
     {
-        // Apply filtering to ProjectRecordAnswers
-        var filteredTitles = irasContext
-            .ProjectRecordAnswers
-            .WithSpecification(projectTitlesSpecification);
-
-        // Join ProjectRecords with ProjectRecordAnswers (left join)
-        var joinedProjectTitles = from projectRecord in irasContext.ProjectRecords
-                                  join projectRecordAnswer in filteredTitles
-                        on projectRecord.Id equals projectRecordAnswer.ProjectRecordId into titleGroup
-                                  from projectRecordAnswer in titleGroup.DefaultIfEmpty()
-                                  select new ProjectRecord
-                                  {
-                                      Id = projectRecord.Id,
-                                      UserId = projectRecord.UserId,
-                                      FullProjectTitle = projectRecord.FullProjectTitle,
-                                      IsActive = projectRecord.IsActive,
-                                      Status = projectRecord.Status,
-                                      CreatedDate = projectRecord.CreatedDate,
-                                      UpdatedDate = projectRecord.UpdatedDate,
-                                      CreatedBy = projectRecord.CreatedBy,
-                                      UpdatedBy = projectRecord.UpdatedBy,
-                                      IrasId = projectRecord.IrasId,
-                                      ProjectModifications = projectRecord.ProjectModifications,
-                                      ShortProjectTitle = projectRecordAnswer != null && projectRecordAnswer.Response != null ? projectRecordAnswer.Response : projectRecord.ShortProjectTitle
-                                  };
-
-        // Apply filtering to ProjectRecords
-        var query = joinedProjectTitles
+        // Start from ProjectRecords only
+        var query = irasContext.ProjectRecords
             .WithSpecification(projectsSpecification);
 
         // Count before pagination
@@ -90,8 +64,8 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
         {
             ("title", "asc") => query.OrderBy(x => x.ShortProjectTitle),
             ("title", "desc") => query.OrderByDescending(x => x.ShortProjectTitle),
-            (status, "asc") => query.OrderBy(x => x.Status),
-            (status, "desc") => query.OrderByDescending(x => x.Status),
+            ("status", "asc") => query.OrderBy(x => x.Status),
+            ("status", "desc") => query.OrderByDescending(x => x.Status),
             ("createddate", "asc") => query.OrderBy(x => x.CreatedDate),
             ("createddate", "desc") => query.OrderByDescending(x => x.CreatedDate),
             ("irasid", "asc") => query.OrderBy(x => x.IrasId),
@@ -234,11 +208,9 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
         // Filter by short project title
         if (!string.IsNullOrEmpty(request.ShortProjectTitle))
         {
-            records = records.Where(x => x.ProjectRecordAnswers.Any(
-                y =>
-                    y.QuestionId == ProjectRecordConstants.ShortProjectTitle
-                    && y.Response != null
-                    && y.Response.Contains(request.ShortProjectTitle)));
+            records = records.Where(x =>
+                x.ShortProjectTitle != null &&
+                x.ShortProjectTitle.Contains(request.ShortProjectTitle));
         }
 
         // Filter by chief investigator name
@@ -336,10 +308,7 @@ public class ProjectRecordRepository(IrasContext irasContext) : IProjectRecordRe
                        .Where(a => a.QuestionId == ProjectRecordConstants.ParticipatingNation)
                        .Select(a => a.SelectedOptions)
                        .FirstOrDefault() ?? string.Empty,
-            ShortProjectTitle = x.ProjectRecordAnswers
-                       .Where(a => a.QuestionId == ProjectRecordConstants.ShortProjectTitle)
-                       .Select(a => a.Response)
-                       .FirstOrDefault() ?? string.Empty,
+            ShortProjectTitle = x.ShortProjectTitle,
             SponsorOrganisation = x.ProjectRecordAnswers
                        .Where(a => a.QuestionId == ProjectRecordConstants.SponsorOrganisation)
                        .Select(a => a.Response)
