@@ -6,4 +6,5 @@ public record ModificationReviewResponse
     public string? ReviewOutcome { get; set; }
     public string? Comment { get; set; }
     public string? ReasonNotApproved { get; set; }
+    public string? RevisionDescription { get; set; }
 }
