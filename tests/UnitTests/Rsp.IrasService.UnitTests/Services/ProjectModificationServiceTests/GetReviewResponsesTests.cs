@@ -31,5 +31,6 @@ public class GetReviewResponsesTests : TestServiceBase<ProjectModificationServic
         result.Comment.ShouldBe(repoResponse.ReviewerComments);
         result.ReasonNotApproved.ShouldBe(repoResponse.ReasonNotApproved);
         result.ReviewOutcome.ShouldBe(repoResponse.ProvisionalReviewOutcome);
+        result.RevisionDescription.ShouldBe(repoResponse.RevisionDescription);
     }
 }
