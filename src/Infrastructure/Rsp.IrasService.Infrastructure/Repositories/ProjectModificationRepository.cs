@@ -149,10 +149,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                           Id = pm.Id.ToString(),
                           ModificationId = pm.ModificationIdentifier,
                           ProjectRecordId = pm.ProjectRecordId,
-                          ShortProjectTitle = irasContext.ProjectRecordAnswers
-                              .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ShortProjectTitle)
-                              .Select(a => a.Response)
-                              .FirstOrDefault() ?? string.Empty,
+                          ShortProjectTitle = pr.ShortProjectTitle,
                           Status = pm.Status,
                           CreatedAt = pm.CreatedDate,
                           ReviewerName = pm.ReviewerName
@@ -241,10 +238,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                                    a.QuestionId == ProjectRecordConstants.ParticipatingNation)
                        .Select(a => a.SelectedOptions)
                        .FirstOrDefault() ?? string.Empty,
-                   ShortProjectTitle = projectAnswers
-                       .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ShortProjectTitle)
-                       .Select(a => a.Response)
-                       .FirstOrDefault() ?? string.Empty,
+                   ShortProjectTitle = pr.ShortProjectTitle,
                    SponsorOrganisation = projectAnswers
                        .Where(a => a.ProjectRecordId == pr.Id &&
                                    a.QuestionId == ProjectRecordConstants.SponsorOrganisation)
@@ -476,10 +470,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                        .Where(a => a.ProjectRecordId == proj.Id && a.QuestionId == ProjectRecordConstants.ParticipatingNation)
                        .Select(a => a.SelectedOptions)
                        .FirstOrDefault() ?? string.Empty,
-                   ShortProjectTitle = projectAnswers
-                       .Where(a => a.ProjectRecordId == proj.Id && a.QuestionId == ProjectRecordConstants.ShortProjectTitle)
-                       .Select(a => a.Response)
-                       .FirstOrDefault() ?? string.Empty,
+                   ShortProjectTitle = proj.ShortProjectTitle,
                    SponsorOrganisation = rtsId ?? string.Empty,
                    CreatedAt = prm.CreatedDate,
                    ReviewerId = prm.ReviewerId,
