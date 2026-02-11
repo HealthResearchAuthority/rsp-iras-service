@@ -706,7 +706,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
     /// making any changes.
     /// </summary>
     /// <param name="specification">The specification used to locate the modification to update.</param>
-    public async Task UpdateModificationStatus(ISpecification<ProjectModification> specification, string status)
+    public async Task UpdateModificationStatus(ISpecification<ProjectModification> specification, string status, string? revisionDescription)
     {
         // Attempt to find a single ProjectModification matching the given specification. Using
         // FirstOrDefaultAsync to avoid exceptions if no entity matches the criteria.
@@ -765,6 +765,11 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
 
         modification.Status = status;
         modification.UpdatedDate = DateTime.Now;
+
+        if (!string.IsNullOrEmpty(revisionDescription))
+        {
+            modification.RevisionDescription = revisionDescription;
+        }
 
         switch (status)
         {

@@ -16,7 +16,8 @@ public class UpdateModificationStatusCommandTests
         {
             ProjectRecordId = "PR1",
             ProjectModificationId = id,
-            Status = status
+            Status = status,
+            RevisionDescription = null
         };
 
         _mediatorMock

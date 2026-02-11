@@ -18,13 +18,14 @@ public class UpdateModificationStatusHandlerTests
         {
             ProjectRecordId = "PR1",
             ProjectModificationId = id,
-            Status = status
+            Status = status,
+            RevisionDescription = null
         };
 
         // Act
         await handler.Handle(cmd, CancellationToken.None);
 
         // Assert
-        service.Verify(s => s.UpdateModificationStatus("PR1", id, status), Times.Once);
+        service.Verify(s => s.UpdateModificationStatus("PR1", id, status, null), Times.Once);
     }
 }

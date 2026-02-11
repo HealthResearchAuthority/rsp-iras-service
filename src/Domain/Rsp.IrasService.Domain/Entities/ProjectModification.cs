@@ -113,4 +113,9 @@ public class ProjectModification : IAuditable
     /// </summary>
     [Auditable]
     public string? ProvisionalReviewOutcome { get; set; }
+
+    /// <summary>
+    /// Gets or sets the revision description of the modification.
+    /// </summary>
+    public string? RevisionDescription { get; set; }
 }
