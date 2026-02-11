@@ -47,7 +47,7 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
             UpdatedBy = "Test",
             UpdatedDate = DateTime.Now,
             FullProjectTitle = "Description",
-            ShortProjectTitle = "Title"
+            ShortProjectTitle = "Short"
         };
 
         var modification = new ProjectModification
