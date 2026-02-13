@@ -9,8 +9,15 @@ public class AuditTrailDetailsService(IHttpContextAccessor contextAccessor) : IA
 {
     public string GetEmailFromHttpContext()
     {
-        var claimsPrinciple = contextAccessor?.HttpContext?.User;
+        var claimsPrincipal = contextAccessor?.HttpContext?.User;
 
-        return claimsPrinciple!.Claims!.FirstOrDefault(x => x.Type == ClaimTypes.Email)!.Value!;
+        var email = claimsPrincipal?
+            .Claims?
+            .FirstOrDefault(x => x.Type == ClaimTypes.Email)?
+            .Value;
+
+        return string.IsNullOrWhiteSpace(email)
+            ? "System generated"
+            : email;
     }
 }
