@@ -66,6 +66,7 @@ public class ProjectModificationServiceTests : TestServiceBase<ProjectModificati
             UpdatedBy = "tester"
         };
         var revisionDescription = "abc";
+        var reasonNotApproved = "test";
 
         await _context.ProjectModifications.AddAsync(modification);
         await _context.ProjectModificationChanges.AddRangeAsync(change1, change2);
@@ -77,7 +78,7 @@ public class ProjectModificationServiceTests : TestServiceBase<ProjectModificati
         var newStatus = "Submitted";
 
         // Act
-        await Sut.UpdateModificationStatus("PR-1", modId, newStatus, revisionDescription);
+        await Sut.UpdateModificationStatus("PR-1", modId, newStatus, revisionDescription, reasonNotApproved);
 
         // Assert - reload and verify status changes persisted
         var updated = await _context.ProjectModifications

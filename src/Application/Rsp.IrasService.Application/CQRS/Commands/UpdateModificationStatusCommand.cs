@@ -8,4 +8,5 @@ public class UpdateModificationStatusCommand : IRequest
     public Guid ProjectModificationId { get; set; }
     public string Status { get; set; }
     public string? RevisionDescription { get; set; }
+    public string? ReasonNotApproved { get; set; }
 }

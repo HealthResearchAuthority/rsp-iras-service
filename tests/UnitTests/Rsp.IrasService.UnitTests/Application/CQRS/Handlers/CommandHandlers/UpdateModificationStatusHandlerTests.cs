@@ -26,6 +26,6 @@ public class UpdateModificationStatusHandlerTests
         await handler.Handle(cmd, CancellationToken.None);
 
         // Assert
-        service.Verify(s => s.UpdateModificationStatus("PR1", id, status, null), Times.Once);
+        service.Verify(s => s.UpdateModificationStatus("PR1", id, status, null, null), Times.Once);
     }
 }

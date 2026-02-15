@@ -17,6 +17,6 @@ public class UpdateModificationStatusHandler(IProjectModificationService project
     /// <param name="cancellationToken">A token to observe while waiting for the task to complete. Not used by the service call.</param>
     public async Task Handle(UpdateModificationStatusCommand request, CancellationToken cancellationToken)
     {
-        await projectModificationService.UpdateModificationStatus(request.ProjectRecordId, request.ProjectModificationId, request.Status, request.RevisionDescription);
+        await projectModificationService.UpdateModificationStatus(request.ProjectRecordId, request.ProjectModificationId, request.Status, request.RevisionDescription, request.ReasonNotApproved);
     }
 }

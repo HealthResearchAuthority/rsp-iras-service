@@ -265,14 +265,15 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
     /// <param name="modificationId">The unique identifier of the modification to update.</param>
     /// <param name="status">The new status for modification to update.</param>
     [HttpPatch("status")]
-    public async Task UpdateModificationStatus(string projectRecordId, Guid modificationId, string status, string? revisionDescription)
+    public async Task UpdateModificationStatus(string projectRecordId, Guid modificationId, string status, string? revisionDescription, string? reasonNotApproved)
     {
         var request = new UpdateModificationStatusCommand
         {
             ProjectRecordId = projectRecordId,
             ProjectModificationId = modificationId,
             Status = status,
-            RevisionDescription = revisionDescription
+            RevisionDescription = revisionDescription,
+            ReasonNotApproved = reasonNotApproved
         };
 
         await mediator.Send(request);
