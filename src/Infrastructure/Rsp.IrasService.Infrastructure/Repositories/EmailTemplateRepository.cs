@@ -12,6 +12,7 @@ public class EmailTemplateRepository(IrasContext db) : IEmailTemplateRepository
     {
         return await db
             .EmailTemplates.WithSpecification(specification)
+            .Include(x => x.EventType)
             .FirstOrDefaultAsync();
     }
 }

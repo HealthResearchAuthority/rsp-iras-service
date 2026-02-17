@@ -28,7 +28,7 @@ public class TriggerEmailNotificationServiceTest
         // Arrange
         var request = new TriggerSendEmailRequest
         {
-            EventTypeId = "event123",
+            EventType = "event123",
             EmailRecipients = new List<string> { "test1@email.com", "test2@email.com" },
             Data = new Dictionary<string, dynamic> {
                 { "FirstName", "John" },
@@ -43,7 +43,7 @@ public class TriggerEmailNotificationServiceTest
         };
 
         _templateServiceMock
-            .Setup(x => x.GetEmailTemplateForEventType(request.EventTypeId))
+            .Setup(x => x.GetEmailTemplateForEventType(request.EventType))
             .ReturnsAsync(template);
 
         // Act
@@ -68,7 +68,7 @@ public class TriggerEmailNotificationServiceTest
         // Arrange
         var request = new TriggerSendEmailRequest
         {
-            EventTypeId = "event123",
+            EventType = "event123",
             EmailRecipients = new List<string> { "test1@email.com" },
             Data = new Dictionary<string, dynamic> {
                 { "FirstName", "John" },
@@ -77,7 +77,7 @@ public class TriggerEmailNotificationServiceTest
         };
 
         _templateServiceMock
-            .Setup(x => x.GetEmailTemplateForEventType(request.EventTypeId))
+            .Setup(x => x.GetEmailTemplateForEventType(request.EventType))
             .ReturnsAsync((EmailTemplate)null);
 
         // Act
@@ -95,7 +95,7 @@ public class TriggerEmailNotificationServiceTest
         // Arrange
         var request = new TriggerSendEmailRequest
         {
-            EventTypeId = "event123",
+            EventType = "event123",
             EmailRecipients = new List<string>
             {
                 "user1@email.com",
@@ -115,7 +115,7 @@ public class TriggerEmailNotificationServiceTest
         };
 
         _templateServiceMock
-            .Setup(x => x.GetEmailTemplateForEventType(request.EventTypeId))
+            .Setup(x => x.GetEmailTemplateForEventType(request.EventType))
             .ReturnsAsync(template);
 
         // Act
