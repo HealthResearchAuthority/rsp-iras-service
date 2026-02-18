@@ -41,7 +41,8 @@ public class GetProjectClosuresBySponsorOrganisationUserIdHandlerTests
             pageNumber: 1,
             pageSize: 10,
             sortField: nameof(ProjectClosureResponse.ShortProjectTitle),
-            sortDirection: "asc"
+            sortDirection: "asc",
+            rtsId: "123"
         );
 
         var closureService = Mocker.GetMock<IProjectClosureService>();
@@ -53,7 +54,8 @@ public class GetProjectClosuresBySponsorOrganisationUserIdHandlerTests
                 query.PageNumber,
                 query.PageSize,
                 query.SortField,
-                query.SortDirection))
+                query.SortDirection,
+                query.RtsId))
             .ReturnsAsync(expectedResponse);
 
         // Act
@@ -75,7 +77,8 @@ public class GetProjectClosuresBySponsorOrganisationUserIdHandlerTests
                 query.PageNumber,
                 query.PageSize,
                 query.SortField,
-                query.SortDirection),
+                query.SortDirection,
+                query.RtsId),
             Times.Once);
     }
 
@@ -99,7 +102,8 @@ public class GetProjectClosuresBySponsorOrganisationUserIdHandlerTests
             pageNumber: 2,
             pageSize: 25,
             sortField: nameof(ProjectClosureResponse.IrasId),
-            sortDirection: "desc"
+            sortDirection: "desc",
+            rtsId: "123"
         );
 
         var closureService = Mocker.GetMock<IProjectClosureService>();
@@ -111,7 +115,7 @@ public class GetProjectClosuresBySponsorOrganisationUserIdHandlerTests
                 query.PageNumber,
                 query.PageSize,
                 query.SortField,
-                query.SortDirection))
+                query.SortDirection, query.RtsId))
             .ReturnsAsync(expectedResponse);
 
         // Act
@@ -129,7 +133,7 @@ public class GetProjectClosuresBySponsorOrganisationUserIdHandlerTests
                 query.PageNumber,
                 query.PageSize,
                 query.SortField,
-                query.SortDirection),
+                query.SortDirection, query.RtsId),
             Times.Once);
     }
 }

@@ -122,7 +122,12 @@ public class SponsorOrganisationRepository(IrasContext irasContext) : ISponsorOr
 
     public async Task<SponsorOrganisation> DisableSponsorOrganisation(string rtsId)
     {
-        var sponsorOrganisation = await irasContext.SponsorOrganisations.FirstAsync(x => x.RtsId == rtsId);
+        var sponsorOrganisation = await irasContext.SponsorOrganisations.FirstOrDefaultAsync(x => x.RtsId == rtsId);
+
+        if (sponsorOrganisation == null)
+        {
+            return new SponsorOrganisation();
+        }
 
         sponsorOrganisation.UpdatedDate = DateTime.Now;
         sponsorOrganisation.IsActive = false;
@@ -134,7 +139,12 @@ public class SponsorOrganisationRepository(IrasContext irasContext) : ISponsorOr
 
     public async Task<SponsorOrganisation> EnableSponsorOrganisation(string rtsId)
     {
-        var sponsorOrganisation = await irasContext.SponsorOrganisations.FirstAsync(x => x.RtsId == rtsId);
+        var sponsorOrganisation = await irasContext.SponsorOrganisations.FirstOrDefaultAsync(x => x.RtsId == rtsId);
+
+        if (sponsorOrganisation == null)
+        {
+            return new SponsorOrganisation();
+        }
 
         sponsorOrganisation.UpdatedDate = DateTime.Now;
         sponsorOrganisation.IsActive = true;

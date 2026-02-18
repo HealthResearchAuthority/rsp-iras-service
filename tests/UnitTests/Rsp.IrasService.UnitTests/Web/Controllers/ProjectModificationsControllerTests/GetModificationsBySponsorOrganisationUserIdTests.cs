@@ -24,7 +24,8 @@ public class GetModificationsBySponsorOrganisationUserIdControllerTests : TestSe
         int pageNumber,
         int pageSize,
         string sortField,
-        string sortDirection)
+        string sortDirection,
+        string rtsId)
     {
         // Arrange
         var mockMediator = Mocker.GetMock<IMediator>();
@@ -35,12 +36,14 @@ public class GetModificationsBySponsorOrganisationUserIdControllerTests : TestSe
                 q.PageNumber == pageNumber &&
                 q.PageSize == pageSize &&
                 q.SortField == sortField &&
-                q.SortDirection == sortDirection), default))
+                q.SortDirection == sortDirection &&
+                q.RtsId == rtsId
+                ), default))
             .ReturnsAsync(mockResponse);
 
         // Act
         var result = await _controller.GetModificationsBySponsorOrganisationUserId(
-            sponsorOrganisationUserId, searchQuery, pageNumber, pageSize, sortField, sortDirection);
+            sponsorOrganisationUserId, searchQuery, pageNumber, pageSize, sortField, sortDirection, rtsId);
 
         // Assert
         result.Value.ShouldBe(mockResponse);
@@ -59,10 +62,11 @@ public class GetModificationsBySponsorOrganisationUserIdControllerTests : TestSe
         var searchQuery = new SponsorAuthorisationsModificationsSearchRequest();
         var sortField = "SentToSponsorDate";
         var sortDirection = "asc";
+        var rtsId = "";
 
         // Act
         var result = await _controller.GetModificationsBySponsorOrganisationUserId(
-            sponsorOrganisationUserId, searchQuery, pageNumber, pageSize, sortField, sortDirection);
+            sponsorOrganisationUserId, searchQuery, pageNumber, pageSize, sortField, sortDirection, rtsId);
 
         // Assert
         var badRequestResult = result.Result.ShouldBeOfType<BadRequestObjectResult>();

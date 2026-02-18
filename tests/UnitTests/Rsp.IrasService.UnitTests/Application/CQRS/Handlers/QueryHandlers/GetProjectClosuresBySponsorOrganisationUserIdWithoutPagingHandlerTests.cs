@@ -23,6 +23,7 @@ public class GetProjectClosuresBySponsorOrganisationUserIdWithoutPagingHandlerTe
     {
         // Arrange
         var sponsorOrganisationUserId = Guid.NewGuid();
+        var rtsId = "123";
 
         var expectedClosures = new List<ProjectClosureResponse>
         {
@@ -52,7 +53,8 @@ public class GetProjectClosuresBySponsorOrganisationUserIdWithoutPagingHandlerTe
 
         var query = new GetProjectClosuresBySponsorOrganisationUserIdWithoutPagingQuery(
             sponsorOrganisationUserId,
-            searchQuery
+            searchQuery,
+            rtsId
         );
 
         var closureService = Mocker.GetMock<IProjectClosureService>();
@@ -60,7 +62,8 @@ public class GetProjectClosuresBySponsorOrganisationUserIdWithoutPagingHandlerTe
         closureService
             .Setup(service => service.GetProjectClosuresBySponsorOrganisationUserIdWithoutPaging(
                 query.SponsorOrganisationUserId,
-                query.SearchQuery))
+                query.SearchQuery,
+                query.RtsId))
             .ReturnsAsync(expectedResponse);
 
         // Act
@@ -81,7 +84,8 @@ public class GetProjectClosuresBySponsorOrganisationUserIdWithoutPagingHandlerTe
         closureService.Verify(service =>
             service.GetProjectClosuresBySponsorOrganisationUserIdWithoutPaging(
                 query.SponsorOrganisationUserId,
-                query.SearchQuery),
+                query.SearchQuery,
+                query.RtsId),
             Times.Once);
     }
 
@@ -92,6 +96,7 @@ public class GetProjectClosuresBySponsorOrganisationUserIdWithoutPagingHandlerTe
     {
         // Arrange
         var sponsorOrganisationUserId = Guid.NewGuid();
+        var rtsId = "123";
 
         var expectedResponse = new ProjectClosuresSearchResponse
         {
@@ -101,7 +106,8 @@ public class GetProjectClosuresBySponsorOrganisationUserIdWithoutPagingHandlerTe
 
         var query = new GetProjectClosuresBySponsorOrganisationUserIdWithoutPagingQuery(
             sponsorOrganisationUserId,
-            searchQuery
+            searchQuery,
+            rtsId
         );
 
         var closureService = Mocker.GetMock<IProjectClosureService>();
@@ -109,7 +115,7 @@ public class GetProjectClosuresBySponsorOrganisationUserIdWithoutPagingHandlerTe
         closureService
             .Setup(service => service.GetProjectClosuresBySponsorOrganisationUserIdWithoutPaging(
                 query.SponsorOrganisationUserId,
-                query.SearchQuery))
+                query.SearchQuery, query.RtsId))
             .ReturnsAsync(expectedResponse);
 
         // Act
@@ -123,7 +129,7 @@ public class GetProjectClosuresBySponsorOrganisationUserIdWithoutPagingHandlerTe
         closureService.Verify(service =>
             service.GetProjectClosuresBySponsorOrganisationUserIdWithoutPaging(
                 query.SponsorOrganisationUserId,
-                query.SearchQuery),
+                query.SearchQuery, query.RtsId),
             Times.Once);
     }
 }

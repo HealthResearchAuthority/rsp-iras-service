@@ -36,7 +36,10 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
     /// Creates or updates a modification change in the database.
     /// </summary>
     /// <param name="modificationRequest">The modification change request containing change details.</param>
-    /// <returns>A <see cref="ModificationChangeResponse"/> containing details of the created or updated modification change.</returns>
+    /// <returns>
+    /// A <see cref="ModificationChangeResponse"/> containing details of the created or updated
+    /// modification change.
+    /// </returns>
     public async Task<ModificationChangeResponse> CreateOrUpdateModificationChange(ModificationChangeRequest modificationRequest)
     {
         // Map the request DTO to the domain entity
@@ -147,7 +150,9 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
     /// <summary>
     /// Removes an existing modification change by its unique identifier.
     /// </summary>
-    /// <param name="modificationChangeId">The unique identifier of the modification change to remove.</param>
+    /// <param name="modificationChangeId">
+    /// The unique identifier of the modification change to remove.
+    /// </param>
     public async Task RemoveModificationChange(Guid modificationChangeId)
     {
         var specification = new GetModificationChangeSpecification(modificationChangeId);
@@ -156,10 +161,12 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
     }
 
     /// <summary>
-    /// Updates an existing modification status by its unique identifier. And also updates
-    /// the status of the associated modification changes.
+    /// Updates an existing modification status by its unique identifier. And also updates the
+    /// status of the associated modification changes.
     /// </summary>
-    /// <param name="modificationChangeRequest">The request containing the updated modification change details.</param>
+    /// <param name="modificationChangeRequest">
+    /// The request containing the updated modification change details.
+    /// </param>
     public async Task UpdateModificationChange(UpdateModificationChangeRequest modificationChangeRequest)
     {
         var specification = new GetModificationChangeSpecification(modificationChangeRequest.Id);
@@ -170,22 +177,22 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
     }
 
     /// <summary>
-    /// Updates an existing modification status by its unique identifier. And also updates
-    /// the status of the associated modification changes.
+    /// Updates an existing modification status by its unique identifier. And also updates the
+    /// status of the associated modification changes.
     /// </summary>
     /// <param name="modificationId">The unique identifier of the modification change to remove.</param>
-    public async Task UpdateModificationStatus(string projectRecordId, Guid modificationId, string status, string? revisionDescription)
+    public async Task UpdateModificationStatus(string projectRecordId, Guid modificationId, string status, string? revisionDescription, string? reasonNotApproved)
     {
         var specification = new GetModificationSpecification(projectRecordId, modificationId);
 
-        await projectModificationRepository.UpdateModificationStatus(specification, status, revisionDescription);
+        await projectModificationRepository.UpdateModificationStatus(specification, status, revisionDescription, reasonNotApproved);
     }
 
     /// <summary>
-    /// Updates an existing modification status by its unique identifier. And also updates
-    /// the status of the associated modification changes.
+    /// Updates an existing modification status by its unique identifier. And also updates the
+    /// status of the associated modification changes.
     /// </summary>
-    /// <param name="modificationRequest">The </param>
+    /// <param name="modificationRequest">The</param>
     public async Task UpdateModification(UpdateModificationRequest modificationRequest)
     {
         var specification = new GetModificationSpecification(modificationRequest.ProjectRecordId, modificationRequest.Id);
@@ -196,8 +203,8 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
     }
 
     /// <summary>
-    /// Updates an existing modification status by its unique identifier. And also updates
-    /// the status of the associated modification changes.
+    /// Updates an existing modification status by its unique identifier. And also updates the
+    /// status of the associated modification changes.
     /// </summary>
     /// <param name="modificationId">The unique identifier of the modification change to remove.</param>
     public async Task DeleteModification(string projectRecordId, Guid modificationId)
@@ -241,11 +248,12 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
         int pageNumber,
         int pageSize,
         string sortField,
-        string sortDirection
+        string sortDirection,
+        string rtsId
     )
     {
-        var modifications = projectModificationRepository.GetModificationsBySponsorOrganisationUser(searchQuery, pageNumber, pageSize, sortField, sortDirection, sponsorOrganisationUserId);
-        var totalCount = projectModificationRepository.GetModificationsBySponsorOrganisationUserCount(searchQuery, sponsorOrganisationUserId);
+        var modifications = projectModificationRepository.GetModificationsBySponsorOrganisationUser(searchQuery, pageNumber, pageSize, sortField, sortDirection, sponsorOrganisationUserId, rtsId);
+        var totalCount = projectModificationRepository.GetModificationsBySponsorOrganisationUserCount(searchQuery, sponsorOrganisationUserId, rtsId);
 
         return Task.FromResult(new ModificationSearchResponse
         {

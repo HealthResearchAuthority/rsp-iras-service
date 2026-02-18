@@ -35,7 +35,8 @@ public class GetModificationsBySponsorOrganisationUserIdHandlerTests : TestServi
             pageNumber: 1,
             pageSize: 10,
             sortField: "SentToSponsorDate",
-            sortDirection: "asc"
+            sortDirection: "asc",
+            rtsId: ""
         );
 
         var modificationService = Mocker.GetMock<IProjectModificationService>();
@@ -48,7 +49,8 @@ public class GetModificationsBySponsorOrganisationUserIdHandlerTests : TestServi
                 query.PageNumber,
                 query.PageSize,
                 query.SortField,
-                query.SortDirection)
+                query.SortDirection,
+                query.RtsId)
             ).ReturnsAsync(expectedResponse);
 
         // Act
@@ -70,7 +72,8 @@ public class GetModificationsBySponsorOrganisationUserIdHandlerTests : TestServi
                     query.PageNumber,
                     query.PageSize,
                     query.SortField,
-                    query.SortDirection
+                    query.SortDirection,
+                    query.RtsId
                 ),
             Times.Once
         );

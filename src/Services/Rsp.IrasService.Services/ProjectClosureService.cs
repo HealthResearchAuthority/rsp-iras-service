@@ -43,11 +43,12 @@ public class ProjectClosureService(IProjectClosureRepository projectClosureRepos
         int pageNumber,
         int pageSize,
         string sortField,
-        string sortDirection
+        string sortDirection,
+        string rtsId
     )
     {
-        var projectClosures = projectClosureRepository.GetProjectClosuresBySponsorOrganisationUser(searchQuery, pageNumber, pageSize, sortField, sortDirection, sponsorOrganisationUserId);
-        var totalCount = projectClosureRepository.GetProjectClosuresBySponsorOrganisationUserCount(searchQuery, sponsorOrganisationUserId);
+        var projectClosures = projectClosureRepository.GetProjectClosuresBySponsorOrganisationUser(searchQuery, pageNumber, pageSize, sortField, sortDirection, sponsorOrganisationUserId, rtsId);
+        var totalCount = projectClosureRepository.GetProjectClosuresBySponsorOrganisationUserCount(searchQuery, sponsorOrganisationUserId, rtsId);
 
         return Task.FromResult(new ProjectClosuresSearchResponse
         {
@@ -59,10 +60,12 @@ public class ProjectClosureService(IProjectClosureRepository projectClosureRepos
     public Task<ProjectClosuresSearchResponse> GetProjectClosuresBySponsorOrganisationUserIdWithoutPaging
     (
         Guid sponsorOrganisationUserId,
-        ProjectClosuresSearchRequest searchQuery
+        ProjectClosuresSearchRequest searchQuery,
+        string rtsId
+
     )
     {
-        var projectClosures = projectClosureRepository.GetProjectClosuresBySponsorOrganisationUserWithoutPaging(searchQuery, sponsorOrganisationUserId);
+        var projectClosures = projectClosureRepository.GetProjectClosuresBySponsorOrganisationUserWithoutPaging(searchQuery, sponsorOrganisationUserId, rtsId);
 
         return Task.FromResult(new ProjectClosuresSearchResponse
         {
