@@ -12,7 +12,8 @@ public class GetProjectClosuresBySponsorOrganisationUserIdWithoutPagingHandler(I
         var response = await projectClosureService.GetProjectClosuresBySponsorOrganisationUserIdWithoutPaging
         (
             request.SponsorOrganisationUserId,
-            request.SearchQuery
+            request.SearchQuery,
+            request.RtsId
         );
 
         return response;

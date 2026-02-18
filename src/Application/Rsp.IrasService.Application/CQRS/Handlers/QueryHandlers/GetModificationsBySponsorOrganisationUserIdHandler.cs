@@ -17,7 +17,8 @@ public class GetModificationsBySponsorOrganisationUserIdHandler(IProjectModifica
             request.PageNumber,
             request.PageSize,
             request.SortField,
-            request.SortDirection
+            request.SortDirection,
+            request.RtsId
         );
 
         return response;

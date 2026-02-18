@@ -22,7 +22,8 @@ public class GetProjectClosuresBySponsorOrganisationUserIdTests : TestServiceBas
         int pageNumber,
         int pageSize,
         string sortField,
-        string sortDirection)
+        string sortDirection,
+        string rtsId)
     {
         // Arrange
         var mockMediator = Mocker.GetMock<IMediator>();
@@ -33,12 +34,13 @@ public class GetProjectClosuresBySponsorOrganisationUserIdTests : TestServiceBas
                 q.PageNumber == pageNumber &&
                 q.PageSize == pageSize &&
                 q.SortField == sortField &&
-                q.SortDirection == sortDirection), default))
+                q.SortDirection == sortDirection &&
+                q.RtsId == rtsId), default))
             .ReturnsAsync(mockResponse);
 
         // Act
         var result = await Sut.GetProjectClosuresBySponsorOrganisationUserId(
-            sponsorOrganisationUserId, searchQuery, pageNumber, pageSize, sortField, sortDirection);
+            sponsorOrganisationUserId, searchQuery, pageNumber, pageSize, sortField, sortDirection, rtsId);
 
         // Assert
         result.Value.ShouldBe(mockResponse);
@@ -57,10 +59,11 @@ public class GetProjectClosuresBySponsorOrganisationUserIdTests : TestServiceBas
         var searchQuery = new ProjectClosuresSearchRequest();
         var sortField = "SentToSponsorDate";
         var sortDirection = "asc";
+        var rtsId = "123";
 
         // Act
         var result = await Sut.GetProjectClosuresBySponsorOrganisationUserId(
-            sponsorOrganisationUserId, searchQuery, pageNumber, pageSize, sortField, sortDirection);
+            sponsorOrganisationUserId, searchQuery, pageNumber, pageSize, sortField, sortDirection, rtsId);
 
         // Assert
         var badRequestResult = result.Result.ShouldBeOfType<BadRequestObjectResult>();
