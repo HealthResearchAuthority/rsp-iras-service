@@ -11,6 +11,6 @@ public struct DocumentStatus
     public const string Approved = "Approved";
     public const string NotAuthorised = "Not authorised";
     public const string NotApproved = "Not approved";
-    public const string RequestRevisions = "Request revisions";
-    public const string ReviseAndAuthorise = "Revise and authorise";
+    public const string RequestRevisions = "Request revision";
+    public const string ReviseAndAuthorise = "Sponsor revises modification";
 }

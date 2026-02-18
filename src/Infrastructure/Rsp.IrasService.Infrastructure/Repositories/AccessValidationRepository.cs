@@ -94,6 +94,7 @@ public class AccessValidationRepository(IrasContext irasContext) : IAccessValida
         if (modification != null && !string.IsNullOrWhiteSpace(modification.Status) &&
             modification.Status is
                 ModificationStatus.WithSponsor or
+                ModificationStatus.ReviseAndAuthorise or
                 ModificationStatus.WithReviewBody or
                 ModificationStatus.Approved or
                 ModificationStatus.NotAuthorised or
@@ -107,7 +108,7 @@ public class AccessValidationRepository(IrasContext irasContext) : IAccessValida
             }
 
             // 3. Reviewer access for modification: status 'With review body' onwards and ReviewerId matches userId
-            if (modification.Status is not ModificationStatus.WithSponsor)
+            if (modification.Status is not ModificationStatus.WithSponsor or ModificationStatus.ReviseAndAuthorise)
             {
                 if (!string.IsNullOrWhiteSpace(modification.ReviewerId) && string.Equals(modification.ReviewerId, userId, StringComparison.OrdinalIgnoreCase))
                 {
