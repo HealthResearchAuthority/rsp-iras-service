@@ -129,6 +129,10 @@ public class ProjectModificationAuditTrailHandler :
             (ModificationStatus.NotAuthorised, _) =>
                 [("Modification not authorised by sponsor", false, true)],
 
+            (ModificationStatus.RequestForInformation, _) =>
+                [("Modification request for further information by review body", false, false),
+                ("Request for further information sent to applicant", true, false)],
+
             _ => [("", true, false)],
         };
     }

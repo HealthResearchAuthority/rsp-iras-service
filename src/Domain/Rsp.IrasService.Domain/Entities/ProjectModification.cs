@@ -118,4 +118,7 @@ public class ProjectModification : IAuditable
     /// Gets or sets the revision description of the modification.
     /// </summary>
     public string? RevisionDescription { get; set; }
+
+    // Navigation property for the reasons for request for information associated with this project modification.
+    public ICollection<ModificationRfiReason> ModificationRfiReasons { get; set; } = [];
 }

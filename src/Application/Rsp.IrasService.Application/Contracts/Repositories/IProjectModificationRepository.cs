@@ -237,7 +237,7 @@ public interface IProjectModificationRepository
     /// Saves the modification review responses
     /// </summary>
     /// <param name="modificationReviewRequest">The request object containing the review values</param>
-    Task SaveModificationReviewResponses(ModificationReviewRequest modificationReviewRequest);
+    Task SaveModificationReviewResponses(ModificationReviewRequest modificationReviewRequest, Guid userId);
 
     IEnumerable<ProjectOverviewDocumentResult> GetDocumentsForModification
     (
