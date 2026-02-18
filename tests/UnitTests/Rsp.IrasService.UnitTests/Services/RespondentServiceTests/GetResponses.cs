@@ -298,4 +298,7 @@ internal class TestRespondentRepository : IProjectPersonnelRepository
 
     public Task<IEnumerable<ModificationDocument>> GetDocumentsByType(string documentTypeId, string projectRecordId)
         => _innerRepository.GetDocumentsByType(documentTypeId, projectRecordId);
+
+    public Task DeleteModificationDocumentAnswersResponses(ISpecification<ModificationDocument> specification, List<ModificationDocument> respondentAnswers)
+        => _innerRepository.DeleteModificationDocumentAnswersResponses(specification, respondentAnswers);
 }
