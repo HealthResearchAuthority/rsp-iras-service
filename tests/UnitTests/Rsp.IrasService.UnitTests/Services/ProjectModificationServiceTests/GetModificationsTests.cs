@@ -323,14 +323,14 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
     int pageNumber,
     int pageSize,
     string sortField,
-    string sortDirection)
+    string sortDirection, string rtsId)
     {
         // Arrange
         var mockRepo = new Mock<IProjectModificationRepository>();
-        mockRepo.Setup(r => r.GetModificationsBySponsorOrganisationUser(searchQuery, pageNumber, pageSize, sortField, sortDirection, sponsorOrganisationUserId))
+        mockRepo.Setup(r => r.GetModificationsBySponsorOrganisationUser(searchQuery, pageNumber, pageSize, sortField, sortDirection, sponsorOrganisationUserId, rtsId))
                 .Returns(domainModifications);
 
-        mockRepo.Setup(r => r.GetModificationsBySponsorOrganisationUserCount(searchQuery, sponsorOrganisationUserId))
+        mockRepo.Setup(r => r.GetModificationsBySponsorOrganisationUserCount(searchQuery, sponsorOrganisationUserId, rtsId))
                 .Returns(domainModifications.Count);
 
         var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
@@ -338,7 +338,7 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
         var service = new ProjectModificationService(mockRepo.Object, mockHttpContextAccessor.Object);
 
         // Act
-        var result = await service.GetModificationsBySponsorOrganisationUserId(sponsorOrganisationUserId, searchQuery, pageNumber, pageSize, sortField, sortDirection);
+        var result = await service.GetModificationsBySponsorOrganisationUserId(sponsorOrganisationUserId, searchQuery, pageNumber, pageSize, sortField, sortDirection, rtsId);
 
         // Assert
         result.ShouldNotBeNull();

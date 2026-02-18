@@ -12,8 +12,8 @@ public class ProjectClosureRepository(IrasContext irasContext) : IProjectClosure
 {
     public async Task<ProjectClosure> CreateProjectClosure(ProjectClosure projectClosure)
     {
-        // Retrieve the current maximum project closure number for the given ProjectRecordId.
-        // This ensures that each project closure for a project is sequentially numbered.
+        // Retrieve the current maximum project closure number for the given ProjectRecordId. This
+        // ensures that each project closure for a project is sequentially numbered.
         var projectClosureNumber = await irasContext.ProjectClosures
             .Where(pc => pc.ProjectRecordId == projectClosure.ProjectRecordId)
             .MaxAsync(pc => (int?)pc.ProjectClosureNumber) ?? 0;
@@ -21,8 +21,8 @@ public class ProjectClosureRepository(IrasContext irasContext) : IProjectClosure
         // Increment the project closure number for the new project closure.
         projectClosure.ProjectClosureNumber = projectClosureNumber + 1;
 
-        // Update the Id to include the new project closure number.
-        // This typically forms a unique identifier such as "IRASID/1", "IRASID/2", etc.
+        // Update the Id to include the new project closure number. This typically forms a unique
+        // identifier such as "IRASID/1", "IRASID/2", etc.
         projectClosure.TransactionId += projectClosure.ProjectClosureNumber;
 
         // Add the new ProjectModification entity to the context for tracking.
@@ -77,10 +77,11 @@ public class ProjectClosureRepository(IrasContext irasContext) : IProjectClosure
        int pageSize,
        string sortField,
        string sortDirection,
-       Guid sponsorOrganisationUserId
+       Guid sponsorOrganisationUserId,
+       string rtsId
     )
     {
-        var projectclosures = ProjectClosuresBySponsorOrganisationUserQuery(sponsorOrganisationUserId);
+        var projectclosures = ProjectClosuresBySponsorOrganisationUserQuery(sponsorOrganisationUserId, rtsId);
         var filtered = FilterProjectClosuresBySponsorOrganisationUserQuery(projectclosures, searchQuery);
         var sorted = SortProjectClosures(filtered, sortField, sortDirection);
 
@@ -92,18 +93,19 @@ public class ProjectClosureRepository(IrasContext irasContext) : IProjectClosure
     public IEnumerable<ProjectClosure> GetProjectClosuresBySponsorOrganisationUserWithoutPaging
     (
        ProjectClosuresSearchRequest searchQuery,
-       Guid sponsorOrganisationUserId
+       Guid sponsorOrganisationUserId,
+       string rtsId
     )
     {
-        var projectclosures = ProjectClosuresBySponsorOrganisationUserQuery(sponsorOrganisationUserId);
+        var projectclosures = ProjectClosuresBySponsorOrganisationUserQuery(sponsorOrganisationUserId, rtsId);
         var filtered = FilterProjectClosuresBySponsorOrganisationUserQuery(projectclosures, searchQuery);
 
         return filtered;
     }
 
-    public int GetProjectClosuresBySponsorOrganisationUserCount(ProjectClosuresSearchRequest searchQuery, Guid sponsorOrganisationUserId)
+    public int GetProjectClosuresBySponsorOrganisationUserCount(ProjectClosuresSearchRequest searchQuery, Guid sponsorOrganisationUserId, string rtsId)
     {
-        var projectclosures = ProjectClosuresBySponsorOrganisationUserQuery(sponsorOrganisationUserId);
+        var projectclosures = ProjectClosuresBySponsorOrganisationUserQuery(sponsorOrganisationUserId, rtsId);
         return FilterProjectClosuresBySponsorOrganisationUserQuery(projectclosures, searchQuery).Count();
     }
 
@@ -143,13 +145,8 @@ public class ProjectClosureRepository(IrasContext irasContext) : IProjectClosure
             : projectClosures.OrderBy(keySelector);
     }
 
-    private IQueryable<ProjectClosure> ProjectClosuresBySponsorOrganisationUserQuery(Guid sponsorOrganisationUserId)
+    private IQueryable<ProjectClosure> ProjectClosuresBySponsorOrganisationUserQuery(Guid sponsorOrganisationUserId, string rtsId)
     {
-        var rtsId = irasContext.SponsorOrganisationsUsers
-            .Where(u => u.Id == sponsorOrganisationUserId)
-            .Select(u => u.RtsId)
-            .FirstOrDefault();
-
         if (string.IsNullOrEmpty(rtsId))
         {
             return irasContext.ProjectClosures.Where(_ => false);

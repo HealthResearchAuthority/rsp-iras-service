@@ -7,9 +7,11 @@ namespace Rsp.Service.Application.CQRS.Queries;
 public class GetProjectClosuresBySponsorOrganisationUserIdWithoutPagingQuery
 (
     Guid sponsorOrganisationUserId,
-    ProjectClosuresSearchRequest searchQuery
+    ProjectClosuresSearchRequest searchQuery,
+    string rtsId
 ) : BaseQuery, IRequest<ProjectClosuresSearchResponse>
 {
     public Guid SponsorOrganisationUserId { get; } = sponsorOrganisationUserId;
     public ProjectClosuresSearchRequest SearchQuery { get; } = searchQuery;
+    public string RtsId { get; } = rtsId;
 }

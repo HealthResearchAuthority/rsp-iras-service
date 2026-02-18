@@ -19,7 +19,8 @@ public class GetProjectClosuresBySponsorOrganisationUserIdWithoutPagingTests
     public async Task GetProjectClosuresBySponsorOrganisationUserIdWithoutPaging_ShouldReturnOk_WhenClosuresExist(
         Guid sponsorOrganisationUserId,
         ProjectClosuresSearchRequest searchQuery,
-        ProjectClosuresSearchResponse mockResponse)
+        ProjectClosuresSearchResponse mockResponse,
+        string rtsId)
     {
         // Arrange
         var mockMediator = Mocker.GetMock<IMediator>();
@@ -34,7 +35,7 @@ public class GetProjectClosuresBySponsorOrganisationUserIdWithoutPagingTests
 
         // Act
         var result = await Sut.GetProjectClosuresBySponsorOrganisationUserIdWithoutPaging(
-            sponsorOrganisationUserId, searchQuery);
+            sponsorOrganisationUserId, searchQuery, rtsId);
 
         // Assert
         result.Value.ShouldBe(mockResponse);
@@ -51,6 +52,7 @@ public class GetProjectClosuresBySponsorOrganisationUserIdWithoutPagingTests
     [AutoData]
     public async Task GetProjectClosuresBySponsorOrganisationUserIdWithoutPaging_ShouldReturnEmpty_WhenServiceReturnsEmpty(
         Guid sponsorOrganisationUserId,
+        string rtsId,
         ProjectClosuresSearchRequest searchQuery)
     {
         // Arrange
@@ -71,7 +73,7 @@ public class GetProjectClosuresBySponsorOrganisationUserIdWithoutPagingTests
 
         // Act
         var result = await Sut.GetProjectClosuresBySponsorOrganisationUserIdWithoutPaging(
-            sponsorOrganisationUserId, searchQuery);
+            sponsorOrganisationUserId, searchQuery, rtsId);
 
         // Assert
         result.Value.ShouldNotBeNull();

@@ -121,10 +121,11 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
        int pageSize,
        string sortField,
        string sortDirection,
-       Guid sponsorOrganisationUserId
+       Guid sponsorOrganisationUserId,
+       string rtsId
     )
     {
-        var modifications = ProjectModificationBySponsorOrganisationUserQuery(sponsorOrganisationUserId);
+        var modifications = ProjectModificationBySponsorOrganisationUserQuery(sponsorOrganisationUserId, rtsId);
         var filtered = FilterModificationsBySponsorOrganisationUserQuery(modifications, searchQuery);
         var sorted = SortModifications(filtered, sortField, sortDirection);
 
@@ -133,9 +134,9 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             .Take(pageSize);
     }
 
-    public int GetModificationsBySponsorOrganisationUserCount(SponsorAuthorisationsModificationsSearchRequest searchQuery, Guid sponsorOrganisationUserId)
+    public int GetModificationsBySponsorOrganisationUserCount(SponsorAuthorisationsModificationsSearchRequest searchQuery, Guid sponsorOrganisationUserId, string rtsId)
     {
-        var modifications = ProjectModificationBySponsorOrganisationUserQuery(sponsorOrganisationUserId);
+        var modifications = ProjectModificationBySponsorOrganisationUserQuery(sponsorOrganisationUserId, rtsId);
         return FilterModificationsBySponsorOrganisationUserQuery(modifications, searchQuery).Count();
     }
 
@@ -428,15 +429,10 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             : source.OrderBy(keySelector);
     }
 
-    private IQueryable<ProjectModificationResult> ProjectModificationBySponsorOrganisationUserQuery(Guid sponsorOrganisationUserId)
+    private IQueryable<ProjectModificationResult> ProjectModificationBySponsorOrganisationUserQuery(Guid sponsorOrganisationUserId, string rtsId)
     {
         var projectRecords = irasContext.ProjectRecords.AsQueryable();
         var projectAnswers = irasContext.ProjectRecordAnswers.AsQueryable();
-
-        var rtsId = irasContext.SponsorOrganisationsUsers
-            .Where(u => u.Id == sponsorOrganisationUserId)
-            .Select(u => u.RtsId)
-            .FirstOrDefault();
 
         return from prm in irasContext.ProjectModifications.Include(pm => pm.ProjectModificationChanges)
                join proj in projectRecords on prm.ProjectRecordId equals proj.Id
