@@ -226,7 +226,7 @@ public class GetResponses : TestServiceBase<RespondentService>
 
         // Assert
         result.ShouldNotBeNull();
-        result.ShouldBeAssignableTo<IEnumerable<DocumentTypeResponse>>();
+        result.ShouldBeAssignableTo<IEnumerable<ModificationDocumentDto>>();
     }
 }
 
