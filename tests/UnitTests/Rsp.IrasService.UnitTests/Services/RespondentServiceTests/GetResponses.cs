@@ -207,6 +207,27 @@ public class GetResponses : TestServiceBase<RespondentService>
         result.ShouldNotBeNull();
         result.ShouldBeAssignableTo<IEnumerable<ModificationDocumentDto>>();
     }
+
+    /// <summary>
+    ///     Tests that responses are returned for document types
+    /// </summary>
+    [Theory, AutoData]
+    public async Task GetDocumentsByType_ShouldReturnAnswers(string projectRecordId, string documentTypeId)
+    {
+        // Arrange
+        Mocker.Use<IProjectPersonnelRepository>(_respondentRepository);
+
+        // Optionally seed data here if needed for the test
+
+        Sut = Mocker.CreateInstance<RespondentService>();
+
+        // Act
+        var result = await Sut.GetDocumentsByType(projectRecordId, documentTypeId);
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.ShouldBeAssignableTo<IEnumerable<DocumentTypeResponse>>();
+    }
 }
 
 /// <summary>
