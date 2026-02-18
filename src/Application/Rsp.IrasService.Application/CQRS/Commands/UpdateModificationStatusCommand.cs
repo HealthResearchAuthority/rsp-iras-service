@@ -4,7 +4,9 @@ namespace Rsp.Service.Application.CQRS.Commands;
 
 public class UpdateModificationStatusCommand : IRequest
 {
-    public required string ProjectRecordId { get; set; }
-    public required Guid ProjectModificationId { get; set; }
-    public required string Status { get; set; }
+    public string ProjectRecordId { get; set; }
+    public Guid ProjectModificationId { get; set; }
+    public string Status { get; set; }
+    public string? RevisionDescription { get; set; }
+    public string? ReasonNotApproved { get; set; }
 }

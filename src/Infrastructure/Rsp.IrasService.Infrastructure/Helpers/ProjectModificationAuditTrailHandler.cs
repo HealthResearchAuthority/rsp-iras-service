@@ -107,7 +107,7 @@ public class ProjectModificationAuditTrailHandler :
         return (newStatus, reviewType) switch
         {
             (ModificationStatus.WithSponsor, _) =>
-                [("Modification submitted", true, false),
+               [("Modification submitted", true, false),
                 ("Modification sent to sponsor", false, true)],
 
             (ModificationStatus.WithReviewBody, _) =>

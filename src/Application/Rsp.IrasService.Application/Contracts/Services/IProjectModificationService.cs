@@ -1,6 +1,6 @@
-﻿using Rsp.Service.Application.DTOS.Requests;
+﻿using Rsp.Logging.Interceptors;
+using Rsp.Service.Application.DTOS.Requests;
 using Rsp.Service.Application.DTOS.Responses;
-using Rsp.Logging.Interceptors;
 
 namespace Rsp.Service.Application.Contracts.Services;
 
@@ -119,7 +119,7 @@ public interface IProjectModificationService : IInterceptable
     /// </summary>
     /// <param name="projectRecordId">The unique record identifier for the project whose modification is to be updated.</param>
     /// <param name="modificationId">The unique identifier of the modification change to remove.</param>
-    Task UpdateModificationStatus(string projectRecordId, Guid modificationId, string status);
+    Task UpdateModificationStatus(string projectRecordId, Guid modificationId, string status, string? revisionDescription, string? reasonNotApproved);
 
     /// <summary>
     /// Applies a partial update to an existing modification and cascades status where applicable.

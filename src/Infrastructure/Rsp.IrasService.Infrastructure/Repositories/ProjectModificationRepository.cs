@@ -149,10 +149,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                           Id = pm.Id.ToString(),
                           ModificationId = pm.ModificationIdentifier,
                           ProjectRecordId = pm.ProjectRecordId,
-                          ShortProjectTitle = irasContext.ProjectRecordAnswers
-                              .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ShortProjectTitle)
-                              .Select(a => a.Response)
-                              .FirstOrDefault() ?? string.Empty,
+                          ShortProjectTitle = pr.ShortProjectTitle,
                           Status = pm.Status,
                           CreatedAt = pm.CreatedDate,
                           ReviewerName = pm.ReviewerName
@@ -241,10 +238,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                                    a.QuestionId == ProjectRecordConstants.ParticipatingNation)
                        .Select(a => a.SelectedOptions)
                        .FirstOrDefault() ?? string.Empty,
-                   ShortProjectTitle = projectAnswers
-                       .Where(a => a.ProjectRecordId == pr.Id && a.QuestionId == ProjectRecordConstants.ShortProjectTitle)
-                       .Select(a => a.Response)
-                       .FirstOrDefault() ?? string.Empty,
+                   ShortProjectTitle = pr.ShortProjectTitle,
                    SponsorOrganisation = projectAnswers
                        .Where(a => a.ProjectRecordId == pr.Id &&
                                    a.QuestionId == ProjectRecordConstants.SponsorOrganisation)
@@ -476,10 +470,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                        .Where(a => a.ProjectRecordId == proj.Id && a.QuestionId == ProjectRecordConstants.ParticipatingNation)
                        .Select(a => a.SelectedOptions)
                        .FirstOrDefault() ?? string.Empty,
-                   ShortProjectTitle = projectAnswers
-                       .Where(a => a.ProjectRecordId == proj.Id && a.QuestionId == ProjectRecordConstants.ShortProjectTitle)
-                       .Select(a => a.Response)
-                       .FirstOrDefault() ?? string.Empty,
+                   ShortProjectTitle = proj.ShortProjectTitle,
                    SponsorOrganisation = rtsId ?? string.Empty,
                    CreatedAt = prm.CreatedDate,
                    ReviewerId = prm.ReviewerId,
@@ -715,7 +706,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
     /// making any changes.
     /// </summary>
     /// <param name="specification">The specification used to locate the modification to update.</param>
-    public async Task UpdateModificationStatus(ISpecification<ProjectModification> specification, string status)
+    public async Task UpdateModificationStatus(ISpecification<ProjectModification> specification, string status, string? revisionDescription, string? reasonNotApproved)
     {
         // Attempt to find a single ProjectModification matching the given specification. Using
         // FirstOrDefaultAsync to avoid exceptions if no entity matches the criteria.
@@ -775,6 +766,14 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         modification.Status = status;
         modification.UpdatedDate = DateTime.Now;
 
+        if (!string.IsNullOrEmpty(revisionDescription))
+        {
+            modification.RevisionDescription = revisionDescription;
+        }
+        if (!string.IsNullOrEmpty(reasonNotApproved))
+        {
+            modification.ReasonNotApproved = reasonNotApproved;
+        }
         switch (status)
         {
             // No update of SentToRegulatorDate when SWR approves modification (changes to ModificationStatus.NotApproved)
