@@ -1,7 +1,7 @@
-﻿using Rsp.Service.Application.DTOS.Requests;
+﻿using Rsp.Logging.Interceptors;
+using Rsp.Service.Application.DTOS.Requests;
 using Rsp.Service.Application.DTOS.Responses;
 using Rsp.Service.Domain.Entities;
-using Rsp.Logging.Interceptors;
 
 namespace Rsp.Service.Application.Contracts.Services;
 
@@ -157,4 +157,18 @@ public interface IRespondentService : IInterceptable
     /// </summary>
     /// <param name="documentsAuditTrail">The list of documents audit trail to save.</param>
     Task SaveModificationDocumentsAuditTrail(List<ModificationDocumentsAuditTrailDto> documentsAuditTrail);
+
+    /// <summary>
+    ///  Retrieves a collection of modification documents that match the specified document type identifier.
+    /// </summary>
+    /// <param name="documentTypeId">The unique identifier of the document type used to filter modification documents. Cannot be null or empty.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains an enumerable collection of
+    /// modification document DTOs matching the specified type. The collection will be empty if no documents are found.</returns>
+    Task<IEnumerable<ModificationDocumentDto>> GetDocumentsByType(string projectRecordId, string? documentTypeId);
+
+    /// <summary>
+    /// Saves the provided project modification documents that match the given specification.
+    /// </summary>
+    /// <param name="respondentAnswers">The list of modification documents to save.</param>
+    Task DeleteModificationDocumentAnswersResponses(List<ModificationDocumentDto> respondentAnswers);
 }

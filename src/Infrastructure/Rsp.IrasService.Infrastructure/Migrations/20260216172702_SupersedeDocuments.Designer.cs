@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rsp.Service.Infrastructure;
 
@@ -11,9 +12,11 @@ using Rsp.Service.Infrastructure;
 namespace Rsp.Service.Infrastructure.Migrations
 {
     [DbContext(typeof(IrasContext))]
-    partial class IrasContextModelSnapshot : ModelSnapshot
+    [Migration("20260216172702_SupersedeDocuments")]
+    partial class SupersedeDocuments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -344,41 +347,6 @@ namespace Rsp.Service.Infrastructure.Migrations
                     b.ToTable("ModificationParticipatingOrganisationAnswers");
                 });
 
-            modelBuilder.Entity("Rsp.Service.Domain.Entities.ModificationRfiReason", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("ProjectModificationId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Reason")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Sequence")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("UpdatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectModificationId");
-
-                    b.ToTable("ModificationRfiReasons");
-                });
-
             modelBuilder.Entity("Rsp.Service.Domain.Entities.ProjectClosure", b =>
                 {
                     b.Property<Guid>("Id")
@@ -482,9 +450,6 @@ namespace Rsp.Service.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReviewerName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RevisionDescription")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("SentToRegulatorDate")
@@ -1096,15 +1061,6 @@ namespace Rsp.Service.Infrastructure.Migrations
                     b.Navigation("ModificationParticipatingOrganisation");
                 });
 
-            modelBuilder.Entity("Rsp.Service.Domain.Entities.ModificationRfiReason", b =>
-                {
-                    b.HasOne("Rsp.Service.Domain.Entities.ProjectModification", null)
-                        .WithMany("ModificationRfiReasons")
-                        .HasForeignKey("ProjectModificationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Rsp.Service.Domain.Entities.ProjectClosure", b =>
                 {
                     b.HasOne("Rsp.Service.Domain.Entities.ProjectRecord", "ProjectRecord")
@@ -1236,8 +1192,6 @@ namespace Rsp.Service.Infrastructure.Migrations
 
             modelBuilder.Entity("Rsp.Service.Domain.Entities.ProjectModification", b =>
                 {
-                    b.Navigation("ModificationRfiReasons");
-
                     b.Navigation("ProjectModificationChanges");
                 });
 

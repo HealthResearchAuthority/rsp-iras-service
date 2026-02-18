@@ -1,5 +1,6 @@
 ﻿using Ardalis.Specification;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.FeatureManagement;
 using Rsp.Service.Application.Contracts.Repositories;
 using Rsp.Service.Application.DTOS.Requests;
 using Rsp.Service.Application.DTOS.Responses;
@@ -22,7 +23,8 @@ public class GetResponses : TestServiceBase<RespondentService>
             .Options;
 
         _context = new IrasContext(options);
-        _respondentRepository = new TestRespondentRepository(new RespondentRepository(_context));
+        var featureManager = new Mock<IFeatureManager>();
+        _respondentRepository = new TestRespondentRepository(new RespondentRepository(_context, featureManager.Object));
     }
 
     /// <summary>
@@ -293,4 +295,7 @@ internal class TestRespondentRepository : IProjectPersonnelRepository
 
     public Task SaveModificationDocumentsAuditTrail(List<ModificationDocumentsAuditTrail> documentsAuditTrail)
         => _innerRepository.SaveModificationDocumentsAuditTrail(documentsAuditTrail);
+
+    public Task<IEnumerable<ModificationDocument>> GetDocumentsByType(string documentTypeId, string projectRecordId)
+        => _innerRepository.GetDocumentsByType(documentTypeId, projectRecordId);
 }

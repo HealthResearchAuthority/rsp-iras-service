@@ -1,6 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<ItemGroup>
+	  <Compile Remove="Specifications\GetModificationDocumentsByTypeSpecification.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Ardalis.Specification" Version="8.0.0" />
 		<PackageReference Include="CompareNETObjects" Version="4.83.0" />
 		<PackageReference Include="Mapster" Version="7.4.0" />
