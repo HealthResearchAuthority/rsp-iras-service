@@ -934,7 +934,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
     /// Saves the modification review responses
     /// </summary>
     /// <param name="modificationReviewRequest">The request object containing the review values</param>
-    public async Task SaveModificationReviewResponses(ModificationReviewRequest modificationReviewRequest)
+    public async Task SaveModificationReviewResponses(ModificationReviewRequest modificationReviewRequest, Guid userId)
     {
         var modification = await irasContext.ProjectModifications
             .FirstOrDefaultAsync(pm => pm.Id == modificationReviewRequest.ProjectModificationId);
@@ -944,6 +944,50 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             modification.ReviewerComments = modificationReviewRequest.Comment;
             modification.ReasonNotApproved = modificationReviewRequest.ReasonNotApproved;
             modification.ProvisionalReviewOutcome = modificationReviewRequest.Outcome;
+
+            var existingReasons = await irasContext.ModificationRfiReasons
+                .Where(r => r.ProjectModificationId == modificationReviewRequest.ProjectModificationId)
+                .OrderBy(r => r.Sequence)
+                .ToListAsync();
+
+            var newReasons = modificationReviewRequest.RequestForInformationReasons ?? [];
+
+            foreach (var existingReason in existingReasons)
+            {
+                var reasonSequence = existingReason.Sequence;
+
+                if (reasonSequence > newReasons.Count)
+                {
+                    // This reason has been removed in the new request, so delete it
+                    irasContext.ModificationRfiReasons.Remove(existingReason);
+                    continue;
+                }
+
+                // This reason still exists in the new request, so update it
+                var newReason = newReasons[reasonSequence - 1];
+                if (existingReason.Reason != newReason)
+                {
+                    existingReason.Reason = newReasons[reasonSequence - 1];
+                    existingReason.UpdatedDate = DateTime.UtcNow;
+                    existingReason.UpdatedBy = userId;
+                }
+            }
+
+            // If there are more reasons in the new request than existing, add the new ones
+            for (int i = existingReasons.Count; i < newReasons.Count; i++)
+            {
+                irasContext.ModificationRfiReasons.Add(new ModificationRfiReason
+                {
+                    Id = Guid.NewGuid(),
+                    Sequence = i + 1,
+                    ProjectModificationId = modificationReviewRequest.ProjectModificationId,
+                    Reason = newReasons[i],
+                    CreatedBy = userId,
+                    CreatedDate = DateTime.UtcNow,
+                    UpdatedBy = userId,
+                    UpdatedDate = DateTime.UtcNow,
+                });
+            }
 
             await irasContext.SaveChangesAsync();
         }
@@ -994,6 +1038,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
     {
         return await irasContext
             .ProjectModifications
+            .Include(pm => pm.ModificationRfiReasons)
             .WithSpecification(specification)
             .SingleOrDefaultAsync();
     }

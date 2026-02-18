@@ -268,7 +268,7 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
     /// <param name="modificationReviewRequest">The request object containing the review values</param>
     public Task SaveModificationReviewResponses(ModificationReviewRequest modificationReviewRequest)
     {
-        return projectModificationRepository.SaveModificationReviewResponses(modificationReviewRequest);
+        return projectModificationRepository.SaveModificationReviewResponses(modificationReviewRequest, GetUserIdFromContext());
     }
 
     /// <summary>
@@ -293,7 +293,8 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
             Comment = modification.ReviewerComments,
             ReasonNotApproved = modification.ReasonNotApproved,
             ReviewOutcome = modification.ProvisionalReviewOutcome,
-            RevisionDescription = modification.RevisionDescription
+            RevisionDescription = modification.RevisionDescription,
+            RequestForInformationReasons = [.. modification.ModificationRfiReasons.OrderBy(r => r.Sequence).Select(r => r.Reason)]
         };
     }
 
@@ -324,5 +325,10 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
         var modification = await projectModificationRepository.GetModification(specification);
 
         return modification?.Adapt<ModificationResponse>();
+    }
+
+    private Guid GetUserIdFromContext()
+    {
+        return Guid.Parse(httpContextAccessor.HttpContext!.User!.Claims!.FirstOrDefault(x => x.Type == "userId")!.Value!);
     }
 }
