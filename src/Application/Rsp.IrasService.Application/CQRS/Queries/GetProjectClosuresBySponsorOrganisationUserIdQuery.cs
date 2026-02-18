@@ -11,7 +11,8 @@ public class GetProjectClosuresBySponsorOrganisationUserIdQuery
     int pageNumber,
     int pageSize,
     string sortField,
-    string sortDirection
+    string sortDirection,
+    string rtsId
 ) : BaseQuery, IRequest<ProjectClosuresSearchResponse>
 {
     public Guid SponsorOrganisationUserId { get; } = sponsorOrganisationUserId;
@@ -20,4 +21,5 @@ public class GetProjectClosuresBySponsorOrganisationUserIdQuery
     public int PageSize { get; } = pageSize;
     public string SortField { get; } = sortField;
     public string SortDirection { get; } = sortDirection;
+    public string RtsId { get; } = rtsId;
 }

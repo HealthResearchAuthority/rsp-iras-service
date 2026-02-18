@@ -53,7 +53,7 @@ public class ProjectClosureRepositoryTests
     }
 
     private async Task<Guid> SeedScenarioAsync(
-            string mainRtsId = "RTS-ABC",
+            string mainRtsId = "123",
             IEnumerable<ProjectClosure>? closures = null,
             Dictionary<string, string>? recordIdToRtsMap = null,
             string defaultCategory = "SponsorOrganisation",
@@ -168,8 +168,7 @@ public class ProjectClosureRepositoryTests
     }
 
     // ---------------------------------------------------------------------
-    // Filter: should return only closures linked to user's RTS id
-    // ---------------------------------------------------------------------
+    // Filter: should return only closures linked to user's RTS id ---------------------------------------------------------------------
     [Fact]
     public async Task GetProjectClosuresBySponsorOrganisationUser_ShouldReturnOnlyClosuresLinkedToUsersRtsId()
     {
@@ -182,28 +181,29 @@ public class ProjectClosureRepositoryTests
 
         var map = new Dictionary<string, string>
         {
-            ["PR-1"] = "RTS-ABC", // include
-            ["PR-2"] = "RTS-ABC", // include
+            ["PR-1"] = "123", // include
+            ["PR-2"] = "123", // include
             ["PR-3"] = "RTS-XYZ"  // exclude
         };
 
-        var userId = await SeedScenarioAsync(mainRtsId: "RTS-ABC", closures: closures, recordIdToRtsMap: map);
+        var userId = await SeedScenarioAsync(mainRtsId: "123", closures: closures, recordIdToRtsMap: map);
 
         var searchQuery = new ProjectClosuresSearchRequest { SearchTerm = null };
 
-        var list = _repository.GetProjectClosuresBySponsorOrganisationUser(
-            searchQuery, pageNumber: 1, pageSize: 10, sortField: nameof(ProjectClosure.IrasId), sortDirection: "asc", sponsorOrganisationUserId: userId).ToList();
+        var rtsId = "123";
 
-        var count = _repository.GetProjectClosuresBySponsorOrganisationUserCount(searchQuery, userId);
+        var list = _repository.GetProjectClosuresBySponsorOrganisationUser(
+            searchQuery, pageNumber: 1, pageSize: 10, sortField: nameof(ProjectClosure.IrasId), sortDirection: "asc", sponsorOrganisationUserId: userId, rtsId).ToList();
+
+        var count = _repository.GetProjectClosuresBySponsorOrganisationUserCount(searchQuery, userId, rtsId);
 
         list.Count.ShouldBe(2);
         count.ShouldBe(2);
         list.Select(x => x.ProjectRecordId).ShouldBe(new[] { "PR-1", "PR-2" }, ignoreOrder: false);
     }
 
-    // ---------------------------------------------------------------------
-    // Sorting by supported fields/directions
-    // ---------------------------------------------------------------------
+    // --------------------------------------------------------------------- Sorting by supported
+    // fields/directions ---------------------------------------------------------------------
     [Theory]
     [InlineData(nameof(ProjectClosure.ShortProjectTitle), "asc")]
     [InlineData(nameof(ProjectClosure.ShortProjectTitle), "desc")]
@@ -224,11 +224,12 @@ public class ProjectClosureRepositoryTests
         };
 
         var userId = await SeedScenarioAsync(closures: closures);
+        var rtsId = "123";
 
         var searchQuery = new ProjectClosuresSearchRequest { SearchTerm = null };
 
         var list = _repository.GetProjectClosuresBySponsorOrganisationUser(
-            searchQuery, pageNumber: 1, pageSize: 10, sortField, sortDirection, userId).ToList();
+            searchQuery, pageNumber: 1, pageSize: 10, sortField, sortDirection, userId, rtsId).ToList();
 
         list.Count.ShouldBe(2);
 
@@ -259,13 +260,12 @@ public class ProjectClosureRepositoryTests
         firstKey.ShouldBe(expectedFirstKey);
     }
 
-    // ---------------------------------------------------------------------
-    // Pagination
-    // ---------------------------------------------------------------------
+    // --------------------------------------------------------------------- Pagination ---------------------------------------------------------------------
     [Fact]
     public async Task GetProjectClosuresBySponsorOrganisationUser_ShouldPaginate()
     {
         var userId = await SeedScenarioAsync(); // default Alpha, Bravo, Charlie
+        var rtsId = "123";
 
         var searchQuery = new ProjectClosuresSearchRequest { SearchTerm = null };
         var sortField = nameof(ProjectClosure.ShortProjectTitle);
@@ -275,35 +275,35 @@ public class ProjectClosureRepositoryTests
 
         // Asc: Alpha, Bravo, Charlie → page 2 → "Bravo"
         var page = _repository.GetProjectClosuresBySponsorOrganisationUser(
-            searchQuery, pageNumber, pageSize, sortField, sortDirection, userId).ToList();
+            searchQuery, pageNumber, pageSize, sortField, sortDirection, userId, rtsId).ToList();
 
-        var total = _repository.GetProjectClosuresBySponsorOrganisationUserCount(searchQuery, userId);
+        var total = _repository.GetProjectClosuresBySponsorOrganisationUserCount(searchQuery, userId, rtsId);
 
         page.Count.ShouldBe(1);
         page[0].ShortProjectTitle.ShouldBe("Bravo");
         total.ShouldBe(3);
     }
 
-    // ---------------------------------------------------------------------
-    // SearchTerm filter on IrasId (contains)
-    // ---------------------------------------------------------------------
+    // --------------------------------------------------------------------- SearchTerm filter on
+    // IrasId (contains) ---------------------------------------------------------------------
     [Fact]
     public async Task GetProjectClosuresBySponsorOrganisationUserCount_ShouldRespectSearchTerm_On_IrasId()
     {
         var closures = new[]
         {
             new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-1", ShortProjectTitle = "A", Status = "Open",   IrasId = 101, SentToSponsorDate = DateTime.UtcNow, ClosureDate = DateTime.UtcNow, DateActioned = DateTime.UtcNow, UserId = "u1", CreatedBy = "seed", UpdatedBy = "seed",TransactionId="C2414/1", ProjectClosureNumber=1 },
-            new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-2", ShortProjectTitle = "B", Status = "Closed", IrasId = 202, SentToSponsorDate = DateTime.UtcNow, ClosureDate = DateTime.UtcNow, DateActioned = DateTime.UtcNow, UserId = "u2", CreatedBy = "seed", UpdatedBy = "seed",TransactionId="C2414/1", ProjectClosureNumber=1 }
+            new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-2", ShortProjectTitle = "B", Status = "Closed", IrasId = 202, SentToSponsorDate = DateTime.UtcNow, ClosureDate = DateTime.UtcNow, DateActioned = DateTime.UtcNow, UserId = "u2", CreatedBy = "seed", UpdatedBy = "seed",TransactionId="C2414/1", ProjectClosureNumber=1, }
         };
 
         var userId = await SeedScenarioAsync(closures: closures);
+        var rtsId = "123";
 
         var searchQuery = new ProjectClosuresSearchRequest { SearchTerm = "202" };
 
-        var total = _repository.GetProjectClosuresBySponsorOrganisationUserCount(searchQuery, userId);
+        var total = _repository.GetProjectClosuresBySponsorOrganisationUserCount(searchQuery, userId, rtsId);
 
         var list = _repository.GetProjectClosuresBySponsorOrganisationUser(
-            searchQuery, pageNumber: 1, pageSize: 10, sortField: nameof(ProjectClosure.IrasId), sortDirection: "asc", sponsorOrganisationUserId: userId).ToList();
+            searchQuery, pageNumber: 1, pageSize: 10, sortField: nameof(ProjectClosure.IrasId), sortDirection: "asc", sponsorOrganisationUserId: userId, rtsId).ToList();
 
         total.ShouldBe(1);
         list.Count.ShouldBe(1);
@@ -311,9 +311,8 @@ public class ProjectClosureRepositoryTests
         list[0].ShortProjectTitle.ShouldBe("B");
     }
 
-    // ---------------------------------------------------------------------
-    // Unknown sort field: sorting is skipped → original order
-    // ---------------------------------------------------------------------
+    // --------------------------------------------------------------------- Unknown sort field:
+    // sorting is skipped → original order ---------------------------------------------------------------------
     [Fact]
     public async Task GetProjectClosuresBySponsorOrganisationUser_WhenSortFieldUnknown_ShouldReturnOriginalOrder()
     {
@@ -324,20 +323,20 @@ public class ProjectClosureRepositoryTests
         };
 
         var userId = await SeedScenarioAsync(closures: closures);
+        var rtsId = "123";
 
         var searchQuery = new ProjectClosuresSearchRequest { SearchTerm = null };
 
         var list = _repository.GetProjectClosuresBySponsorOrganisationUser(
-            searchQuery, pageNumber: 1, pageSize: 10, sortField: "UnknownField", sortDirection: "asc", sponsorOrganisationUserId: userId).ToList();
+            searchQuery, pageNumber: 1, pageSize: 10, sortField: "UnknownField", sortDirection: "asc", sponsorOrganisationUserId: userId, rtsId).ToList();
 
         list.Count.ShouldBe(2);
         list[0].ProjectRecordId.ShouldBe("PR-1");
         list[1].ProjectRecordId.ShouldBe("PR-2");
     }
 
-    // ---------------------------------------------------------------------
-    // User not found or no RTS → empty results
-    // ---------------------------------------------------------------------
+    // --------------------------------------------------------------------- User not found or no
+    // RTS → empty results ---------------------------------------------------------------------
     [Fact]
     public async Task GetProjectClosuresBySponsorOrganisationUser_WhenUserHasNoRtsIdOrNotFound_ReturnsEmpty()
     {
@@ -346,11 +345,12 @@ public class ProjectClosureRepositoryTests
 
         var notExistingUserId = Guid.NewGuid();
         var searchQuery = new ProjectClosuresSearchRequest { SearchTerm = null };
+        var rtsId = "123";
 
         var list = _repository.GetProjectClosuresBySponsorOrganisationUser(
-            searchQuery, pageNumber: 1, pageSize: 10, sortField: nameof(ProjectClosure.IrasId), sortDirection: "asc", sponsorOrganisationUserId: notExistingUserId).ToList();
+            searchQuery, pageNumber: 1, pageSize: 10, sortField: nameof(ProjectClosure.IrasId), sortDirection: "asc", sponsorOrganisationUserId: notExistingUserId, rtsId).ToList();
 
-        var total = _repository.GetProjectClosuresBySponsorOrganisationUserCount(searchQuery, sponsorOrganisationUserId: notExistingUserId);
+        var total = _repository.GetProjectClosuresBySponsorOrganisationUserCount(searchQuery, sponsorOrganisationUserId: notExistingUserId, rtsId);
 
         list.ShouldBeEmpty();
         total.ShouldBe(0);
@@ -374,11 +374,12 @@ public class ProjectClosureRepositoryTests
 
         var userId = await SeedScenarioAsync(closures: closures);
         var search = new ProjectClosuresSearchRequest { SearchTerm = null };
+        var rtsId = "123";
 
         var list = _repository.GetProjectClosuresBySponsorOrganisationUser(
             search, pageNumber: 1, pageSize: 50,
             sortField: nameof(ProjectClosure.ClosureDate), sortDirection: sortDirection,
-            sponsorOrganisationUserId: userId).ToList();
+            sponsorOrganisationUserId: userId, rtsId).ToList();
 
         list.Select(x => x.ProjectRecordId).ShouldBe(expected, ignoreOrder: false);
     }
@@ -399,11 +400,12 @@ public class ProjectClosureRepositoryTests
 
         var userId = await SeedScenarioAsync(closures: closures);
         var search = new ProjectClosuresSearchRequest { SearchTerm = null };
+        var rtsId = "123";
 
         var list = _repository.GetProjectClosuresBySponsorOrganisationUser(
             search, pageNumber: 1, pageSize: 50,
             sortField: nameof(ProjectClosure.ClosureDate), sortDirection: "asc",
-            sponsorOrganisationUserId: userId).ToList();
+            sponsorOrganisationUserId: userId, rtsId).ToList();
 
         list.Select(x => x.ProjectRecordId).ShouldBe(new[] { "PR-A1", "PR-A0", "PR-N1", "PR-N0" }, ignoreOrder: false);
     }
@@ -544,16 +546,17 @@ public class ProjectClosureRepositoryTests
 
         var map = new Dictionary<string, string>
         {
-            ["PR-1"] = "RTS-ABC", // include
-            ["PR-2"] = "RTS-ABC", // include
+            ["PR-1"] = "123", // include
+            ["PR-2"] = "123", // include
             ["PR-3"] = "RTS-XYZ"  // exclude
         };
 
-        var userId = await SeedScenarioAsync(mainRtsId: "RTS-ABC", closures: closures, recordIdToRtsMap: map);
+        var userId = await SeedScenarioAsync(mainRtsId: "123", closures: closures, recordIdToRtsMap: map);
+        var rtsId = "123";
 
         var searchQuery = new ProjectClosuresSearchRequest { SearchTerm = null };
 
-        var list = _repository.GetProjectClosuresBySponsorOrganisationUserWithoutPaging(searchQuery, sponsorOrganisationUserId: userId).ToList();
+        var list = _repository.GetProjectClosuresBySponsorOrganisationUserWithoutPaging(searchQuery, sponsorOrganisationUserId: userId, rtsId).ToList();
 
         list.Count.ShouldBe(2);
         list.Select(x => x.ProjectRecordId).ShouldBe(new[] { "PR-1", "PR-2" }, ignoreOrder: true);
@@ -570,10 +573,11 @@ public class ProjectClosureRepositoryTests
         };
 
         var userId = await SeedScenarioAsync(closures: closures);
+        var rtsId = "123";
 
         var searchQuery = new ProjectClosuresSearchRequest { SearchTerm = "202" };
 
-        var list = _repository.GetProjectClosuresBySponsorOrganisationUserWithoutPaging(searchQuery, sponsorOrganisationUserId: userId).ToList();
+        var list = _repository.GetProjectClosuresBySponsorOrganisationUserWithoutPaging(searchQuery, sponsorOrganisationUserId: userId, rtsId).ToList();
 
         list.Count.ShouldBe(2);
         list.Select(x => x.ProjectRecordId).ShouldBe(new[] { "PR-2", "PR-3" }, ignoreOrder: true);
@@ -586,8 +590,9 @@ public class ProjectClosureRepositoryTests
 
         var notExistingUserId = Guid.NewGuid();
         var searchQuery = new ProjectClosuresSearchRequest { SearchTerm = null };
+        var rtsId = "123";
 
-        var list = _repository.GetProjectClosuresBySponsorOrganisationUserWithoutPaging(searchQuery, sponsorOrganisationUserId: notExistingUserId).ToList();
+        var list = _repository.GetProjectClosuresBySponsorOrganisationUserWithoutPaging(searchQuery, sponsorOrganisationUserId: notExistingUserId, rtsId).ToList();
 
         list.ShouldBeEmpty();
     }

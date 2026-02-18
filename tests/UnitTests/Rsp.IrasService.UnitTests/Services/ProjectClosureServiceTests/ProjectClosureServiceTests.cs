@@ -74,20 +74,20 @@ public class ProjectClosureServiceTests : TestServiceBase<ProjectClosureService>
         int pageNumber,
         int pageSize,
         string sortField,
-        string sortDirection)
+        string sortDirection, string rtsId)
     {
         // Arrange
         var mockRepo = new Mock<IProjectClosureRepository>();
-        mockRepo.Setup(r => r.GetProjectClosuresBySponsorOrganisationUser(searchQuery, pageNumber, pageSize, sortField, sortDirection, sponsorOrganisationUserId))
+        mockRepo.Setup(r => r.GetProjectClosuresBySponsorOrganisationUser(searchQuery, pageNumber, pageSize, sortField, sortDirection, sponsorOrganisationUserId, rtsId))
                 .Returns(projectClosures);
 
-        mockRepo.Setup(r => r.GetProjectClosuresBySponsorOrganisationUserCount(searchQuery, sponsorOrganisationUserId))
+        mockRepo.Setup(r => r.GetProjectClosuresBySponsorOrganisationUserCount(searchQuery, sponsorOrganisationUserId, rtsId))
                 .Returns(projectClosures.Count);
 
         var service = new ProjectClosureService(mockRepo.Object);
 
         // Act
-        var result = await service.GetProjectClosuresBySponsorOrganisationUserId(sponsorOrganisationUserId, searchQuery, pageNumber, pageSize, sortField, sortDirection);
+        var result = await service.GetProjectClosuresBySponsorOrganisationUserId(sponsorOrganisationUserId, searchQuery, pageNumber, pageSize, sortField, sortDirection, rtsId);
 
         // Assert
         result.ShouldNotBeNull();
@@ -133,17 +133,18 @@ public class ProjectClosureServiceTests : TestServiceBase<ProjectClosureService>
     public async Task GetProjectClosuresBySponsorOrganisationUserIdWithoutPaging_ShouldReturnMappedResponse(
         Guid sponsorOrganisationUserId,
         ProjectClosuresSearchRequest searchQuery,
-        List<ProjectClosure> projectClosures)
+        List<ProjectClosure> projectClosures,
+        string rtsId)
     {
         // Arrange
         var mockRepo = new Mock<IProjectClosureRepository>();
-        mockRepo.Setup(r => r.GetProjectClosuresBySponsorOrganisationUserWithoutPaging(searchQuery, sponsorOrganisationUserId))
+        mockRepo.Setup(r => r.GetProjectClosuresBySponsorOrganisationUserWithoutPaging(searchQuery, sponsorOrganisationUserId, rtsId))
                 .Returns(projectClosures.AsEnumerable());
 
         var service = new ProjectClosureService(mockRepo.Object);
 
         // Act
-        var result = await service.GetProjectClosuresBySponsorOrganisationUserIdWithoutPaging(sponsorOrganisationUserId, searchQuery);
+        var result = await service.GetProjectClosuresBySponsorOrganisationUserIdWithoutPaging(sponsorOrganisationUserId, searchQuery, rtsId);
 
         // Assert
         result.ShouldNotBeNull();

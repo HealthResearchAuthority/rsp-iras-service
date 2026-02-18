@@ -42,14 +42,19 @@ public class ProjectClosureController(IMediator mediator) : ControllerBase
     }
 
     /// <summary>
-    /// Gets project closures records for specific sponsorOrganisationUserId with filtering, sorting and pagination
+    /// Gets project closures records for specific sponsorOrganisationUserId with filtering, sorting
+    /// and pagination
     /// </summary>
-    /// <param name="sponsorOrganisationUserId">The unique identifier of the sponsor organisation user for which project closures are requested.</param>
+    /// <param name="sponsorOrganisationUserId">
+    /// The unique identifier of the sponsor organisation user for which project closures are requested.
+    /// </param>
     /// <param name="searchQuery">Object containing filtering criteria for project closures.</param>
     /// <param name="pageNumber">The number of the page to retrieve (used for pagination - 1-based).</param>
     /// <param name="pageSize">The number of items per page (used for pagination).</param>
     /// <param name="sortField">The field name by which the results should be sorted.</param>
-    /// <param name="sortDirection">The direction of sorting: "asc" for ascending or "desc" for descending.</param>
+    /// <param name="sortDirection">
+    /// The direction of sorting: "asc" for ascending or "desc" for descending.
+    /// </param>
     /// <returns>Returns a paginated list of project closures.</returns>
     [HttpPost("getprojectclosuresbysponsororganisationuserid")]
     public async Task<ActionResult<ProjectClosuresSearchResponse>> GetProjectClosuresBySponsorOrganisationUserId
@@ -59,7 +64,8 @@ public class ProjectClosureController(IMediator mediator) : ControllerBase
         int pageNumber,
         int pageSize,
         string sortField,
-        string sortDirection
+        string sortDirection,
+        string rtsId
     )
     {
         if (pageNumber <= 0)
@@ -71,35 +77,41 @@ public class ProjectClosureController(IMediator mediator) : ControllerBase
             return BadRequest("pageSize must be greater than 0.");
         }
 
-        var query = new GetProjectClosuresBySponsorOrganisationUserIdQuery(sponsorOrganisationUserId, searchQuery, pageNumber, pageSize, sortField, sortDirection);
+        var query = new GetProjectClosuresBySponsorOrganisationUserIdQuery(sponsorOrganisationUserId, searchQuery, pageNumber, pageSize, sortField, sortDirection, rtsId);
 
         return await mediator.Send(query);
     }
 
     /// <summary>
-    /// Gets project closures records for specific sponsorOrganisationUserId with filtering, but without pagination
+    /// Gets project closures records for specific sponsorOrganisationUserId with filtering, but
+    /// without pagination
     /// </summary>
-    /// <param name="sponsorOrganisationUserId">The unique identifier of the sponsor organisation user for which project closures are requested.</param>
+    /// <param name="sponsorOrganisationUserId">
+    /// The unique identifier of the sponsor organisation user for which project closures are requested.
+    /// </param>
     /// <param name="searchQuery">Object containing filtering criteria for project closures.</param>
     /// <returns>Returns a collection of project closures.</returns>
     [HttpPost("getprojectclosuresbysponsororganisationuseridwithoutpaging")]
     public async Task<ActionResult<ProjectClosuresSearchResponse>> GetProjectClosuresBySponsorOrganisationUserIdWithoutPaging
     (
         Guid sponsorOrganisationUserId,
-        [FromBody] ProjectClosuresSearchRequest searchQuery
+        [FromBody] ProjectClosuresSearchRequest searchQuery,
+        string rtsId
     )
     {
-        var query = new GetProjectClosuresBySponsorOrganisationUserIdWithoutPagingQuery(sponsorOrganisationUserId, searchQuery);
+        var query = new GetProjectClosuresBySponsorOrganisationUserIdWithoutPagingQuery(sponsorOrganisationUserId, searchQuery, rtsId);
 
         return await mediator.Send(query);
     }
 
     /// <summary>
-    /// Updates the project closure status to either Authorised or Not authorised.
-    /// If the status is set to Authorised, the method also closes the associated project record
-    /// by updating its status to Closed.
+    /// Updates the project closure status to either Authorised or Not authorised. If the status is
+    /// set to Authorised, the method also closes the associated project record by updating its
+    /// status to Closed.
     /// </summary>
-    /// <param name="projectRecordId">The unique identifier of the project record whose closure status will be updated.</param>
+    /// <param name="projectRecordId">
+    /// The unique identifier of the project record whose closure status will be updated.
+    /// </param>
     /// <param name="status">The new closure status to apply (Authorised or Not authorised).</param>
     /// <returns>An API response indicating the result of the operation.</returns>
     [HttpPatch("updateprojectclosurestatus")]
