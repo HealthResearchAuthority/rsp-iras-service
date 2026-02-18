@@ -201,7 +201,7 @@ public interface IProjectModificationRepository
     /// making any changes.
     /// </summary>
     /// <param name="specification">The specification used to locate the modification to update.</param>
-    Task UpdateModificationStatus(ISpecification<ProjectModification> specification, string status, string? revisionDescription);
+    Task UpdateModificationStatus(ISpecification<ProjectModification> specification, string status, string? revisionDescription, string? reasonNotApproved);
 
     /// <summary>
     /// Updates the <see cref="ProjectModification"/> modification that matches the provided

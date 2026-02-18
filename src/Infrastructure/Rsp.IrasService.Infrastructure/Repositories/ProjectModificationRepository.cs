@@ -702,7 +702,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
     /// making any changes.
     /// </summary>
     /// <param name="specification">The specification used to locate the modification to update.</param>
-    public async Task UpdateModificationStatus(ISpecification<ProjectModification> specification, string status, string? revisionDescription)
+    public async Task UpdateModificationStatus(ISpecification<ProjectModification> specification, string status, string? revisionDescription, string? reasonNotApproved)
     {
         // Attempt to find a single ProjectModification matching the given specification. Using
         // FirstOrDefaultAsync to avoid exceptions if no entity matches the criteria.
@@ -766,7 +766,10 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         {
             modification.RevisionDescription = revisionDescription;
         }
-
+        if (!string.IsNullOrEmpty(reasonNotApproved))
+        {
+            modification.ReasonNotApproved = reasonNotApproved;
+        }
         switch (status)
         {
             // No update of SentToRegulatorDate when SWR approves modification (changes to ModificationStatus.NotApproved)

@@ -181,11 +181,11 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
     /// status of the associated modification changes.
     /// </summary>
     /// <param name="modificationId">The unique identifier of the modification change to remove.</param>
-    public async Task UpdateModificationStatus(string projectRecordId, Guid modificationId, string status, string? revisionDescription)
+    public async Task UpdateModificationStatus(string projectRecordId, Guid modificationId, string status, string? revisionDescription, string? reasonNotApproved)
     {
         var specification = new GetModificationSpecification(projectRecordId, modificationId);
 
-        await projectModificationRepository.UpdateModificationStatus(specification, status, revisionDescription);
+        await projectModificationRepository.UpdateModificationStatus(specification, status, revisionDescription, reasonNotApproved);
     }
 
     /// <summary>
