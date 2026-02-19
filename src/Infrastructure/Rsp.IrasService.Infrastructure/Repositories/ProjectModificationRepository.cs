@@ -359,7 +359,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
 
                 // Status match (single value)
                 && (string.IsNullOrEmpty(searchQuery.Status)
-                    || x.Status.ToDbRevisionStatus().Contains(searchQuery.Status))
+                    || x.Status.ToUiRevisionStatus().Equals(searchQuery.Status))
 
                 // Allowed statuses filter — restrict to allowed values
                 && (!searchQuery.AllowedStatuses.Any()

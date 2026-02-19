@@ -47,24 +47,4 @@ public static class ModificationStatusExtensions
 
         return status;
     }
-
-    public static IReadOnlyList<string> ToDbRevisionStatus(this string? status)
-    {
-        if (string.IsNullOrWhiteSpace(status))
-        {
-            return Array.Empty<string>();
-        }
-
-        if (status.Equals(ModificationStatus.InDraft, StringComparison.OrdinalIgnoreCase))
-        {
-            return new[] { ModificationStatus.InDraft, ModificationStatus.RequestRevisions };
-        }
-
-        if (status.Equals(ModificationStatus.WithSponsor, StringComparison.OrdinalIgnoreCase))
-        {
-            return new[] { ModificationStatus.WithSponsor, ModificationStatus.ReviseAndAuthorise };
-        }
-
-        return new[] { status };
-    }
 }
