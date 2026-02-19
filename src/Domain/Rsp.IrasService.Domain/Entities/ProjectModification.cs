@@ -118,4 +118,9 @@ public class ProjectModification : IAuditable
     /// Gets or sets the revision description of the modification.
     /// </summary>
     public string? RevisionDescription { get; set; }
+
+    /// <summary>
+    ///  Gets or sets the response of the request revision by the applicant
+    /// </summary>
+    public string? ApplicantRevisionResponse { get; set; }
 }
