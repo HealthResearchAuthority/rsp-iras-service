@@ -1,7 +1,6 @@
 ﻿using Ardalis.Specification;
 using Ardalis.Specification.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Rsp.IrasService.Application.Constants;
 using Rsp.Service.Application.Constants;
 using Rsp.Service.Application.Contracts.Repositories;
 using Rsp.Service.Application.DTOS.Requests;
@@ -767,7 +766,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
 
         foreach (var doc in documents)
         {
-            if (status == ModificationStatus.Approved && string.Equals(doc.DocumentType, SupersedeDocumentsType.Clean, StringComparison.OrdinalIgnoreCase))
+            if (status == ModificationStatus.Approved && doc.ReplacedByDocumentId != null && doc.ReplacedByDocumentId != Guid.Empty)
             {
                 doc.Status = ModificationStatus.Superseded;
             }
