@@ -766,9 +766,14 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
 
         foreach (var doc in documents)
         {
-            if (status == ModificationStatus.Approved && doc.ReplacedByDocumentId != null && doc.ReplacedByDocumentId != Guid.Empty)
+            if (status == ModificationStatus.Approved && doc.ReplacesDocumentId != null && doc.ReplacesDocumentId != Guid.Empty)
             {
-                doc.Status = ModificationStatus.Superseded;
+                var replacedDoc = await irasContext.ModificationDocuments
+                    .FirstOrDefaultAsync(d => d.Id == doc.ReplacesDocumentId);
+                if (replacedDoc != null && replacedDoc.ReplacedByDocumentId != null && replacedDoc.ReplacedByDocumentId != Guid.Empty)
+                {
+                    replacedDoc.Status = ModificationStatus.Superseded;
+                }
             }
             else
             {
