@@ -6,4 +6,5 @@ public record ModificationReviewRequest
     public string Outcome { get; set; } = null!;
     public string? Comment { get; set; }
     public string? ReasonNotApproved { get; set; }
+    public List<string> RequestForInformationReasons { get; set; } = [];
 }

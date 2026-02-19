@@ -31,6 +31,7 @@ public class IrasContext(DbContextOptions<IrasContext> options) : DbContext(opti
     public DbSet<ProjectRecordAuditTrail> ProjectRecordAuditTrail { get; set; }
     public DbSet<ProjectClosure> ProjectClosures { get; set; }
     public DbSet<ModificationDocumentsAuditTrail> ModificationDocumentsAuditTrail { get; set; }
+    public DbSet<ModificationRfiReason> ModificationRfiReasons { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
