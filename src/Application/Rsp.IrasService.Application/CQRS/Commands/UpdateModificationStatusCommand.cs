@@ -9,4 +9,5 @@ public class UpdateModificationStatusCommand : IRequest
     public string Status { get; set; }
     public string? RevisionDescription { get; set; }
     public string? ReasonNotApproved { get; set; }
+    public string? ApplicantRevisionResponse { get; set; }
 }

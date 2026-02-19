@@ -8,4 +8,5 @@ public record ModificationReviewResponse
     public string? ReasonNotApproved { get; set; }
     public string? RevisionDescription { get; set; }
     public List<string> RequestForInformationReasons { get; set; } = [];
+    public string? ApplicantRevisionResponse { get; set; }
 }
