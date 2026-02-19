@@ -121,4 +121,9 @@ public class ProjectModification : IAuditable
 
     // Navigation property for the reasons for request for information associated with this project modification.
     public ICollection<ModificationRfiReason> ModificationRfiReasons { get; set; } = [];
+
+    /// <summary>
+    ///  Gets or sets the response of the request revision by the applicant
+    /// </summary>
+    public string? ApplicantRevisionResponse { get; set; }
 }
