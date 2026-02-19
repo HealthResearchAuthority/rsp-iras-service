@@ -67,6 +67,7 @@ public static class ServicesConfiguration
         services.AddScoped<IAuditTrailHandler<RegulatoryBodyAuditTrail>, RegulatoryBodyUserAuditTrailHandler>();
 
         services.AddScoped<IAuditTrailHandler<ProjectModificationAuditTrail>, ProjectModificationAuditTrailHandler>();
+        services.AddScoped<IAuditTrailHandler<ProjectModificationAuditTrail>, ModificationRequestForInformationReasonAuditTrailHandler>();
 
         services.AddScoped<IAuditTrailHandler<ProjectRecordAuditTrail>, ProjectRecordAuditTrailHandler>();
         services.AddScoped<IAuditTrailHandler<ProjectRecordAuditTrail>, ProjectClosureAuditTrailHandler>();
