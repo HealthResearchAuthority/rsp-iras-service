@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Rsp.Service.Application.Constants;
@@ -164,7 +165,24 @@ public class ProjectModificationChangeAuditTrailHandler : IAuditTrailHandler<Pro
     /// <returns>A description of the change, or an empty string if the question ID is not recognized.</returns>
     private static string GenerateChangeDescription(ProjectModificationChangeAnswer changeAnswer, EffectiveProjectRecordAnswer? projectRecordAnswer)
     {
-        var changeFromToText = $"changed from '{projectRecordAnswer!.Response}' to '{changeAnswer.Response}'";
+        static string FormatDates(string fromDate, string toDate)
+        {
+            var fromDateParsed = DateTime.TryParseExact(fromDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fromDateResult)
+                ? fromDateResult.ToString("dd MMMM yyyy")
+                : fromDate;
+
+            var toDateParsed = DateTime.TryParseExact(toDate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime toDateResult)
+                ? toDateResult.ToString("dd MMMM yyyy")
+                : toDate;
+
+            return $"changed from '{fromDateParsed}' to '{toDateParsed}'";
+        }
+
+        var changeFromToText = changeAnswer.QuestionId switch
+        {
+            ModificationChangeQuestionIds.ProjectEndDate => FormatDates(projectRecordAnswer!.Response!, changeAnswer.Response!),
+            _ => $"changed from '{projectRecordAnswer!.Response}' to '{changeAnswer.Response}'"
+        };
 
         return changeAnswer.QuestionId switch
         {
