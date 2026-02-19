@@ -74,4 +74,9 @@ public record ModificationResponse
     /// The date and time when the modification was last updated.
     /// </summary>
     public DateTime UpdatedDate { get; set; }
+
+    /// <summary>
+    /// This contains the request revision description by the sponsor
+    /// </summary>
+    public string? RevisionDescription { get; set; }
 }
