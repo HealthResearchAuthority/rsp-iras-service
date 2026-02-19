@@ -174,11 +174,11 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
     /// the status of the associated modification changes.
     /// </summary>
     /// <param name="modificationId">The unique identifier of the modification change to remove.</param>
-    public async Task UpdateModificationStatus(string projectRecordId, Guid modificationId, string status, string? revisionDescription, string? reasonNotApproved)
+    public async Task UpdateModificationStatus(string projectRecordId, Guid modificationId, string status, string? revisionDescription, string? reasonNotApproved, string? applicantRevisionResponse)
     {
         var specification = new GetModificationSpecification(projectRecordId, modificationId);
 
-        await projectModificationRepository.UpdateModificationStatus(specification, status, revisionDescription, reasonNotApproved);
+        await projectModificationRepository.UpdateModificationStatus(specification, status, revisionDescription, reasonNotApproved, applicantRevisionResponse);
     }
 
     /// <summary>
@@ -285,7 +285,8 @@ public class ProjectModificationService(IProjectModificationRepository projectMo
             Comment = modification.ReviewerComments,
             ReasonNotApproved = modification.ReasonNotApproved,
             ReviewOutcome = modification.ProvisionalReviewOutcome,
-            RevisionDescription = modification.RevisionDescription
+            RevisionDescription = modification.RevisionDescription,
+            ApplicantRevisionResponse = modification.ApplicantRevisionResponse,
         };
     }
 

@@ -155,7 +155,7 @@ public interface IProjectModificationRepository
     /// If no matching entity is found, the method completes without making any changes.
     /// </summary>
     /// <param name="specification">The specification used to locate the modification to update.</param>
-    Task UpdateModificationStatus(ISpecification<ProjectModification> specification, string status, string? revisionDescription, string? reasonNotApproved);
+    Task UpdateModificationStatus(ISpecification<ProjectModification> specification, string status, string? revisionDescription, string? reasonNotApproved, string? applicantRevisionResponse);
 
     /// <summary>
     /// Updates the <see cref="ProjectModification"/> modification that matches the provided specification.

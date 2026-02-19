@@ -68,7 +68,7 @@ public class ModificationControllerMiscTests : TestServiceBase<ProjectModificati
             .Returns(Task.CompletedTask);
 
         // Act
-        await Sut.UpdateModificationStatus("PR1", id, status, null, null);
+        await Sut.UpdateModificationStatus("PR1", id, status, null, null, null);
 
         // Assert
         mediator.Verify(m => m.Send(It.Is<UpdateModificationStatusCommand>(q => q.ProjectModificationId == id && q.Status == status), It.IsAny<CancellationToken>()), Times.Once);

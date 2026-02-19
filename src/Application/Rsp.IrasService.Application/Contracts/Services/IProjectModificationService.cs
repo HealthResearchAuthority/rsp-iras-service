@@ -119,7 +119,7 @@ public interface IProjectModificationService : IInterceptable
     /// </summary>
     /// <param name="projectRecordId">The unique record identifier for the project whose modification is to be updated.</param>
     /// <param name="modificationId">The unique identifier of the modification change to remove.</param>
-    Task UpdateModificationStatus(string projectRecordId, Guid modificationId, string status, string? revisionDescription, string? reasonNotApproved);
+    Task UpdateModificationStatus(string projectRecordId, Guid modificationId, string status, string? revisionDescription, string? reasonNotApproved, string? applicantRevisionResponse);
 
     /// <summary>
     /// Applies a partial update to an existing modification and cascades status where applicable.
