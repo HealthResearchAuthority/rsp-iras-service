@@ -172,6 +172,19 @@ public class AccessValidationRepository(IrasContext irasContext) : IAccessValida
             return true;
         }
 
+        var userGuid = Guid.TryParse(userId, out var guid) ? guid : Guid.Empty;
+
+        // If modification id provided, check modification-level access
+        if (modification != null && !string.IsNullOrWhiteSpace(modification.Status) &&
+            modification.Status is ModificationStatus.ReviseAndAuthorise)
+        {
+            // read sponsor organisation id from project answers (IQA0312)
+            if (await SponsorHasAccessToProjectRecord(userGuid, modification.ProjectRecordId))
+            {
+                return true;
+            }
+        }
+
         // No access path found
         return false;
     }
