@@ -128,7 +128,7 @@ public class GetModificationChangeSpecificationTests
 public class SaveModificationChangeResponsesSpecificationTests
 {
     [Fact]
-    public void Filters_By_Change_Record_And_Personnel()
+    public void Filters_By_Change_Record()
     {
         var changeId = Guid.NewGuid();
         var prId = "PR-1";
@@ -139,11 +139,10 @@ public class SaveModificationChangeResponsesSpecificationTests
             new() { ProjectModificationChangeId = changeId, ProjectRecordId = prId, UserId = "P-2" },
         };
 
-        var spec = new SaveModificationChangeResponsesSpecification(changeId, prId, personId);
+        var spec = new SaveModificationChangeResponsesSpecification(changeId, prId);
         var result = spec.Evaluate(data).ToList();
 
-        result.Count.ShouldBe(1);
-        result.Single().UserId.ShouldBe(personId);
+        result.Count.ShouldBe(2);
     }
 }
 
