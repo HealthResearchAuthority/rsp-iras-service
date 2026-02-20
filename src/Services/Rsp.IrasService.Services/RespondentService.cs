@@ -89,7 +89,7 @@ public class RespondentService(IProjectPersonnelRepository projectPersonnelRepos
             respondentAnswers.Add(respondentAnswer);
         }
 
-        var specification = new SaveModificationChangeResponsesSpecification(modificationChangeId, projectRecordId, userId);
+        var specification = new SaveModificationChangeResponsesSpecification(modificationChangeId, projectRecordId);
 
         await projectPersonnelRepository.SaveModificationChangeResponses(specification, respondentAnswers);
     }

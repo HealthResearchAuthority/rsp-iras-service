@@ -41,6 +41,11 @@ public record ModificationResponse
     public string ReviewerComments { get; set; } = null!;
 
     /// <summary>
+    /// The revision description.
+    /// </summary>
+    public string? RevisionDescription { get; set; } = null;
+
+    /// <summary>
     /// Overall ranking type of the modification
     /// </summary>
     public string? ModificationType { get; set; }

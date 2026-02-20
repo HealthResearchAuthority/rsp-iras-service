@@ -359,7 +359,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
 
                 // Status match (single value)
                 && (string.IsNullOrEmpty(searchQuery.Status)
-                    || x.Status.Equals(searchQuery.Status, StringComparison.OrdinalIgnoreCase))
+                    || x.Status.ToUiRevisionStatus().Equals(searchQuery.Status))
 
                 // Allowed statuses filter — restrict to allowed values
                 && (!searchQuery.AllowedStatuses.Any()
@@ -422,6 +422,13 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                 : source
                     .OrderBy(m => int.TryParse(m.IrasId, out var irasId) ? irasId : 0)
                     .ThenBy(m => m.ModificationNumber);
+        }
+
+        if (sortField is nameof(ProjectModificationResult.Status))
+        {
+            return sortDirection == "desc"
+                ? source.OrderByDescending(m => m.Status.ToUiRevisionStatus())
+                : source.OrderBy(m => m.Status.ToUiRevisionStatus());
         }
 
         return sortDirection == "desc"
@@ -490,6 +497,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                  x.ModificationId.Contains(term, StringComparison.OrdinalIgnoreCase))
                 &&
                 (x.Status == ModificationStatus.WithSponsor ||
+                 x.Status == ModificationStatus.ReviseAndAuthorise ||
                  x.Status == ModificationStatus.Approved ||
                  x.Status == ModificationStatus.NotApproved ||
                  x.Status == ModificationStatus.WithReviewBody ||
@@ -762,7 +770,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         modification.Status = status;
         modification.UpdatedDate = DateTime.Now;
 
-        if (!string.IsNullOrEmpty(revisionDescription))
+        if (!string.IsNullOrEmpty(revisionDescription) || status is ModificationStatus.ReviseAndAuthorise)
         {
             modification.RevisionDescription = revisionDescription;
         }
