@@ -169,6 +169,67 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
         list2[0].ParticipatingNation.ShouldBe("Wales, Wales");
     }
 
+    [Fact]
+    public void Returns_Modifications_By_Expanded_Status_Mapping()
+    {
+        // Arrange
+        var recordId = Guid.NewGuid().ToString();
+
+        var record = new ProjectRecord
+        {
+            Id = recordId,
+            IrasId = 111111,
+            UserId = "u1",
+            CreatedBy = "t",
+            CreatedDate = DateTime.UtcNow,
+            UpdatedBy = "t",
+            UpdatedDate = DateTime.UtcNow,
+            FullProjectTitle = "Title",
+            ShortProjectTitle = "Short"
+        };
+
+        var modification1 = new ProjectModification
+        {
+            ProjectRecordId = recordId,
+            ModificationIdentifier = Guid.NewGuid().ToString(),
+            CreatedDate = DateTime.UtcNow,
+            UpdatedDate = DateTime.UtcNow,
+            CreatedBy = "t",
+            UpdatedBy = "t",
+            Status = ModificationStatus.RequestRevisions // maps to InDraft (UI)
+        };
+
+        var modification2 = new ProjectModification
+        {
+            ProjectRecordId = recordId,
+            ModificationIdentifier = Guid.NewGuid().ToString(),
+            CreatedDate = DateTime.UtcNow,
+            UpdatedDate = DateTime.UtcNow,
+            CreatedBy = "t",
+            UpdatedBy = "t",
+            Status = ModificationStatus.InDraft
+        };
+
+        _context.ProjectRecords.Add(record);
+        _context.ProjectModifications.AddRange(modification1, modification2);
+        _context.SaveChanges();
+
+        var search = new ModificationSearchRequest
+        {
+            Status = ModificationStatus.InDraft,   // user-visible UI filter
+        };
+
+        // Act
+        var results = _modificationRepository.GetModifications(
+            search, pageNumber: 1, pageSize: 10, sortField: "CreatedAt", sortDirection: "asc"
+        ).ToList();
+
+        // Assert
+        results.Count.ShouldBe(2); // BOTH should match
+        results.Any(r => r.Status == ModificationStatus.RequestRevisions).ShouldBeTrue();
+        results.Any(r => r.Status == ModificationStatus.InDraft).ShouldBeTrue();
+    }
+
     [Theory]
     [InlineData("111")]
     [InlineData("11111")]
@@ -370,5 +431,153 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
         // Assert
         result.ShouldNotBeNull();
         result.Modifications.Count().ShouldBe(domainModifications.Count);
+    }
+
+    [Fact]
+    public void Sorts_By_UiRevisionStatus_Ascending()
+    {
+        // Arrange
+        var recordId = Guid.NewGuid().ToString();
+
+        var record = new ProjectRecord
+        {
+            Id = recordId,
+            IrasId = 111111,
+            UserId = "u1",
+            CreatedBy = "t",
+            CreatedDate = DateTime.UtcNow,
+            UpdatedBy = "t",
+            UpdatedDate = DateTime.UtcNow,
+            FullProjectTitle = "Title",
+            ShortProjectTitle = "Short"
+        };
+        _context.ProjectRecords.Add(record);
+
+        var mod1 = new ProjectModification
+        {
+            ProjectRecordId = recordId,
+            ModificationIdentifier = Guid.NewGuid().ToString(),
+            Status = ModificationStatus.ReviseAndAuthorise,
+            CreatedDate = DateTime.UtcNow,
+            UpdatedDate = DateTime.UtcNow,
+            CreatedBy = "t",
+            UpdatedBy = "t"
+        };
+
+        var mod2 = new ProjectModification
+        {
+            ProjectRecordId = recordId,
+            ModificationIdentifier = Guid.NewGuid().ToString(),
+            Status = ModificationStatus.RequestRevisions,
+            CreatedDate = DateTime.UtcNow,
+            UpdatedDate = DateTime.UtcNow,
+            CreatedBy = "t",
+            UpdatedBy = "t"
+        };
+
+        var mod3 = new ProjectModification
+        {
+            ProjectRecordId = recordId,
+            ModificationIdentifier = Guid.NewGuid().ToString(),
+            Status = "SomethingElse",
+            CreatedDate = DateTime.UtcNow,
+            UpdatedDate = DateTime.UtcNow,
+            CreatedBy = "t",
+            UpdatedBy = "t"
+        };
+
+        _context.ProjectModifications.AddRange(mod1, mod2, mod3);
+        _context.SaveChanges();
+
+        var search = new ModificationSearchRequest(); // brak filtrowania
+
+        // Act
+        var results = _modificationRepository.GetModifications(
+            search, 1, 10, "Status", "asc"
+        ).ToList();
+
+        var expectedOrder = new[]
+        {
+            ModificationStatus.RequestRevisions, // InDraft (lowest)
+            "SomethingElse",
+            ModificationStatus.ReviseAndAuthorise // WithSponsor (highest)
+        };
+
+        results.Count.ShouldBe(3);
+        results.Select(r => r.Status).ShouldBe(expectedOrder);
+    }
+
+    [Fact]
+    public void Sorts_By_UiRevisionStatus_Descending()
+    {
+        // Arrange
+        var recordId = Guid.NewGuid().ToString();
+
+        var record = new ProjectRecord
+        {
+            Id = recordId,
+            IrasId = 111111,
+            UserId = "u1",
+            CreatedBy = "t",
+            CreatedDate = DateTime.UtcNow,
+            UpdatedBy = "t",
+            UpdatedDate = DateTime.UtcNow,
+            FullProjectTitle = "Title",
+            ShortProjectTitle = "Short"
+        };
+        _context.ProjectRecords.Add(record);
+
+        var mod1 = new ProjectModification
+        {
+            ProjectRecordId = recordId,
+            ModificationIdentifier = Guid.NewGuid().ToString(),
+            Status = ModificationStatus.ReviseAndAuthorise,
+            CreatedDate = DateTime.UtcNow,
+            UpdatedDate = DateTime.UtcNow,
+            CreatedBy = "t",
+            UpdatedBy = "t"
+        };
+
+        var mod2 = new ProjectModification
+        {
+            ProjectRecordId = recordId,
+            ModificationIdentifier = Guid.NewGuid().ToString(),
+            Status = ModificationStatus.RequestRevisions,
+            CreatedDate = DateTime.UtcNow,
+            UpdatedDate = DateTime.UtcNow,
+            CreatedBy = "t",
+            UpdatedBy = "t"
+        };
+
+        var mod3 = new ProjectModification
+        {
+            ProjectRecordId = recordId,
+            ModificationIdentifier = Guid.NewGuid().ToString(),
+            Status = "SomethingElse",
+            CreatedDate = DateTime.UtcNow,
+            UpdatedDate = DateTime.UtcNow,
+            CreatedBy = "t",
+            UpdatedBy = "t"
+        };
+
+        _context.ProjectModifications.AddRange(mod1, mod2, mod3);
+        _context.SaveChanges();
+
+        var search = new ModificationSearchRequest();
+
+        // Act
+        var results = _modificationRepository.GetModifications(
+            search, 1, 10, "Status", "desc"
+        ).ToList();
+
+        var expectedOrder = new[]
+        {
+            ModificationStatus.ReviseAndAuthorise,
+            "SomethingElse",
+            ModificationStatus.RequestRevisions
+        };
+
+        results.Count.ShouldBe(3);
+        results.Select(r => r.Status).ShouldBe(expectedOrder);
     }
 }
