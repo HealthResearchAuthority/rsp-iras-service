@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.FeatureManagement;
 using Rsp.Service.Application.Contracts.Repositories;
 using Rsp.Service.Application.DTOS.Requests;
 using Rsp.Service.Infrastructure;
@@ -21,7 +22,8 @@ public class SaveModificationParticipatingOrganisations : TestServiceBase<Respon
             .UseInMemoryDatabase(Guid.NewGuid().ToString("N")).Options;
 
         _context = new IrasContext(options);
-        _personnelRepository = new RespondentRepository(_context);
+        var featureManager = new Mock<IFeatureManager>();
+        _personnelRepository = new RespondentRepository(_context, featureManager.Object);
     }
 
     /// <summary>

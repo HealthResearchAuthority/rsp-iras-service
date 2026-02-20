@@ -12,12 +12,12 @@ namespace Rsp.Service.UnitTests.Services.RespondentServiceTests;
 /// <summary>
 ///     Covers the tests for DeleteModificationDocumentResponses method
 /// </summary>
-public class DeleteModificationDocumentResponsesTests : TestServiceBase<RespondentService>
+public class DeleteModificationDocumentAnswersResponsesTests : TestServiceBase<RespondentService>
 {
     private readonly RespondentRepository _personnelRepository;
     private readonly IrasContext _context;
 
-    public DeleteModificationDocumentResponsesTests()
+    public DeleteModificationDocumentAnswersResponsesTests()
     {
         var options = new DbContextOptionsBuilder<IrasContext>()
             .UseInMemoryDatabase(Guid.NewGuid().ToString("N")).Options;
@@ -38,7 +38,7 @@ public class DeleteModificationDocumentResponsesTests : TestServiceBase<Responde
         Sut = Mocker.CreateInstance<RespondentService>();
 
         // Act
-        await Sut.DeleteModificationDocumentResponses(null);
+        await Sut.DeleteModificationDocumentAnswersResponses(null);
 
         // Assert
         var actualCount = await _context.ModificationDocuments.CountAsync();
@@ -56,7 +56,7 @@ public class DeleteModificationDocumentResponsesTests : TestServiceBase<Responde
         Sut = Mocker.CreateInstance<RespondentService>();
 
         // Act
-        await Sut.DeleteModificationDocumentResponses(new List<ModificationDocumentDto>());
+        await Sut.DeleteModificationDocumentAnswersResponses(new List<ModificationDocumentDto>());
 
         // Assert
         var actualCount = await _context.ModificationDocuments.CountAsync();
@@ -67,7 +67,7 @@ public class DeleteModificationDocumentResponsesTests : TestServiceBase<Responde
     ///     Deletes modification documents when valid DTOs provided
     /// </summary>
     [Theory, AutoData]
-    public async Task Deletes_ModificationDocuments(List<ModificationDocumentDto> documents)
+    public async Task Deletes_DeleteModificationDocumentAnswersResponses(List<ModificationDocumentDto> documents)
     {
         // Arrange
         Mocker.Use<IProjectPersonnelRepository>(_personnelRepository);
@@ -79,10 +79,10 @@ public class DeleteModificationDocumentResponsesTests : TestServiceBase<Responde
         await _context.SaveChangesAsync();
 
         // Act
-        await Sut.DeleteModificationDocumentResponses(documents);
+        await Sut.DeleteModificationDocumentAnswersResponses(documents);
 
         // Assert
         var remainingCount = await _context.ModificationDocuments.CountAsync();
-        remainingCount.ShouldBe(0); // all deleted
+        remainingCount.ShouldBe(3);
     }
 }

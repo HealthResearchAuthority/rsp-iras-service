@@ -1,16 +1,18 @@
 ﻿using Ardalis.Specification;
 using Ardalis.Specification.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.FeatureManagement;
+using Rsp.Service.Application.Constants;
 using Rsp.Service.Application.Contracts.Repositories;
-using Rsp.Service.Application.Enums;
 using Rsp.Service.Domain.Entities;
+using DocumentStatus = Rsp.Service.Application.Enums.DocumentStatus;
 
 namespace Rsp.Service.Infrastructure.Repositories;
 
 /// <summary>
 /// Repository for managing project personnel responses and modification responses.
 /// </summary>
-public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRepository
+public class RespondentRepository(IrasContext irasContext, IFeatureManager featureManager) : IProjectPersonnelRepository
 {
     /// <summary>
     /// Saves the provided project record answers that match the given specification.
@@ -288,6 +290,9 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
             .ModificationDocuments
             .WithSpecification(specification);
 
+        // for supersede documents
+        var supersedeDocumentsEnabled = await featureManager.IsEnabledAsync(Features.SupersedingDocuments);
+
         foreach (var answer in respondentAnswers)
         {
             var existingAnswer = documents.FirstOrDefault(ans => ans.Id == answer.Id);
@@ -302,6 +307,22 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
                 existingAnswer.DocumentStoragePath = answer.DocumentStoragePath;
                 existingAnswer.FileSize = answer.FileSize;
                 existingAnswer.Status = answer.Status;
+
+                if (supersedeDocumentsEnabled)
+                {
+                    if (answer.ReplacedByDocumentId != Guid.Empty)
+                    {
+                        existingAnswer.ReplacedByDocumentId = answer.ReplacedByDocumentId;
+                    }
+
+                    if (answer.LinkedDocumentId != Guid.Empty)
+                    {
+                        existingAnswer.LinkedDocumentId = answer.LinkedDocumentId;
+                    }
+
+                    existingAnswer.ReplacesDocumentId = answer.ReplacesDocumentId;
+                    existingAnswer.DocumentType = answer.DocumentType;
+                }
 
                 continue;
             }
@@ -464,25 +485,64 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
             .WithSpecification(specification)
             .ToListAsync();
 
-        foreach (var doc in documents)
+        //foreach (var doc in documents)
+        //{
+        //    // Only delete if status is NOT "SubmittedToSponsor"
+        //    if (!string.Equals(doc.Status, DocumentStatus.SubmittedToSponsor.ToString(), StringComparison.OrdinalIgnoreCase))
+        //    {
+        //        // Remove related answers first
+        //        var relatedAnswers = await irasContext.ModificationDocumentAnswers
+        //        .Where(a => a.ModificationDocumentId == doc.Id)
+        //        .ToListAsync();
+
+        //        if (relatedAnswers.Any())
+        //        {
+        //            irasContext.ModificationDocumentAnswers.RemoveRange(relatedAnswers);
+        //        }
+
+        //        doc.LinkedDocumentId = null;
+
+        //        doc.ReplacesDocumentId = null;
+
+        //        doc.ReplacedByDocumentId = null;
+
+        //        await irasContext.SaveChangesAsync();
+
+        //        // Remove the document itself
+        //        irasContext.ModificationDocuments.Remove(doc);
+        //    }
+        //}
+
+        //await irasContext.SaveChangesAsync();
+
+        var docIds = documents.Select(d => d.Id).ToList();
+
+        // Remove answers in bulk
+        var relatedAnswers = await irasContext.ModificationDocumentAnswers
+            .Where(a => docIds.Contains(a.ModificationDocumentId))
+            .ToListAsync();
+
+        irasContext.ModificationDocumentAnswers.RemoveRange(relatedAnswers);
+
+        // Clear ALL self-referencing links in one query
+        var referencingDocs = await irasContext.ModificationDocuments
+            .Where(d =>
+                d.LinkedDocumentId != null && docIds.Contains(d.LinkedDocumentId.Value) ||
+                d.ReplacesDocumentId != null && docIds.Contains(d.ReplacesDocumentId.Value) ||
+                d.ReplacedByDocumentId != null && docIds.Contains(d.ReplacedByDocumentId.Value))
+            .ToListAsync();
+
+        foreach (var refDoc in referencingDocs)
         {
-            // Only delete if status is NOT "SubmittedToSponsor"
-            if (!string.Equals(doc.Status, DocumentStatus.SubmittedToSponsor.ToString(), StringComparison.OrdinalIgnoreCase))
-            {
-                // Remove related answers first
-                var relatedAnswers = await irasContext.ModificationDocumentAnswers
-                .Where(a => a.ModificationDocumentId == doc.Id)
-                .ToListAsync();
-
-                if (relatedAnswers.Any())
-                {
-                    irasContext.ModificationDocumentAnswers.RemoveRange(relatedAnswers);
-                }
-
-                // Remove the document itself
-                irasContext.ModificationDocuments.Remove(doc);
-            }
+            refDoc.LinkedDocumentId = null;
+            refDoc.ReplacesDocumentId = null;
+            refDoc.ReplacedByDocumentId = null;
         }
+
+        await irasContext.SaveChangesAsync();
+
+        // Finally delete documents
+        irasContext.ModificationDocuments.RemoveRange(documents);
 
         await irasContext.SaveChangesAsync();
     }
@@ -498,6 +558,69 @@ public class RespondentRepository(IrasContext irasContext) : IProjectPersonnelRe
         {
             // Add new documents audit trail entry
             await irasContext.ModificationDocumentsAuditTrail.AddAsync(answer);
+        }
+
+        await irasContext.SaveChangesAsync();
+    }
+
+    /// <summary>
+    /// Gets modification documents matching the given type.
+    /// </summary>
+    /// <param name="specification">The documentType to filter modfication documents.</param>
+    /// <returns>A collection of <see cref="ModificationDocument"/> objects.</returns>
+    public async Task<IEnumerable<ModificationDocument>> GetDocumentsByType(string projectRecordId, string? documentTypeId)
+    {
+        var query =
+        from document in irasContext.ModificationDocuments
+        join answer in irasContext.ModificationDocumentAnswers
+            on document.Id equals answer.ModificationDocumentId
+        where document.ProjectRecordId == projectRecordId
+              && answer.SelectedOptions != null
+        select new { document, answer };
+
+        if (!string.IsNullOrWhiteSpace(documentTypeId))
+        {
+            query = query.Where(x =>
+                x.answer.SelectedOptions!.Contains(documentTypeId));
+        }
+
+        return await query
+            .Select(x => x.document)
+            .AsNoTracking()
+            .Distinct()
+            .ToListAsync();
+    }
+
+    /// <summary>
+    /// Deletes a list of documents.
+    /// </summary>
+    /// <param name="specification">The specification to filter which modification answers to delete.</param>
+    /// <param name="respondentAnswers">The list of modification answers to delete.</param>
+    public async Task DeleteModificationDocumentAnswersResponses(
+    ISpecification<ModificationDocument> specification,
+    List<ModificationDocument> respondentAnswers)
+    {
+        // Fetch all matching documents (with answers included via specification)
+        var documents = await irasContext
+            .ModificationDocuments
+            .WithSpecification(specification)
+            .ToListAsync();
+
+        foreach (var doc in documents)
+        {
+            // Only delete if status is NOT "SubmittedToSponsor"
+            if (!string.Equals(doc.Status, DocumentStatus.SubmittedToSponsor.ToString(), StringComparison.OrdinalIgnoreCase))
+            {
+                // Remove related answers first
+                var relatedAnswers = await irasContext.ModificationDocumentAnswers
+                .Where(a => a.ModificationDocumentId == doc.Id)
+                .ToListAsync();
+
+                if (relatedAnswers.Any())
+                {
+                    irasContext.ModificationDocumentAnswers.RemoveRange(relatedAnswers);
+                }
+            }
         }
 
         await irasContext.SaveChangesAsync();

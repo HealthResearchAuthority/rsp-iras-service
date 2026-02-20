@@ -418,4 +418,43 @@ public class RespondentService(IProjectPersonnelRepository projectPersonnelRepos
 
         await projectPersonnelRepository.SaveModificationDocumentsAuditTrail(modificationDocumentsAuditTrail);
     }
+
+    /// <summary>
+    /// Retrieves a collection of modification documents that match the specified document type identifier.
+    /// </summary>
+    /// <param name="documentTypeId">The unique identifier of the document type used to filter modification documents. Cannot be null or empty.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains an enumerable collection of
+    /// modification document DTOs matching the specified type. The collection will be empty if no documents are found.</returns>
+    public async Task<IEnumerable<ModificationDocumentDto>> GetDocumentsByType(string projectRecordId, string? documentTypeId)
+    {
+        var responses = await projectPersonnelRepository.GetDocumentsByType(projectRecordId, documentTypeId);
+
+        return responses.Adapt<IEnumerable<ModificationDocumentDto>>();
+    }
+
+    /// <summary>
+    /// Saves the list of document responses associated with a modification change.
+    /// </summary>
+    /// <param name="respondentAnswers">A list of document DTOs to be saved for the specified modification.</param>
+    /// <returns>A task that represents the asynchronous save operation.</returns>
+    public async Task DeleteModificationDocumentAnswersResponses(List<ModificationDocumentDto> respondentAnswers)
+    {
+        if (respondentAnswers == null || !respondentAnswers.Any())
+        {
+            return; // Exit early if the list is null or empty
+        }
+
+        // Extract all document Ids
+        var ids = respondentAnswers.Select(a => a.Id).ToList();
+
+        // Create the specification to fetch all docs + their answers
+        var specification = new DeleteModificationDocumentsSpecification(ids);
+
+        // Map DTOs into entities (for deletion tracking in the repo)
+        var respondentDocuments = respondentAnswers
+            .Select(answer => answer.Adapt<ModificationDocument>())
+            .ToList();
+
+        await projectPersonnelRepository.DeleteModificationDocumentAnswersResponses(specification, respondentDocuments);
+    }
 }
