@@ -68,7 +68,7 @@ public class ProjectModificationAuditTrailHandler :
             var logs = p.Metadata.Name switch
             {
                 nameof(projectModification.Status) =>
-                    GenerateStatusChangeDescription(p.CurrentValue!.ToString()!, projectModification.ReviewType),
+                    GenerateStatusChangeDescription(p.CurrentValue!.ToString()!, projectModification.ReviewType, p.OriginalValue?.ToString()),
                 nameof(projectModification.ReviewerEmail) =>
                     GenerateReviewerChangeDescription(p.CurrentValue!.ToString()!, p.OriginalValue?.ToString()),
                 nameof(projectModification.ProvisionalReviewOutcome) =>
@@ -102,36 +102,50 @@ public class ProjectModificationAuditTrailHandler :
         return result;
     }
 
-    private static List<(string Description, bool IsBackstageOnly, bool ShowUserEmailToFrontstage)> GenerateStatusChangeDescription(string newStatus, string? reviewType)
+    private static List<(string Description, bool IsBackstageOnly, bool ShowUserEmailToFrontstage)> GenerateStatusChangeDescription(string newStatus, string? reviewType, string? previousStatus)
     {
-        return (newStatus, reviewType) switch
+        return (newStatus, reviewType, previousStatus) switch
         {
-            (ModificationStatus.WithSponsor, _) =>
+            (ModificationStatus.WithSponsor, _, ModificationStatus.InDraft) =>
                [("Modification submitted", true, false),
                 ("Modification sent to sponsor", false, true)],
 
-            (ModificationStatus.WithReviewBody, _) =>
+            (ModificationStatus.WithReviewBody, _, ModificationStatus.WithSponsor) =>
                 [("Modification authorised by sponsor", false, true),
                 ("Modification submitted to review body", false, true)],
 
-            (ModificationStatus.Approved, ModificationStatus.ReviewType.NoReviewRequired) =>
+            (ModificationStatus.Approved, ModificationStatus.ReviewType.NoReviewRequired, ModificationStatus.WithSponsor) =>
                 [("Modification authorised by sponsor", false, true),
                 ("Modification approved", false, false)],
 
-            (ModificationStatus.Approved, ModificationStatus.ReviewType.ReviewRequired) =>
+            (ModificationStatus.Approved, ModificationStatus.ReviewType.ReviewRequired, _) =>
                 [("Modification approved by review body", false, false),
                 ("Review outcome sent to applicant", true, false)],
 
-            (ModificationStatus.NotApproved, _) =>
+            (ModificationStatus.NotApproved, _, _) =>
                 [("Modification not approved by review body", false, false),
                 ("Review outcome sent to applicant", true, false)],
 
-            (ModificationStatus.NotAuthorised, _) =>
+            (ModificationStatus.NotAuthorised, _, _) =>
                 [("Modification not authorised by sponsor", false, true)],
 
-            (ModificationStatus.RequestForInformation, _) =>
+            (ModificationStatus.RequestForInformation, _, _) =>
                 [("Modification request for further information by review body", false, false),
                 ("Request for further information sent to applicant", true, false)],
+
+            (ModificationStatus.WithSponsor, _, ModificationStatus.RequestRevisions) =>
+                [("Modification sent to sponsor", false, true)],
+
+            (ModificationStatus.RequestRevisions, _, _) =>
+                [("Sponsor revision request sent to applicant", false, true)],
+
+            (ModificationStatus.WithReviewBody, _, ModificationStatus.ReviseAndAuthorise) =>
+               [("Modification revised on behalf of applicant", false, true),
+                ("Modification submitted to review body", false, true)],
+
+            (ModificationStatus.Approved, ModificationStatus.ReviewType.NoReviewRequired, ModificationStatus.ReviseAndAuthorise) =>
+                [("Modification revised on behalf of applicant", false, true),
+                ("Modification approved", false, false)],
 
             _ => [("", true, false)],
         };
