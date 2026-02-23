@@ -54,7 +54,11 @@ public class UpdateModificationDocument : TestServiceBase<Service.Services.Docum
             FileName = "original.pdf",
             FileSize = 1234,
             IsMalwareScanSuccessful = true,
-            CreatedDate = DateTime.UtcNow
+            CreatedDate = DateTime.UtcNow,
+            ReplacesDocumentId = It.IsAny<Guid?>(),
+            ReplacedByDocumentId = It.IsAny<Guid?>(),
+            LinkedDocumentId = It.IsAny<Guid?>(),
+            DocumentType = "Clean",
         };
 
         _context.ModificationDocuments.Add(existingDocument);
@@ -69,6 +73,10 @@ public class UpdateModificationDocument : TestServiceBase<Service.Services.Docum
             ProjectRecordId = existingDocument.ProjectRecordId,
             ProjectModificationId = existingDocument.ProjectModificationId,
             Status = "Clean",
+            ReplacesDocumentId = It.IsAny<Guid?>(),
+            ReplacedByDocumentId = It.IsAny<Guid?>(),
+            LinkedDocumentId = It.IsAny<Guid?>(),
+            DocumentType = "Clean",
         };
 
         // Act

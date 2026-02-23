@@ -327,4 +327,17 @@ public class RespondentController(IMediator mediator) : ControllerBase
 
         return await mediator.Send(command);
     }
+
+    [HttpGet("modificationdocumentbytype/{projectRecordId}")]
+    [Produces<IEnumerable<ModificationDocumentDto>>]
+    public async Task<IEnumerable<ModificationDocumentDto>> GetModificationDocumentsByType(string projectRecordId, [FromQuery] string? documentTypeId)
+    {
+        var command = new GetModificationDocumentsByTypeQuery
+        {
+            ProjectRecordId = projectRecordId,
+            DocumentTypeId = documentTypeId
+        };
+
+        return await mediator.Send(command);
+    }
 }

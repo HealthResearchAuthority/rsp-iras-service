@@ -493,4 +493,17 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
 
         return await mediator.Send(query);
     }
+
+    /// <summary>
+    /// Deletes documents for a project modification.
+    /// </summary>
+    /// <param name="modificationChangeRequest">The request object containing modification change details.</param>
+    /// <returns>The created modification change response.</returns>
+    [HttpPost("deletedocumentanswers")]
+    public async Task DeleteDocumentAnswers(List<ModificationDocumentDto> modificationChangeRequest)
+    {
+        var request = new DeleteModificationDocumentAnswersCommand(modificationChangeRequest);
+
+        await mediator.Send(request);
+    }
 }
