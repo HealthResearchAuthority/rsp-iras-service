@@ -53,6 +53,31 @@ public class ModificationDocument
     public DateTime CreatedDate { get; set; }
 
     /// <summary>
+    /// The current document replaces the document identified by this Id.
+    /// </summary>
+    public Guid? ReplacesDocumentId { get; set; }
+
+    /// <summary>
+    /// The current document is replaced by the document identified by this Id
+    /// </summary>
+    public Guid? ReplacedByDocumentId { get; set; }
+
+    public ModificationDocument? ReplacedByDocument { get; set; }
+
+    /// <summary>
+    /// This field will indicate whether the document is CLEAN or TRACKED
+    /// </summary>
+    public string? DocumentType { get; set; }
+
+    /// <summary>
+    /// For a CLEAN document: reference to the corresponding TRACKED version.
+    /// For a TRACKED document: reference to the corresponding CLEAN version.
+    /// </summary>
+    public Guid? LinkedDocumentId { get; set; }
+
+    public ModificationDocument? LinkedDocument { get; set; }
+
+    /// <summary>
     /// Navigation property to the related project record.
     /// </summary>
     public ProjectRecord? ProjectRecord { get; set; }

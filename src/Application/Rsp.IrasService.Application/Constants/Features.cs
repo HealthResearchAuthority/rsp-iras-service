@@ -10,4 +10,7 @@ public static class Features
 
     // Uses Gov UK One Login if enabled
     public const string OneLogin = "Auth.UseOneLogin";
+
+    // For document management, allows users to supersede documents if enabled
+    public const string SupersedingDocuments = "Modifications.SupersedingDocuments";
 }

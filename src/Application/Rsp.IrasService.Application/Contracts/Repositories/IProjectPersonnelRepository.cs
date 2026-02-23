@@ -132,4 +132,19 @@ public interface IProjectPersonnelRepository
     /// </summary>
     /// <param name="documentsAuditTrail">The list of documents audit trail to save.</param>
     Task SaveModificationDocumentsAuditTrail(List<ModificationDocumentsAuditTrail> documentsAuditTrail);
+
+    /// <summary>
+    /// Retrieves all modification documents that match the specified document type identifier.
+    /// </summary>
+    /// <param name="documentTypeId">The unique identifier of the document type to filter modification documents by. Cannot be null or empty.</param>
+    /// <returns>A task that represents the asynchronous operation. The task result contains a collection of modification
+    /// documents matching the specified type. The collection is empty if no documents are found.</returns>
+    Task<IEnumerable<ModificationDocument>> GetDocumentsByType(string projectRecordId, string? documentTypeId);
+
+    /// <summary>
+    /// Saves the provided project modification documents that match the given specification.
+    /// </summary>
+    /// <param name="specification">The specification to filter which modification documents to save.</param>
+    /// <param name="respondentAnswers">The list of modification documents to save.</param>
+    Task DeleteModificationDocumentAnswersResponses(ISpecification<ModificationDocument> specification, List<ModificationDocument> respondentAnswers);
 }

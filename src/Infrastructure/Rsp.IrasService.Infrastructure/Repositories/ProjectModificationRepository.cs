@@ -569,6 +569,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                 x.FileName,
                 x.DocumentStoragePath,
                 x.IsMalwareScanSuccessful,
+                x.SupersedeDocumentType,
                 DocumentName = answersQuery
                     .Where(a => a.ModificationDocumentId == x.Id &&
                                 a.QuestionId == ModificationQuestionIds.DocumentName)
@@ -642,7 +643,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                 Status = x.Status ?? string.Empty,
                 ModificationIdentifier = x.ModificationIdentifier,
                 ModificationNumber = x.ModificationNumber,
-                IsMalwareScanSuccessful = x.IsMalwareScanSuccessful
+                IsMalwareScanSuccessful = x.IsMalwareScanSuccessful,
+                SupersedeDocumentType = x.SupersedeDocumentType
             };
         };
     }
@@ -764,6 +766,16 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
 
         foreach (var doc in documents)
         {
+            if (status is ModificationStatus.Approved && doc.ReplacesDocumentId != null && doc.ReplacesDocumentId != Guid.Empty)
+            {
+                var replacedDoc = await irasContext.ModificationDocuments
+                    .FirstOrDefaultAsync(d => d.Id == doc.ReplacesDocumentId);
+                if (replacedDoc != null && replacedDoc.ReplacedByDocumentId != null && replacedDoc.ReplacedByDocumentId != Guid.Empty)
+                {
+                    replacedDoc.Status = ModificationStatus.Superseded;
+                }
+            }
+
             doc.Status = status;
         }
 
@@ -1076,7 +1088,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                 IsMalwareScanSuccessful = md.IsMalwareScanSuccessful,
                 Status = md.Status ?? "",
                 ModificationIdentifier = pm.ModificationIdentifier,
-                ModificationNumber = pm.ModificationNumber
+                ModificationNumber = pm.ModificationNumber,
+                SupersedeDocumentType = md.DocumentType
             };
 
         return BuildDocumentQuery(baseQuery, irasContext.ModificationDocumentAnswers, searchQuery);
