@@ -766,7 +766,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
 
         foreach (var doc in documents)
         {
-            if (status == ModificationStatus.Approved && doc.ReplacesDocumentId != null && doc.ReplacesDocumentId != Guid.Empty)
+            if (status is ModificationStatus.Approved && doc.ReplacesDocumentId != null && doc.ReplacesDocumentId != Guid.Empty)
             {
                 var replacedDoc = await irasContext.ModificationDocuments
                     .FirstOrDefaultAsync(d => d.Id == doc.ReplacesDocumentId);
@@ -775,10 +775,8 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
                     replacedDoc.Status = ModificationStatus.Superseded;
                 }
             }
-            else
-            {
-                doc.Status = status;
-            }
+
+            doc.Status = status;
         }
 
         modification.Status = status;
