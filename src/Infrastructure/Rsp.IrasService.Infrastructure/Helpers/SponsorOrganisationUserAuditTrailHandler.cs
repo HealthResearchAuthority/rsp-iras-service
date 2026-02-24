@@ -153,7 +153,7 @@ public class SponsorOrganisationUserAuditTrailHandler : IAuditTrailHandler<Spons
 
     private static SponsorOrganisationAuditTrail GenerateStatusChangeAuditTrail(PropertyEntry entry, SponsorOrganisationUser sponsorOrganisationUser, string systemAdminEmail)
     {
-        var newStatus = entry.CurrentValue as bool? == true ? "enabled for" : "disabled from";
+        var newStatus = entry.CurrentValue as bool? == true ? "active for" : "inactive from";
 
         return new SponsorOrganisationAuditTrail
         {

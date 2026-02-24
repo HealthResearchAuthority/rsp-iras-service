@@ -1,5 +1,6 @@
 ﻿using Ardalis.Specification;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.FeatureManagement;
 using Rsp.Service.Application.Contracts.Repositories;
 using Rsp.Service.Application.DTOS.Requests;
 using Rsp.Service.Application.DTOS.Responses;
@@ -22,7 +23,8 @@ public class GetResponses : TestServiceBase<RespondentService>
             .Options;
 
         _context = new IrasContext(options);
-        _respondentRepository = new TestRespondentRepository(new RespondentRepository(_context));
+        var featureManager = new Mock<IFeatureManager>();
+        _respondentRepository = new TestRespondentRepository(new RespondentRepository(_context, featureManager.Object));
     }
 
     /// <summary>
@@ -205,6 +207,27 @@ public class GetResponses : TestServiceBase<RespondentService>
         result.ShouldNotBeNull();
         result.ShouldBeAssignableTo<IEnumerable<ModificationDocumentDto>>();
     }
+
+    /// <summary>
+    ///     Tests that responses are returned for document types
+    /// </summary>
+    [Theory, AutoData]
+    public async Task GetDocumentsByType_ShouldReturnAnswers(string projectRecordId, string documentTypeId)
+    {
+        // Arrange
+        Mocker.Use<IProjectPersonnelRepository>(_respondentRepository);
+
+        // Optionally seed data here if needed for the test
+
+        Sut = Mocker.CreateInstance<RespondentService>();
+
+        // Act
+        var result = await Sut.GetDocumentsByType(projectRecordId, documentTypeId);
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.ShouldBeAssignableTo<IEnumerable<ModificationDocumentDto>>();
+    }
 }
 
 /// <summary>
@@ -293,4 +316,10 @@ internal class TestRespondentRepository : IProjectPersonnelRepository
 
     public Task SaveModificationDocumentsAuditTrail(List<ModificationDocumentsAuditTrail> documentsAuditTrail)
         => _innerRepository.SaveModificationDocumentsAuditTrail(documentsAuditTrail);
+
+    public Task<IEnumerable<ModificationDocument>> GetDocumentsByType(string documentTypeId, string projectRecordId)
+        => _innerRepository.GetDocumentsByType(documentTypeId, projectRecordId);
+
+    public Task DeleteModificationDocumentAnswersResponses(ISpecification<ModificationDocument> specification, List<ModificationDocument> respondentAnswers)
+        => _innerRepository.DeleteModificationDocumentAnswersResponses(specification, respondentAnswers);
 }

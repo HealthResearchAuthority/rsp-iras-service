@@ -1,6 +1,7 @@
 {
-    "FeatureManagement": {
-        "Logging.InterceptedLogging": true, // Intercepts the start/end of method calls if enabled
-        "Auth.UseOneLogin": false // Use OneLogin for authentication
-    }
+  "FeatureManagement": {
+    "Logging.InterceptedLogging": true, // Intercepts the start/end of method calls if enabled
+    "Auth.UseOneLogin": false, // Use OneLogin for authentication
+    "Modifications.SupersedingDocuments": true // Enable superseding documents feature
+  }
 }

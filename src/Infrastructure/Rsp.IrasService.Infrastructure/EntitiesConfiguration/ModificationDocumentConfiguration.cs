@@ -21,5 +21,17 @@ public class ModificationDocumentConfiguration : IEntityTypeConfiguration<Modifi
             .WithMany()
             .HasForeignKey(r => r.ProjectRecordId)
             .OnDelete(DeleteBehavior.NoAction);
+
+        builder
+            .HasOne(d => d.ReplacedByDocument)
+            .WithMany()
+            .HasForeignKey(d => d.ReplacedByDocumentId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        builder
+            .HasOne(d => d.LinkedDocument)
+            .WithMany()
+            .HasForeignKey(d => d.LinkedDocumentId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

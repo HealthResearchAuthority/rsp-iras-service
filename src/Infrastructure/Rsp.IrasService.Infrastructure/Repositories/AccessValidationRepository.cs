@@ -199,6 +199,24 @@ public class AccessValidationRepository(IrasContext irasContext) : IAccessValida
         {
             return true;
         }
+        else
+        {
+            var tempDocument = await irasContext.ModificationDocuments
+            .AsNoTracking()
+            .FirstOrDefaultAsync(d => d.Id == documentId);
+
+            if (tempDocument == null)
+            {
+                return false;
+            }
+
+            var userGuid = Guid.TryParse(userId, out var guid) ? guid : Guid.Empty;
+
+            if (await SponsorHasAccessToProjectRecord(userGuid, tempDocument.ProjectRecordId))
+            {
+                return true;
+            }
+        }
 
         // No access path found
         return false;
