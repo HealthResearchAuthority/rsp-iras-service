@@ -74,7 +74,7 @@ public class ProjectModificationAuditTrailHandler :
                 nameof(projectModification.ProvisionalReviewOutcome) =>
                     GenerateReviewOutcomeChangeDescription(p.CurrentValue!.ToString()!, p.OriginalValue?.ToString()),
                 nameof(projectModification.ReasonNotApproved) =>
-                    GenerateReasonNotApprovedChangeDescription(p.CurrentValue?.ToString(), p.OriginalValue?.ToString()),
+                    ShouldSuppressReasonNotApprovedAudit(entry) ? [] : GenerateReasonNotApprovedChangeDescription(p.CurrentValue?.ToString(), p.OriginalValue?.ToString()),
                 nameof(projectModification.ReviewerComments) =>
                     GenerateReviewerCommentChangeDescription(p.CurrentValue?.ToString(), p.OriginalValue?.ToString()),
                 _ => [("", true, false)]
@@ -184,9 +184,7 @@ public class ProjectModificationAuditTrailHandler :
         return
         [
             (
-                oldReason == null ?
-                    $"Reason modification not approved added" :
-                    $"Reason modification not approved changed from {oldReason} to {newReason ?? "(null)"}",
+                oldReason == null ? $"Reason modification not approved added" : $"Reason modification not approved changed from {oldReason} to {newReason}",
                 true,
                 false
             )
@@ -204,5 +202,21 @@ public class ProjectModificationAuditTrailHandler :
                 false
             )
             ];
+    }
+
+    private static bool ShouldSuppressReasonNotApprovedAudit(EntityEntry entry)
+    {
+        var statusProperty = entry.Properties
+            .FirstOrDefault(p => p.Metadata.Name == nameof(ProjectModification.ProvisionalReviewOutcome));
+
+        if (statusProperty == null)
+        {
+            return false;
+        }
+
+        var oldStatus = statusProperty.OriginalValue?.ToString();
+        var newStatus = statusProperty.CurrentValue?.ToString();
+
+        return oldStatus == ModificationStatus.NotApproved && newStatus == ModificationStatus.Approved;
     }
 }
