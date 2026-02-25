@@ -108,11 +108,11 @@ public class SponsorOrganisationsService(ISponsorOrganisationsRepository sponsor
         return response.Adapt<SponsorOrganisationUserDto?>();
     }
 
-    public async Task<SponsorOrganisationUserDto> GetSponsorOrganisationUserById(Guid sponsorOrganisationUserId)
+    public async Task<SponsorOrganisationUserDto> GetSponsorOrganisationUserById(Guid sponsorOrganisationUserId, string rtsId)
     {
         var email = httpContextAccessor.HttpContext!.User.Claims!.First(c => c.Type == ClaimTypes.Email).Value;
 
-        var response = await sponsorOrganisationsRepository.GetSponsorOrganisationUserById(sponsorOrganisationUserId, email);
+        var response = await sponsorOrganisationsRepository.GetSponsorOrganisationUserById(sponsorOrganisationUserId, email, rtsId);
         return response.Adapt<SponsorOrganisationUserDto>();
     }
 }

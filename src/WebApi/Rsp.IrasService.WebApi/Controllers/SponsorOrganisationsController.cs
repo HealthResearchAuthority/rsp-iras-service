@@ -173,11 +173,11 @@ public class SponsorOrganisationsController(IMediator mediator) : ControllerBase
         return await mediator.Send(request);
     }
 
-    [HttpGet("user/{sponsorOrgUserId}")]
+    [HttpGet("user/{sponsorOrgUserId}/{rtsId}")]
     public async Task<ActionResult<SponsorOrganisationUserDto>> GetSponsorOrganisationUserById(
-        Guid sponsorOrgUserId)
+        Guid sponsorOrgUserId,string rtsId)
     {
-        var request = new GetSponsorOrganisationUserByIdCommand(sponsorOrgUserId);
+        var request = new GetSponsorOrganisationUserByIdCommand(sponsorOrgUserId,rtsId);
         return await mediator.Send(request);
     }
 }

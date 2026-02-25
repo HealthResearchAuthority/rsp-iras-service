@@ -28,6 +28,7 @@ public class GetSponsorOrganisationUserByIdTests : TestServiceBase<SponsorOrgani
     (
         Guid id,
         string userEmail,
+        string rtsId,
         SponsorOrganisationUser response
     )
     {
@@ -46,7 +47,7 @@ public class GetSponsorOrganisationUserByIdTests : TestServiceBase<SponsorOrgani
 
         var sponsorOrganisationRepositoryMock = new Mock<ISponsorOrganisationsRepository>();
         sponsorOrganisationRepositoryMock
-            .Setup(x => x.GetSponsorOrganisationUserById(It.IsAny<Guid>(), It.IsAny<string>()))
+            .Setup(x => x.GetSponsorOrganisationUserById(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()))
             .ReturnsAsync(response);
 
         Mocker.Use(sponsorOrganisationRepositoryMock.Object);
@@ -55,7 +56,7 @@ public class GetSponsorOrganisationUserByIdTests : TestServiceBase<SponsorOrgani
         Sut = Mocker.CreateInstance<SponsorOrganisationsService>();
 
         // Act
-        var result = await Sut.GetSponsorOrganisationUserById(id);
+        var result = await Sut.GetSponsorOrganisationUserById(id,rtsId);
 
         // Assert
         result.ShouldNotBeNull();
