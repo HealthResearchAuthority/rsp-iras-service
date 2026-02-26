@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rsp.Service.Infrastructure;
 
@@ -11,9 +12,11 @@ using Rsp.Service.Infrastructure;
 namespace Rsp.Service.Infrastructure.Migrations
 {
     [DbContext(typeof(IrasContext))]
-    partial class IrasContextModelSnapshot : ModelSnapshot
+    [Migration("20260226132257_NormaliseCreatedByUpdatedBy")]
+    partial class NormaliseCreatedByUpdatedBy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +37,7 @@ namespace Rsp.Service.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DocumentTypes", (string)null);
+                    b.ToTable("DocumentTypes");
                 });
 
             modelBuilder.Entity("Rsp.Service.Domain.Entities.EffectiveProjectRecordAnswer", b =>
@@ -125,7 +128,7 @@ namespace Rsp.Service.Infrastructure.Migrations
 
                     b.HasIndex("EventTypeId");
 
-                    b.ToTable("EmailTemplates", (string)null);
+                    b.ToTable("EmailTemplates");
                 });
 
             modelBuilder.Entity("Rsp.Service.Domain.Entities.EventType", b =>
@@ -146,7 +149,7 @@ namespace Rsp.Service.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EventTypes", (string)null);
+                    b.ToTable("EventTypes");
                 });
 
             modelBuilder.Entity("Rsp.Service.Domain.Entities.ModificationDocument", b =>
@@ -207,7 +210,7 @@ namespace Rsp.Service.Infrastructure.Migrations
 
                     b.HasIndex("ReplacedByDocumentId");
 
-                    b.ToTable("ModificationDocuments", (string)null);
+                    b.ToTable("ModificationDocuments");
                 });
 
             modelBuilder.Entity("Rsp.Service.Domain.Entities.ModificationDocumentAnswer", b =>
@@ -262,7 +265,7 @@ namespace Rsp.Service.Infrastructure.Migrations
 
                     b.HasIndex("ModificationDocumentId");
 
-                    b.ToTable("ModificationDocumentAnswers", (string)null);
+                    b.ToTable("ModificationDocumentAnswers");
                 });
 
             modelBuilder.Entity("Rsp.Service.Domain.Entities.ModificationDocumentsAuditTrail", b =>
@@ -293,7 +296,7 @@ namespace Rsp.Service.Infrastructure.Migrations
 
                     b.HasIndex("ProjectModificationId");
 
-                    b.ToTable("ModificationDocumentsAuditTrail", (string)null);
+                    b.ToTable("ModificationDocumentsAuditTrail");
                 });
 
             modelBuilder.Entity("Rsp.Service.Domain.Entities.ModificationParticipatingOrganisation", b =>
@@ -333,7 +336,7 @@ namespace Rsp.Service.Infrastructure.Migrations
 
                     b.HasIndex("ProjectRecordId");
 
-                    b.ToTable("ModificationParticipatingOrganisations", (string)null);
+                    b.ToTable("ModificationParticipatingOrganisations");
                 });
 
             modelBuilder.Entity("Rsp.Service.Domain.Entities.ModificationParticipatingOrganisationAnswer", b =>
@@ -390,7 +393,7 @@ namespace Rsp.Service.Infrastructure.Migrations
 
                     b.HasIndex("ModificationParticipatingOrganisationId");
 
-                    b.ToTable("ModificationParticipatingOrganisationAnswers", (string)null);
+                    b.ToTable("ModificationParticipatingOrganisationAnswers");
                 });
 
             modelBuilder.Entity("Rsp.Service.Domain.Entities.ModificationRfiReason", b =>
@@ -427,7 +430,7 @@ namespace Rsp.Service.Infrastructure.Migrations
 
                     b.HasIndex("ProjectModificationId");
 
-                    b.ToTable("ModificationRfiReasons", (string)null);
+                    b.ToTable("ModificationRfiReasons");
                 });
 
             modelBuilder.Entity("Rsp.Service.Domain.Entities.ProjectClosure", b =>
@@ -484,7 +487,7 @@ namespace Rsp.Service.Infrastructure.Migrations
 
                     b.HasIndex("ProjectRecordId");
 
-                    b.ToTable("ProjectClosures", (string)null);
+                    b.ToTable("ProjectClosures");
                 });
 
             modelBuilder.Entity("Rsp.Service.Domain.Entities.ProjectModification", b =>
@@ -565,7 +568,7 @@ namespace Rsp.Service.Infrastructure.Migrations
 
                     SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("ProjectRecordId", "CreatedDate"), new[] { "Status" });
 
-                    b.ToTable("ProjectModifications", (string)null);
+                    b.ToTable("ProjectModifications");
                 });
 
             modelBuilder.Entity("Rsp.Service.Domain.Entities.ProjectModificationAnswer", b =>
@@ -620,7 +623,7 @@ namespace Rsp.Service.Infrastructure.Migrations
 
                     b.HasIndex("ProjectRecordId");
 
-                    b.ToTable("ProjectModificationAnswers", (string)null);
+                    b.ToTable("ProjectModificationAnswers");
                 });
 
             modelBuilder.Entity("Rsp.Service.Domain.Entities.ProjectModificationAuditTrail", b =>
@@ -653,7 +656,7 @@ namespace Rsp.Service.Infrastructure.Migrations
 
                     b.HasIndex("ProjectModificationId");
 
-                    b.ToTable("ProjectModificationAuditTrail", (string)null);
+                    b.ToTable("ProjectModificationAuditTrail");
                 });
 
             modelBuilder.Entity("Rsp.Service.Domain.Entities.ProjectModificationChange", b =>
@@ -705,7 +708,7 @@ namespace Rsp.Service.Infrastructure.Migrations
                     b.HasIndex("ProjectModificationId", "CreatedDate")
                         .IsDescending(false, true);
 
-                    b.ToTable("ProjectModificationChanges", (string)null);
+                    b.ToTable("ProjectModificationChanges");
                 });
 
             modelBuilder.Entity("Rsp.Service.Domain.Entities.ProjectModificationChangeAnswer", b =>
@@ -762,7 +765,7 @@ namespace Rsp.Service.Infrastructure.Migrations
 
                     SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("ProjectRecordId", "QuestionId", "ProjectModificationChangeId"), new[] { "Response", "SelectedOptions", "OptionType", "CreatedBy" });
 
-                    b.ToTable("ProjectModificationChangeAnswers", (string)null);
+                    b.ToTable("ProjectModificationChangeAnswers");
                 });
 
             modelBuilder.Entity("Rsp.Service.Domain.Entities.ProjectRecord", b =>
@@ -803,7 +806,7 @@ namespace Rsp.Service.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProjectRecords", (string)null);
+                    b.ToTable("ProjectRecords");
                 });
 
             modelBuilder.Entity("Rsp.Service.Domain.Entities.ProjectRecordAnswer", b =>
@@ -856,7 +859,7 @@ namespace Rsp.Service.Infrastructure.Migrations
 
                     SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("ProjectRecordId", "QuestionId", "CreatedBy"), new[] { "Response", "SelectedOptions", "OptionType", "Category", "Section", "VersionId" });
 
-                    b.ToTable("ProjectRecordAnswers", (string)null);
+                    b.ToTable("ProjectRecordAnswers");
                 });
 
             modelBuilder.Entity("Rsp.Service.Domain.Entities.ProjectRecordAuditTrail", b =>
@@ -887,7 +890,7 @@ namespace Rsp.Service.Infrastructure.Migrations
 
                     b.HasIndex("ProjectRecordId");
 
-                    b.ToTable("ProjectRecordAuditTrail", (string)null);
+                    b.ToTable("ProjectRecordAuditTrail");
                 });
 
             modelBuilder.Entity("Rsp.Service.Domain.Entities.RegulatoryBody", b =>
@@ -935,7 +938,7 @@ namespace Rsp.Service.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RegulatoryBodies", (string)null);
+                    b.ToTable("RegulatoryBodies");
                 });
 
             modelBuilder.Entity("Rsp.Service.Domain.Entities.RegulatoryBodyAuditTrail", b =>
@@ -963,7 +966,7 @@ namespace Rsp.Service.Infrastructure.Migrations
 
                     b.HasIndex("RegulatoryBodyId");
 
-                    b.ToTable("RegulatoryBodiesAuditTrail", (string)null);
+                    b.ToTable("RegulatoryBodiesAuditTrail");
                 });
 
             modelBuilder.Entity("Rsp.Service.Domain.Entities.RegulatoryBodyUser", b =>
@@ -982,7 +985,7 @@ namespace Rsp.Service.Infrastructure.Migrations
 
                     b.HasKey("Id", "UserId");
 
-                    b.ToTable("RegulatoryBodiesUsers", (string)null);
+                    b.ToTable("RegulatoryBodiesUsers");
                 });
 
             modelBuilder.Entity("Rsp.Service.Domain.Entities.SponsorOrganisation", b =>
@@ -1016,7 +1019,7 @@ namespace Rsp.Service.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SponsorOrganisations", (string)null);
+                    b.ToTable("SponsorOrganisations");
                 });
 
             modelBuilder.Entity("Rsp.Service.Domain.Entities.SponsorOrganisationAuditTrail", b =>
@@ -1046,7 +1049,7 @@ namespace Rsp.Service.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SponsorOrganisationsAuditTrail", (string)null);
+                    b.ToTable("SponsorOrganisationsAuditTrail");
                 });
 
             modelBuilder.Entity("Rsp.Service.Domain.Entities.SponsorOrganisationUser", b =>
@@ -1079,7 +1082,7 @@ namespace Rsp.Service.Infrastructure.Migrations
 
                     b.HasKey("Id", "UserId");
 
-                    b.ToTable("SponsorOrganisationsUsers", (string)null);
+                    b.ToTable("SponsorOrganisationsUsers");
                 });
 
             modelBuilder.Entity("Rsp.Service.Domain.Entities.UserNotification", b =>
@@ -1119,7 +1122,7 @@ namespace Rsp.Service.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserNotifications", (string)null);
+                    b.ToTable("UserNotifications");
                 });
 
             modelBuilder.Entity("Rsp.Service.Domain.Entities.EmailTemplate", b =>

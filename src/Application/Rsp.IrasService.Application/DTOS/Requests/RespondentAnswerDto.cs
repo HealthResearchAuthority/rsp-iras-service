@@ -41,4 +41,24 @@ public class RespondentAnswerDto
     /// Multiple answers
     /// </summary>
     public List<string> Answers { get; set; } = [];
+
+    /// <summary>
+    /// User Id of the respondent who provided the answer
+    /// </summary>
+    public string CreatedBy { get; set; } = null!;
+
+    /// <summary>
+    /// Date and time when the answer was provided
+    /// </summary>
+    public DateTime CreatedDate { get; set; }
+
+    /// <summary>
+    /// User Id of the respondent who last updated the answer
+    /// </summary>
+    public string UpdatedBy { get; set; } = null!;
+
+    /// <summary>
+    /// Date and time when the answer was last updated
+    /// </summary>
+    public DateTime UpdatedDate { get; set; }
 }

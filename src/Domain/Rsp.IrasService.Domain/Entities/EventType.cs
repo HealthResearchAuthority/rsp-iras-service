@@ -1,9 +1,11 @@
-﻿namespace Rsp.Service.Domain.Entities;
+﻿using Rsp.Service.Domain.Interfaces;
 
-public class EventType
+namespace Rsp.Service.Domain.Entities;
+
+public class EventType : ICreatable
 {
     public string Id { get; set; } = null!;
     public string EventName { get; set; } = null!;
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedDate { get; set; }
     public string CreatedBy { get; set; } = null!;
 }

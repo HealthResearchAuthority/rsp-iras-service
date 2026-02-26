@@ -25,7 +25,7 @@ public class GetModificationDocumentSpecification : Specification<ModificationDo
 
         if (!string.IsNullOrEmpty(projectPersonellId))
         {
-            Query.Where(e => e.UserId == projectPersonellId);
+            Query.Where(e => e.CreatedBy == projectPersonellId);
         }
     }
 }

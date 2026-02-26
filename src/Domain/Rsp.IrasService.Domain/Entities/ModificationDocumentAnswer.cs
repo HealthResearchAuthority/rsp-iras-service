@@ -1,6 +1,8 @@
-﻿namespace Rsp.Service.Domain.Entities;
+﻿using Rsp.Service.Domain.Interfaces;
 
-public class ModificationDocumentAnswer
+namespace Rsp.Service.Domain.Entities;
+
+public class ModificationDocumentAnswer : ICreatable, IUpdatable
 {
     /// <summary>
     /// Gets or sets the unique identifier for this modification document.
@@ -51,4 +53,24 @@ public class ModificationDocumentAnswer
     /// Navigation property to the related modification document.
     /// </summary>
     public ModificationDocument? ModificationDocument { get; set; }
+
+    /// <summary>
+    /// Gets or sets the identifier of the user who created this record.
+    /// </summary>
+    public string CreatedBy { get; set; } = null!;
+
+    /// <summary>
+    /// Gets or sets the date and time when this record was created (in UTC).
+    /// </summary>
+    public DateTime CreatedDate { get; set; }
+
+    /// <summary>
+    /// Gets or sets the identifier of the user who last updated this record.
+    /// </summary>
+    public string UpdatedBy { get; set; } = null!;
+
+    /// <summary>
+    /// Gets or sets the date and time when this record was last updated (in UTC).
+    /// </summary>
+    public DateTime UpdatedDate { get; set; }
 }

@@ -10,7 +10,7 @@ namespace Rsp.Service.Infrastructure.Interceptors;
 
 [ExcludeFromCodeCoverage]
 public class AuditTrailInterceptor(
-    IAuditTrailDetailsService auditTrailDetailsService,
+    IContextAccessorService auditTrailDetailsService,
     IEnumerable<IAuditTrailHandler<SponsorOrganisationAuditTrail>> sponsorHandlers,
     IEnumerable<IAuditTrailHandler<RegulatoryBodyAuditTrail>> regulatoryHandlers,
     IEnumerable<IAuditTrailHandler<ProjectModificationAuditTrail>> projectModificationHandlers,
@@ -36,7 +36,7 @@ public class AuditTrailInterceptor(
             return await base.SavingChangesAsync(eventData, result, cancellationToken);
         }
 
-        var userEmail = auditTrailDetailsService.GetEmailFromHttpContext();
+        var userEmail = auditTrailDetailsService.GetUserEmail();
 
         var sponsorRecords = Collect(sponsorHandlers, auditableEntries, userEmail);
         var regulatoryRecords = Collect(regulatoryHandlers, auditableEntries, userEmail);

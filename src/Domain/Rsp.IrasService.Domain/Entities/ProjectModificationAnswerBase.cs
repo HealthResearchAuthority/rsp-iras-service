@@ -1,9 +1,11 @@
-﻿namespace Rsp.Service.Domain.Entities;
+﻿using Rsp.Service.Domain.Interfaces;
+
+namespace Rsp.Service.Domain.Entities;
 
 /// <summary>
 /// Represents an base answer to a project modification answer and modification change answer.
 /// </summary>
-public abstract class ProjectModificationAnswerBase
+public abstract class ProjectModificationAnswerBase : ICreatable, IUpdatable
 {
     /// <summary>
     /// Gets or sets the identifier of the question being answered.
@@ -18,7 +20,22 @@ public abstract class ProjectModificationAnswerBase
     /// <summary>
     /// Gets or sets the identifier of the user related to this answer.
     /// </summary>
-    public string UserId { get; set; } = null!;
+    public string CreatedBy { get; set; } = null!;
+
+    /// <summary>
+    /// Gets or sets the date and time when the project record was created.
+    /// </summary>
+    public DateTime CreatedDate { get; set; }
+
+    /// <summary>
+    /// Gets or sets the identifier of the user who last updated this record
+    /// </summary>
+    public string UpdatedBy { get; set; } = null!;
+
+    /// <summary>
+    /// Gets or sets the date and time when this record was last updated (in UTC).
+    /// </summary>
+    public DateTime UpdatedDate { get; set; }
 
     /// <summary>
     /// Gets or sets the identifier of the project record related to this answer.

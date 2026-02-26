@@ -302,7 +302,7 @@ public class RespondentRepository(IrasContext irasContext, IFeatureManager featu
                 // Update existing document entry
                 existingAnswer.ProjectModificationId = answer.ProjectModificationId;
                 existingAnswer.ProjectRecordId = answer.ProjectRecordId;
-                existingAnswer.UserId = answer.UserId;
+                existingAnswer.CreatedBy = answer.CreatedBy;
                 existingAnswer.FileName = answer.FileName;
                 existingAnswer.DocumentStoragePath = answer.DocumentStoragePath;
                 existingAnswer.FileSize = answer.FileSize;
@@ -356,7 +356,7 @@ public class RespondentRepository(IrasContext irasContext, IFeatureManager featu
                 // Update organisation entry
                 existingAnswer.ProjectModificationChangeId = answer.ProjectModificationChangeId;
                 existingAnswer.ProjectRecordId = answer.ProjectRecordId;
-                existingAnswer.UserId = answer.UserId;
+                existingAnswer.CreatedBy = answer.CreatedBy;
                 existingAnswer.OrganisationId = answer.OrganisationId;
 
                 continue;

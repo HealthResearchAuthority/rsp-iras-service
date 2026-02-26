@@ -8,7 +8,7 @@ public class ProjectModificationChangeAnswerConfiguration : IEntityTypeConfigura
 {
     public void Configure(EntityTypeBuilder<ProjectModificationChangeAnswer> builder)
     {
-        builder.HasKey(ra => new { ra.ProjectModificationChangeId, ra.QuestionId, ra.UserId });
+        builder.HasKey(ra => new { ra.ProjectModificationChangeId, ra.QuestionId, ra.CreatedBy });
 
         builder
             .HasOne(ra => ra.ProjectModificationChange)
@@ -24,7 +24,7 @@ public class ProjectModificationChangeAnswerConfiguration : IEntityTypeConfigura
 
         builder
             .HasIndex(ra => new { ra.ProjectRecordId, ra.QuestionId, ra.ProjectModificationChangeId })
-            .IncludeProperties(ra => new { ra.Response, ra.SelectedOptions, ra.OptionType, ra.UserId });
+            .IncludeProperties(ra => new { ra.Response, ra.SelectedOptions, ra.OptionType, ra.CreatedBy });
 
         builder
             .Property(e => e.VersionId)

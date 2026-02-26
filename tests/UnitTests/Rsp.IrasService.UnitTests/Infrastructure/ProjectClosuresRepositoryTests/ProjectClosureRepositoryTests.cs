@@ -36,7 +36,6 @@ public class ProjectClosureRepositoryTests
             ClosureDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
             SentToSponsorDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
             DateActioned = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc),
-            UserId = "",
             Status = "With sponsor",
             IrasId = 1,
             CreatedBy = "A",
@@ -84,7 +83,6 @@ public class ProjectClosureRepositoryTests
                 SentToSponsorDate = DateTime.UtcNow.AddDays(-3),
                 ClosureDate = DateTime.UtcNow.AddDays(-2),
                 DateActioned = DateTime.UtcNow.AddDays(-2),
-                UserId = "seed-user-1",
                 CreatedBy = "seed",
                 UpdatedBy = "seed"
             },
@@ -100,7 +98,6 @@ public class ProjectClosureRepositoryTests
                 SentToSponsorDate = DateTime.UtcNow.AddDays(-2),
                 ClosureDate = DateTime.UtcNow.AddDays(-1),
                 DateActioned = DateTime.UtcNow.AddDays(-1),
-                UserId = "seed-user-2",
                 CreatedBy = "seed",
                 UpdatedBy = "seed"
             },
@@ -116,7 +113,6 @@ public class ProjectClosureRepositoryTests
                 SentToSponsorDate = DateTime.UtcNow.AddDays(-1),
                 ClosureDate = DateTime.UtcNow,
                 DateActioned = DateTime.UtcNow,
-                UserId = "seed-user-3",
                 CreatedBy = "seed",
                 UpdatedBy = "seed"
             }
@@ -132,7 +128,8 @@ public class ProjectClosureRepositoryTests
             _context.ProjectRecordAnswers.Add(new ProjectRecordAnswer
             {
                 // Required properties (string types per your model)
-                UserId = Guid.NewGuid().ToString(),
+                CreatedBy = Guid.NewGuid().ToString(),
+                UpdatedBy = Guid.NewGuid().ToString(),
                 Category = defaultCategory,
                 Section = defaultSection,
                 VersionId = defaultVersionId,
@@ -152,13 +149,12 @@ public class ProjectClosureRepositoryTests
                 {
                     Id = c.ProjectRecordId,
                     Status = ProjectRecordStatus.Active,
-                    CreatedBy = "seed",
+                    CreatedBy = c.CreatedBy ?? Guid.NewGuid().ToString(),
                     UpdatedBy = "seed",
                     CreatedDate = DateTime.UtcNow.AddDays(-7),
                     UpdatedDate = DateTime.UtcNow.AddDays(-7),
                     FullProjectTitle = $"Full title for {c.ProjectRecordId}",
                     ShortProjectTitle = c.ShortProjectTitle ?? $"Short {c.ProjectRecordId}",
-                    UserId = c.UserId ?? Guid.NewGuid().ToString(),
                 });
             }
         }
@@ -174,9 +170,9 @@ public class ProjectClosureRepositoryTests
     {
         var closures = new[]
         {
-            new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-1", ShortProjectTitle = "Alpha",   Status = "Open",          IrasId = 100, SentToSponsorDate = DateTime.UtcNow.AddDays(-3), ClosureDate = DateTime.UtcNow.AddDays(-2), DateActioned = DateTime.UtcNow.AddDays(-2), UserId = "u1", CreatedBy = "seed", UpdatedBy = "seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
-            new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-2", ShortProjectTitle = "Bravo",   Status = "Closed",        IrasId = 200, SentToSponsorDate = DateTime.UtcNow.AddDays(-2), ClosureDate = DateTime.UtcNow.AddDays(-1), DateActioned = DateTime.UtcNow.AddDays(-1), UserId = "u2", CreatedBy = "seed", UpdatedBy = "seed",TransactionId="C2414/1", ProjectClosureNumber=1 },
-            new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-3", ShortProjectTitle = "Charlie", Status = "With sponsor",  IrasId = 300, SentToSponsorDate = DateTime.UtcNow.AddDays(-1), ClosureDate = DateTime.UtcNow,            DateActioned = DateTime.UtcNow,            UserId = "u3", CreatedBy = "seed", UpdatedBy = "seed",TransactionId="C2414/1", ProjectClosureNumber=1 }
+            new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-1", ShortProjectTitle = "Alpha",   Status = "Open",          IrasId = 100, SentToSponsorDate = DateTime.UtcNow.AddDays(-3), ClosureDate = DateTime.UtcNow.AddDays(-2), DateActioned = DateTime.UtcNow.AddDays(-2), CreatedBy = "seed", UpdatedBy = "seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
+            new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-2", ShortProjectTitle = "Bravo",   Status = "Closed",        IrasId = 200, SentToSponsorDate = DateTime.UtcNow.AddDays(-2), ClosureDate = DateTime.UtcNow.AddDays(-1), DateActioned = DateTime.UtcNow.AddDays(-1), CreatedBy = "seed", UpdatedBy = "seed",TransactionId="C2414/1", ProjectClosureNumber=1 },
+            new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-3", ShortProjectTitle = "Charlie", Status = "With sponsor",  IrasId = 300, SentToSponsorDate = DateTime.UtcNow.AddDays(-1), ClosureDate = DateTime.UtcNow,            DateActioned = DateTime.UtcNow, CreatedBy = "seed", UpdatedBy = "seed",TransactionId="C2414/1", ProjectClosureNumber=1 }
         };
 
         var map = new Dictionary<string, string>
@@ -219,8 +215,8 @@ public class ProjectClosureRepositoryTests
     {
         var closures = new[]
         {
-            new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-1", ShortProjectTitle = "Bravo", Status = "Closed", IrasId = 200, SentToSponsorDate = new DateTime(2025,1,2,0,0,0,DateTimeKind.Utc), ClosureDate = new DateTime(2025,1,3,0,0,0,DateTimeKind.Utc), DateActioned = new DateTime(2025,1,3,0,0,0,DateTimeKind.Utc), UserId = "u1", CreatedBy = "seed", UpdatedBy = "seed",TransactionId="C2414/1", ProjectClosureNumber=1 },
-            new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-2", ShortProjectTitle = "Alpha", Status = "Open",   IrasId = 100, SentToSponsorDate = new DateTime(2025,1,1,0,0,0,DateTimeKind.Utc), ClosureDate = new DateTime(2025,1,2,0,0,0,DateTimeKind.Utc), DateActioned = new DateTime(2025,1,2,0,0,0,DateTimeKind.Utc), UserId = "u2", CreatedBy = "seed", UpdatedBy = "seed",TransactionId="C2414/1", ProjectClosureNumber=1 }
+            new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-1", ShortProjectTitle = "Bravo", Status = "Closed", IrasId = 200, SentToSponsorDate = new DateTime(2025,1,2,0,0,0,DateTimeKind.Utc), ClosureDate = new DateTime(2025,1,3,0,0,0,DateTimeKind.Utc), DateActioned = new DateTime(2025,1,3,0,0,0,DateTimeKind.Utc), CreatedBy = "seed", UpdatedBy = "seed",TransactionId="C2414/1", ProjectClosureNumber=1 },
+            new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-2", ShortProjectTitle = "Alpha", Status = "Open",   IrasId = 100, SentToSponsorDate = new DateTime(2025,1,1,0,0,0,DateTimeKind.Utc), ClosureDate = new DateTime(2025,1,2,0,0,0,DateTimeKind.Utc), DateActioned = new DateTime(2025,1,2,0,0,0,DateTimeKind.Utc), CreatedBy = "seed", UpdatedBy = "seed",TransactionId="C2414/1", ProjectClosureNumber=1 }
         };
 
         var userId = await SeedScenarioAsync(closures: closures);
@@ -291,8 +287,8 @@ public class ProjectClosureRepositoryTests
     {
         var closures = new[]
         {
-            new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-1", ShortProjectTitle = "A", Status = "Open",   IrasId = 101, SentToSponsorDate = DateTime.UtcNow, ClosureDate = DateTime.UtcNow, DateActioned = DateTime.UtcNow, UserId = "u1", CreatedBy = "seed", UpdatedBy = "seed",TransactionId="C2414/1", ProjectClosureNumber=1 },
-            new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-2", ShortProjectTitle = "B", Status = "Closed", IrasId = 202, SentToSponsorDate = DateTime.UtcNow, ClosureDate = DateTime.UtcNow, DateActioned = DateTime.UtcNow, UserId = "u2", CreatedBy = "seed", UpdatedBy = "seed",TransactionId="C2414/1", ProjectClosureNumber=1, }
+            new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-1", ShortProjectTitle = "A", Status = "Open",   IrasId = 101, SentToSponsorDate = DateTime.UtcNow, ClosureDate = DateTime.UtcNow, DateActioned = DateTime.UtcNow, CreatedBy = "seed", UpdatedBy = "seed",TransactionId="C2414/1", ProjectClosureNumber=1 },
+            new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-2", ShortProjectTitle = "B", Status = "Closed", IrasId = 202, SentToSponsorDate = DateTime.UtcNow, ClosureDate = DateTime.UtcNow, DateActioned = DateTime.UtcNow, CreatedBy = "seed", UpdatedBy = "seed",TransactionId="C2414/1", ProjectClosureNumber=1, }
         };
 
         var userId = await SeedScenarioAsync(closures: closures);
@@ -318,8 +314,8 @@ public class ProjectClosureRepositoryTests
     {
         var closures = new[]
         {
-            new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-1", ShortProjectTitle = "T1", Status = "S1", IrasId = 10, SentToSponsorDate = DateTime.UtcNow.AddDays(-3), ClosureDate = DateTime.UtcNow.AddDays(-2), DateActioned = DateTime.UtcNow.AddDays(-2), UserId = "u1", CreatedBy = "seed", UpdatedBy = "seed",TransactionId="C2414/1", ProjectClosureNumber=1 },
-            new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-2", ShortProjectTitle = "T2", Status = "S2", IrasId = 20, SentToSponsorDate = DateTime.UtcNow.AddDays(-2), ClosureDate = DateTime.UtcNow.AddDays(-1), DateActioned = DateTime.UtcNow.AddDays(-1), UserId = "u2", CreatedBy = "seed", UpdatedBy = "seed",TransactionId="C2414/1", ProjectClosureNumber=1 }
+            new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-1", ShortProjectTitle = "T1", Status = "S1", IrasId = 10, SentToSponsorDate = DateTime.UtcNow.AddDays(-3), ClosureDate = DateTime.UtcNow.AddDays(-2), DateActioned = DateTime.UtcNow.AddDays(-2), CreatedBy = "seed", UpdatedBy = "seed",TransactionId="C2414/1", ProjectClosureNumber=1 },
+            new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-2", ShortProjectTitle = "T2", Status = "S2", IrasId = 20, SentToSponsorDate = DateTime.UtcNow.AddDays(-2), ClosureDate = DateTime.UtcNow.AddDays(-1), DateActioned = DateTime.UtcNow.AddDays(-1), CreatedBy = "seed", UpdatedBy = "seed",TransactionId="C2414/1", ProjectClosureNumber=1 }
         };
 
         var userId = await SeedScenarioAsync(closures: closures);
@@ -364,12 +360,12 @@ public class ProjectClosureRepositoryTests
         var closures = new[]
         {
             // Authorised
-            new ProjectClosure { Id=Guid.NewGuid(), ProjectRecordId="PR-A1", ShortProjectTitle="A1", Status=ProjectClosureStatus.Authorised, IrasId=1, ClosureDate=new DateTime(2025,1,2,0,0,0,DateTimeKind.Utc), UserId="u1", CreatedBy="seed", UpdatedBy="seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
-            new ProjectClosure { Id=Guid.NewGuid(), ProjectRecordId="PR-A2", ShortProjectTitle="A2", Status=ProjectClosureStatus.Authorised, IrasId=2, ClosureDate=new DateTime(2025,1,3,0,0,0,DateTimeKind.Utc), UserId="u2", CreatedBy="seed", UpdatedBy="seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
+            new ProjectClosure { Id=Guid.NewGuid(), ProjectRecordId="PR-A1", ShortProjectTitle="A1", Status=ProjectClosureStatus.Authorised, IrasId=1, ClosureDate=new DateTime(2025,1,2,0,0,0,DateTimeKind.Utc), CreatedBy="seed", UpdatedBy="seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
+            new ProjectClosure { Id=Guid.NewGuid(), ProjectRecordId="PR-A2", ShortProjectTitle="A2", Status=ProjectClosureStatus.Authorised, IrasId=2, ClosureDate=new DateTime(2025,1,3,0,0,0,DateTimeKind.Utc), CreatedBy="seed", UpdatedBy="seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
 
             // Not-Authorised
-            new ProjectClosure { Id=Guid.NewGuid(), ProjectRecordId="PR-N1", ShortProjectTitle="N1", Status=ProjectClosureStatus.WithSponsor,   IrasId=3, ClosureDate=new DateTime(2025,1,1,0,0,0,DateTimeKind.Utc), UserId="u3", CreatedBy="seed", UpdatedBy="seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
-            new ProjectClosure { Id=Guid.NewGuid(), ProjectRecordId="PR-N2", ShortProjectTitle="N2", Status=ProjectClosureStatus.NotAuthorised, IrasId=4, ClosureDate=new DateTime(2025,1,4,0,0,0,DateTimeKind.Utc), UserId="u4", CreatedBy="seed", UpdatedBy="seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
+            new ProjectClosure { Id=Guid.NewGuid(), ProjectRecordId="PR-N1", ShortProjectTitle="N1", Status=ProjectClosureStatus.WithSponsor,   IrasId=3, ClosureDate=new DateTime(2025,1,1,0,0,0,DateTimeKind.Utc), CreatedBy="seed", UpdatedBy="seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
+            new ProjectClosure { Id=Guid.NewGuid(), ProjectRecordId="PR-N2", ShortProjectTitle="N2", Status=ProjectClosureStatus.NotAuthorised, IrasId=4, ClosureDate=new DateTime(2025,1,4,0,0,0,DateTimeKind.Utc), CreatedBy="seed", UpdatedBy="seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
         };
 
         var userId = await SeedScenarioAsync(closures: closures);
@@ -390,12 +386,12 @@ public class ProjectClosureRepositoryTests
         var closures = new[]
         {
             // Authorised
-            new ProjectClosure { Id=Guid.NewGuid(), ProjectRecordId="PR-A1", ShortProjectTitle="A1", Status=ProjectClosureStatus.Authorised, IrasId=1, ClosureDate=new DateTime(2025,1,2,0,0,0,DateTimeKind.Utc), UserId="u1", CreatedBy="seed", UpdatedBy="seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
-            new ProjectClosure { Id=Guid.NewGuid(), ProjectRecordId="PR-A0", ShortProjectTitle="A0", Status=ProjectClosureStatus.Authorised, IrasId=0, ClosureDate=null,                                             UserId="u0", CreatedBy="seed", UpdatedBy="seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
+            new ProjectClosure { Id=Guid.NewGuid(), ProjectRecordId="PR-A1", ShortProjectTitle="A1", Status=ProjectClosureStatus.Authorised, IrasId=1, ClosureDate=new DateTime(2025,1,2,0,0,0,DateTimeKind.Utc), CreatedBy="seed", UpdatedBy="seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
+            new ProjectClosure { Id=Guid.NewGuid(), ProjectRecordId="PR-A0", ShortProjectTitle="A0", Status=ProjectClosureStatus.Authorised, IrasId=0, ClosureDate=null, CreatedBy="seed", UpdatedBy="seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
 
             // Not-Authorised
-            new ProjectClosure { Id=Guid.NewGuid(), ProjectRecordId="PR-N1", ShortProjectTitle="N1", Status=ProjectClosureStatus.WithSponsor,   IrasId=2, ClosureDate=new DateTime(2025,1,1,0,0,0,DateTimeKind.Utc), UserId="u2", CreatedBy="seed", UpdatedBy="seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
-            new ProjectClosure { Id=Guid.NewGuid(), ProjectRecordId="PR-N0", ShortProjectTitle="N0", Status=ProjectClosureStatus.NotAuthorised, IrasId=3, ClosureDate=null,                                             UserId="u3", CreatedBy="seed", UpdatedBy="seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
+            new ProjectClosure { Id=Guid.NewGuid(), ProjectRecordId="PR-N1", ShortProjectTitle="N1", Status=ProjectClosureStatus.WithSponsor,   IrasId=2, ClosureDate=new DateTime(2025,1,1,0,0,0,DateTimeKind.Utc), CreatedBy="seed", UpdatedBy="seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
+            new ProjectClosure { Id=Guid.NewGuid(), ProjectRecordId="PR-N0", ShortProjectTitle="N0", Status=ProjectClosureStatus.NotAuthorised, IrasId=3, ClosureDate=null, CreatedBy="seed", UpdatedBy="seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
         };
 
         var userId = await SeedScenarioAsync(closures: closures);
@@ -539,9 +535,9 @@ public class ProjectClosureRepositoryTests
     {
         var closures = new[]
         {
-            new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-1", ShortProjectTitle = "Alpha",   Status = ProjectClosureStatus.WithSponsor, IrasId = 100, SentToSponsorDate = DateTime.UtcNow.AddDays(-3), ClosureDate = DateTime.UtcNow.AddDays(-2), DateActioned = DateTime.UtcNow.AddDays(-2), UserId = "u1", CreatedBy = "seed", UpdatedBy = "seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
-            new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-2", ShortProjectTitle = "Bravo",   Status = "Closed",                         IrasId = 200, SentToSponsorDate = DateTime.UtcNow.AddDays(-2), ClosureDate = DateTime.UtcNow.AddDays(-1), DateActioned = DateTime.UtcNow.AddDays(-1), UserId = "u2", CreatedBy = "seed", UpdatedBy = "seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
-            new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-3", ShortProjectTitle = "Charlie", Status = ProjectClosureStatus.WithSponsor, IrasId = 300, SentToSponsorDate = DateTime.UtcNow.AddDays(-1), ClosureDate = DateTime.UtcNow,            DateActioned = DateTime.UtcNow,            UserId = "u3", CreatedBy = "seed", UpdatedBy = "seed", TransactionId="C2414/1", ProjectClosureNumber=1 }
+            new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-1", ShortProjectTitle = "Alpha",   Status = ProjectClosureStatus.WithSponsor, IrasId = 100, SentToSponsorDate = DateTime.UtcNow.AddDays(-3), ClosureDate = DateTime.UtcNow.AddDays(-2), DateActioned = DateTime.UtcNow.AddDays(-2), CreatedBy = "seed", UpdatedBy = "seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
+            new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-2", ShortProjectTitle = "Bravo",   Status = "Closed",                         IrasId = 200, SentToSponsorDate = DateTime.UtcNow.AddDays(-2), ClosureDate = DateTime.UtcNow.AddDays(-1), DateActioned = DateTime.UtcNow.AddDays(-1), CreatedBy = "seed", UpdatedBy = "seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
+            new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-3", ShortProjectTitle = "Charlie", Status = ProjectClosureStatus.WithSponsor, IrasId = 300, SentToSponsorDate = DateTime.UtcNow.AddDays(-1), ClosureDate = DateTime.UtcNow,            DateActioned = DateTime.UtcNow, CreatedBy = "seed", UpdatedBy = "seed", TransactionId="C2414/1", ProjectClosureNumber=1 }
         };
 
         var map = new Dictionary<string, string>
@@ -567,9 +563,9 @@ public class ProjectClosureRepositoryTests
     {
         var closures = new[]
         {
-        new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-1", ShortProjectTitle = "A", Status = ProjectClosureStatus.WithSponsor, IrasId = 101, SentToSponsorDate = DateTime.UtcNow, ClosureDate = DateTime.UtcNow, DateActioned = DateTime.UtcNow, UserId = "u1", CreatedBy = "seed", UpdatedBy = "seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
-        new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-2", ShortProjectTitle = "B", Status = "Closed",                         IrasId = 202, SentToSponsorDate = DateTime.UtcNow, ClosureDate = DateTime.UtcNow, DateActioned = DateTime.UtcNow, UserId = "u2", CreatedBy = "seed", UpdatedBy = "seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
-        new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-3", ShortProjectTitle = "C", Status = ProjectClosureStatus.NotAuthorised, IrasId = 1202, SentToSponsorDate = DateTime.UtcNow, ClosureDate = DateTime.UtcNow, DateActioned = DateTime.UtcNow, UserId = "u3", CreatedBy = "seed", UpdatedBy = "seed", TransactionId="C2414/1", ProjectClosureNumber=1 }
+        new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-1", ShortProjectTitle = "A", Status = ProjectClosureStatus.WithSponsor, IrasId = 101, SentToSponsorDate = DateTime.UtcNow, ClosureDate = DateTime.UtcNow, DateActioned = DateTime.UtcNow, CreatedBy = "seed", UpdatedBy = "seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
+        new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-2", ShortProjectTitle = "B", Status = "Closed",                         IrasId = 202, SentToSponsorDate = DateTime.UtcNow, ClosureDate = DateTime.UtcNow, DateActioned = DateTime.UtcNow, CreatedBy = "seed", UpdatedBy = "seed", TransactionId="C2414/1", ProjectClosureNumber=1 },
+        new ProjectClosure { Id = Guid.NewGuid(), ProjectRecordId = "PR-3", ShortProjectTitle = "C", Status = ProjectClosureStatus.NotAuthorised, IrasId = 1202, SentToSponsorDate = DateTime.UtcNow, ClosureDate = DateTime.UtcNow, DateActioned = DateTime.UtcNow, CreatedBy = "seed", UpdatedBy = "seed", TransactionId="C2414/1", ProjectClosureNumber=1 }
         };
 
         var userId = await SeedScenarioAsync(closures: closures);

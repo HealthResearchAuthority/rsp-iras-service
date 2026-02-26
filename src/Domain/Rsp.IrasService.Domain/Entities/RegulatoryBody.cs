@@ -3,7 +3,7 @@ using Rsp.Service.Domain.Interfaces;
 
 namespace Rsp.Service.Domain.Entities;
 
-public class RegulatoryBody : IAuditable
+public class RegulatoryBody : IAuditable, ICreatable, IUpdatable
 {
     public Guid Id { get; set; }
 
@@ -23,9 +23,9 @@ public class RegulatoryBody : IAuditable
     public bool IsActive { get; set; } = true;
 
     public DateTime CreatedDate { get; set; }
-    public DateTime? UpdatedDate { get; set; }
+    public DateTime UpdatedDate { get; set; }
     public string CreatedBy { get; set; } = null!;
-    public string? UpdatedBy { get; set; }
+    public string UpdatedBy { get; set; } = null!;
 
     // navigation properties
     public ICollection<RegulatoryBodyUser> Users { get; set; } = [];

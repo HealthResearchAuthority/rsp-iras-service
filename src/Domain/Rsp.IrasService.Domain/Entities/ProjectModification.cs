@@ -6,7 +6,7 @@ namespace Rsp.Service.Domain.Entities;
 /// <summary>
 /// Represents a modification made to a project record.
 /// </summary>
-public class ProjectModification : IAuditable
+public class ProjectModification : IAuditable, ICreatable, IUpdatable
 {
     /// <summary>
     /// Gets or sets the unique identifier for the project modification.
