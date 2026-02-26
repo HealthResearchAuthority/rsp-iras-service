@@ -10,7 +10,7 @@ public class TriggerEmailNotificationService(
     public async Task<bool> TriggerSendEmail(TriggerSendEmailRequest requestData)
     {
         // get email templates related to this event type
-        var template = await templateService.GetEmailTemplateForEventType(requestData.EventTypeId);
+        var template = await templateService.GetEmailTemplateForEventType(requestData.EventType);
 
         if (template != null)
         {

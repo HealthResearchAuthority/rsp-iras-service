@@ -2,6 +2,7 @@
 using Ardalis.Specification;
 using Mapster;
 using Microsoft.AspNetCore.Http;
+using Rsp.IrasService.Application.DTOS.Requests.EmailNotificationTypes;
 using Rsp.Service.Application.Contracts.Repositories;
 using Rsp.Service.Application.Contracts.Services;
 using Rsp.Service.Application.DTOS.Requests;
@@ -12,7 +13,9 @@ using Rsp.Service.Domain.Entities;
 namespace Rsp.Service.Services;
 
 public class SponsorOrganisationsService(ISponsorOrganisationsRepository sponsorOrganisationsRepository,
-    IHttpContextAccessor httpContextAccessor)
+    IHttpContextAccessor httpContextAccessor,
+    IMessageQueueService mqService,
+    IEmailTemplateService templateService)
     : ISponsorOrganisationsService
 {
     public async Task<AllSponsorOrganisationsResponse> GetSponsorOrganisations(int pageNumber, int pageSize,
@@ -47,6 +50,24 @@ public class SponsorOrganisationsService(ISponsorOrganisationsRepository sponsor
         var sponsorOrganisationUserEntity = sponsorOrganisationUserDto.Adapt<SponsorOrganisationUser>();
 
         var response = await sponsorOrganisationsRepository.AddUserToSponsorOrganisation(sponsorOrganisationUserEntity);
+
+        // send email notification
+        var template = await templateService.GetEmailTemplateForEventType("1");
+
+        if (template != null)
+        {
+            var notificationEvent = new GenericEmail(
+                template.TemplateId,
+                template.EventType.EventName,
+                DateTime.Now,
+                new GenericEmailData
+                {
+                    UserIds = new List<string> { "c38b4082-a10c-475e-b257-5c2a6f9bab70" }
+                });
+
+            await mqService.SendMessageToQueueAsync(new List<GenericEmail> { notificationEvent });
+        }
+
         return response.Adapt<SponsorOrganisationUserDto?>();
     }
 
