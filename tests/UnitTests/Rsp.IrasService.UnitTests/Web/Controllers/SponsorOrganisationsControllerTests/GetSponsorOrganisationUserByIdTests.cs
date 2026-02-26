@@ -10,6 +10,7 @@ public class GetSponsorOrganisationUserById : TestServiceBase<SponsorOrganisatio
     [AutoData]
     public async Task GetSponsorOrganisationUserById_ShouldSendQuery(
         Guid sponsorOrganisationUserId,
+        string rtsId,
         SponsorOrganisationUserDto expected)
     {
         // Arrange
@@ -21,7 +22,7 @@ public class GetSponsorOrganisationUserById : TestServiceBase<SponsorOrganisatio
             .ReturnsAsync(expected);
 
         // Act
-        var result = await Sut.GetSponsorOrganisationUserById(sponsorOrganisationUserId);
+        var result = await Sut.GetSponsorOrganisationUserById(sponsorOrganisationUserId, rtsId);
 
         // Assert
         mockMediator.Verify(

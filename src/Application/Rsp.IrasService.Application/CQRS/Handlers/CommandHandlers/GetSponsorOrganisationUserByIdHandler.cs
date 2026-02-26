@@ -10,6 +10,6 @@ public class GetSponsorOrganisationUserByIdHandler(ISponsorOrganisationsService 
 {
     public async Task<SponsorOrganisationUserDto> Handle(GetSponsorOrganisationUserByIdCommand request, CancellationToken cancellationToken)
     {
-        return await sponsorOrganisationService.GetSponsorOrganisationUserById(request.SponsorOrganisationUserId);
+        return await sponsorOrganisationService.GetSponsorOrganisationUserById(request.SponsorOrganisationUserId, request.RtsId);
     }
 }
