@@ -93,12 +93,14 @@ public class DocumentRepository(IrasContext irasContext) : IDocumentRepository
 
         if (keySelector == null)
         {
-            modifications.OrderByDescending(x => x.DateTimeStamp);
+            modifications = [.. modifications.OrderByDescending(x => x.DateTimeStamp)];
         }
-
-        modifications = [.. string.Equals(sortDirection, "desc", StringComparison.OrdinalIgnoreCase)
-            ? modifications.OrderByDescending(keySelector!)
-            : modifications.OrderBy(keySelector!)];
+        else
+        {
+            modifications = string.Equals(sortDirection, "desc", StringComparison.OrdinalIgnoreCase)
+                ? [.. modifications.OrderByDescending(keySelector!)]
+                : [.. modifications.OrderBy(keySelector!)];
+        }
 
         return modifications
             .Skip((pageNumber - 1) * pageSize)
