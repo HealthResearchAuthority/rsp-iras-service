@@ -175,9 +175,9 @@ public class SponsorOrganisationRepository(IrasContext irasContext) : ISponsorOr
         return existingUserProfile;
     }
 
-    public async Task<SponsorOrganisationUser> GetSponsorOrganisationUserById(Guid sponsorOrganisationUserId, string email)
+    public async Task<SponsorOrganisationUser> GetSponsorOrganisationUserById(Guid sponsorOrganisationUserId, string email, string rtsId)
     {
         return await irasContext.SponsorOrganisationsUsers
-            .FirstAsync(x => x.Id == sponsorOrganisationUserId && x.Email == email);
+            .FirstAsync(x => x.UserId == sponsorOrganisationUserId && x.Email == email && x.RtsId == rtsId);
     }
 }
