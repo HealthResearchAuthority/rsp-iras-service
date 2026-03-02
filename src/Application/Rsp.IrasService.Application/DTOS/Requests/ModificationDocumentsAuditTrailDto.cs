@@ -8,4 +8,6 @@ public class ModificationDocumentsAuditTrailDto
     public string Description { get; set; } = null!;
     public string FileName { get; set; } = null!;
     public string User { get; set; } = null!;
+    public string ModificationIdentifier { get; set; } = string.Empty;
+    public int ModificationNumber { get; set; }
 }
