@@ -229,4 +229,11 @@ public interface IProjectModificationService : IInterceptable
     /// A <see cref="ModificationResponse"/> containing the details of the requested project modification.
     /// </returns>
     Task<ModificationResponse?> GetModification(string projectRecordId, Guid projectModificationId);
+
+    /// <summary>
+    /// Duplicates a specific project modification by its original unique identifier.
+    /// </summary>
+    /// <param name="duplicateModificationRequest"></param>
+    /// <returns></returns>
+    Task<ModificationResponse?> DuplicateModification(DuplicateModificationRequest duplicateModificationRequest);
 }

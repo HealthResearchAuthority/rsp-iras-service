@@ -86,4 +86,9 @@ public class ModificationDocument
     /// Navigation property to the related project modification change.
     /// </summary>
     public ProjectModification? ProjectModification { get; set; }
+
+    /// <summary>
+    /// Gets or sets whether the modification has been duplicated
+    /// </summary>
+    public bool IsDuplicate { get; set; }
 }

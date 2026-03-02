@@ -103,8 +103,9 @@ public class GetDocumentsForProjectOverviewTests
                 .Returns(domainDocuments.Count);
 
         var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+        var mockRepoProjectPersonnel = new Mock<IProjectPersonnelRepository>();
 
-        var service = new ProjectModificationService(mockRepo.Object, mockHttpContextAccessor.Object);
+        var service = new ProjectModificationService(mockRepo.Object, mockRepoProjectPersonnel.Object, mockHttpContextAccessor.Object);
 
         // Act
         var result = await service.GetDocumentsForProjectOverview(projectRecordId, searchRequest, pageNumber, pageSize, sortField, sortDirection);
