@@ -121,4 +121,14 @@ public class ProjectModification : IAuditable
 
     // Navigation property for the reasons for request for information associated with this project modification.
     public ICollection<ModificationRfiReason> ModificationRfiReasons { get; set; } = [];
+
+    /// <summary>
+    /// Gets or sets whether the modification has been duplicated
+    /// </summary>
+    public bool IsDuplicate { get; set; }
+
+    /// <summary>
+    /// Gets or sets which modification identifier has been used to duplicate
+    /// </summary>
+    public string? DuplicatedFromModificationIdentifier { get; set; }
 }
