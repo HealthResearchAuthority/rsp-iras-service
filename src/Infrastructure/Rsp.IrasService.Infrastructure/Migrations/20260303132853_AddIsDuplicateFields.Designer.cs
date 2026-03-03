@@ -12,7 +12,7 @@ using Rsp.Service.Infrastructure;
 namespace Rsp.Service.Infrastructure.Migrations
 {
     [DbContext(typeof(IrasContext))]
-    [Migration("20260303092551_AddIsDuplicateFields")]
+    [Migration("20260303132853_AddIsDuplicateFields")]
     partial class AddIsDuplicateFields
     {
         /// <inheritdoc />

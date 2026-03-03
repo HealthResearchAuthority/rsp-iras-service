@@ -13,7 +13,5 @@ public interface IBlobService
     Task CopyBlobWithinContainerAsync(
         string sourceBlobName, // e.g. "323477/2611817b-.../TEST.txt"
         string destBlobName, // e.g. "323477/<newGuid>/TEST.txt"
-        bool overwrite = false,
-        bool deleteSourceAfterCopy = false,
         CancellationToken ct = default);
 }

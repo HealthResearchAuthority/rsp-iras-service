@@ -38,7 +38,7 @@ public class DuplicateModificationTests : TestServiceBase<ProjectModificationSer
         response.ShouldBeNull();
 
         _projectModificationRepository.Verify(x => x.CreateModification(It.IsAny<ProjectModification>()), Times.Never);
-        _blobService.Verify(x => x.CopyBlobWithinContainerAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Never);
+        _blobService.Verify(x => x.CopyBlobWithinContainerAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
     }
 
     [Fact]
@@ -147,7 +147,7 @@ public class DuplicateModificationTests : TestServiceBase<ProjectModificationSer
 
         _blobService.Verify(x => x.CopyBlobWithinContainerAsync(
             It.IsAny<string>(), It.IsAny<string>(),
-            It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Never);
+            It.IsAny<CancellationToken>()), Times.Never);
     }
 
     [Fact]
@@ -439,7 +439,7 @@ public class DuplicateModificationTests : TestServiceBase<ProjectModificationSer
             .Returns(Task.CompletedTask);
 
         _blobService
-            .Setup(x => x.CopyBlobWithinContainerAsync(It.IsAny<string>(), It.IsAny<string>(), false, false, It.IsAny<CancellationToken>()))
+            .Setup(x => x.CopyBlobWithinContainerAsync(It.IsAny<string>(), It.IsAny<string>(),  It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
 
         Mocker.Use(_projectModificationRepository.Object);
@@ -459,7 +459,7 @@ public class DuplicateModificationTests : TestServiceBase<ProjectModificationSer
         _blobService.Verify(x => x.CopyBlobWithinContainerAsync(
             It.Is<string>(s => s == oldPath),
             It.Is<string>(d => d.Contains(existing.Id.ToString()) == false && d.Contains("file.pdf")),
-            false, false, It.IsAny<CancellationToken>()), Times.Once);
+             It.IsAny<CancellationToken>()), Times.Once);
 
         _projectPersonnelRepository.Verify(x => x.SaveModificationDocumentResponses(
             It.IsAny<SaveModificationDocumentsSpecification>(),
