@@ -30,20 +30,16 @@ public class BlobService(IAzureClientFactory<BlobServiceClient> clientFactory) :
 
         await dest.StartCopyFromUriAsync(source.Uri, cancellationToken: ct);
 
-        while (true)
+        var timeout = DateTime.UtcNow.AddMinutes(2);
+
+        var props = (await dest.GetPropertiesAsync(cancellationToken: ct)).Value;
+
+        while (props.CopyStatus == CopyStatus.Pending &&
+               DateTime.UtcNow < timeout)
         {
-            var props = await dest.GetPropertiesAsync(cancellationToken: ct);
-            var status = props.Value.CopyStatus;
-
-            if (status is CopyStatus.Success) break;
-
-            if (status is CopyStatus.Aborted or CopyStatus.Failed)
-            {
-                throw new InvalidOperationException(
-                    $"Copy failed ({status}). {props.Value.CopyStatusDescription}");
-            }
-
             await Task.Delay(250, ct);
+
+            props = (await dest.GetPropertiesAsync(cancellationToken: ct)).Value;
         }
     }
 }
