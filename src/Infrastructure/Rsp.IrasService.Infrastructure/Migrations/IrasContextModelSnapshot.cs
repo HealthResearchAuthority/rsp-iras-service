@@ -456,7 +456,6 @@ namespace Rsp.Service.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DuplicatedFromModificationIdentifier")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDuplicate")

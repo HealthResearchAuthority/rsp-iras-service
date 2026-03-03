@@ -130,5 +130,5 @@ public class ProjectModification : IAuditable
     /// <summary>
     /// Gets or sets which modification identifier has been used to duplicate
     /// </summary>
-    public string DuplicatedFromModificationIdentifier { get; set; }
+    public string? DuplicatedFromModificationIdentifier { get; set; }
 }

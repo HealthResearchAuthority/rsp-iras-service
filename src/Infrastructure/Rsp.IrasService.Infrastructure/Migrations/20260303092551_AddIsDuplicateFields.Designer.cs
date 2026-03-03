@@ -12,8 +12,8 @@ using Rsp.Service.Infrastructure;
 namespace Rsp.Service.Infrastructure.Migrations
 {
     [DbContext(typeof(IrasContext))]
-    [Migration("20260302182338_AddIsDuplicateColumnsToModificationTables")]
-    partial class AddIsDuplicateColumnsToModificationTables
+    [Migration("20260303092551_AddIsDuplicateFields")]
+    partial class AddIsDuplicateFields
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -459,7 +459,6 @@ namespace Rsp.Service.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DuplicatedFromModificationIdentifier")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDuplicate")

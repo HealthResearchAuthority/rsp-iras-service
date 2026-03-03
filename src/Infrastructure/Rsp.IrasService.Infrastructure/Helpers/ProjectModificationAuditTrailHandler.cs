@@ -58,8 +58,6 @@ public class ProjectModificationAuditTrailHandler :
             User = userEmail,
             Description = "Modification created"
         };
-
-
     }
 
     private static List<ProjectModificationAuditTrail> HandleModifiedState

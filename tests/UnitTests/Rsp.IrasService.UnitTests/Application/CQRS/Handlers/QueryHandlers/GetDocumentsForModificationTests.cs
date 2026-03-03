@@ -104,14 +104,10 @@ public class GetDocumentsForModificationTests
                 .Returns(domainDocuments.Count);
 
         var mockRepoProjectPersonnel = new Mock<IProjectPersonnelRepository>();
-
         var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+        var mockBlobService = new Mock<IBlobService>();
 
-
-
-
-
-        var service = new ProjectModificationService(mockRepo.Object, mockRepoProjectPersonnel.Object, mockHttpContextAccessor.Object );
+        var service = new ProjectModificationService(mockRepo.Object, mockRepoProjectPersonnel.Object, mockBlobService.Object, mockHttpContextAccessor.Object);
 
         // Act
         var result = await service.GetDocumentsForModification(projectRecordId, searchRequest, pageNumber, pageSize, sortField, sortDirection);
