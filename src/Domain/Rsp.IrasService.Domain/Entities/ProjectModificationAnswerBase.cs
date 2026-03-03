@@ -49,4 +49,9 @@ public abstract class ProjectModificationAnswerBase
     /// Gets or sets the selected options, if applicable.
     /// </summary>
     public string? SelectedOptions { get; set; }
+
+    /// <summary>
+    /// Gets or sets whether the modification has been duplicated
+    /// </summary>
+    public bool IsDuplicate { get; set; }
 }

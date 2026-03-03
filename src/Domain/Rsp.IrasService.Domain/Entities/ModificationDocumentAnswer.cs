@@ -51,4 +51,9 @@ public class ModificationDocumentAnswer
     /// Navigation property to the related modification document.
     /// </summary>
     public ModificationDocument? ModificationDocument { get; set; }
+
+    /// <summary>
+    /// Gets or sets whether the modification has been duplicated
+    /// </summary>
+    public bool IsDuplicate { get; set; }
 }

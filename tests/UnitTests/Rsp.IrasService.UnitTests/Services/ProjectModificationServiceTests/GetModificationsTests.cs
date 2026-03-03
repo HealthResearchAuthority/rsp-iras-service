@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Rsp.Service.Application.Constants;
 using Rsp.Service.Application.Contracts.Repositories;
+using Rsp.Service.Application.Contracts.Services;
 using Rsp.Service.Application.DTOS.Requests;
 using Rsp.Service.Domain.Entities;
 using Rsp.Service.Infrastructure;
@@ -331,8 +332,10 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
                 .Returns(domainModifications.Count);
 
         var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+        var mockRepoProjectPersonnel = new Mock<IProjectPersonnelRepository>();
+        var mockBlobService = new Mock<IBlobService>();
 
-        var service = new ProjectModificationService(mockRepo.Object, mockHttpContextAccessor.Object);
+        var service = new ProjectModificationService(mockRepo.Object, mockRepoProjectPersonnel.Object, mockBlobService.Object, mockHttpContextAccessor.Object);
 
         // Act
         var result = await service.GetModifications(searchRequest, pageNumber, pageSize, sortField, sortDirection);
@@ -363,8 +366,9 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
                 .Returns(domainModifications.Count);
 
         var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
-
-        var service = new ProjectModificationService(mockRepo.Object, mockHttpContextAccessor.Object);
+        var mockRepoProjectPersonnel = new Mock<IProjectPersonnelRepository>();
+        var mockBlobService = new Mock<IBlobService>();
+        var service = new ProjectModificationService(mockRepo.Object, mockRepoProjectPersonnel.Object, mockBlobService.Object, mockHttpContextAccessor.Object);
 
         // Act
         var result = await service.GetModificationsForProject(projectRecordId, searchRequest, pageNumber, pageSize, sortField, sortDirection);
@@ -394,9 +398,12 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
         mockRepo.Setup(r => r.GetModificationsBySponsorOrganisationUserCount(searchQuery, sponsorOrganisationUserId, rtsId))
                 .Returns(domainModifications.Count);
 
-        var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
 
-        var service = new ProjectModificationService(mockRepo.Object, mockHttpContextAccessor.Object);
+        var mockRepoProjectPersonnel = new Mock<IProjectPersonnelRepository>();
+        var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+        var mockBlobService = new Mock<IBlobService>();
+
+        var service = new ProjectModificationService(mockRepo.Object, mockRepoProjectPersonnel.Object, mockBlobService.Object, mockHttpContextAccessor.Object);
 
         // Act
         var result = await service.GetModificationsBySponsorOrganisationUserId(sponsorOrganisationUserId, searchQuery, pageNumber, pageSize, sortField, sortDirection, rtsId);
@@ -422,9 +429,10 @@ public class GetModificationsTests : TestServiceBase<ProjectModificationService>
             .Returns(domainModifications);
 
         var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
-
-        var service = new ProjectModificationService(mockRepo.Object, mockHttpContextAccessor.Object);
-
+        var mockRepoProjectPersonnel = new Mock<IProjectPersonnelRepository>();
+        var mockBlobService = new Mock<IBlobService>();
+        var service = new ProjectModificationService(mockRepo.Object, mockRepoProjectPersonnel.Object, mockBlobService.Object, mockHttpContextAccessor.Object); 
+        
         // Act
         var result = await service.GetModificationsByIds(ids);
 

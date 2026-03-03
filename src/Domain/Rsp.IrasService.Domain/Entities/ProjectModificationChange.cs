@@ -67,4 +67,9 @@ public class ProjectModificationChange : IAuditable
     /// Gets or sets the user who last updated this change (username or user ID).
     /// </summary>
     public string UpdatedBy { get; set; } = null!;
+
+    /// <summary>
+    /// Gets or sets whether the modification has been duplicated
+    /// </summary>
+    public bool IsDuplicate { get; set; }
 }
