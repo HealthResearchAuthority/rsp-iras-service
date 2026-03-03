@@ -12,6 +12,8 @@
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Primitives" Version="9.0.1" />
 		<PackageReference Include="Rsp.Logging" Version="1.0.10" />
+        <PackageReference Include="Azure.Storage.Blobs" Version="12.25.0" />
+        <PackageReference Include="Microsoft.Extensions.Azure" Version="1.11.0" />
 	</ItemGroup>
 
 	<ItemGroup>

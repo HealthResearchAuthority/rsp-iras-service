@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Rsp.Service.Application.CQRS.Commands;
 using Rsp.Service.Application.CQRS.Queries;
@@ -505,5 +506,18 @@ public class ProjectModificationsController(IMediator mediator) : ControllerBase
         var request = new DeleteModificationDocumentAnswersCommand(modificationChangeRequest);
 
         await mediator.Send(request);
+    }
+
+    /// <summary>
+    /// Duplicates a project modification.
+    /// </summary>
+    /// <param name="request">
+    /// The request containing the project record id and modification id to duplicate.
+    /// </param>
+    /// <returns>The newly created duplicated modification.</returns>
+    [HttpPost("duplicatemodification")]
+    public async Task<ModificationResponse> DuplicateModification([FromBody] DuplicateModificationRequest request)
+    {
+        return await mediator.Send(new DuplicateModificationCommand(request));
     }
 }

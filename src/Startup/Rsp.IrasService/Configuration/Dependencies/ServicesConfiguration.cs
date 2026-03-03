@@ -39,6 +39,7 @@ public static class ServicesConfiguration
         services.AddTransient<IDocumentService, DocumentService>();
         services.AddTransient<ISponsorOrganisationsService, SponsorOrganisationsService>();
         services.AddTransient<IProjectClosureService, ProjectClosureService>();
+        services.AddTransient<IBlobService, BlobService>();
 
         // repositories
         services.AddTransient<IProjectRecordRepository, ProjectRecordRepository>();

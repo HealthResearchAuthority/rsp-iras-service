@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Azure.Storage.Blobs;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Azure;
 using Rsp.Service.Application.Contracts.Repositories;
 using Rsp.Service.Application.Contracts.Services;
 using Rsp.Service.Application.CQRS.Handlers.QueryHandlers;
@@ -101,9 +103,11 @@ public class GetDocumentsForModificationTests
         mockRepo.Setup(r => r.GetDocumentsForModificationCount(searchRequest, projectRecordId))
                 .Returns(domainDocuments.Count);
 
+        var mockRepoProjectPersonnel = new Mock<IProjectPersonnelRepository>();
         var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+        var mockBlobService = new Mock<IBlobService>();
 
-        var service = new ProjectModificationService(mockRepo.Object, mockHttpContextAccessor.Object);
+        var service = new ProjectModificationService(mockRepo.Object, mockRepoProjectPersonnel.Object, mockBlobService.Object, mockHttpContextAccessor.Object);
 
         // Act
         var result = await service.GetDocumentsForModification(projectRecordId, searchRequest, pageNumber, pageSize, sortField, sortDirection);

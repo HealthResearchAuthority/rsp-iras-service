@@ -66,6 +66,13 @@ services.AddAzureClients(builder =>
     builder.AddServiceBusClient(connectionString: connectionString);
 });
 
+services.AddAzureClients(azure =>
+{
+    azure.AddBlobServiceClient(
+        builder.Configuration["AppSettings:DocumentStorage:CleanBlobConnectionString"]
+    ).WithName("Clean");
+});
+
 services.AddHttpContextAccessor();
 
 // routing configuration

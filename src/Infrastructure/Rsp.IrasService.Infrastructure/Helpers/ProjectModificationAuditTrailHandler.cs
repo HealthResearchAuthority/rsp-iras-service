@@ -40,6 +40,17 @@ public class ProjectModificationAuditTrailHandler :
         string userEmail
     )
     {
+        if (projectModification.IsDuplicate)
+        {
+            return new ProjectModificationAuditTrail
+            {
+                DateTimeStamp = DateTime.UtcNow,
+                ProjectModificationId = projectModification.Id,
+                User = userEmail,
+                Description = "Modification duplicated from " + projectModification.DuplicatedFromModificationIdentifier
+            };
+        }
+
         return new ProjectModificationAuditTrail
         {
             DateTimeStamp = DateTime.UtcNow,
