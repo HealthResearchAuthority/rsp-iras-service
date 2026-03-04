@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Rsp.Service.Application.Constants;
 using Rsp.Service.Application.Contracts.Repositories;
 using Rsp.Service.Application.CQRS.Commands;
+using Rsp.Service.Application.CQRS.Queries;
 using Rsp.Service.Application.DTOS.Requests;
 using Rsp.Service.Application.DTOS.Responses;
 using Rsp.Service.Application.Specifications;
@@ -152,5 +153,29 @@ public class DocumentsController(IMediator mediator) : ControllerBase
         var request = new SaveModificationDocumentsAuditTrailCommand(documentsAuditTrailRequest);
 
         await mediator.Send(request);
+    }
+
+    [HttpGet("projectdocumentsaudittrail")]
+    public async Task<ActionResult<ProjectDocumentsAuditTrailResponse>> GetProjectDocumentsAuditTrail
+        (
+        string projectRecordId,
+        int pageNumber,
+        int pageSize,
+        string sortField,
+        string sortDirection)
+    {
+        if (pageNumber <= 0)
+        {
+            return BadRequest("pageIndex must be greater than 0.");
+        }
+
+        if (pageSize <= 0)
+        {
+            return BadRequest("pageSize must be greater than 0.");
+        }
+
+        var query = new GetProjectDocumentsAuditTrailQuery(projectRecordId, pageNumber, pageSize, sortField, sortDirection);
+
+        return await mediator.Send(query);
     }
 }
