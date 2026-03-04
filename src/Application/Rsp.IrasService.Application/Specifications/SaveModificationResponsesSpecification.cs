@@ -12,16 +12,14 @@ public class SaveModificationResponsesSpecification : Specification<ProjectModif
     /// </summary>
     /// <param name="modificationId">Unique identifier of the project modification change.</param>
     /// <param name="projectRecordId">Unique identifier of the project record.</param>
-    /// <param name="userId">Identifier of the project personnel who submitted the change.</param>
-    public SaveModificationResponsesSpecification(Guid modificationId, string projectRecordId, string userId)
+    public SaveModificationResponsesSpecification(Guid modificationId, string projectRecordId)
     {
         Query
             .Where
             (
                 entity =>
                 entity.ProjectModificationId == modificationId &&
-                entity.ProjectRecordId == projectRecordId &&
-                entity.UserId == userId
+                entity.ProjectRecordId == projectRecordId
             );
     }
 }

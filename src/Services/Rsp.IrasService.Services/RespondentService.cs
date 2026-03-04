@@ -61,7 +61,7 @@ public class RespondentService(IProjectPersonnelRepository projectPersonnelRepos
             respondentAnswers.Add(respondentAnswer);
         }
 
-        var specification = new SaveModificationResponsesSpecification(modificationId, projectRecordId, userId);
+        var specification = new SaveModificationResponsesSpecification(modificationId, projectRecordId);
 
         await projectPersonnelRepository.SaveModificationResponses(specification, respondentAnswers);
     }

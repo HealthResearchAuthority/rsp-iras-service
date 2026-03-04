@@ -79,4 +79,14 @@ public record ModificationResponse
     /// The date and time when the modification was last updated.
     /// </summary>
     public DateTime UpdatedDate { get; set; }
+
+    /// <summary>
+    ///The date when modification is sent to sponsor
+    /// </summary>
+    public DateTime? SentToSponsorDate { get; set; }
+
+    /// <summary>
+    ///The date when modification is sent to regulator
+    /// </summary>
+    public DateTime? SentToRegulatorDate { get; set; }
 }
