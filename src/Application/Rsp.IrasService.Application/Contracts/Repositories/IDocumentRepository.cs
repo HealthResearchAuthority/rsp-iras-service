@@ -1,4 +1,5 @@
-﻿using Rsp.Service.Domain.Entities;
+﻿using Rsp.Service.Application.DTOS.Requests;
+using Rsp.Service.Domain.Entities;
 
 namespace Rsp.Service.Application.Contracts.Repositories;
 
@@ -8,4 +9,14 @@ namespace Rsp.Service.Application.Contracts.Repositories;
 public interface IDocumentRepository
 {
     Task<int?> UpdateModificationDocumentStatus(ModificationDocument modificationDocument);
+
+    Task<IEnumerable<ModificationDocumentsAuditTrailDto>> GetProjectDocumentsAuditTrail
+    (
+        int pageNumber,
+        int pageSize,
+        string sortField,
+        string sortDirection,
+        string projectRecordId,
+        bool includeTotalCount = false
+    );
 }
