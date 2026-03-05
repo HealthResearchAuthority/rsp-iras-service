@@ -779,10 +779,18 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             doc.Status = status;
         }
 
+        var previousStatus = modification.Status;
         modification.Status = status;
         modification.UpdatedDate = DateTime.Now;
 
-        if (!string.IsNullOrEmpty(revisionDescription) || status is ModificationStatus.ReviseAndAuthorise)
+        // Revision description may be set null or empty for updating to Revise and Authorise or when Authorising modification
+        var shouldSetRevisionDescription =
+            !string.IsNullOrEmpty(revisionDescription)
+            || status is ModificationStatus.ReviseAndAuthorise
+            || status is ModificationStatus.WithReviewBody
+            || (status is ModificationStatus.Approved && previousStatus is not ModificationStatus.WithReviewBody);
+
+        if (shouldSetRevisionDescription)
         {
             modification.RevisionDescription = revisionDescription;
         }
