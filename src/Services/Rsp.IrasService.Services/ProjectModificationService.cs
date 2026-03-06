@@ -195,13 +195,11 @@ public class ProjectModificationService(
     /// status of the associated modification changes.
     /// </summary>
     /// <param name="modificationId">The unique identifier of the modification change to remove.</param>
-    public async Task UpdateModificationStatus(string projectRecordId, Guid modificationId, string status,
-        string? revisionDescription, string? reasonNotApproved)
+    public async Task UpdateModificationStatus(string projectRecordId, Guid modificationId, string status, string? revisionDescription, string? reasonNotApproved, string? applicantRevisionResponse)
     {
         var specification = new GetModificationSpecification(projectRecordId, modificationId);
 
-        await projectModificationRepository.UpdateModificationStatus(specification, status, revisionDescription,
-            reasonNotApproved);
+        await projectModificationRepository.UpdateModificationStatus(specification, status, revisionDescription, reasonNotApproved, applicantRevisionResponse);
     }
 
     /// <summary>
@@ -316,8 +314,8 @@ public class ProjectModificationService(
             ReasonNotApproved = modification.ReasonNotApproved,
             ReviewOutcome = modification.ProvisionalReviewOutcome,
             RevisionDescription = modification.RevisionDescription,
-            RequestForInformationReasons =
-                [.. modification.ModificationRfiReasons.OrderBy(r => r.Sequence).Select(r => r.Reason)]
+            ApplicantRevisionResponse = modification.ApplicantRevisionResponse,
+            RequestForInformationReasons = [.. modification.ModificationRfiReasons.OrderBy(r => r.Sequence).Select(r => r.Reason)]
         };
     }
 

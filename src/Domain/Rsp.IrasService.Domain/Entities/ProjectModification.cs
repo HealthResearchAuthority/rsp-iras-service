@@ -123,6 +123,11 @@ public class ProjectModification : IAuditable
     public ICollection<ModificationRfiReason> ModificationRfiReasons { get; set; } = [];
 
     /// <summary>
+    ///  Gets or sets the response of the request revision by the applicant
+    /// </summary>
+    public string? ApplicantRevisionResponse { get; set; }
+
+    /// <summary>
     /// Gets or sets whether the modification has been duplicated
     /// </summary>
     public bool IsDuplicate { get; set; }
