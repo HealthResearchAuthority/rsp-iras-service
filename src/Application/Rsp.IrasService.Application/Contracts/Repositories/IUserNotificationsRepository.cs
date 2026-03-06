@@ -2,5 +2,5 @@
 
 public interface IUserNotificationsRepository
 {
-    Task AutoClearReadNotifications();
+    Task AutoClearReadNotifications(int daysUntilAutoCleared);
 }

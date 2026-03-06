@@ -15,9 +15,12 @@ public class UserNotificationsController(IMediator mediator) : ControllerBase
     /// Automatically clears read user notifications
     /// </summary>
     [HttpGet("autoclear-read-notifications")]
-    public async Task<IActionResult> AutoClearReadNotifications()
+    public async Task<IActionResult> AutoClearReadNotifications(int daysUntilAutoCleared)
     {
-        await mediator.Send(new GetAutoClearUserNotificationsCommand());
+        await mediator.Send(new GetAutoClearUserNotificationsCommand()
+        {
+            DaysUntilAutoCleared = daysUntilAutoCleared
+        });
         return Ok();
     }
 }

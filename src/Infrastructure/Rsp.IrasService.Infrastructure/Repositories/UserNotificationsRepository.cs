@@ -5,9 +5,9 @@ namespace Rsp.Service.Infrastructure.Repositories;
 
 public class UserNotificationsRepository(IrasContext irasContext) : IUserNotificationsRepository
 {
-    public async Task AutoClearReadNotifications()
+    public async Task AutoClearReadNotifications(int daysUntilAutoCleared)
     {
-        var cutoff = DateTime.UtcNow.AddDays(-30);
+        var cutoff = DateTime.UtcNow.AddDays(-daysUntilAutoCleared);
 
         await irasContext.UserNotifications
             .Where(n => n.DateTimeSeen.HasValue && n.DateTimeSeen.Value < cutoff)

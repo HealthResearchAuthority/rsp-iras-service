@@ -22,15 +22,15 @@ public class UserNotificationsServiceTests
     {
         // Arrange
         _repositoryMock
-            .Setup(x => x.AutoClearReadNotifications())
+            .Setup(x => x.AutoClearReadNotifications(It.IsAny<int>()))
             .Returns(Task.CompletedTask);
 
         // Act
-        await _service.AutoClearReadNotifications();
+        await _service.AutoClearReadNotifications(20);
 
         // Assert
         _repositoryMock.Verify(
-            x => x.AutoClearReadNotifications(),
+            x => x.AutoClearReadNotifications(20),
             Times.Once);
     }
 
@@ -39,15 +39,15 @@ public class UserNotificationsServiceTests
     {
         // Arrange
         _repositoryMock
-            .Setup(x => x.AutoClearReadNotifications())
+            .Setup(x => x.AutoClearReadNotifications(It.IsAny<int>()))
             .Returns(Task.CompletedTask);
 
         // Act
-        await _service.AutoClearReadNotifications();
+        await _service.AutoClearReadNotifications(20);
 
         // Assert
         _repositoryMock.Verify(
-            x => x.AutoClearReadNotifications(),
+            x => x.AutoClearReadNotifications(20),
             Times.Once);
 
         _repositoryMock.VerifyNoOtherCalls();

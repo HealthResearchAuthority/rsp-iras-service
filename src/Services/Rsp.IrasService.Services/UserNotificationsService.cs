@@ -5,8 +5,8 @@ namespace Rsp.Service.Services;
 
 public class UserNotificationsService(IUserNotificationsRepository userNotificationsRepository) : IUserNotificationsService
 {
-    public async Task AutoClearReadNotifications()
+    public async Task AutoClearReadNotifications(int daysUntilAutoCleared)
     {
-        await userNotificationsRepository.AutoClearReadNotifications();
+        await userNotificationsRepository.AutoClearReadNotifications(daysUntilAutoCleared);
     }
 }

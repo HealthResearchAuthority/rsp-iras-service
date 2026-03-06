@@ -18,7 +18,7 @@ public class AutoClearReadNotificationsTests : TestServiceBase<UserNotifications
                 default));
 
         // Act
-        var result = await Sut.AutoClearReadNotifications();
+        var result = await Sut.AutoClearReadNotifications(20);
 
         // Assert
         mockMediator.Verify(

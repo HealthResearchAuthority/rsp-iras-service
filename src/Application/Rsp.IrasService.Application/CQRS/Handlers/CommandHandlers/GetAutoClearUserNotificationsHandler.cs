@@ -9,6 +9,6 @@ public class GetAutoClearUserNotificationsHandler(IUserNotificationsService user
 {
     public async Task Handle(GetAutoClearUserNotificationsCommand request, CancellationToken cancellationToken)
     {
-        await userNotificationsService.AutoClearReadNotifications();
+        await userNotificationsService.AutoClearReadNotifications(request.DaysUntilAutoCleared);
     }
 }
