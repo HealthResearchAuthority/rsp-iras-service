@@ -1,5 +1,6 @@
 using Ardalis.Specification;
 using Microsoft.EntityFrameworkCore;
+using Rsp.Service.Application.Constants;
 using Rsp.Service.Application.Contracts.Repositories;
 using Rsp.Service.Application.DTOS.Requests;
 using Rsp.Service.Domain.Entities;
@@ -89,6 +90,138 @@ public class ProjectModificationServiceTests : TestServiceBase<ProjectModificati
         updated.Status.ShouldBe(newStatus);
         updated.ProjectModificationChanges.ShouldAllBe(c => c.Status == newStatus);
         updated.RevisionDescription.ShouldBe(revisionDescription);
+    }
+
+    [Theory]
+    [InlineData(ModificationStatus.Approved)]
+    [InlineData(ModificationStatus.ReviseAndAuthorise)]
+    [InlineData(ModificationStatus.WithReviewBody)]
+    public async Task UpdateModificationStatus_Should_Clear_RevisionDescription_When_Status_Is_Approved_Or_WithReviewBody_And_No_Description_Provided(string status)
+    {
+        // Arrange
+        var modId = Guid.NewGuid();
+        var now = DateTime.UtcNow;
+
+        var modification = new ProjectModification
+        {
+            Id = modId,
+            ProjectRecordId = "PR-1",
+            ModificationNumber = 1,
+            ModificationIdentifier = "IRAS/",
+            Status = "Draft",
+            RevisionDescription = "old desc",
+            CreatedDate = now,
+            UpdatedDate = now,
+            CreatedBy = "tester",
+            UpdatedBy = "tester",
+            ProjectModificationChanges = new List<ProjectModificationChange>
+        {
+            new()
+            {
+                Id = Guid.NewGuid(),
+                ProjectModificationId = modId,
+                AreaOfChange = "Area1",
+                SpecificAreaOfChange = "Detail1",
+                Status = "Draft",
+                CreatedDate = now,
+                UpdatedDate = now,
+                CreatedBy = "tester",
+                UpdatedBy = "tester"
+            }
+        }
+        };
+
+        await _context.ProjectModifications.AddAsync(modification);
+        await _context.SaveChangesAsync();
+
+        Mocker.Use<IProjectModificationRepository>(_modificationRepository);
+        Sut = Mocker.CreateInstance<ProjectModificationService>();
+
+        string? revisionDescription = null;
+        string? reasonNotApproved = null;
+        string? applicantRevisionResponse = null;
+
+        // Act
+        await Sut.UpdateModificationStatus(
+            "PR-1",
+            modId,
+            status,
+            revisionDescription,
+            reasonNotApproved,
+            applicantRevisionResponse);
+
+        // Assert
+        var updated = await _context.ProjectModifications
+            .Include(m => m.ProjectModificationChanges)
+            .SingleAsync(m => m.Id == modId);
+
+        updated.Status.ShouldBe(status);
+
+        updated.RevisionDescription.ShouldBeNull();
+
+        updated.ProjectModificationChanges.ShouldAllBe(c => c.Status == status);
+    }
+
+    [Fact]
+    public async Task UpdateModificationStatus_WithReviewBody_To_Approved_Should_Not_Clear_RevisionDescription_When_No_New_Description_Provided()
+    {
+        var modId = Guid.NewGuid();
+        var now = DateTime.UtcNow;
+
+        var modification = new ProjectModification
+        {
+            Id = modId,
+            ProjectRecordId = "PR-1",
+            ModificationNumber = 1,
+            ModificationIdentifier = "IRAS/",
+            Status = ModificationStatus.WithReviewBody,
+            RevisionDescription = "keep me",
+            CreatedDate = now,
+            UpdatedDate = now,
+            CreatedBy = "tester",
+            UpdatedBy = "tester",
+            ProjectModificationChanges = new List<ProjectModificationChange>
+        {
+            new()
+            {
+                Id = Guid.NewGuid(),
+                ProjectModificationId = modId,
+                AreaOfChange = "Area1",
+                SpecificAreaOfChange = "Detail1",
+                Status = ModificationStatus.WithReviewBody,
+                CreatedDate = now,
+                UpdatedDate = now,
+                CreatedBy = "tester",
+                UpdatedBy = "tester"
+            }
+        }
+        };
+
+        await _context.ProjectModifications.AddAsync(modification);
+        await _context.SaveChangesAsync();
+
+        Mocker.Use<IProjectModificationRepository>(_modificationRepository);
+        Sut = Mocker.CreateInstance<ProjectModificationService>();
+
+        // Act
+        await Sut.UpdateModificationStatus(
+            "PR-1",
+            modId,
+            ModificationStatus.Approved,
+            revisionDescription: null,
+            reasonNotApproved: null,
+            applicantRevisionResponse: null);
+
+        // Assert
+        var updated = await _context.ProjectModifications
+            .Include(m => m.ProjectModificationChanges)
+            .SingleAsync(m => m.Id == modId);
+
+        updated.Status.ShouldBe(ModificationStatus.Approved);
+
+        updated.RevisionDescription.ShouldBe("keep me");
+
+        updated.ProjectModificationChanges.ShouldAllBe(c => c.Status == ModificationStatus.Approved);
     }
 
     [Theory, AutoData]
