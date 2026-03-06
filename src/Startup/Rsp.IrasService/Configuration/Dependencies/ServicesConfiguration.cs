@@ -40,6 +40,7 @@ public static class ServicesConfiguration
         services.AddTransient<ISponsorOrganisationsService, SponsorOrganisationsService>();
         services.AddTransient<IProjectClosureService, ProjectClosureService>();
         services.AddTransient<IBlobService, BlobService>();
+        services.AddTransient<IUserNotificationsService, UserNotificationsService>();
 
         // repositories
         services.AddTransient<IProjectRecordRepository, ProjectRecordRepository>();
@@ -52,6 +53,8 @@ public static class ServicesConfiguration
         services.AddTransient<IDocumentRepository, DocumentRepository>();
         services.AddTransient<ISponsorOrganisationsRepository, SponsorOrganisationRepository>();
         services.AddTransient<IProjectClosureRepository, ProjectClosureRepository>();
+        services.AddTransient<IUserNotificationsRepository, UserNotificationsRepository>();
+
 
         // Access validation repository and middleware
         services.AddTransient<IAccessValidationRepository, AccessValidationRepository>();
