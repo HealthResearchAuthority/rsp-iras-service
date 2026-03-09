@@ -20,7 +20,10 @@ public static class DatabaseConfiguration
         (
             (serviceProvider, options) => options
                 .UseSqlServer(configuration.GetConnectionString("IrasServiceDatabaseConnection"))
-                .AddInterceptors(serviceProvider.GetRequiredService<AuditTrailInterceptor>())
+                .AddInterceptors(
+                    serviceProvider.GetRequiredService<AuditTrailInterceptor>(),
+                    serviceProvider.GetRequiredService<UserNotificationsInterceptor>()
+                )
         );
 
         return services;
