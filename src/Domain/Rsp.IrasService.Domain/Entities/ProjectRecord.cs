@@ -6,7 +6,7 @@ namespace Rsp.Service.Domain.Entities;
 /// <summary>
 /// Represents a project record, including its details and associated modifications.
 /// </summary>
-public class ProjectRecord : IAuditable
+public class ProjectRecord : IAuditable, INotifiable
 {
     /// <summary>
     /// Gets or sets the unique identifier for the project record.

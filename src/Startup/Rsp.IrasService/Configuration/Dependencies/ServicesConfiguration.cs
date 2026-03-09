@@ -77,8 +77,11 @@ public static class ServicesConfiguration
         services.AddScoped<IAuditTrailHandler<ProjectRecordAuditTrail>, ProjectClosureAuditTrailHandler>();
         services.AddScoped<IAuditTrailHandler<ProjectRecordAuditTrail>, ProjectModificationChangeAuditTrailHandler>();
 
+        services.AddScoped<UserNotificationsHandler>();
+
         // Single merged interceptor
         services.AddScoped<AuditTrailInterceptor>();
+        services.AddScoped<UserNotificationsInterceptor>();
 
         // Register IHttpContextAccessor used by pipeline to read user claims
         services.AddHttpContextAccessor();
