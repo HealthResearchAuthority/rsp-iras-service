@@ -81,6 +81,11 @@ public record ModificationResponse
     public DateTime UpdatedDate { get; set; }
 
     /// <summary>
+    /// The revision description by applicant.
+    /// </summary>
+    public string? ApplicantRevisionResponse { get; set; } = null;
+
+    /// <summary>
     ///The date when modification is sent to sponsor
     /// </summary>
     public DateTime? SentToSponsorDate { get; set; }

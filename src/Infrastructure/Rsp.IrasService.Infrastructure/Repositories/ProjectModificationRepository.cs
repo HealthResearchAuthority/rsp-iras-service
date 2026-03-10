@@ -712,7 +712,7 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
     /// making any changes.
     /// </summary>
     /// <param name="specification">The specification used to locate the modification to update.</param>
-    public async Task UpdateModificationStatus(ISpecification<ProjectModification> specification, string status, string? revisionDescription, string? reasonNotApproved)
+    public async Task UpdateModificationStatus(ISpecification<ProjectModification> specification, string status, string? revisionDescription, string? reasonNotApproved, string? applicantRevisionResponse)
     {
         // Attempt to find a single ProjectModification matching the given specification. Using
         // FirstOrDefaultAsync to avoid exceptions if no entity matches the criteria.
@@ -779,16 +779,28 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             doc.Status = status;
         }
 
+        var previousStatus = modification.Status;
         modification.Status = status;
         modification.UpdatedDate = DateTime.Now;
 
-        if (!string.IsNullOrEmpty(revisionDescription) || status is ModificationStatus.ReviseAndAuthorise)
+        // Revision description may be set null or empty for updating to Revise and Authorise or when Authorising modification
+        var shouldSetRevisionDescription =
+            !string.IsNullOrEmpty(revisionDescription)
+            || status is ModificationStatus.ReviseAndAuthorise
+            || status is ModificationStatus.WithReviewBody
+            || (status is ModificationStatus.Approved && previousStatus is not ModificationStatus.WithReviewBody);
+
+        if (shouldSetRevisionDescription)
         {
             modification.RevisionDescription = revisionDescription;
         }
         if (!string.IsNullOrEmpty(reasonNotApproved))
         {
             modification.ReasonNotApproved = reasonNotApproved;
+        }
+        if (!string.IsNullOrEmpty(applicantRevisionResponse))
+        {
+            modification.ApplicantRevisionResponse = applicantRevisionResponse;
         }
         switch (status)
         {
