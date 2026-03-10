@@ -1,4 +1,5 @@
 ﻿using Mapster;
+using Rsp.IrasService.Application.DTOS.Responses;
 using Rsp.Service.Application.Contracts.Repositories;
 using Rsp.Service.Application.Contracts.Services;
 using Rsp.Service.Application.DTOS.Requests;
@@ -23,11 +24,31 @@ public class UserNotificationsService(IUserNotificationsRepository userNotificat
         return userNotificationsRepository.GetUnreadUserNotificationsCount(userId);
     }
 
-    public async Task<IEnumerable<UserNotificationResponse>> GetUserNotifications(string userId)
+    public async Task<UserNotificationsResponse> GetUserNotifications
+    (
+        string userId,
+        int pageNumber,
+        int pageSize,
+        string sortField,
+        string sortDirection,
+        string? type = null
+    )
     {
-        var userNotifications = await userNotificationsRepository.GetUserNotifications(userId);
+        var response = new UserNotificationsResponse();
+        var userNotificationsResponse = await userNotificationsRepository.GetUserNotifications
+        (
+            userId,
+            pageNumber,
+            pageSize,
+            sortField,
+            sortDirection,
+            type
+        );
 
-        return userNotifications.Adapt<IEnumerable<UserNotificationResponse>>();
+        response.Notifications = userNotificationsResponse.Item1.Adapt<IEnumerable<UserNotificationResponse>>();
+        response.TotalCount = userNotificationsResponse.Item2;
+
+        return response;
     }
 
     public Task ReadNotifications(string userId)

@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Rsp.IrasService.Application.DTOS.Responses;
 using Rsp.Service.Application.CQRS.Commands;
 using Rsp.Service.Application.CQRS.Queries;
 using Rsp.Service.Application.DTOS.Requests;
@@ -26,9 +27,15 @@ public class UserNotificationsController(IMediator mediator) : ControllerBase
     /// Returns all notifications for a user, ordered by most recent first
     /// </summary>
     [HttpGet("user/{userId}")]
-    public async Task<IEnumerable<UserNotificationResponse>> GetUserNotifications(string userId)
+    public async Task<UserNotificationsResponse> GetUserNotifications(
+         string userId,
+         int pageNumber,
+         int pageSize,
+         string sortField,
+         string sortDirection,
+         string? type = null)
     {
-        return await mediator.Send(new GetUserNotificationsQuery(userId));
+        return await mediator.Send(new GetUserNotificationsQuery(userId, pageNumber, pageSize, sortField, sortDirection, type));
     }
 
     /// <summary>

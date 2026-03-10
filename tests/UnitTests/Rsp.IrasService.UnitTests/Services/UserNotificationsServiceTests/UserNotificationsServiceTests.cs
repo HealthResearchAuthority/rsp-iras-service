@@ -51,6 +51,7 @@ public class UserNotificationsServiceTests
     {
         // Arrange
         var userId = Guid.NewGuid().ToString();
+        var totalCount = 10;
         var notifications = new List<UserNotification>
         {
             new() { UserId = Guid.Parse(userId), Text = "Notification 1" },
@@ -58,19 +59,20 @@ public class UserNotificationsServiceTests
         };
 
         _repositoryMock
-            .Setup(x => x.GetUserNotifications(userId))
-            .ReturnsAsync(notifications);
+            .Setup(x => x.GetUserNotifications(userId, 1, 10, "date", "desc", null))
+            .ReturnsAsync((notifications, totalCount));
 
         // Act
-        var result = await _service.GetUserNotifications(userId);
+        var result = await _service.GetUserNotifications(userId, 1, 10, "date", "desc");
 
         // Assert
-        _repositoryMock.Verify(x => x.GetUserNotifications(userId), Times.Once);
+        _repositoryMock.Verify(x => x.GetUserNotifications(userId, 1, 10, "date", "desc", null), Times.Once);
 
-        result.Count().ShouldBe(2);
-        result.First().UserId.ShouldBe(userId);
-        result.First().Text.ShouldBe("Notification 1");
-        result.First().ShouldBeOfType<UserNotificationResponse>();
+        result.Notifications.Count().ShouldBe(2);
+        result.TotalCount.ShouldBe(totalCount);
+        result.Notifications.First().UserId.ShouldBe(userId);
+        result.Notifications.First().Text.ShouldBe("Notification 1");
+        result.Notifications.First().ShouldBeOfType<UserNotificationResponse>();
     }
 
     [Fact]
