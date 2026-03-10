@@ -10,7 +10,6 @@ public struct ModificationStatus
     public const string NotAuthorised = "Not authorised";
     public const string RequestForInformation = "Request for further information";
     public const string Superseded = "Superseded";
-    public const string Withdrawn = "Withdrawn";
 
     public const string RequestRevisions = "Request revision";
     public const string ReviseAndAuthorise = "Sponsor revises modification";

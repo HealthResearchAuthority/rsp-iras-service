@@ -485,6 +485,36 @@ public class RespondentRepository(IrasContext irasContext, IFeatureManager featu
             .WithSpecification(specification)
             .ToListAsync();
 
+        //foreach (var doc in documents)
+        //{
+        //    // Only delete if status is NOT "SubmittedToSponsor"
+        //    if (!string.Equals(doc.Status, DocumentStatus.SubmittedToSponsor.ToString(), StringComparison.OrdinalIgnoreCase))
+        //    {
+        //        // Remove related answers first
+        //        var relatedAnswers = await irasContext.ModificationDocumentAnswers
+        //        .Where(a => a.ModificationDocumentId == doc.Id)
+        //        .ToListAsync();
+
+        //        if (relatedAnswers.Any())
+        //        {
+        //            irasContext.ModificationDocumentAnswers.RemoveRange(relatedAnswers);
+        //        }
+
+        //        doc.LinkedDocumentId = null;
+
+        //        doc.ReplacesDocumentId = null;
+
+        //        doc.ReplacedByDocumentId = null;
+
+        //        await irasContext.SaveChangesAsync();
+
+        //        // Remove the document itself
+        //        irasContext.ModificationDocuments.Remove(doc);
+        //    }
+        //}
+
+        //await irasContext.SaveChangesAsync();
+
         var docIds = documents.Select(d => d.Id).ToList();
 
         // Remove answers in bulk
