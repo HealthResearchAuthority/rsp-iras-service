@@ -766,13 +766,33 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
 
         foreach (var doc in documents)
         {
-            if (status is ModificationStatus.Approved && doc.ReplacesDocumentId != null && doc.ReplacesDocumentId != Guid.Empty)
+            if (doc.ReplacesDocumentId is Guid replacedId && replacedId != Guid.Empty)
             {
                 var replacedDoc = await irasContext.ModificationDocuments
-                    .FirstOrDefaultAsync(d => d.Id == doc.ReplacesDocumentId);
-                if (replacedDoc != null && replacedDoc.ReplacedByDocumentId != null && replacedDoc.ReplacedByDocumentId != Guid.Empty)
+                    .FirstOrDefaultAsync(d => d.Id == replacedId);
+
+                if (replacedDoc?.ReplacedByDocumentId is Guid replacedById && replacedById != Guid.Empty)
                 {
-                    replacedDoc.Status = ModificationStatus.Superseded;
+                    if (status is ModificationStatus.Approved)
+                    {
+                        replacedDoc.Status = ModificationStatus.Superseded;
+                    }
+                    else if (status is ModificationStatus.NotApproved
+                             or ModificationStatus.NotAuthorised
+                             or ModificationStatus.Withdrawn)
+                    {
+                        replacedDoc.ReplacedByDocumentId = null;
+                    }
+                }
+
+                if (replacedDoc?.LinkedDocumentId is Guid linkedDocId && linkedDocId != Guid.Empty)
+                {
+                    var linkedDoc = await irasContext.ModificationDocuments
+                        .FirstOrDefaultAsync(d => d.Id == linkedDocId);
+                    if (linkedDoc != null && status is ModificationStatus.Approved)
+                    {
+                        linkedDoc.Status = ModificationStatus.Superseded;
+                    }
                 }
             }
 
@@ -913,10 +933,10 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
             .ToListAsync();
 
         // All document IDs for those changes
-        var documentIds = await irasContext.ModificationDocuments
+        var documents = await irasContext.ModificationDocuments
             .Where(d => d.ProjectModificationId == modId)
-            .Select(d => d.Id)
             .ToListAsync();
+        var documentIds = documents.Select(d => d.Id).ToList();
 
         // 1) Remove change answers
         var changeAnswers = await irasContext.ProjectModificationChangeAnswers
@@ -937,9 +957,24 @@ public class ProjectModificationRepository(IrasContext irasContext) : IProjectMo
         irasContext.ProjectModificationAnswers.RemoveRange(modAnswers);
 
         // 4) Remove documents
-        var documents = await irasContext.ModificationDocuments
-            .Where(d => documentIds.Contains(d.Id))
+        // Clear ALL self-referencing links in one query
+        var referencingDocs = await irasContext.ModificationDocuments
+            .Where(d =>
+                d.LinkedDocumentId != null && documentIds.Contains(d.LinkedDocumentId.Value) ||
+                d.ReplacesDocumentId != null && documentIds.Contains(d.ReplacesDocumentId.Value) ||
+                d.ReplacedByDocumentId != null && documentIds.Contains(d.ReplacedByDocumentId.Value))
             .ToListAsync();
+
+        foreach (var refDoc in referencingDocs)
+        {
+            refDoc.LinkedDocumentId = null;
+            refDoc.ReplacesDocumentId = null;
+            refDoc.ReplacedByDocumentId = null;
+        }
+
+        await irasContext.SaveChangesAsync();
+
+        // Finally delete documents
         irasContext.ModificationDocuments.RemoveRange(documents);
 
         // 5) Remove changes
