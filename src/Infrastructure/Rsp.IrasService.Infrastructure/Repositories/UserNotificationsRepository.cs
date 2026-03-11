@@ -22,12 +22,50 @@ public class UserNotificationsRepository(IrasContext irasContext) : IUserNotific
             .CountAsync();
     }
 
-    public async Task<IEnumerable<UserNotification>> GetUserNotifications(string userId)
+    public async Task<(IEnumerable<UserNotification>, int)> GetUserNotifications
+    (
+        string userId,
+        int pageNumber,
+        int pageSize,
+        string sortField,
+        string sortDirection,
+        string? type = null
+    )
     {
-        return await irasContext.UserNotifications
-            .Where(n => n.UserId == Guid.Parse(userId))
-            .OrderByDescending(n => n.DateTimeCreated)
+        // get all notifications for user
+        var notifications = irasContext.UserNotifications
+            .Where(n => n.UserId == Guid.Parse(userId));
+
+        // filter by type if provided
+        if (!string.IsNullOrEmpty(type))
+        {
+            notifications = notifications.Where(n => n.Type == type);
+        }
+
+        // execute sorting
+        notifications = (sortField, sortDirection.ToLower()) switch
+        {
+            (nameof(UserNotification.Text), "asc") => notifications.OrderBy(x => x.Text),
+            (nameof(UserNotification.Text), "desc") => notifications.OrderByDescending(x => x.Text),
+            (nameof(UserNotification.Type), "asc") => notifications.OrderBy(x => x.Type),
+            (nameof(UserNotification.Type), "desc") => notifications.OrderByDescending(x => x.Type),
+            (nameof(UserNotification.DateTimeCreated), "asc") => notifications.OrderBy(x => x.DateTimeCreated),
+            (nameof(UserNotification.DateTimeCreated), "desc") => notifications.OrderByDescending(x => x.DateTimeCreated),
+            ("Days", "asc") => notifications.OrderByDescending(x => x.DateTimeCreated),
+            ("Days", "desc") => notifications.OrderBy(x => x.DateTimeCreated),
+
+            _ => notifications.OrderByDescending(x => x.DateTimeCreated)
+        };
+
+        var totalCount = await notifications.CountAsync();
+
+        // execute pagination and return results
+        var result = await notifications
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
+
+        return (result, totalCount);
     }
 
     public async Task ReadNotifications(string userId)

@@ -1,4 +1,5 @@
-﻿using Rsp.Service.Application.CQRS.Queries;
+﻿using Rsp.IrasService.Application.DTOS.Responses;
+using Rsp.Service.Application.CQRS.Queries;
 using Rsp.Service.Application.DTOS.Responses;
 using Rsp.Service.WebApi.Controllers;
 
@@ -11,6 +12,7 @@ public class GetUserNotificationsTests : TestServiceBase<UserNotificationsContro
     {
         // Arrange
         var userId = Guid.NewGuid().ToString();
+        var totalCount = 5;
         var expectedNotifications = new List<UserNotificationResponse>
             {
                 new() {
@@ -28,15 +30,21 @@ public class GetUserNotificationsTests : TestServiceBase<UserNotificationsContro
                     DateTimeCreated = DateTime.UtcNow.AddMinutes(-5)
                 }
             };
+        var expectedResult = new UserNotificationsResponse
+        {
+            Notifications = expectedNotifications,
+            TotalCount = totalCount
+        };
 
         Mocker.GetMock<IMediator>()
             .Setup(m => m.Send(It.Is<GetUserNotificationsQuery>(q => q.UserId == userId), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(expectedNotifications);
+            .ReturnsAsync(expectedResult);
 
         // Act
-        var result = await Sut.GetUserNotifications(userId);
+        var result = await Sut.GetUserNotifications(userId, 1, 20, "date", "desc", null);
 
         // Assert
-        result.ShouldBeEquivalentTo(expectedNotifications);
+        result.Notifications.ShouldBeEquivalentTo(expectedNotifications);
+        result.TotalCount.ShouldBe(totalCount);
     }
 }

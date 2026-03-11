@@ -6,7 +6,15 @@ public interface IUserNotificationsRepository
 {
     Task<UserNotification> CreateUserNotification(UserNotification userNotification);
 
-    Task<IEnumerable<UserNotification>> GetUserNotifications(string userId);
+    Task<(IEnumerable<UserNotification>, int)> GetUserNotifications
+    (
+        string userId,
+        int pageNumber,
+        int pageSize,
+        string sortField,
+        string sortDirection,
+        string? type = null
+    );
 
     Task<int> GetUnreadUserNotificationsCount(string userId);
 
